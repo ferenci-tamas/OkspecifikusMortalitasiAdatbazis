@@ -271,7 +271,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.36"),
+                  .noWS = "outside"), ", v0.38"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -330,7 +330,15 @@ ui <- navbarPage(
                  strat = c("Nincs" = "None", "Nem szerint" = "Sex", "Év szerint" = "Year"))
       ),
       mainPanel(
-        shinycssloaders::withSpinner(highchartOutput("agesexPlot", height = "600px"))
+        shinycssloaders::withSpinner(highchartOutput("agesexPlot", height = "600px")),
+        tags$style(type = "text/css", ".irs-grid-pol.small {height: 0px;}"),
+        sliderInput("agesexYear", div("Vizsgált év(tartomány)", bslib::tooltip(
+          bsicons::bs_icon("question-circle"),
+          paste0("Amennyiben a csúszka két vége nem esik egybe, úgy a megjelenített ",
+                 "adat a tartomány összesített eredménye. A két végpont egy évre is ",
+                 "összehúzható, ez esetben a kérdéses év adata fog látszódni."),
+          placement = "right")), min(RawData$Year), max(RawData$Year),
+          c(min(RawData$Year), max(RawData$Year)), 1, sep = "", width = "100%")
       )
     )
   ),
@@ -586,6 +594,7 @@ server <- function(input, output) {
                            low = c(0, 0, cumsum(temp$Kp), end - start) + start,
                            high = c(0, cumsum(temp$Kp), sum(temp$Kp) + sum(temp$Kpp), end - start) + start)
     tempplot$color <- ifelse(tempplot$high > tempplot$low, "#FF0000", "#00FF00")
+    tempplot$lwd <- c(3, rep(0.5, nrow(temp)), 3, 3)
     
     return(list(temp = temp, plot = tempplot, Kprime = sum(temp$Kp)))
   }
@@ -643,8 +652,8 @@ server <- function(input, output) {
     
     rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
     
-    if(category == "Avoidable") rd <- rd[AgeNum < 75]
-
+    if(category == "Avoidable") rd <- rd[AgeNum < yllPyllTarget]
+    
     if(indicator == "yll" && yllMethod == "pyll")
       rd$value <- rd$value * pmax(0, yllPyllTarget - rd$AgeNum)
     
@@ -673,6 +682,10 @@ server <- function(input, output) {
     
     return(list(rd = rd, icd = icd, country = country))
   }
+  
+  # countrySel <- function(multipleCountry, countrySingle, countryMultiple) {
+  #   
+  # }
   
   mapICDSingle <- reactive(switch(input$mapCategory, "Groups" = input$mapGroupsICDSingle,
                                   "Individual" = input$mapIndividualICDSingle,
@@ -710,7 +723,8 @@ server <- function(input, output) {
            "Avoidable" = input$agesexAvoidableICDMultiple),
     input$agesexMultipleCountry,input$agesexCountrySingle, input$agesexCountryMultiple,
     "death", NA, NA, input$agesexStratification, "cruderate", "AgeNum",
-    c("Age", "AgeNum", "AgeLabel", "CauseGroup"), NULL, "Összesen", "Összesen", NULL, FALSE))
+    c("Age", "AgeNum", "AgeLabel", "CauseGroup"), input$agesexYear, "Összesen", "Összesen",
+    NULL, FALSE))
   dataInputHunworld <- reactive(dataInputFun(
     "Groups", "MultiIndiv", NA, names(ICDGroups$Groups),
     "Multiple", NA, union(input$hunworldCountryInvestigated, input$hunworldCountryComparison),
@@ -811,7 +825,7 @@ server <- function(input, output) {
     
     p <- p |>
       hc_title(text = paste0("<b>", if(input$mapIndicator == "death") "Halálozás" else
-        "Elveszett életévek számának", " területi alakulása ",
+        "Elveszett életévek számának", " területi alakulása, ",
         if(input$mapYear[1] == input$mapYear[2]) input$mapYear[1] else
           paste0(input$mapYear, collapse = " - "),
         if(input$mapSex != "Összesen") paste0(", ", input$mapSex),
@@ -857,7 +871,9 @@ server <- function(input, output) {
     
     p <- p |>
       hc_title(text = paste0("<b>", if(input$timeIndicator == "death") "Halálozás" else
-        "Elveszett életévek számának", " életkor- és nem-függése</b>",
+        "Elveszett életévek számának", " életkor- és nem-függése, ",
+        if(input$agesexYear[1] == input$agesexYear[2]) input$agesexYear[1] else
+          paste0(input$agesexYear, collapse = " - "), "</b>",
         if(input$agesexMultipleCountry == "Single")
           paste0("<br>", names(CountryCodes)[CountryCodes == di$country]) else
             if(input$agesexMultipleCountry == "Multiple")
@@ -1041,20 +1057,41 @@ server <- function(input, output) {
     
     mortdat <- KitagawaDecomp(mortdat, input$hconvdecompYear)
     tempplot <- mortdat$plot
+    tempplot$CodeFormatted <- tempplot$Code
+    tempplot$CodeFormatted[c(1, nrow(tempplot))] <- paste0("<span style='font-weight:900;'>", tempplot$Code[c(1, nrow(tempplot))], "</span>")
+    
+    invcountryname <- names(CountryCodes)[CountryCodes == input$hconvdecompCountryInvestigated]
     
     p <- highchart() |>
       hc_add_series(data = tempplot, type = "columnrange",
                     hcaes(x = Cause, low = low, high = high, color = color)) |>
-      hc_xAxis(categories = tempplot$Code) |>
-      hc_yAxis(title = list(text = paste0("Hányados (", names(CountryCodes)[CountryCodes == input$hconvdecompCountryInvestigated], " / többi)"))) |>
-      hc_tooltip(pointFormatter = JS("function() {return('Hozzájárulás:' + ((this.high - this.low)<=0?'':'+') + (this.high - this.low).toFixed(2))}")) |>
+      hc_xAxis(categories = tempplot$CodeFormatted, labels = list(useHTML = TRUE)) |>
+      hc_yAxis(title = list(text = paste0("Hányados (", invcountryname, " / többi)"))) |>
+      hc_tooltip(pointFormatter = JS("function() {return('Hozzájárulás:' + ((this.high - this.low)<=0?'':'+') + (this.high - this.low).toFixed(3))}")) |>
       hc_legend(enabled = FALSE)
     
     for(i in 1:(nrow(tempplot) - 1))
-      p <- p |> hc_add_series(data = data.frame(Code = c(i - 1, i), y = rep(tempplot$high[i], 2)), type = "line", hcaes(x = Code, y = y), color = "black")
+      p <- p |> hc_add_series(data = data.frame(Code = c(i - 1, i), y = rep(tempplot$high[i], 2)),
+                              type = "line", hcaes(x = Code, y = y), color = "black", lineWidth = tempplot$lwd[i])
     
-    p |> hc_plotOptions(line = list(enableMouseTracking = FALSE, marker = list(enabled = FALSE),
-                                    lineWidth = 0.5))
+    p <- p |>
+      hc_plotOptions(line = list(enableMouseTracking = FALSE, marker = list(enabled = FALSE),
+                                 lineWidth = 0.5)) |>
+      hc_title(text = paste0("<b>", invcountryname, " ", input$hconvdecompYear[1], " és ",
+                             input$hconvdecompYear[2], " közötti konvergenciájának ",
+                             "dekompozíciója </b><br>",
+                             "Összehasonlítási alap a következő országok átlaga: ",
+                             paste0(setdiff(input$hconvdecompCountryComparison, input$hconvdecompCountryInvestigated), collapse = ", "))) |>
+      hc_subtitle(
+        text = "Okspecifikus Mortalitási Adatbázis<br>Ferenci Tamás, medstat.hu",
+        align = "left", verticalAlign = "bottom") |>
+      hc_legend(enabled = FALSE) |>
+      hc_add_theme(hc_theme(chart = list(backgroundColor = "white"))) |>
+      hc_credits(enabled = TRUE) |>
+      hc_exporting(enabled = TRUE, chartOptions = list(legend = TRUE),
+                   sourceWidth = 1600/2, sourceHeight = 900/2)
+    
+    p
   })
   
   output$dimredvizPlot <- renderHighchart({

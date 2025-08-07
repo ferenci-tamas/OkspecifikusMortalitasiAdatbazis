@@ -940,8 +940,10 @@ unzip("./inputdata/morticd10_part2.zip", exdir = td)
 unzip("./inputdata/morticd10_part3.zip", exdir = td)
 unzip("./inputdata/morticd10_part4.zip", exdir = td)
 unzip("./inputdata/morticd10_part5.zip", exdir = td)
+unzip("./inputdata/morticd10_part6.zip", exdir = td)
 
-RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd10*", full.names = TRUE), fread))
+RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd10*",
+                                       full.names = TRUE), fread))
 ```
 
 Problémát jelenthetnek az ország-kódok, amelyek egy elég szokatlan,
@@ -971,16 +973,13 @@ unique(merge(RawData, CountryCodes[, .(Country = MORT, CountryName = DisplayStri
 
     ## [1] 1303 3283
 
-Ez két egészen minimális terület, de a teljesség kedvéért pótoljuk ki
-(szerencsére a WHO táblázatában kézzel megtalálhatóak, csak a
+Ez két egészen minimális eltérés, de a teljesség kedvéért pótoljuk ki
+(pláne, mert a WHO táblázatában igazából megtalálhatóak, csak a
 mortalitási tábla szerinti kód nincs feltüntetve valamiért):
 
 ``` r
-CountryCodes <- rbind(CountryCodes,
-                      data.table(MORT = c(1303, 3283),
-                                 DisplayString = c("Mayotte", "Occupied Palestinian Territory"),
-                                 ISO = c("MYT", "PSE"),
-                                 WHO_REGION_CODE = c("", "EMR")), fill = TRUE)
+CountryCodes[DisplayString == "Mayotte"]$MORT <- 1303
+CountryCodes[DisplayString == "occupied Palestinian territory, including east Jerusalem"]$MORT <- 3283
 ```
 
 Most már végrehajthatjuk veszteség nélkül az összekapcsolást:
@@ -991,188 +990,47 @@ RawData <- merge(RawData, CountryCodes[, .(Country = MORT, CountryName = Display
                  by = "Country")
 ```
 
-Azért, hogy felesleges adatokat ne tároljunk, muszáj egy kicsit
-előrefutni: betöltjük a lélekszám-adatokat is a HMD-ből (részleteket
-lásd a következő pontban), hogy csak azokat az országokat őrizzük meg,
-amikhez van lélekszám-adat:
+Javítsunk még egy elég nyilvánvaló elírást:
 
 ``` r
-unzip("./inputdata/population.zip", exdir = td)
-
-list.files(paste0(td, "/Population"))
+RawData[iso3c=="CYM"&Frmat==1]$Frmat <- 2
 ```
 
-    ##  [1] "AUS.Population.txt"     "AUT.Population.txt"     "BEL.Population.txt"    
-    ##  [4] "BGR.Population.txt"     "BLR.Population.txt"     "CAN.Population.txt"    
-    ##  [7] "CHE.Population.txt"     "CHL.Population.txt"     "CZE.Population.txt"    
-    ## [10] "DEUTE.Population.txt"   "DEUTNP.Population.txt"  "DEUTW.Population.txt"  
-    ## [13] "DNK.Population.txt"     "ESP.Population.txt"     "EST.Population.txt"    
-    ## [16] "FIN.Population.txt"     "FRACNP.Population.txt"  "FRATNP.Population.txt" 
-    ## [19] "GBR_NIR.Population.txt" "GBR_NP.Population.txt"  "GBR_SCO.Population.txt"
-    ## [22] "GBRCENW.Population.txt" "GBRTENW.Population.txt" "GRC.Population.txt"    
-    ## [25] "HKG.Population.txt"     "HRV.Population.txt"     "HUN.Population.txt"    
-    ## [28] "IRL.Population.txt"     "ISL.Population.txt"     "ISR.Population.txt"    
-    ## [31] "ITA.Population.txt"     "JPN.Population.txt"     "KOR.Population.txt"    
-    ## [34] "LTU.Population.txt"     "LUX.Population.txt"     "LVA.Population.txt"    
-    ## [37] "NLD.Population.txt"     "NOR.Population.txt"     "NZL_MA.Population.txt" 
-    ## [40] "NZL_NM.Population.txt"  "NZL_NP.Population.txt"  "POL.Population.txt"    
-    ## [43] "PRT.Population.txt"     "RUS.Population.txt"     "SVK.Population.txt"    
-    ## [46] "SVN.Population.txt"     "SWE.Population.txt"     "TWN.Population.txt"    
-    ## [49] "UKR.Population.txt"     "USA.Population.txt"
-
-Egyedül arra kell vigyázni, hogy a HMD-ben bizonyos országok kódjai,
-amik a fájlnév elején jelennek meg, nem ISO-kódok; ezeket – hogy az
-ISO-kódokat ne kelljen bántani – a fájlok átnevezésével oldjuk meg:
-
-    ## [1] TRUE
-
-    ## [1] TRUE
-
-    ## [1] TRUE
-
-    ## [1] TRUE
-
-    ## [1] TRUE
-
-    ## [1] TRUE
-
-    ## [1] TRUE
-
-Ez alapján leszűkítjük a mortalitási adatokat a releváns országokra:
+Csak azokat az országokat, illetve éveket tartjuk meg, amikor 104 volt a
+listaszám (ez azt jelenti, hogy 4 karakteres BNO-kóddal jelentik a
+halálokokat):
 
 ``` r
-RawData <- RawData[iso3c %in% PopList]
+RawData <- RawData[List == "104"]
 ```
 
-Dobjuk ki a nem megfelelő kódokat használó országokat/éveket. A 101 és
-UE1 lehet, hogy némi kézi küzdelemmel menthető lenne, de ezzel most nem
-foglkozunk:
+A többi listaszám (101, UE1, 103, 10M) könnyen lehet, hogy több-kevesebb
+munkával menthető lenne – össze kellene kapcsolni a különböző
+kódolásokat – de ezzel most nem foglalkozunk.
+
+Dobjuk ki az életkori bontás nélküli országokat/éveket is, illetve
+azokat is, ahol nincs legalább 85 éves korig legalább 5 évente felbontva
+az elhunyt életkora (ez azt jelenti, hogy a 0, 1 és 2 életkori
+formátumkódú országokat/éveket tartjuk meg):
 
 ``` r
-RawData <- RawData[!List%in%c("101", "UE1")]
+RawData <- RawData[Frmat %in% c(0, 1, 2)]
 ```
 
-A 103 és 10M pláne menthető lenne, most csak az egyszerűség kedvéért
-hagyjuk el, mert nem vészesen nagy veszteség:
+Van összesen 891345 életkorhoz nem rendelt halálozás, de ezek aránya
+nagyon egyenetlenül oszlik ezl az országok között. Most kidobjuk azokat
+az országokat, ahol a halálesetek több mint 5 ezreléke nincs életkorhoz
+rendelve:
 
 ``` r
-knitr::kable(RawData[, as.list(prop.table(table(factor(List, levels = unique(RawData$List))))),
-                     .(CountryName)][order(`104`, decreasing = TRUE)])
+RawData <- RawData[!iso3c %in% RawData[, .(sum(Deaths26, na.rm = TRUE)/sum(Deaths1) > 0.005), .(iso3c)][V1 == TRUE]$iso3c]
 ```
 
-| CountryName                                          |       104 |       103 |       10M |
-|:-----------------------------------------------------|----------:|----------:|----------:|
-| Canada                                               | 1.0000000 | 0.0000000 | 0.0000000 |
-| Chile                                                | 1.0000000 | 0.0000000 | 0.0000000 |
-| United States of America                             | 1.0000000 | 0.0000000 | 0.0000000 |
-| China, Hong Kong Special Administrative Region       | 1.0000000 | 0.0000000 | 0.0000000 |
-| Israel                                               | 1.0000000 | 0.0000000 | 0.0000000 |
-| Japan                                                | 1.0000000 | 0.0000000 | 0.0000000 |
-| Austria                                              | 1.0000000 | 0.0000000 | 0.0000000 |
-| Belarus                                              | 1.0000000 | 0.0000000 | 0.0000000 |
-| Croatia                                              | 1.0000000 | 0.0000000 | 0.0000000 |
-| Czechia                                              | 1.0000000 | 0.0000000 | 0.0000000 |
-| Denmark                                              | 1.0000000 | 0.0000000 | 0.0000000 |
-| France                                               | 1.0000000 | 0.0000000 | 0.0000000 |
-| Germany                                              | 1.0000000 | 0.0000000 | 0.0000000 |
-| Greece                                               | 1.0000000 | 0.0000000 | 0.0000000 |
-| Hungary                                              | 1.0000000 | 0.0000000 | 0.0000000 |
-| Italy                                                | 1.0000000 | 0.0000000 | 0.0000000 |
-| Luxembourg                                           | 1.0000000 | 0.0000000 | 0.0000000 |
-| Norway                                               | 1.0000000 | 0.0000000 | 0.0000000 |
-| Poland                                               | 1.0000000 | 0.0000000 | 0.0000000 |
-| Portugal                                             | 1.0000000 | 0.0000000 | 0.0000000 |
-| Spain                                                | 1.0000000 | 0.0000000 | 0.0000000 |
-| Switzerland                                          | 1.0000000 | 0.0000000 | 0.0000000 |
-| United Kingdom of Great Britain and Northern Ireland | 1.0000000 | 0.0000000 | 0.0000000 |
-| United Kingdom, England and Wales                    | 1.0000000 | 0.0000000 | 0.0000000 |
-| United Kingdom, Northern Ireland                     | 1.0000000 | 0.0000000 | 0.0000000 |
-| United Kingdom, Scotland                             | 1.0000000 | 0.0000000 | 0.0000000 |
-| Australia                                            | 1.0000000 | 0.0000000 | 0.0000000 |
-| New Zealand                                          | 1.0000000 | 0.0000000 | 0.0000000 |
-| Republic of Korea                                    | 0.9699473 | 0.0300527 | 0.0000000 |
-| Lithuania                                            | 0.9592007 | 0.0407993 | 0.0000000 |
-| Belgium                                              | 0.9587635 | 0.0412365 | 0.0000000 |
-| Sweden                                               | 0.9227444 | 0.0000000 | 0.0772556 |
-| Netherlands (Kingdom of the)                         | 0.8470865 | 0.0000000 | 0.1529135 |
-| Ireland                                              | 0.8322936 | 0.1677064 | 0.0000000 |
-| Iceland                                              | 0.7589324 | 0.2410676 | 0.0000000 |
-| Bulgaria                                             | 0.7055724 | 0.2944276 | 0.0000000 |
-| Latvia                                               | 0.6995301 | 0.3004699 | 0.0000000 |
-| Slovakia                                             | 0.5994131 | 0.4005869 | 0.0000000 |
-| Estonia                                              | 0.5931944 | 0.4068056 | 0.0000000 |
-| Finland                                              | 0.0000000 | 1.0000000 | 0.0000000 |
-| Slovenia                                             | 0.0000000 | 1.0000000 | 0.0000000 |
+A maradéknál az életkorhoz nem rendelt halálozásokat automatikusan el
+fogjuk majd hagyni (később, amikor majd long formátumra váltunk).
 
-Úgyhogy hagyjuk el ezeket is:
-
-``` r
-RawData <- RawData[!List%in%c("103", "10M")]
-```
-
-Így már csak egy kód marad, minden 104-es.
-
-Dobjuk ki az életkori bontás nélküli országokat/éveket (a többit nem,
-azokat megmentjük):
-
-``` r
-RawData <- RawData[Frmat != 9]
-```
-
-Van összesen 50313 életkorhoz nem rendelt halálozás, de ezek aránya
-egyetlen országnál sem éri el még az 1 ezreléket sem:
-
-``` r
-knitr::kable(RawData[, .(sum(Deaths26)/sum(Deaths1)*1000), .(CountryName)][order(V1)])
-```
-
-| CountryName                                          |        V1 |
-|:-----------------------------------------------------|----------:|
-| Austria                                              | 0.0000000 |
-| Bulgaria                                             | 0.0000000 |
-| Czechia                                              | 0.0000000 |
-| Denmark                                              | 0.0000000 |
-| France                                               | 0.0000000 |
-| Germany                                              | 0.0000000 |
-| Iceland                                              | 0.0000000 |
-| Ireland                                              | 0.0000000 |
-| Luxembourg                                           | 0.0000000 |
-| Netherlands (Kingdom of the)                         | 0.0000000 |
-| Norway                                               | 0.0000000 |
-| Poland                                               | 0.0000000 |
-| Slovakia                                             | 0.0000000 |
-| Spain                                                | 0.0000000 |
-| Switzerland                                          | 0.0000000 |
-| United Kingdom, England and Wales                    | 0.0000000 |
-| United Kingdom, Northern Ireland                     | 0.0000000 |
-| United Kingdom of Great Britain and Northern Ireland | 0.0005076 |
-| Belgium                                              | 0.0035713 |
-| United Kingdom, Scotland                             | 0.0063882 |
-| Canada                                               | 0.0083651 |
-| Chile                                                | 0.0088247 |
-| Sweden                                               | 0.0167316 |
-| Lithuania                                            | 0.0259116 |
-| Israel                                               | 0.0486159 |
-| Italy                                                | 0.0496807 |
-| Latvia                                               | 0.0500928 |
-| United States of America                             | 0.0806173 |
-| Australia                                            | 0.0826013 |
-| Hungary                                              | 0.0894482 |
-| Belarus                                              | 0.0916262 |
-| Greece                                               | 0.1040738 |
-| Republic of Korea                                    | 0.1376767 |
-| Portugal                                             | 0.1486109 |
-| Estonia                                              | 0.1538646 |
-| Croatia                                              | 0.2548436 |
-| New Zealand                                          | 0.4215682 |
-| Japan                                                | 0.5290881 |
-| China, Hong Kong Special Administrative Region       | 0.8052753 |
-
-Ennek megfelelően ezeket is el fogjuk majd hagyni (később, amikor majd
-long formátumra váltunk).
-
-Van 819 nemhez nem rendelt halálozás, ezeknek pláne kicsi a száma,
-egyszerűen elhagyjuk:
+Van 110096 nemhez nem rendelt halálozás, ezeknek pláne kicsi a száma
+(egyik országnál sincs 5 ezrelék felett), egyszerűen elhagyjuk:
 
 ``` r
 RawData <- RawData[Sex != 9]
@@ -1203,11 +1061,6 @@ teljesen más oka van (a referencia-populáció is csak az összevont
 RawData$Deaths3456 <- ifelse(RawData$Frmat == 2, RawData$Deaths3,
                              RawData$Deaths3 + RawData$Deaths4 + RawData$Deaths5 +
                                RawData$Deaths6)
-```
-
-Ezt követően beállítjuk a `Deaths3` értékét is:
-
-``` r
 RawData$Deaths3 <- ifelse(RawData$Frmat == 2, NA, RawData$Deaths3)
 ```
 
@@ -1349,16 +1202,18 @@ saveRDS(RawDataAll, "./procdata/RawDataAll.rds")
 A későbbiekhez jól fog jönni egy lista az országokról (kóddal és
 névvel), de hogy feleslegesek ne legyenek köztük, ezt is szűkítsük le
 azokra, amik előfordulnak az adatbázisban. A `countries` csomaggal
-magyar fordítást is kérünk; ez három kivétellel (ezeket a kódokat nem
-ismeri) mindenhol működik. Ezt a hármat mentsük el kézzel külön:
+magyar fordítást is kérünk; néhány kivétellel (ezeket a kódokat nem
+ismeri) mindenhol működik. Ezeket a kivételeket mentsük el kézzel külön:
 
 ``` r
-CountryCodes <- CountryCodes[ISO%in%unique(RawData$iso3c) & !ISO%in%c("X10", "X11", "X12"),
-                             .(iso3c = ISO, Country = countries::country_name(DisplayString,
-                                                                              to = "name_hu"))]
-CountryCodes <- rbind(CountryCodes,
-                      data.table(iso3c = c("X10", "X11", "X12"),
-                                 Country = c("Anglia és Wales", "Észak-Írország", "Skócia")))
+CountryCodes <- CountryCodes[ISO %in% unique(RawData$iso3c) &
+                               !ISO%in%c("X10", "X11", "X12", "XOD", "ANT", "SCG") &
+                               !is.na(MORT) & ISO != ""]
+CountryCodes <- CountryCodes[, .(iso3c = ISO, Country = countries::country_name(DisplayString, to = "name_hu"))]
+CountryCodes <- rbind(
+  CountryCodes,
+  data.table(iso3c = c("X10", "X11", "X12", "XOD", "ANT", "SCG"),
+             Country = c("Anglia és Wales", "Észak-Írország", "Skócia", "Rodrigues", "Holland Antillák", "Szerbia és Montenegró")))
 ```
 
 Ezután kimenthetjük az adatokat:
@@ -1402,7 +1257,7 @@ Ebben vannak már nem érvényes kódok is, szerencsére ezek az `ERV_VEGE`
 nevű változó alapján könnyen azonosíthatóak:
 
 ``` r
-ICDData <- ICDData[ERV_VEGE=="29991231"]
+ICDData <- ICDData[ERV_VEGE == "29991231"]
 ```
 
 Ahogy már korábban is említettem, ebben a táblában minden BNO-kód
@@ -1415,41 +1270,116 @@ meg, hogy mik ezek:
 unique(merge(RawData, ICDData[, .(Cause = KOD10, Nev = NEV)], all.x = TRUE)[is.na(Nev)]$Cause)
 ```
 
-    ##   [1] "A0900" "A0990" "A16H0" "A9700" "A9710" "A9720" "A9790" "B07H0" "B1790"
-    ##  [10] "B3340" "B4850" "B9800" "B9810" "C22H0" "C25H0" "C34H0" "C43H0" "C45H0"
-    ##  [19] "C57H0" "C71H0" "C7990" "C8000" "C8090" "C8140" "C8230" "C8240" "C8250"
-    ##  [28] "C8260" "C8460" "C8470" "C8480" "C8490" "C8520" "C8600" "C8610" "C8620"
-    ##  [37] "C8630" "C8640" "C8650" "C8660" "C8840" "C9030" "C9160" "C9180" "C9260"
-    ##  [46] "C9280" "C9330" "C9460" "C94H0" "C9640" "C9650" "C9660" "C9680" "D1640"
-    ##  [55] "D4650" "D4660" "D4740" "D4750" "D66H0" "D67H0" "D6850" "D6860" "D8930"
-    ##  [64] "E11H0" "E14H0" "E1640" "E43H0" "E78H0" "E85H0" "E8830" "F05H0" "F10H0"
-    ##  [73] "F73H0" "G14H0" "G2140" "G2330" "G30H0" "G40H0" "G80H0" "G8350" "G8360"
-    ##  [82] "G9040" "G9050" "G9060" "G9070" "G90H0" "G91H0" "G93H0" "H5490" "I11H0"
-    ##  [91] "I12H0" "I21H0" "I25H0" "I26H0" "I2720" "I40H0" "I4800" "I4810" "I4820"
-    ## [100] "I4830" "I4840" "I4890" "I49H0" "I51H0" "I60H0" "I63H0" "I70H0" "I71H0"
-    ## [109] "I7250" "I7260" "I80H0" "J09H0" "J1230" "J15H0" "J18H0" "J20H0" "J2110"
-    ## [118] "J44H0" "J65H0" "J80H0" "J9870" "K0250" "K1230" "K2270" "K25H0" "K3170"
-    ## [127] "K31H0" "K3520" "K3530" "K3580" "K35H0" "K4320" "K4330" "K4340" "K4350"
-    ## [136] "K4360" "K4370" "K5230" "K5530" "K55H0" "K5810" "K5820" "K5880" "K58H0"
-    ## [145] "K6350" "K6400" "K6410" "K6420" "K6430" "K6440" "K6450" "K6480" "K6490"
-    ## [154] "K6620" "K70H0" "K7540" "K8340" "K8500" "K8510" "K8520" "K8530" "K8580"
-    ## [163] "K8590" "K92H0" "L00H0" "L26H0" "L8900" "L8910" "L8920" "L8930" "L8990"
-    ## [172] "L9870" "M3170" "M4590" "M7260" "M7970" "N1810" "N1820" "N1830" "N1840"
-    ## [181] "N1850" "N40H0" "N4230" "N47H0" "N62H0" "O1420" "O4320" "O6000" "O6010"
-    ## [190] "O6030" "O9600" "O9610" "O9690" "O9700" "O9710" "O9790" "O9870" "P9160"
-    ## [199] "P9170" "Q21H0" "Q3150" "R0030" "R09H0" "R1700" "R1790" "R2630" "R2960"
-    ## [208] "R5020" "R5080" "R6360" "R6520" "R6530" "R6590" "R9500" "R9590" "U0490"
-    ## [217] "U0700" "U0990" "U1090" "U1290" "V03H0" "V04H0" "V05H0" "V12H0" "V13H0"
-    ## [226] "W46H0" "Y06H0" "Y07H0" "Y60H0" "Y63H0" "Y7000" "Y7010" "Y7020" "Y7030"
-    ## [235] "Y7080" "Y7100" "Y7110" "Y7120" "Y7130" "Y7180" "Y7200" "Y7210" "Y7220"
-    ## [244] "Y7230" "Y7280" "Y7300" "Y7310" "Y7320" "Y7330" "Y7380" "Y7400" "Y7410"
-    ## [253] "Y7420" "Y7430" "Y7480" "Y7500" "Y7510" "Y7520" "Y7530" "Y7580" "Y7610"
-    ## [262] "Y7620" "Y7630" "Y7680" "Y7700" "Y7720" "Y7800" "Y7810" "Y7820" "Y7880"
-    ## [271] "Y7900" "Y7910" "Y7920" "Y7930" "Y7980" "Y8000" "Y8010" "Y8020" "Y8080"
-    ## [280] "Y8100" "Y8110" "Y8120" "Y8130" "Y8180" "Y8200" "Y8210" "Y8220" "Y8230"
-    ## [289] "Y8280" "Y85H0" "Y88H0"
+    ##   [1] "A01H0" "A02H0" "A03H0" "A04H0" "A05H0" "A06H0" "A07H0" "A08H0" "A0900"
+    ##  [10] "A0990" "A15H0" "A16H0" "A17H0" "A18H0" "A19H0" "A21H0" "A23H0" "A24H0"
+    ##  [19] "A26H0" "A27H0" "A32H0" "A36H0" "A37H0" "A40H0" "A41H0" "A43H0" "A48H0"
+    ##  [28] "A49H0" "A51H0" "A52H0" "A66H0" "A79H0" "A81H0" "A83H0" "A84H0" "A85H0"
+    ##  [37] "A87H0" "A88H0" "A9250" "A92H0" "A96H0" "A9700" "A9710" "A9720" "A9790"
+    ##  [46] "B07H0" "B15H0" "B16H0" "B1790" "B17H0" "B18H0" "B19H0" "B20H0" "B22H0"
+    ##  [55] "B25H0" "B27H0" "B3340" "B34H0" "B44H0" "B47H0" "B4850" "B48H0" "B55H0"
+    ##  [64] "B57H0" "B58H0" "B6530" "B67H0" "B69H0" "B71H0" "B74H0" "B87H0" "B88H0"
+    ##  [73] "B90H0" "B94H0" "B9800" "B9810" "C00H0" "C02H0" "C03H0" "C04H0" "C05H0"
+    ##  [82] "C06H0" "C08H0" "C09H0" "C10H0" "C11H0" "C13H0" "C14H0" "C15H0" "C16H0"
+    ##  [91] "C17H0" "C18H0" "C21H0" "C22H0" "C24H0" "C25H0" "C26H0" "C30H0" "C31H0"
+    ## [100] "C32H0" "C34H0" "C38H0" "C39H0" "C40H0" "C41H0" "C43H0" "C44H0" "C45H0"
+    ## [109] "C46H0" "C47H0" "C48H0" "C49H0" "C50H0" "C51H0" "C53H0" "C54H0" "C57H0"
+    ## [118] "C62H0" "C63H0" "C67H0" "C68H0" "C69H0" "C70H0" "C71H0" "C72H0" "C74H0"
+    ## [127] "C75H0" "C7990" "C8000" "C8090" "C8140" "C81H0" "C8230" "C8240" "C8250"
+    ## [136] "C8260" "C82H0" "C83H0" "C8460" "C8470" "C8480" "C8490" "C84H0" "C8520"
+    ## [145] "C85H0" "C8600" "C8610" "C8620" "C8630" "C8640" "C8650" "C8660" "C86H0"
+    ## [154] "C8840" "C88H0" "C9030" "C90H0" "C9160" "C9180" "C91H0" "C9260" "C9280"
+    ## [163] "C92H0" "C9330" "C93H0" "C9460" "C94H0" "C95H0" "C9640" "C9650" "C9660"
+    ## [172] "C9680" "C96H0" "D00H0" "D01H0" "D02H0" "D03H0" "D04H0" "D05H0" "D06H0"
+    ## [181] "D07H0" "D09H0" "D10H0" "D12H0" "D13H0" "D15H0" "D1640" "D16H0" "D18H0"
+    ## [190] "D21H0" "D22H0" "D28H0" "D29H0" "D30H0" "D32H0" "D33H0" "D35H0" "D36H0"
+    ## [199] "D37H0" "D38H0" "D39H0" "D40H0" "D41H0" "D43H0" "D44H0" "D4650" "D4660"
+    ## [208] "D46H0" "D4740" "D4750" "D47H0" "D48H0" "D50H0" "D51H0" "D53H0" "D55H0"
+    ## [217] "D56H0" "D57H0" "D58H0" "D59H0" "D60H0" "D61H0" "D64H0" "D66H0" "D67H0"
+    ## [226] "D6850" "D6860" "D68H0" "D69H0" "D72H0" "D73H0" "D75H0" "D76H0" "D80H0"
+    ## [235] "D81H0" "D82H0" "D83H0" "D84H0" "D86H0" "D8930" "D89H0" "E00H0" "E03H0"
+    ## [244] "E04H0" "E05H0" "E10H0" "E11H0" "E12H0" "E13H0" "E14H0" "E1640" "E16H0"
+    ## [253] "E20H0" "E21H0" "E22H0" "E23H0" "E26H0" "E27H0" "E29H0" "E30H0" "E31H0"
+    ## [262] "E34H0" "E43H0" "E44H0" "E51H0" "E55H0" "E64H0" "E66H0" "E70H0" "E71H0"
+    ## [271] "E72H0" "E73H0" "E74H0" "E75H0" "E76H0" "E77H0" "E78H0" "E80H0" "E83H0"
+    ## [280] "E84H0" "E85H0" "E87H0" "E8830" "E88H0" "F01H0" "F05H0" "F06H0" "F10H0"
+    ## [289] "F20H0" "F23H0" "F25H0" "F31H0" "F32H0" "F41H0" "F44H0" "F51H0" "F70H0"
+    ## [298] "F71H0" "F72H0" "F73H0" "F78H0" "F79H0" "F90H0" "G00H0" "G03H0" "G04H0"
+    ## [307] "G06H0" "G11H0" "G12H0" "G14H0" "G2140" "G21H0" "G2330" "G23H0" "G24H0"
+    ## [316] "G25H0" "G30H0" "G31H0" "G36H0" "G37H0" "G40H0" "G41H0" "G44H0" "G45H0"
+    ## [325] "G47H0" "G50H0" "G51H0" "G54H0" "G58H0" "G60H0" "G61H0" "G62H0" "G70H0"
+    ## [334] "G71H0" "G72H0" "G80H0" "G81H0" "G82H0" "G8350" "G8360" "G83H0" "G9040"
+    ## [343] "G9050" "G9060" "G9070" "G90H0" "G91H0" "G93H0" "G95H0" "G96H0" "H18H0"
+    ## [352] "H25H0" "H44H0" "H5490" "H57H0" "H60H0" "H70H0" "H80H0" "H81H0" "I01H0"
+    ## [361] "I02H0" "I05H0" "I06H0" "I07H0" "I08H0" "I09H0" "I11H0" "I12H0" "I13H0"
+    ## [370] "I15H0" "I20H0" "I21H0" "I24H0" "I25H0" "I26H0" "I2720" "I27H0" "I28H0"
+    ## [379] "I30H0" "I31H0" "I33H0" "I34H0" "I35H0" "I36H0" "I37H0" "I40H0" "I42H0"
+    ## [388] "I44H0" "I45H0" "I47H0" "I4800" "I4810" "I4820" "I4830" "I4840" "I4890"
+    ## [397] "I49H0" "I50H0" "I51H0" "I60H0" "I61H0" "I62H0" "I63H0" "I67H0" "I69H0"
+    ## [406] "I70H0" "I71H0" "I7250" "I7260" "I72H0" "I73H0" "I74H0" "I77H0" "I80H0"
+    ## [415] "I82H0" "I85H0" "I86H0" "I87H0" "I88H0" "I89H0" "I95H0" "J01H0" "J03H0"
+    ## [424] "J05H0" "J06H0" "J09H0" "J10H0" "J11H0" "J1230" "J12H0" "J15H0" "J16H0"
+    ## [433] "J18H0" "J20H0" "J2110" "J21H0" "J37H0" "J38H0" "J39H0" "J41H0" "J43H0"
+    ## [442] "J44H0" "J45H0" "J62H0" "J63H0" "J65H0" "J68H0" "J69H0" "J70H0" "J80H0"
+    ## [451] "J84H0" "J85H0" "J86H0" "J92H0" "J93H0" "J94H0" "J96H0" "J9870" "J98H0"
+    ## [460] "K0250" "K03H0" "K07H0" "K11H0" "K1230" "K12H0" "K13H0" "K14H0" "K21H0"
+    ## [469] "K2270" "K22H0" "K25H0" "K26H0" "K27H0" "K28H0" "K29H0" "K3170" "K31H0"
+    ## [478] "K3520" "K3530" "K3580" "K35H0" "K38H0" "K40H0" "K41H0" "K42H0" "K4320"
+    ## [487] "K4330" "K4340" "K4350" "K4360" "K4370" "K43H0" "K44H0" "K45H0" "K46H0"
+    ## [496] "K50H0" "K51H0" "K5230" "K52H0" "K5530" "K55H0" "K56H0" "K57H0" "K5810"
+    ## [505] "K5820" "K5880" "K58H0" "K59H0" "K60H0" "K61H0" "K62H0" "K6350" "K63H0"
+    ## [514] "K6400" "K6410" "K6420" "K6430" "K6440" "K6450" "K6480" "K6490" "K64H0"
+    ## [523] "K65H0" "K6620" "K66H0" "K70H0" "K71H0" "K72H0" "K73H0" "K74H0" "K7540"
+    ## [532] "K75H0" "K76H0" "K80H0" "K81H0" "K82H0" "K8340" "K83H0" "K8500" "K8510"
+    ## [541] "K8520" "K8530" "K8580" "K8590" "K86H0" "K90H0" "K92H0" "L00H0" "L02H0"
+    ## [550] "L03H0" "L04H0" "L08H0" "L10H0" "L11H0" "L12H0" "L13H0" "L21H0" "L23H0"
+    ## [559] "L24H0" "L25H0" "L26H0" "L30H0" "L40H0" "L50H0" "L51H0" "L53H0" "L55H0"
+    ## [568] "L63H0" "L64H0" "L72H0" "L73H0" "L8900" "L8910" "L8920" "L8930" "L8990"
+    ## [577] "L92H0" "L93H0" "L94H0" "L95H0" "L9870" "L98H0" "M00H0" "M05H0" "M06H0"
+    ## [586] "M13H0" "M18H0" "M25H0" "M3170" "M31H0" "M32H0" "M33H0" "M34H0" "M35H0"
+    ## [595] "M40H0" "M41H0" "M43H0" "M4520" "M4590" "M46H0" "M48H0" "M50H0" "M54H0"
+    ## [604] "M60H0" "M62H0" "M65H0" "M70H0" "M71H0" "M7260" "M72H0" "M7970" "M79H0"
+    ## [613] "M80H0" "M81H0" "M83H0" "M84H0" "M85H0" "M86H0" "M87H0" "M88H0" "M89H0"
+    ## [622] "M95H0" "N00H0" "N02H0" "N03H0" "N04H0" "N05H0" "N07H0" "N11H0" "N13H0"
+    ## [631] "N14H0" "N15H0" "N17H0" "N1810" "N1820" "N1830" "N1840" "N1850" "N18H0"
+    ## [640] "N20H0" "N21H0" "N25H0" "N28H0" "N30H0" "N32H0" "N34H0" "N39H0" "N40H0"
+    ## [649] "N41H0" "N4230" "N42H0" "N45H0" "N47H0" "N49H0" "N62H0" "N64H0" "N82H0"
+    ## [658] "N84H0" "N88H0" "N90H0" "N91H0" "N93H0" "O06H0" "O1420" "O4320" "O6000"
+    ## [667] "O6010" "O6020" "O6030" "O72H0" "O9600" "O9610" "O9690" "O9700" "O9710"
+    ## [676] "O9790" "O9870" "O99H0" "P00H0" "P01H0" "P02H0" "P05H0" "P07H0" "P08H0"
+    ## [685] "P10H0" "P12H0" "P15H0" "P20H0" "P21H0" "P22H0" "P23H0" "P24H0" "P25H0"
+    ## [694] "P26H0" "P27H0" "P28H0" "P29H0" "P35H0" "P36H0" "P37H0" "P50H0" "P52H0"
+    ## [703] "P54H0" "P56H0" "P59H0" "P61H0" "P70H0" "P72H0" "P76H0" "P78H0" "P80H0"
+    ## [712] "P83H0" "P9160" "P9170" "P91H0" "P92H0" "P94H0" "P96H0" "Q00H0" "Q01H0"
+    ## [721] "Q03H0" "Q04H0" "Q05H0" "Q07H0" "Q10H0" "Q20H0" "Q21H0" "Q22H0" "Q23H0"
+    ## [730] "Q24H0" "Q25H0" "Q26H0" "Q27H0" "Q28H0" "Q30H0" "Q3150" "Q31H0" "Q32H0"
+    ## [739] "Q33H0" "Q34H0" "Q35H0" "Q36H0" "Q37H0" "Q39H0" "Q40H0" "Q41H0" "Q42H0"
+    ## [748] "Q43H0" "Q44H0" "Q45H0" "Q55H0" "Q56H0" "Q60H0" "Q61H0" "Q62H0" "Q63H0"
+    ## [757] "Q64H0" "Q66H0" "Q67H0" "Q68H0" "Q72H0" "Q74H0" "Q75H0" "Q76H0" "Q77H0"
+    ## [766] "Q78H0" "Q79H0" "Q80H0" "Q81H0" "Q82H0" "Q85H0" "Q86H0" "Q87H0" "Q89H0"
+    ## [775] "Q90H0" "Q91H0" "Q92H0" "Q93H0" "Q95H0" "Q96H0" "Q99H0" "R0030" "R04H0"
+    ## [784] "R06H0" "R07H0" "R09H0" "R10H0" "R16H0" "R1700" "R1790" "R23H0" "R2630"
+    ## [793] "R26H0" "R2960" "R40H0" "R41H0" "R45H0" "R46H0" "R47H0" "R5020" "R5080"
+    ## [802] "R50H0" "R52H0" "R56H0" "R57H0" "R60H0" "R61H0" "R62H0" "R6360" "R63H0"
+    ## [811] "R6520" "R6530" "R68H0" "R78H0" "R82H0" "R83H0" "R84H0" "R85H0" "R86H0"
+    ## [820] "R87H0" "R89H0" "R90H0" "R93H0" "R94H0" "R9500" "R9590" "R96H0" "U0490"
+    ## [829] "U0690" "U0700" "U0990" "U1090" "U1290" "V02H0" "V03H0" "V04H0" "V05H0"
+    ## [838] "V12H0" "V13H0" "V14H0" "V18H0" "V20H0" "V22H0" "V23H0" "V24H0" "V27H0"
+    ## [847] "V28H0" "V29H0" "V40H0" "V41H0" "V43H0" "V44H0" "V47H0" "V48H0" "V49H0"
+    ## [856] "V53H0" "V54H0" "V58H0" "V63H0" "V64H0" "V67H0" "V68H0" "V69H0" "V73H0"
+    ## [865] "V74H0" "V76H0" "V78H0" "V80H0" "V90H0" "W46H0" "Y06H0" "Y07H0" "Y35H0"
+    ## [874] "Y36H0" "Y40H0" "Y43H0" "Y44H0" "Y45H0" "Y46H0" "Y49H0" "Y57H0" "Y59H0"
+    ## [883] "Y60H0" "Y63H0" "Y7000" "Y7010" "Y7020" "Y7030" "Y7080" "Y7100" "Y7110"
+    ## [892] "Y7120" "Y7130" "Y7180" "Y7200" "Y7210" "Y7220" "Y7230" "Y7280" "Y7300"
+    ## [901] "Y7310" "Y7320" "Y7330" "Y7380" "Y7400" "Y7410" "Y7420" "Y7430" "Y7480"
+    ## [910] "Y7500" "Y7510" "Y7520" "Y7530" "Y7580" "Y7600" "Y7610" "Y7620" "Y7630"
+    ## [919] "Y7680" "Y7700" "Y7720" "Y7800" "Y7810" "Y7820" "Y7880" "Y7900" "Y7910"
+    ## [928] "Y7920" "Y7930" "Y7980" "Y8000" "Y8010" "Y8020" "Y8030" "Y8080" "Y8100"
+    ## [937] "Y8110" "Y8120" "Y8130" "Y8180" "Y8200" "Y8210" "Y8220" "Y8230" "Y8280"
+    ## [946] "Y83H0" "Y84H0" "Y85H0" "Y87H0" "Y88H0" "Y89H0"
 
 Végignézve ezeket a kódokat, a következő problémák azonosíthatóak:
+
+<!-- Ezt újra végig kell nézni a 2025-ös frissítés fényében. -->
 
 - A magyar BNO-tábla néha nem tartalmazza az alábontásokat (és H0
   végződést alkalmaz helyettük), pedig léteznek. Ilyen az A09, amiből
@@ -1480,7 +1410,7 @@ Végignézve ezeket a kódokat, a következő problémák azonosíthatóak:
   hiszen a WHO-nál csak a háromjegyű B07 van meg). További példa ilyenre
   a D66, D67, E43, L26, N40, N62.
 - Az előző egy alfaja, amikor a magyar rendszerben csak az öt jegyű
-  alábontás szerepel, a négyjegyzű kategória nem is. Erre példa a D164,
+  alábontás szerepel, a négyjegyű kategória nem is. Erre példa a D164,
   ami az arc- és agykoponya csontjainak jóindulatú daganata a WHO-nál,
   de a magyar rendszerben D1640 nincs, csak D1641 (agykoponya
   csontjainak jóindulatú daganata) és D1642 (arckoponya csontjainak
@@ -1927,248 +1857,952 @@ saveRDS(ICDGroups, "./procdata/ICDGroups.rds")
 
 ### A lélekszám adatok előkészítése
 
-A WHO közöl ilyen táblát is a honlapján, így nagyon kézenfekvő lenne azt
-használni, csak az a probléma, hogy a felbontása néha kisebb, mint a
-mortalitási adatoké. (Például Magyarországnál 95 éves korig megy a
-mortalitási adatok lebontása, de a korfa cask 85-ig.) Hogy ezen ne
-veszítsünk információt, a lélekszám adatokat kézzel rakjuk össze.
+Bármilyen furcsa, a lélekszámok kérdése egyáltalán nem triviális. Sőt.
+Az ember azt gondolná, hogy ha valamit, akkor azt azért lehet tudni
+(legalábbis a fejlett világban), hogy mennyi egy ország lélekszáma,
+esetleg nem és életkor szerint lebontva, de a valóság – első ránézésre
+igen meglepő módon – nem ilyen egyszerű. Egész viccesnek tűnhet, de a
+helyzet az, hogy sokkal kevésbé egyértelműen lehet tudni, hogy hányan
+laktak tavaly január 1-én egy országban, mint azt, hogy hányan haltak
+meg tavaly szövettanilag igazolt kétoldali TBC kiújulásában… (Félretéve
+most az adatok megbízhatóságának a kérdését – itt most pusztán arról
+beszélek, hogy magát a számot ismerjük-e, bárhogy is viszonyuljon az a
+valósághoz.)
 
-Az egyik adatforrás a [Human Mortality
-Database](https://mortality.org/):
+A probléma az, hogy a lélekszámokra több adatforrás érhető el, köztük jó
+minőségűek is, amik azonban, nagyon meglepő módon, *nem* adnak
+tökéletesen azonos eredményt. (Nagyjából azonosat igen, ezért is fogom
+majd azt mondani, hogy ebből hatalmas probléma szerencsére nincsen, de
+azért ez akkor is meghökkentő, azt gondolná az ember, hogy abban a
+kérdésben, hogy mennyi volt Magyarország lélekszáma tavaly, nem csak
+„nagyjából” kellene egyezniük a különböző oldalaknak…) Én négy nagy
+adatforrásról tudok, melyek szóba jöhetnek egy ilyen projekthez, tehát
+kellő hosszúságú, sok országra kiterjedő, lehetőleg egységes metodikájú,
+nem szerinti és kellő finomságú életkori lebontást is tartalmazó
+adatbázisok:
+
+1.  A Human Mortality Database (HMD). Ez egy elképesztő méretű
+    vállalkozás, mely visszamenve a primer adatforrásokig rekonstruálja
+    számos ország lélekszámát, sok egyéb mortalitási adata mellett. A
+    rekonstrukcióhoz kifinomult módszertant használ, melyet az összes
+    országra egységesen alkalmaz. A projekt a <https://mortality.org/>
+    címen érhető el (az adatok letöltése regisztrációt igényel).
+2.  Az Eurostat. Az Európai Unió statisztikai szerve az unió országaira
+    gyűjti a lélekszám adatokat is; a mi szempontunkból a talán
+    legfontosabb tábla a `demo_pjan`, mely tartalmazza az életkori és
+    nemi lebontást
+    (<https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table?lang=en>).
+3.  Az ENSZ World Population Prospects (WPP) adatai. Ez egy érdekes
+    adatforrás, ugyanis a WPP eredendően népességszámra vonatkozó
+    előrevetítéseket tartalmaz, de benne vannak a múltbeli tényadatok
+    is, így a mi céljainkra is használható. A WPP a
+    <https://population.un.org/wpp/> címen érhető el.
+4.  A WHO által a mortalitási adatbázishoz mellékelt lélekszám adatok. A
+    WHO a mortalitási adatokat tartalmazó honlapján lélekszám adatokat
+    is elérhetővé tesz
+    (<https://www.who.int/data/data-collection-tools/who-mortality-database>).
+
+A HMD előnye, hogy nagyon hosszú idősort ad, számos országra, teljesen
+egységes módszertannal számolva. Tulajdonképpen ez lenne a legjobb
+választás; két problémától eltekintve. A kisebbik, hogy bár sok országra
+érhető el, de azért az egész világtól nagyon messze van (ráadásul ami
+benne van, az szinte kivétel nélkül mind fejlett világbeli ország). A
+nagyobb probléma, hogy nem frissül sűrűn – Magyarországra például e
+pillanatban, 2025 közepén is csak a 2021-es adatok érhetőek el! Ez
+viszont nagy baj, mert így épp a legújabb – és így sok szempontból a
+legfontosabb és legizgalmasabb – halálozási adatok vesznének el, ha ezt
+használnánk a lélekszám adatforrásaként.
+
+Az Eurostat ilyen szempontból jobb: sűrűn frissül (Magyarországra már a
+2024-es adat is elérhető), az esetleges nemzeti frissítéseket is gyorsan
+átvezetik, hátránya viszont, hogy ez sem világszintű földrajzi
+lefedésben, sőt, ez pláne nem az, hiszen értelemszerűen csak az európai
+uniós országokat tartalmazza, egy-két közeli országgal kiegészítve. Az
+Eurostat fő problémája az életkori felbontás esetlegessége:
+Magyarországra például csak 2013-tól van meg a lebontás 99 évig
+életévente. De a dologra tényleg az esetleges a jó szó, ugyanis 2012-ben
+csak 89 évig ment (és felette volt egybevonva az összes korév), előtte
+pedig csak 84 évig, de 2006-tól valamiért megint megvan legalább 89
+évig…
+
+Hadd tegyek még egy érdekes, és potenciálisan meglepő megjegyzést az
+Eurostat és a HMD viszonylatában. Az Eurostat a „tényadatokat”
+tartalmazza, olyan értelemben, hogy ezek az országok statisztikai
+hivatalai által jelentett konkrét számok. (Ennek megfelelően ez egyezik
+a KSH-s adatközléssel Magyarországra vonatkozóan.) De akkor mi van a
+HMD-ben, ha nem a tényadatok? – kérdezhetné valaki. Nem véletlenül
+fogalmaztam fent úgy, hogy a HMD „számolja” a lélekszámokat: a HMD is a
+statisztikai hivatalok által közölt számokból indul ki, de aztán azokat
+különböző matematikai modellekkel finomítja. Az érdekes az, hogy ezt a
+fejlett országoknál is megteszi: a fejlődő világnál ez könnyen érthető
+lenne, ott nem megbízhatóak vagy hiányosak az adatok és ezért kell
+valamilyen közelítés, de a HMD minden országnál egységesen végrehajt
+ilyen korrekciókat. (Hogy egész pontos legyek, 80 éves kor felett [teszi
+ezt](https://mortality.org/File/GetDocument/Public/Docs/MP-Summary.pdf).
+Indoklásként azt [hozzák
+fel](https://www.demographic-research.org/volumes/vol13/14/13-14.pdf),
+hogy a nagyon magas életkoroknál még a legfejlettebb országban is
+problémásak lehetnek a hivatalos statisztikák.) E simítások miatt a
+HMD-ben szereplő számok nem egyeznek teljesen pontosan az Eurostat-nál –
+és így a KSH-nál – elérhető számokkal.
+
+Az WPP adatok szintén számításon alapulnak (szemben az Eurostat-tal és
+hasonlóan a HMD-hez), bár a számítási metodikája egy fokkal talán
+kevésbé kifinomult és részletes mint a HMD-é. (Hozzá kell tenni, hogy
+bizonyos adatokat a HMD-től vesz át, de nem mindent.) Van viszont két
+hatalmas előnye: ez már tényleg minden országra elérhető, továbbá friss
+és gyorsan aktualizálódó. Ezen előnyök miatt ezt használtam fel a
+számításokhoz, de a következőkben bemutatom a kódot valamennyi adatbázis
+letöltéséhez, illetve egy gyors összehasonlítást is végzek közöttük (ez
+már csak a validáció miatt is fontos, hogy ne fordulhasson elő semmi
+kirívó különbség, ami kérdéseket vetne fel valamelyik adatbázis
+helyességét illetően).
+
+Végére hagytam a talán legkézenfekvőbb lehetőséget: a WHO által a
+mortalitási adatbázis „mellé adott” lélekszám-adatokat. Kézenfekvő, nem
+csak azért, mert ugyanarról a helyről rögtön és kényelmesen elérhető,
+hanem azért is, mert az ember azt várná, hogy ez az adatbázis akkor
+minden bizonnyal harmonizál (földrajzi és időbeli lefedését, életkori
+felbontását tekintve) a mortalitási adatokkal – csakhogy ez nincs így.
+Magyarországnál például csak 85 évig megy az életkori lebontás (miközben
+a halálozási adatoké 95 évig), de a még durvább, hogy bizonyos évek
+egyszerűen hiányoznak, például 2020 és 2022 közötti adat nincsen (de
+2019 és 2023 van). Mindezen okok miatt ezt az adatbázist nem használtam
+fel semmilyen formában.
+
+Még egyetlen megjegyzés a végére. A HMD és az Eurostat adatbázisa az ún.
+január 1. lélekszámokat tartalmazza. (A lélekszám adott időpontra
+vonatkozó adat: nincs értelme azt mondani, hogy „tavaly mennyi volt a
+lélekszám”, csak azt, hogy tavaly adott napon mennyi volt, hiszen lehet,
+sőt biztos, hogy a különböző napokon nem ugyanannyi volt. Klasszikusan
+ezért használják a január 1-et, vagyis, hogy január 1-én mennyi volt a
+lélekszám; ez persze csak a számítási módszernek beadott elméleti
+időpont, nem arról van szó, hogy konkrétan egy nap alatt megszámoltak
+mindenkit, minden évben. A lélekszám meghatározása egyébként is külön
+tudomány, vannak népszámlálások, de csak ritkán, 10 évente, közte
+valamilyen módon tovább kell vezetni a népességet, rendelkezésre állnak
+születési, halálozás és vándorlási adatok…) Mortalitás számításakor
+azonban a január 1. lélekszám nem feltétlenül szerencsés. Kezdjük a
+történetet az elején: az eleve egy összevonás, hogy éves mortalitásról
+beszélünk. Elvileg lehetne finomítani, mondjuk havi mortalitást nézni:
+az adott hónapban elhunytak száma (esetleg adott halálokra szűkítve)
+osztva a hónap lélekszámával. Sőt, mehetünk tovább, és nézhetnénk akár
+napi mortalitást is. Ekkor már érezhetően nem lesz jelentősége a
+lélekszám változásának (attól minden bizonnyal eltekinthetünk, hogy egy
+nap reggel nem ugyanaz az ország lélekszáma, mint este). De mi a helyzet
+az éves mortalitásnál? Mi legyen a lélekszám éves mortalitásnál, ha
+közben minden nap más volt az aznapi lélekszám? A legjobb amit tehetünk,
+ha az átlagos lélekszámot használjuk, tehát összeadjuk mind a 365 napon
+az aznapi lélekszámot, majd azt elosztjuk 365-tel. A probléma az, hogy
+ezt nem tudjuk, hiszen nincsen napi lélekszámunk. Akkor használjuk a
+január 1-én érvényeset? Ez nem a legjobb gondolat: a baj az, hogy mi
+van, ha a népesség változik. Mondjuk folyamatosan csökken – ekkor a
+január 1. lélekszám túl magas lesz, mert az éves átlag, amit igazából
+használnunk kellene, alatta lesz (növekvő lélekszámnál pont fordítva).
+Az ötlet azonban egyszerű: vegyük a *jövő* év január 1-én érvényes
+lélekszámot, és képezzük a kettő átlagát! Ezt évközepi lélekszámnak
+szokták hívni, hiszen ha egyenletes az átmenet a két érték között, akkor
+ez pont az év közepén érvényes lélekszám lesz. Számunka azonban van
+ennek a lélekszámnak egy másik, sokkal fontosabb tulajdonsága: ennyi
+lesz az átlag is! Ez csak akkor igaz egzaktan, ha egyenletes az átmenet,
+de további információ híján ez a legjobb, amit használhatunk. Úgyhogy a
+mortalitás számítását érdemes az évközepi lélekszámra alapozni. (Vegyük
+észre, hogy ennek egy ára azért van: egy évet elveszítünk, hiszen az
+utolsó évhez csak január 1. lélekszámot tudunk mondani, évközepit nem,
+nem lévén adat a következő január 1-ről.) A HMD és az Eurostat január 1.
+lélekszámokat tartalmaz, így azokat előbb át kellene számítani, még ha
+ez nem is bonyolult. Azonban a WPP egy további előnye, hogy az eleve
+évközepi lélekszámokat ad meg, így ott semmilyen számításra nincsen
+szükség.
+
+Jöjjenek most az egyes adatbázisok! Egyetlen megjegyzés mielőtt
+belevágunk: mivel a halálozási adatok úgy vannak megadva, hogy
+legfeljebb 95 évig van lebontva az életkor (a fölötte lévők mindenképp
+egyetlen életkori kategóriába összesítve szerepelnek), így a
+lélekszám-adatoknál is e szerint végzem az előfeldolgozást, a 95 és
+afölötti kategóriákat eleve egybevonva.
+
+#### Human Mortality Database
+
+A HMD letöltése és előfeldolgozása:
 
 ``` r
-PopData <- rbindlist(lapply(unique(RawData$iso3c), function(iso)
-  cbind(fread(paste0(td, "/Population/", iso, ".Population.txt"), na.strings = "."),
-        iso3c = iso)))
-PopData$YearSign <- substring(PopData$Year, 5, 5)
-PopData$Year <- as.numeric(substring(PopData$Year, 1, 4))
+unzip("./inputdata/population.zip", exdir = td)
 
-PopData <- PopData[Year >= 1955] # ennél korábbi adat nincs is a WHO HMD-ben
+PopDataHMD <- fread(paste0(td, "/Population/Population.txt"),
+                    na.strings = ".")
 
-unique(PopData[YearSign != "", .(Year, iso3c)])
+PopDataHMD[PopName == "DEUTNP"]$PopName <- "DEU" # a kód 4085, egész Németország
+PopDataHMD[PopName == "DEUTE"]$PopName <- "XX6" # NDK
+PopDataHMD[PopName == "DEUTW"]$PopName <- "XX7" # NSZK
+PopDataHMD[PopName == "FRATNP"]$PopName <- "FRA"
+PopDataHMD[PopName == "GBR_NP"]$PopName <- "GBR"
+PopDataHMD[PopName == "GBRTENW"]$PopName <- "X10"
+PopDataHMD[PopName == "GBR_NIR"]$PopName <- "X11"
+PopDataHMD[PopName == "GBR_SCO"]$PopName <- "X12"
+PopDataHMD[PopName == "NZL_NP"]$PopName <- "NZL"
+
+names(PopDataHMD)[names(PopDataHMD) == "PopName"] <- "iso3c"
+
+PopDataHMD$YearSign <- substring(PopDataHMD$Year, 5, 5)
+PopDataHMD$Year <- as.numeric(substring(PopDataHMD$Year, 1, 4))
+
+PopDataHMD <- PopDataHMD[iso3c %in% unique(RawData$iso3c)]
+PopDataHMD <- PopDataHMD[Year %in% unique(RawData$Year)]
+
+unique(PopDataHMD[YearSign != "", .(Year, iso3c)])
 ```
 
     ##     Year  iso3c
-    ##    <num> <fctr>
-    ## 1:  1959    USA
-    ## 2:  1973    JPN
-    ## 3:  1975    ESP
-    ## 4:  1981    ITA
-    ## 5:  2010    BEL
-    ## 6:  2011    BEL
-    ## 7:  2001    POL
-    ## 8:  1991    NZL
+    ##    <num> <char>
+    ## 1:  2010    BEL
+    ## 2:  2011    BEL
+    ## 3:  1991    NZL
+    ## 4:  2001    POL
 
 ``` r
-plot(`+` ~ `-`, data = dcast(PopData[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
+plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 ``` r
-plot(log(`+`) ~ log(`-`), data = dcast(PopData[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
+plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-45-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-40-2.png)<!-- -->
 
 ``` r
-dcast(PopData[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)]
+dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)]
 ```
 
-    ##       iso3c    Age  Year        +        -        V6
-    ##      <fctr> <char> <num>    <num>    <num>     <num>
-    ##   1:    ITA    109  1981     1.00     1.13 0.8849558
-    ##   2:    ITA    101  1981   239.00   260.32 0.9181008
-    ##   3:    ITA    100  1981   440.00   478.79 0.9189833
-    ##   4:    ITA    103  1981    63.00    68.47 0.9201110
-    ##   5:    ITA    105  1981    15.00    16.26 0.9225092
-    ##  ---                                                
-    ## 884:    NZL     13  1991 52007.67 50669.98 1.0264000
-    ## 885:    ITA    108  1981     0.00     0.00       NaN
-    ## 886:    ITA   110+  1981     0.00     0.00       NaN
-    ## 887:    JPN    109  1973     0.00     0.00       NaN
-    ## 888:    NZL   110+  1991     0.00     0.00       NaN
+    ##       iso3c    Age  Year         +         -        V6
+    ##      <char> <char> <num>     <num>     <num>     <num>
+    ##   1:    POL     75  2001 235145.00 237311.50 0.9908706
+    ##   2:    POL     76  2001 210323.00 212231.93 0.9910055
+    ##   3:    POL     77  2001 197476.00 199245.06 0.9911212
+    ##   4:    POL     78  2001 172314.00 173826.50 0.9912988
+    ##   5:    POL     79  2001 140108.00 141335.01 0.9913184
+    ##  ---                                                  
+    ## 440:    NZL     14  1991  53696.33  52315.21 1.0264000
+    ## 441:    NZL     11  1991  51701.77  50371.95 1.0264000
+    ## 442:    NZL     12  1991  51505.82  50181.04 1.0264000
+    ## 443:    NZL     13  1991  52007.67  50669.98 1.0264000
+    ## 444:    NZL   110+  1991      0.00      0.00       NaN
 
 ``` r
-dcast(PopData[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)]
+dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)]
 ```
 
-    ##       iso3c    Age  Year         +         -       V6
-    ##      <fctr> <char> <num>     <num>     <num>    <num>
-    ##   1:    ITA     80  1981  205346.6  208444.4 -3097.81
-    ##   2:    ITA     71  1981  466932.6  470019.2 -3086.68
-    ##   3:    ITA     76  1981  309331.8  312399.7 -3067.80
-    ##   4:    ITA     69  1981  507773.4  510838.5 -3065.03
-    ##   5:    ITA     74  1981  365055.1  368064.3 -3009.15
-    ##  ---                                                 
-    ## 884:    JPN     14  1973 1583005.5 1560045.7 22959.74
-    ## 885:    JPN     10  1973 1591194.9 1568114.1 23080.77
-    ## 886:    USA      1  1959 4091864.0 4068719.8 23144.12
-    ## 887:    JPN     13  1973 1605882.3 1582589.9 23292.44
-    ## 888:    USA      0  1959 4085035.3 4061321.5 23713.86
+    ##       iso3c    Age  Year      +        -       V6
+    ##      <char> <char> <num>  <num>    <num>    <num>
+    ##   1:    POL     17  2001 692787 695591.8 -2804.84
+    ##   2:    POL     16  2001 672579 675305.3 -2726.33
+    ##   3:    POL     18  2001 670210 672924.6 -2714.55
+    ##   4:    POL     15  2001 651424 654063.5 -2639.54
+    ##   5:    POL     19  2001 641888 644484.8 -2596.75
+    ##  ---                                             
+    ## 440:    POL     23  2001 625513 614200.6 11312.44
+    ## 441:    POL     24  2001 627452 616105.6 11346.38
+    ## 442:    POL     22  2001 630562 619158.8 11403.22
+    ## 443:    POL     21  2001 649207 637465.8 11741.24
+    ## 444:    POL     20  2001 653625 641806.3 11818.72
 
 ``` r
 # marginális különbség, a mínuszt használjuk
+PopDataHMD <- PopDataHMD[(YearSign == "")|(YearSign == "-")]
 
-PopData <- PopData[(YearSign == "")|(YearSign == "-")]
+PopDataHMD <- melt(PopDataHMD[, -"YearSign"], id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex",
+                   variable.factor = FALSE)[Sex != "Total"]
 
-PopData <- melt(PopData[, -"YearSign"], id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex",
-                variable.factor = FALSE)[Sex != "Total"]
+PopDataHMD$Sex <- factor(PopDataHMD$Sex, levels = c("Male", "Female"), labels = c("Férfi", "Nő"))
+names(PopDataHMD)[names(PopDataHMD) == "value"] <- "PopHMD"
 
-PopData$Sex <- factor(PopData$Sex, levels = c("Male", "Female"), labels = c("Férfi", "Nő"))
-PopData[Age == "110+"]$Age <- "110"
-PopData$Age <- as.numeric(PopData$Age)
+unique(PopDataHMD$Age)
 ```
 
-A másik az Eurostat, `demo_pjan` tábla:
+    ##   [1] "0"    "1"    "2"    "3"    "4"    "5"    "6"    "7"    "8"    "9"   
+    ##  [11] "10"   "11"   "12"   "13"   "14"   "15"   "16"   "17"   "18"   "19"  
+    ##  [21] "20"   "21"   "22"   "23"   "24"   "25"   "26"   "27"   "28"   "29"  
+    ##  [31] "30"   "31"   "32"   "33"   "34"   "35"   "36"   "37"   "38"   "39"  
+    ##  [41] "40"   "41"   "42"   "43"   "44"   "45"   "46"   "47"   "48"   "49"  
+    ##  [51] "50"   "51"   "52"   "53"   "54"   "55"   "56"   "57"   "58"   "59"  
+    ##  [61] "60"   "61"   "62"   "63"   "64"   "65"   "66"   "67"   "68"   "69"  
+    ##  [71] "70"   "71"   "72"   "73"   "74"   "75"   "76"   "77"   "78"   "79"  
+    ##  [81] "80"   "81"   "82"   "83"   "84"   "85"   "86"   "87"   "88"   "89"  
+    ##  [91] "90"   "91"   "92"   "93"   "94"   "95"   "96"   "97"   "98"   "99"  
+    ## [101] "100"  "101"  "102"  "103"  "104"  "105"  "106"  "107"  "108"  "109" 
+    ## [111] "110+"
+
+``` r
+which(is.na(as.numeric(unique(PopDataHMD[Age != "110+"]$Age))))
+```
+
+    ## integer(0)
+
+``` r
+PopDataHMD[Age %in% c(95:109, "110+")]$Age <- 95
+PopDataHMD <- PopDataHMD[, .(PopHMD = sum(PopHMD)), .(iso3c, Year, Sex, Age)]
+PopDataHMD$Age <- as.numeric(PopDataHMD$Age)
+```
+
+#### Eurostat
+
+Az Eurostat adatbázis letöltése és előfeldolgozása:
+
+``` r
+PopDataES <- data.table(eurostat::get_eurostat("demo_pjan", use.data.table = TRUE, cache = FALSE))
+PopDataES$Year <- lubridate::year(PopDataES$TIME_PERIOD)
+PopDataES <- PopDataES[!geo%in%c("EA19", "EA20", "EEA30_2007", "EEA31", "EFTA", "EU27_2007",
+                                 "EU27_2020", "EU28", "FX", "XK", "DE_TOT")]
+PopDataES$iso3c <- countrycode::countrycode(PopDataES$geo, "eurostat", "iso3c")
+PopDataES[iso3c == "DEU" & Year <= 1990]$iso3c <- "XX7" # NSZK
+
+PopDataES <- PopDataES[iso3c %in% unique(RawData$iso3c)]
+PopDataES <- PopDataES[Year %in% unique(RawData$Year)]
+
+PopDataES <- PopDataES[age != "TOTAL" & sex != "T"]
+PopDataES[age == "UNK"&values>0][order(values)] # Málta 1991 és 2000 között sok, azt elhagyjuk, a többi maradhat (csak töröljünk az UNK életkorúakat)
+```
 
     ##       freq   unit    age    sex    geo TIME_PERIOD values  Year  iso3c
     ##     <char> <char> <char> <char> <char>      <Date>  <num> <num> <char>
     ##  1:      A     NR    UNK      M     HR  2011-01-01      1  2011    HRV
-    ##  2:      A     NR    UNK      M     LU  1960-01-01      2  1960    LUX
-    ##  3:      A     NR    UNK      F     HR  2010-01-01      3  2010    HRV
-    ##  4:      A     NR    UNK      M     HR  2010-01-01      3  2010    HRV
-    ##  5:      A     NR    UNK      F     HR  2009-01-01      5  2009    HRV
-    ##  6:      A     NR    UNK      F     HR  2008-01-01      7  2008    HRV
-    ##  7:      A     NR    UNK      F     HR  2007-01-01      9  2007    HRV
-    ##  8:      A     NR    UNK      M     HR  2009-01-01      9  2009    HRV
-    ##  9:      A     NR    UNK      F     HR  2006-01-01     12  2006    HRV
-    ## 10:      A     NR    UNK      M     EE  1988-01-01     18  1988    EST
-    ## 11:      A     NR    UNK      F     HR  2005-01-01     18  2005    HRV
-    ## 12:      A     NR    UNK      M     HR  2008-01-01     18  2008    HRV
-    ## 13:      A     NR    UNK      F     EE  1988-01-01     23  1988    EST
-    ## 14:      A     NR    UNK      F     HR  2004-01-01     23  2004    HRV
-    ## 15:      A     NR    UNK      M     HR  2007-01-01     28  2007    HRV
-    ## 16:      A     NR    UNK      F     HR  2003-01-01     29  2003    HRV
-    ## 17:      A     NR    UNK      M     EE  1987-01-01     30  1987    EST
-    ## 18:      A     NR    UNK      F     HR  2002-01-01     33  2002    HRV
-    ## 19:      A     NR    UNK      M     EE  1986-01-01     40  1986    EST
-    ## 20:      A     NR    UNK      F     EE  1987-01-01     41  1987    EST
-    ## 21:      A     NR    UNK      M     HR  2006-01-01     41  2006    HRV
-    ## 22:      A     NR    UNK      F     HR  2001-01-01     42  2001    HRV
-    ## 23:      A     NR    UNK      M     HR  2005-01-01     49  2005    HRV
-    ## 24:      A     NR    UNK      F     EE  1986-01-01     60  1986    EST
-    ## 25:      A     NR    UNK      M     HR  2004-01-01     60  2004    HRV
-    ## 26:      A     NR    UNK      F     LU  1969-01-01     62  1969    LUX
-    ## 27:      A     NR    UNK      M     EE  1985-01-01     62  1985    EST
-    ## 28:      A     NR    UNK      M     HR  2003-01-01     68  2003    HRV
-    ## 29:      A     NR    UNK      M     EE  1984-01-01     72  1984    EST
-    ## 30:      A     NR    UNK      F     EE  1960-01-01     76  1960    EST
-    ## 31:      A     NR    UNK      M     HR  2002-01-01     79  2002    HRV
-    ## 32:      A     NR    UNK      M     HR  2001-01-01     83  2001    HRV
-    ## 33:      A     NR    UNK      M     EE  1960-01-01     85  1960    EST
-    ## 34:      A     NR    UNK      M     EE  1983-01-01     87  1983    EST
-    ## 35:      A     NR    UNK      F     EE  1985-01-01     87  1985    EST
-    ## 36:      A     NR    UNK      M     EE  1982-01-01     93  1982    EST
-    ## 37:      A     NR    UNK      F     EE  1984-01-01    108  1984    EST
-    ## 38:      A     NR    UNK      M     EE  1981-01-01    117  1981    EST
-    ## 39:      A     NR    UNK      F     EE  1961-01-01    127  1961    EST
-    ## 40:      A     NR    UNK      M     EE  1980-01-01    127  1980    EST
-    ## 41:      A     NR    UNK      F     EE  1983-01-01    129  1983    EST
-    ## 42:      A     NR    UNK      M     EE  1979-01-01    133  1979    EST
-    ## 43:      A     NR    UNK      F     EE  1982-01-01    141  1982    EST
-    ## 44:      A     NR    UNK      M     EE  1961-01-01    155  1961    EST
-    ## 45:      A     NR    UNK      F     EE  1981-01-01    164  1981    EST
-    ## 46:      A     NR    UNK      F     EE  1962-01-01    176  1962    EST
-    ## 47:      A     NR    UNK      F     EE  1980-01-01    183  1980    EST
-    ## 48:      A     NR    UNK      M     EE  1978-01-01    187  1978    EST
-    ## 49:      A     NR    UNK      F     EE  1979-01-01    201  1979    EST
-    ## 50:      A     NR    UNK      F     LU  1968-01-01    208  1968    LUX
-    ## 51:      A     NR    UNK      M     EE  1962-01-01    211  1962    EST
-    ## 52:      A     NR    UNK      F     EE  1963-01-01    237  1963    EST
-    ## 53:      A     NR    UNK      F     EE  1978-01-01    243  1978    EST
-    ## 54:      A     NR    UNK      M     EE  1977-01-01    251  1977    EST
-    ## 55:      A     NR    UNK      M     EE  1963-01-01    264  1963    EST
-    ## 56:      A     NR    UNK      M     LT  1979-01-01    276  1979    LTU
-    ## 57:      A     NR    UNK      F     EE  1977-01-01    297  1977    EST
-    ## 58:      A     NR    UNK      F     EE  1964-01-01    299  1964    EST
-    ## 59:      A     NR    UNK      M     EE  1976-01-01    301  1976    EST
-    ## 60:      A     NR    UNK      M     EE  1964-01-01    323  1964    EST
-    ## 61:      A     NR    UNK      F     EE  1976-01-01    342  1976    EST
-    ## 62:      A     NR    UNK      F     EE  1965-01-01    360  1965    EST
-    ## 63:      A     NR    UNK      F     LT  1979-01-01    366  1979    LTU
-    ## 64:      A     NR    UNK      M     EE  1975-01-01    369  1975    EST
-    ## 65:      A     NR    UNK      M     EE  1965-01-01    382  1965    EST
-    ## 66:      A     NR    UNK      F     EE  1975-01-01    393  1975    EST
-    ## 67:      A     NR    UNK      F     EE  1966-01-01    421  1966    EST
-    ## 68:      A     NR    UNK      M     EE  1974-01-01    426  1974    EST
-    ## 69:      A     NR    UNK      M     EE  1966-01-01    434  1966    EST
-    ## 70:      A     NR    UNK      F     EE  1974-01-01    445  1974    EST
-    ## 71:      A     NR    UNK      F     EE  1967-01-01    479  1967    EST
-    ## 72:      A     NR    UNK      M     EE  1967-01-01    484  1967    EST
-    ## 73:      A     NR    UNK      M     EE  1973-01-01    484  1973    EST
-    ## 74:      A     NR    UNK      F     EE  1973-01-01    496  1973    EST
-    ## 75:      A     NR    UNK      M     EE  1972-01-01    535  1972    EST
-    ## 76:      A     NR    UNK      M     EE  1968-01-01    540  1968    EST
-    ## 77:      A     NR    UNK      F     EE  1968-01-01    541  1968    EST
-    ## 78:      A     NR    UNK      F     EE  1972-01-01    542  1972    EST
-    ## 79:      A     NR    UNK      M     EE  1969-01-01    596  1969    EST
-    ## 80:      A     NR    UNK      M     EE  1971-01-01    598  1971    EST
-    ## 81:      A     NR    UNK      F     EE  1969-01-01    599  1969    EST
-    ## 82:      A     NR    UNK      F     EE  1971-01-01    607  1971    EST
-    ## 83:      A     NR    UNK      M     EE  1970-01-01    649  1970    EST
-    ## 84:      A     NR    UNK      F     EE  1970-01-01    654  1970    EST
-    ## 85:      A     NR    UNK      M     LT  1970-01-01    848  1970    LTU
-    ## 86:      A     NR    UNK      F     LT  1970-01-01    937  1970    LTU
+    ##  2:      A     NR    UNK      F     HR  2010-01-01      3  2010    HRV
+    ##  3:      A     NR    UNK      M     HR  2010-01-01      3  2010    HRV
+    ##  4:      A     NR    UNK      F     HR  2009-01-01      5  2009    HRV
+    ##  5:      A     NR    UNK      F     HR  2008-01-01      7  2008    HRV
+    ##  6:      A     NR    UNK      F     HR  2007-01-01      9  2007    HRV
+    ##  7:      A     NR    UNK      M     HR  2009-01-01      9  2009    HRV
+    ##  8:      A     NR    UNK      F     HR  2006-01-01     12  2006    HRV
+    ##  9:      A     NR    UNK      M     EE  1988-01-01     18  1988    EST
+    ## 10:      A     NR    UNK      F     HR  2005-01-01     18  2005    HRV
+    ## 11:      A     NR    UNK      M     HR  2008-01-01     18  2008    HRV
+    ## 12:      A     NR    UNK      F     EE  1988-01-01     23  1988    EST
+    ## 13:      A     NR    UNK      F     HR  2004-01-01     23  2004    HRV
+    ## 14:      A     NR    UNK      M     HR  2007-01-01     28  2007    HRV
+    ## 15:      A     NR    UNK      F     HR  2003-01-01     29  2003    HRV
+    ## 16:      A     NR    UNK      F     HR  2002-01-01     33  2002    HRV
+    ## 17:      A     NR    UNK      M     HR  2006-01-01     41  2006    HRV
+    ## 18:      A     NR    UNK      F     HR  2001-01-01     42  2001    HRV
+    ## 19:      A     NR    UNK      M     HR  2005-01-01     49  2005    HRV
+    ## 20:      A     NR    UNK      M     HR  2004-01-01     60  2004    HRV
+    ## 21:      A     NR    UNK      M     HR  2003-01-01     68  2003    HRV
+    ## 22:      A     NR    UNK      M     HR  2002-01-01     79  2002    HRV
+    ## 23:      A     NR    UNK      M     HR  2001-01-01     83  2001    HRV
+    ## 24:      A     NR    UNK      M     GE  2011-01-01     87  2011    GEO
+    ## 25:      A     NR    UNK      M     GE  2009-01-01    200  2009    GEO
+    ## 26:      A     NR    UNK      M     GE  2010-01-01    201  2010    GEO
+    ## 27:      A     NR    UNK      F     GE  2011-01-01    320  2011    GEO
+    ## 28:      A     NR    UNK      F     GE  2009-01-01    360  2009    GEO
+    ## 29:      A     NR    UNK      F     GE  2010-01-01    361  2010    GEO
+    ## 30:      A     NR    UNK      F     GE  2008-01-01    492  2008    GEO
+    ## 31:      A     NR    UNK      M     GE  2008-01-01    881  2008    GEO
+    ## 32:      A     NR    UNK      F     GE  2007-01-01    978  2007    GEO
+    ## 33:      A     NR    UNK      M     GE  2007-01-01   1039  2007    GEO
+    ## 34:      A     NR    UNK      F     GE  2006-01-01   1225  2006    GEO
+    ## 35:      A     NR    UNK      M     GE  2006-01-01   1391  2006    GEO
+    ## 36:      A     NR    UNK      M     MT  1991-01-01   2157  1991    MLT
+    ## 37:      A     NR    UNK      M     MT  1992-01-01   2158  1992    MLT
+    ## 38:      A     NR    UNK      M     MT  1993-01-01   2222  1993    MLT
+    ## 39:      A     NR    UNK      M     MT  1994-01-01   2239  1994    MLT
+    ## 40:      A     NR    UNK      M     MT  1995-01-01   2241  1995    MLT
+    ## 41:      A     NR    UNK      M     MT  1997-01-01   3133  1997    MLT
+    ## 42:      A     NR    UNK      M     MT  1998-01-01   3304  1998    MLT
+    ## 43:      A     NR    UNK      M     MT  1996-01-01   3379  1996    MLT
+    ## 44:      A     NR    UNK      M     MT  1999-01-01   3431  1999    MLT
+    ## 45:      A     NR    UNK      F     MT  1996-01-01   3610  1996    MLT
+    ## 46:      A     NR    UNK      M     MT  2000-01-01   3839  2000    MLT
+    ## 47:      A     NR    UNK      F     MT  1991-01-01   3841  1991    MLT
+    ## 48:      A     NR    UNK      F     MT  1992-01-01   4080  1992    MLT
+    ## 49:      A     NR    UNK      F     MT  1993-01-01   4256  1993    MLT
+    ## 50:      A     NR    UNK      F     MT  1997-01-01   4314  1997    MLT
+    ## 51:      A     NR    UNK      F     MT  1998-01-01   4359  1998    MLT
+    ## 52:      A     NR    UNK      F     MT  1999-01-01   4448  1999    MLT
+    ## 53:      A     NR    UNK      F     MT  1994-01-01   4491  1994    MLT
+    ## 54:      A     NR    UNK      F     MT  2000-01-01   4719  2000    MLT
+    ## 55:      A     NR    UNK      F     MT  1995-01-01   4741  1995    MLT
     ##       freq   unit    age    sex    geo TIME_PERIOD values  Year  iso3c
 
-    ## [1] 19843
+``` r
+sum(PopDataES[age == "UNK"]$values) 
+```
+
+    ## [1] 79158
+
+``` r
+PopDataES[,.(values[age=="UNK"]/sum(values)*100) , .(iso3c, Year, sex)][V1!=0][order(V1)]
+```
+
+    ##      iso3c  Year    sex           V1
+    ##     <char> <num> <char>        <num>
+    ##  1:    HRV  2011      M 4.833832e-05
+    ##  2:    HRV  2010      F 1.346381e-04
+    ##  3:    HRV  2010      M 1.446026e-04
+    ##  4:    HRV  2009      F 2.239111e-04
+    ##  5:    HRV  2008      F 3.132020e-04
+    ##  6:    HRV  2007      F 4.022618e-04
+    ##  7:    HRV  2009      M 4.333659e-04
+    ##  8:    HRV  2006      F 5.360603e-04
+    ##  9:    HRV  2005      F 8.040812e-04
+    ## 10:    HRV  2008      M 8.666396e-04
+    ## 11:    HRV  2004      F 1.028216e-03
+    ## 12:    HRV  2003      F 1.296380e-03
+    ## 13:    HRV  2007      M 1.348630e-03
+    ## 14:    HRV  2002      F 1.475542e-03
+    ## 15:    HRV  2001      F 1.882303e-03
+    ## 16:    HRV  2006      M 1.976920e-03
+    ## 17:    HRV  2005      M 2.364544e-03
+    ## 18:    EST  1988      M 2.475305e-03
+    ## 19:    EST  1988      F 2.767903e-03
+    ## 20:    HRV  2004      M 2.900175e-03
+    ## 21:    HRV  2003      M 3.287589e-03
+    ## 22:    HRV  2002      M 3.818220e-03
+    ## 23:    HRV  2001      M 4.021129e-03
+    ## 24:    GEO  2011      M 4.089733e-03
+    ## 25:    GEO  2010      M 9.530972e-03
+    ## 26:    GEO  2009      M 9.611655e-03
+    ## 27:    GEO  2011      F 1.366370e-02
+    ## 28:    GEO  2010      F 1.551036e-02
+    ## 29:    GEO  2009      F 1.562078e-02
+    ## 30:    GEO  2008      F 2.135718e-02
+    ## 31:    GEO  2007      F 4.224336e-02
+    ## 32:    GEO  2008      M 4.238848e-02
+    ## 33:    GEO  2007      M 4.996285e-02
+    ## 34:    GEO  2006      F 5.286096e-02
+    ## 35:    GEO  2006      M 6.675010e-02
+    ## 36:    MLT  1995      M 1.210834e+00
+    ## 37:    MLT  1992      M 1.420185e+00
+    ## 38:    MLT  1994      M 1.435404e+00
+    ## 39:    MLT  1991      M 1.438575e+00
+    ## 40:    MLT  1993      M 1.443701e+00
+    ## 41:    MLT  1997      M 1.662492e+00
+    ## 42:    MLT  1998      M 1.739240e+00
+    ## 43:    MLT  1999      M 1.795207e+00
+    ## 44:    MLT  1996      M 1.807242e+00
+    ## 45:    MLT  1996      F 1.885767e+00
+    ## 46:    MLT  2000      M 1.995032e+00
+    ## 47:    MLT  1997      F 2.235778e+00
+    ## 48:    MLT  1998      F 2.244501e+00
+    ## 49:    MLT  1999      F 2.277790e+00
+    ## 50:    MLT  2000      F 2.403594e+00
+    ## 51:    MLT  1991      F 2.442405e+00
+    ## 52:    MLT  1995      F 2.477607e+00
+    ## 53:    MLT  1992      F 2.560900e+00
+    ## 54:    MLT  1993      F 2.636535e+00
+    ## 55:    MLT  1994      F 2.744405e+00
+    ##      iso3c  Year    sex           V1
+
+``` r
+PopDataES <- PopDataES[!(iso3c == "MLT" & Year >= 1991 & Year <= 2000)]
+PopDataES <- PopDataES[age != "UNK"]
+PopDataES$age <- substring(PopDataES$age, 2)
+PopDataES[age == "_LT1"]$age <- "0"
+PopDataES$sex <- factor(PopDataES$sex, levels = c("M", "F"), labels = c("Férfi", "Nő"))
+
+# Most csak azt őrizzük meg, ami 95-ig itt is megvan
+PopDataES <- merge(PopDataES, PopDataES[, .(!any(!(0:94) %in% age) & "_OPEN" %in% age),
+                                        .(iso3c, Year, sex)], by = c("iso3c", "Year", "sex"))[V1 == TRUE, -"V1"]
+
+unique(PopDataES$age)
+```
+
+    ##   [1] "1"     "10"    "11"    "12"    "13"    "14"    "15"    "16"    "17"   
+    ##  [10] "18"    "19"    "2"     "20"    "21"    "22"    "23"    "24"    "25"   
+    ##  [19] "26"    "27"    "28"    "29"    "3"     "30"    "31"    "32"    "33"   
+    ##  [28] "34"    "35"    "36"    "37"    "38"    "39"    "4"     "40"    "41"   
+    ##  [37] "42"    "43"    "44"    "45"    "46"    "47"    "48"    "49"    "5"    
+    ##  [46] "50"    "51"    "52"    "53"    "54"    "55"    "56"    "57"    "58"   
+    ##  [55] "59"    "6"     "60"    "61"    "62"    "63"    "64"    "65"    "66"   
+    ##  [64] "67"    "68"    "69"    "7"     "70"    "71"    "72"    "73"    "74"   
+    ##  [73] "75"    "76"    "77"    "78"    "79"    "8"     "80"    "81"    "82"   
+    ##  [82] "83"    "84"    "85"    "86"    "87"    "88"    "89"    "9"     "90"   
+    ##  [91] "91"    "92"    "93"    "94"    "0"     "_OPEN" "95"    "96"    "97"   
+    ## [100] "98"    "99"
+
+``` r
+which(is.na(as.numeric(unique(PopDataES[age != "_OPEN"]$age))))
+```
+
+    ## integer(0)
+
+``` r
+PopDataES[age %in% c(95:99, "_OPEN")]$age <- 95
+PopDataES <- PopDataES[, .(values = sum(values)), .(iso3c, Year, sex, age)]
+PopDataES$age <- as.numeric(PopDataES$age)
+
+temp <- table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FALSE))
+temp
+```
+
+    ##     
+    ##      [0,1) [1,2) [2,3) [3,4) [4,5) [5,10) [10,15) [15,20) [20,25) [25,30)
+    ##   0   1986     0     0     0     0      0       0       0       0       0
+    ##   1      0  1986     0     0     0      0       0       0       0       0
+    ##   2      0     0  1986     0     0      0       0       0       0       0
+    ##   3      0     0     0  1986     0      0       0       0       0       0
+    ##   4      0     0     0     0  1986      0       0       0       0       0
+    ##   5      0     0     0     0     0   1986       0       0       0       0
+    ##   6      0     0     0     0     0   1986       0       0       0       0
+    ##   7      0     0     0     0     0   1986       0       0       0       0
+    ##   8      0     0     0     0     0   1986       0       0       0       0
+    ##   9      0     0     0     0     0   1986       0       0       0       0
+    ##   10     0     0     0     0     0      0    1986       0       0       0
+    ##   11     0     0     0     0     0      0    1986       0       0       0
+    ##   12     0     0     0     0     0      0    1986       0       0       0
+    ##   13     0     0     0     0     0      0    1986       0       0       0
+    ##   14     0     0     0     0     0      0    1986       0       0       0
+    ##   15     0     0     0     0     0      0       0    1986       0       0
+    ##   16     0     0     0     0     0      0       0    1986       0       0
+    ##   17     0     0     0     0     0      0       0    1986       0       0
+    ##   18     0     0     0     0     0      0       0    1986       0       0
+    ##   19     0     0     0     0     0      0       0    1986       0       0
+    ##   20     0     0     0     0     0      0       0       0    1986       0
+    ##   21     0     0     0     0     0      0       0       0    1986       0
+    ##   22     0     0     0     0     0      0       0       0    1986       0
+    ##   23     0     0     0     0     0      0       0       0    1986       0
+    ##   24     0     0     0     0     0      0       0       0    1986       0
+    ##   25     0     0     0     0     0      0       0       0       0    1986
+    ##   26     0     0     0     0     0      0       0       0       0    1986
+    ##   27     0     0     0     0     0      0       0       0       0    1986
+    ##   28     0     0     0     0     0      0       0       0       0    1986
+    ##   29     0     0     0     0     0      0       0       0       0    1986
+    ##   30     0     0     0     0     0      0       0       0       0       0
+    ##   31     0     0     0     0     0      0       0       0       0       0
+    ##   32     0     0     0     0     0      0       0       0       0       0
+    ##   33     0     0     0     0     0      0       0       0       0       0
+    ##   34     0     0     0     0     0      0       0       0       0       0
+    ##   35     0     0     0     0     0      0       0       0       0       0
+    ##   36     0     0     0     0     0      0       0       0       0       0
+    ##   37     0     0     0     0     0      0       0       0       0       0
+    ##   38     0     0     0     0     0      0       0       0       0       0
+    ##   39     0     0     0     0     0      0       0       0       0       0
+    ##   40     0     0     0     0     0      0       0       0       0       0
+    ##   41     0     0     0     0     0      0       0       0       0       0
+    ##   42     0     0     0     0     0      0       0       0       0       0
+    ##   43     0     0     0     0     0      0       0       0       0       0
+    ##   44     0     0     0     0     0      0       0       0       0       0
+    ##   45     0     0     0     0     0      0       0       0       0       0
+    ##   46     0     0     0     0     0      0       0       0       0       0
+    ##   47     0     0     0     0     0      0       0       0       0       0
+    ##   48     0     0     0     0     0      0       0       0       0       0
+    ##   49     0     0     0     0     0      0       0       0       0       0
+    ##   50     0     0     0     0     0      0       0       0       0       0
+    ##   51     0     0     0     0     0      0       0       0       0       0
+    ##   52     0     0     0     0     0      0       0       0       0       0
+    ##   53     0     0     0     0     0      0       0       0       0       0
+    ##   54     0     0     0     0     0      0       0       0       0       0
+    ##   55     0     0     0     0     0      0       0       0       0       0
+    ##   56     0     0     0     0     0      0       0       0       0       0
+    ##   57     0     0     0     0     0      0       0       0       0       0
+    ##   58     0     0     0     0     0      0       0       0       0       0
+    ##   59     0     0     0     0     0      0       0       0       0       0
+    ##   60     0     0     0     0     0      0       0       0       0       0
+    ##   61     0     0     0     0     0      0       0       0       0       0
+    ##   62     0     0     0     0     0      0       0       0       0       0
+    ##   63     0     0     0     0     0      0       0       0       0       0
+    ##   64     0     0     0     0     0      0       0       0       0       0
+    ##   65     0     0     0     0     0      0       0       0       0       0
+    ##   66     0     0     0     0     0      0       0       0       0       0
+    ##   67     0     0     0     0     0      0       0       0       0       0
+    ##   68     0     0     0     0     0      0       0       0       0       0
+    ##   69     0     0     0     0     0      0       0       0       0       0
+    ##   70     0     0     0     0     0      0       0       0       0       0
+    ##   71     0     0     0     0     0      0       0       0       0       0
+    ##   72     0     0     0     0     0      0       0       0       0       0
+    ##   73     0     0     0     0     0      0       0       0       0       0
+    ##   74     0     0     0     0     0      0       0       0       0       0
+    ##   75     0     0     0     0     0      0       0       0       0       0
+    ##   76     0     0     0     0     0      0       0       0       0       0
+    ##   77     0     0     0     0     0      0       0       0       0       0
+    ##   78     0     0     0     0     0      0       0       0       0       0
+    ##   79     0     0     0     0     0      0       0       0       0       0
+    ##   80     0     0     0     0     0      0       0       0       0       0
+    ##   81     0     0     0     0     0      0       0       0       0       0
+    ##   82     0     0     0     0     0      0       0       0       0       0
+    ##   83     0     0     0     0     0      0       0       0       0       0
+    ##   84     0     0     0     0     0      0       0       0       0       0
+    ##   85     0     0     0     0     0      0       0       0       0       0
+    ##   86     0     0     0     0     0      0       0       0       0       0
+    ##   87     0     0     0     0     0      0       0       0       0       0
+    ##   88     0     0     0     0     0      0       0       0       0       0
+    ##   89     0     0     0     0     0      0       0       0       0       0
+    ##   90     0     0     0     0     0      0       0       0       0       0
+    ##   91     0     0     0     0     0      0       0       0       0       0
+    ##   92     0     0     0     0     0      0       0       0       0       0
+    ##   93     0     0     0     0     0      0       0       0       0       0
+    ##   94     0     0     0     0     0      0       0       0       0       0
+    ##   95     0     0     0     0     0      0       0       0       0       0
+    ##     
+    ##      [30,35) [35,40) [40,45) [45,50) [50,55) [55,60) [60,65) [65,70) [70,75)
+    ##   0        0       0       0       0       0       0       0       0       0
+    ##   1        0       0       0       0       0       0       0       0       0
+    ##   2        0       0       0       0       0       0       0       0       0
+    ##   3        0       0       0       0       0       0       0       0       0
+    ##   4        0       0       0       0       0       0       0       0       0
+    ##   5        0       0       0       0       0       0       0       0       0
+    ##   6        0       0       0       0       0       0       0       0       0
+    ##   7        0       0       0       0       0       0       0       0       0
+    ##   8        0       0       0       0       0       0       0       0       0
+    ##   9        0       0       0       0       0       0       0       0       0
+    ##   10       0       0       0       0       0       0       0       0       0
+    ##   11       0       0       0       0       0       0       0       0       0
+    ##   12       0       0       0       0       0       0       0       0       0
+    ##   13       0       0       0       0       0       0       0       0       0
+    ##   14       0       0       0       0       0       0       0       0       0
+    ##   15       0       0       0       0       0       0       0       0       0
+    ##   16       0       0       0       0       0       0       0       0       0
+    ##   17       0       0       0       0       0       0       0       0       0
+    ##   18       0       0       0       0       0       0       0       0       0
+    ##   19       0       0       0       0       0       0       0       0       0
+    ##   20       0       0       0       0       0       0       0       0       0
+    ##   21       0       0       0       0       0       0       0       0       0
+    ##   22       0       0       0       0       0       0       0       0       0
+    ##   23       0       0       0       0       0       0       0       0       0
+    ##   24       0       0       0       0       0       0       0       0       0
+    ##   25       0       0       0       0       0       0       0       0       0
+    ##   26       0       0       0       0       0       0       0       0       0
+    ##   27       0       0       0       0       0       0       0       0       0
+    ##   28       0       0       0       0       0       0       0       0       0
+    ##   29       0       0       0       0       0       0       0       0       0
+    ##   30    1986       0       0       0       0       0       0       0       0
+    ##   31    1986       0       0       0       0       0       0       0       0
+    ##   32    1986       0       0       0       0       0       0       0       0
+    ##   33    1986       0       0       0       0       0       0       0       0
+    ##   34    1986       0       0       0       0       0       0       0       0
+    ##   35       0    1986       0       0       0       0       0       0       0
+    ##   36       0    1986       0       0       0       0       0       0       0
+    ##   37       0    1986       0       0       0       0       0       0       0
+    ##   38       0    1986       0       0       0       0       0       0       0
+    ##   39       0    1986       0       0       0       0       0       0       0
+    ##   40       0       0    1986       0       0       0       0       0       0
+    ##   41       0       0    1986       0       0       0       0       0       0
+    ##   42       0       0    1986       0       0       0       0       0       0
+    ##   43       0       0    1986       0       0       0       0       0       0
+    ##   44       0       0    1986       0       0       0       0       0       0
+    ##   45       0       0       0    1986       0       0       0       0       0
+    ##   46       0       0       0    1986       0       0       0       0       0
+    ##   47       0       0       0    1986       0       0       0       0       0
+    ##   48       0       0       0    1986       0       0       0       0       0
+    ##   49       0       0       0    1986       0       0       0       0       0
+    ##   50       0       0       0       0    1986       0       0       0       0
+    ##   51       0       0       0       0    1986       0       0       0       0
+    ##   52       0       0       0       0    1986       0       0       0       0
+    ##   53       0       0       0       0    1986       0       0       0       0
+    ##   54       0       0       0       0    1986       0       0       0       0
+    ##   55       0       0       0       0       0    1986       0       0       0
+    ##   56       0       0       0       0       0    1986       0       0       0
+    ##   57       0       0       0       0       0    1986       0       0       0
+    ##   58       0       0       0       0       0    1986       0       0       0
+    ##   59       0       0       0       0       0    1986       0       0       0
+    ##   60       0       0       0       0       0       0    1986       0       0
+    ##   61       0       0       0       0       0       0    1986       0       0
+    ##   62       0       0       0       0       0       0    1986       0       0
+    ##   63       0       0       0       0       0       0    1986       0       0
+    ##   64       0       0       0       0       0       0    1986       0       0
+    ##   65       0       0       0       0       0       0       0    1986       0
+    ##   66       0       0       0       0       0       0       0    1986       0
+    ##   67       0       0       0       0       0       0       0    1986       0
+    ##   68       0       0       0       0       0       0       0    1986       0
+    ##   69       0       0       0       0       0       0       0    1986       0
+    ##   70       0       0       0       0       0       0       0       0    1986
+    ##   71       0       0       0       0       0       0       0       0    1986
+    ##   72       0       0       0       0       0       0       0       0    1986
+    ##   73       0       0       0       0       0       0       0       0    1986
+    ##   74       0       0       0       0       0       0       0       0    1986
+    ##   75       0       0       0       0       0       0       0       0       0
+    ##   76       0       0       0       0       0       0       0       0       0
+    ##   77       0       0       0       0       0       0       0       0       0
+    ##   78       0       0       0       0       0       0       0       0       0
+    ##   79       0       0       0       0       0       0       0       0       0
+    ##   80       0       0       0       0       0       0       0       0       0
+    ##   81       0       0       0       0       0       0       0       0       0
+    ##   82       0       0       0       0       0       0       0       0       0
+    ##   83       0       0       0       0       0       0       0       0       0
+    ##   84       0       0       0       0       0       0       0       0       0
+    ##   85       0       0       0       0       0       0       0       0       0
+    ##   86       0       0       0       0       0       0       0       0       0
+    ##   87       0       0       0       0       0       0       0       0       0
+    ##   88       0       0       0       0       0       0       0       0       0
+    ##   89       0       0       0       0       0       0       0       0       0
+    ##   90       0       0       0       0       0       0       0       0       0
+    ##   91       0       0       0       0       0       0       0       0       0
+    ##   92       0       0       0       0       0       0       0       0       0
+    ##   93       0       0       0       0       0       0       0       0       0
+    ##   94       0       0       0       0       0       0       0       0       0
+    ##   95       0       0       0       0       0       0       0       0       0
+    ##     
+    ##      [75,80) [80,85) [85,90) [90,95) [95,Inf)
+    ##   0        0       0       0       0        0
+    ##   1        0       0       0       0        0
+    ##   2        0       0       0       0        0
+    ##   3        0       0       0       0        0
+    ##   4        0       0       0       0        0
+    ##   5        0       0       0       0        0
+    ##   6        0       0       0       0        0
+    ##   7        0       0       0       0        0
+    ##   8        0       0       0       0        0
+    ##   9        0       0       0       0        0
+    ##   10       0       0       0       0        0
+    ##   11       0       0       0       0        0
+    ##   12       0       0       0       0        0
+    ##   13       0       0       0       0        0
+    ##   14       0       0       0       0        0
+    ##   15       0       0       0       0        0
+    ##   16       0       0       0       0        0
+    ##   17       0       0       0       0        0
+    ##   18       0       0       0       0        0
+    ##   19       0       0       0       0        0
+    ##   20       0       0       0       0        0
+    ##   21       0       0       0       0        0
+    ##   22       0       0       0       0        0
+    ##   23       0       0       0       0        0
+    ##   24       0       0       0       0        0
+    ##   25       0       0       0       0        0
+    ##   26       0       0       0       0        0
+    ##   27       0       0       0       0        0
+    ##   28       0       0       0       0        0
+    ##   29       0       0       0       0        0
+    ##   30       0       0       0       0        0
+    ##   31       0       0       0       0        0
+    ##   32       0       0       0       0        0
+    ##   33       0       0       0       0        0
+    ##   34       0       0       0       0        0
+    ##   35       0       0       0       0        0
+    ##   36       0       0       0       0        0
+    ##   37       0       0       0       0        0
+    ##   38       0       0       0       0        0
+    ##   39       0       0       0       0        0
+    ##   40       0       0       0       0        0
+    ##   41       0       0       0       0        0
+    ##   42       0       0       0       0        0
+    ##   43       0       0       0       0        0
+    ##   44       0       0       0       0        0
+    ##   45       0       0       0       0        0
+    ##   46       0       0       0       0        0
+    ##   47       0       0       0       0        0
+    ##   48       0       0       0       0        0
+    ##   49       0       0       0       0        0
+    ##   50       0       0       0       0        0
+    ##   51       0       0       0       0        0
+    ##   52       0       0       0       0        0
+    ##   53       0       0       0       0        0
+    ##   54       0       0       0       0        0
+    ##   55       0       0       0       0        0
+    ##   56       0       0       0       0        0
+    ##   57       0       0       0       0        0
+    ##   58       0       0       0       0        0
+    ##   59       0       0       0       0        0
+    ##   60       0       0       0       0        0
+    ##   61       0       0       0       0        0
+    ##   62       0       0       0       0        0
+    ##   63       0       0       0       0        0
+    ##   64       0       0       0       0        0
+    ##   65       0       0       0       0        0
+    ##   66       0       0       0       0        0
+    ##   67       0       0       0       0        0
+    ##   68       0       0       0       0        0
+    ##   69       0       0       0       0        0
+    ##   70       0       0       0       0        0
+    ##   71       0       0       0       0        0
+    ##   72       0       0       0       0        0
+    ##   73       0       0       0       0        0
+    ##   74       0       0       0       0        0
+    ##   75    1986       0       0       0        0
+    ##   76    1986       0       0       0        0
+    ##   77    1986       0       0       0        0
+    ##   78    1986       0       0       0        0
+    ##   79    1986       0       0       0        0
+    ##   80       0    1986       0       0        0
+    ##   81       0    1986       0       0        0
+    ##   82       0    1986       0       0        0
+    ##   83       0    1986       0       0        0
+    ##   84       0    1986       0       0        0
+    ##   85       0       0    1986       0        0
+    ##   86       0       0    1986       0        0
+    ##   87       0       0    1986       0        0
+    ##   88       0       0    1986       0        0
+    ##   89       0       0    1986       0        0
+    ##   90       0       0       0    1986        0
+    ##   91       0       0       0    1986        0
+    ##   92       0       0       0    1986        0
+    ##   93       0       0       0    1986        0
+    ##   94       0       0       0    1986        0
+    ##   95       0       0       0       0     1986
+
+``` r
+# tail(temp, 60)
+# tail(temp, 20)
+
+PopDataES <- PopDataES[, .(iso3c, Year, Sex = sex, Age = age, PopES = values)]
+PopDataES <- PopDataES[order(iso3c, Year, Sex, Age)]
+```
+
+#### World Population Prospects
+
+A World Population Prospects letöltése és előfeldolgozása:
+
+``` r
+PopDataUN <- fread(paste0(
+  "https://population.un.org/wpp/assets/Excel%20Files/",
+  "1_Indicator%20(Standard)/CSV_FILES/",
+  "WPP2024_PopulationBySingleAgeSex_Medium_1950-2023.csv.gz"))
+
+table(PopDataUN$AgeGrpSpan) # csak 1 és -1
+```
+
+    ## 
+    ##      -1       1 
+    ##   41070 4107000
+
+``` r
+table(PopDataUN[AgeGrpSpan == -1]$AgeGrpStart) # a -1 az csak a 100+ kategória
+```
+
+    ## 
+    ##   100 
+    ## 41070
+
+``` r
+# tökéletes a megfeleltetés AgeGrp és AgeGrpStart között
+table(apply(table(PopDataUN$AgeGrp, PopDataUN$AgeGrpStart), 1, function(x) sum(x>0)))
+```
+
+    ## 
+    ##   1 
+    ## 101
+
+``` r
+table(apply(table(PopDataUN$AgeGrp, PopDataUN$AgeGrpStart), 2, function(x) sum(x>0)))
+```
+
+    ## 
+    ##   1 
+    ## 101
+
+``` r
+PopDataUN <- melt(PopDataUN[ISO3_code != "", .(iso3c = ISO3_code, Year = Time, Age = AgeGrpStart, PopMale, PopFemale)],
+                  id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex", variable.factor = FALSE)
+PopDataUN$Sex <- factor(PopDataUN$Sex, levels = c("PopMale", "PopFemale"), labels = c("Férfi", "Nő"))
+PopDataUN$value <- PopDataUN$value * 1000
+
+PopDataUN <- PopDataUN[iso3c %in% unique(RawData$iso3c)]
+PopDataUN <- PopDataUN[Year %in% unique(RawData$Year)]
+
+PopDataUN[Age %in% 95:100]$Age <- 95
+PopDataUN <- PopDataUN[, .(value = sum(value)), .(iso3c, Year, Sex, Age)]
+
+names(PopDataUN)[names(PopDataUN) == "value"] <- "PopUN"
+```
+
+#### Összevetés
+
+Elsőként nézzük meg, hogy a három adatbázis páronként mennyire hasonló
+
+``` r
+temp <- Reduce(function(...) merge(..., by = c("iso3c", "Year", "Age", "Sex"), all = TRUE), list(PopDataHMD, PopDataUN, PopDataES))
+
+plot(PopHMD ~ PopES, data = temp[!is.na(PopHMD) & !is.na(PopES)])
+```
+
+![](README_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+
+``` r
+plot(PopHMD ~ PopUN, data = temp[!is.na(PopHMD) & !is.na(PopUN)])
+```
+
+![](README_files/figure-gfm/unnamed-chunk-43-2.png)<!-- -->
+
+``` r
+plot(PopUN ~ PopES, data = temp[!is.na(PopUN) & !is.na(PopES)])
+```
+
+![](README_files/figure-gfm/unnamed-chunk-43-3.png)<!-- -->
+
+Érdekes lehet egy konkrét kategória, mondjuk a magyar 0-1 évesek
+alakulása:
+
+``` r
+temp <- melt(temp, id.vars = c("iso3c", "Year", "Age", "Sex"))
+
+ggplot2::ggplot(temp[iso3c == "HUN" & Age == 0],
+                ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
+  ggplot2::facet_wrap(~Sex) +
+  ggplot2::geom_line()
+```
+
+    ## Warning: Removed 27 rows containing missing values or values outside the scale range
+    ## (`geom_line()`).
+
+![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+
+Érdekes az eltérés, de az 1-2 éves kategóriában eltűnik:
+
+``` r
+ggplot2::ggplot(temp[iso3c == "HUN" & Age == 1],
+                ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
+  ggplot2::facet_wrap(~Sex) +
+  ggplot2::geom_line()
+```
+
+    ## Warning: Removed 27 rows containing missing values or values outside the scale range
+    ## (`geom_line()`).
+
+![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+
+Kicsit zsúfolt ábra, de megnézhetjük az összes életkort egyben (az
+áttekinthetőség kedvéért a férfiakat ábrázolva):
+
+``` r
+ggplot2::ggplot(temp[iso3c == "HUN" & Sex == "Férfi"],
+                ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
+  ggplot2::facet_wrap(~Age, scales = "free") +
+  ggplot2::geom_line()
+```
+
+    ## Warning: Removed 27 rows containing missing values or values outside the scale range
+    ## (`geom_line()`).
 
 ![](README_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
-    ##         iso3c  Year    Age    Sex PopHMD  PopES
-    ##        <char> <num> <char> <fctr>  <num>  <num>
-    ##     1:    DEU  1960      0  Férfi     NA 620605
-    ##     2:    DEU  1960      0     Nő     NA 587080
-    ##     3:    DEU  1960      1  Férfi     NA 582886
-    ##     4:    DEU  1960      1     Nő     NA 551701
-    ##     5:    DEU  1960     10  Férfi     NA 520065
-    ##    ---                                         
-    ## 16592:    SVK  2023     97     Nő     NA    572
-    ## 16593:    SVK  2023     98  Férfi     NA    203
-    ## 16594:    SVK  2023     98     Nő     NA    378
-    ## 16595:    SVK  2023     99  Férfi     NA    155
-    ## 16596:    SVK  2023     99     Nő     NA    259
-
-    ## Key: <iso3c, Year, Age, Sex>
-    ##          iso3c  Year    Age    Sex    PopHMD PopES
-    ##         <char> <num> <char> <fctr>     <num> <num>
-    ##      1:    AUS  1955      0  Férfi 102006.58    NA
-    ##      2:    AUS  1955      0     Nő  97756.99    NA
-    ##      3:    AUS  1955      1  Férfi 101600.00    NA
-    ##      4:    AUS  1955      1     Nő  97647.12    NA
-    ##      5:    AUS  1955     10  Férfi  82364.38    NA
-    ##     ---                                           
-    ## 248177:    X12  2022     97     Nő   1126.16    NA
-    ## 248178:    X12  2022     98  Férfi    242.73    NA
-    ## 248179:    X12  2022     98     Nő    795.43    NA
-    ## 248180:    X12  2022     99  Férfi    147.05    NA
-    ## 248181:    X12  2022     99     Nő    538.35    NA
-
-    ## Key: <iso3c, Year>
-    ##     iso3c  Year   freq   unit    age    sex    geo TIME_PERIOD values    HMD
-    ##    <char> <num> <char> <char> <char> <fctr> <char>      <Date>  <num> <lgcl>
-    ## 1:    GRC  1960      A     NR  _OPEN     Nő     EL  1960-01-01  71533     NA
-    ## 2:    GRC  1960      A     NR  _OPEN  Férfi     EL  1960-01-01  52991     NA
-
-Majd egyesítjük őket:
+Egy másik összevetési lehetőség az, ha az ország teljes lélekszámának a
+változását nézzük a különböző adatbázisok szerint:
 
 ``` r
-PopData <- rbind(PopData[, .(iso3c, Year, Age, Sex, Pop = value)],
-                 PopDataES[, .(iso3c, Year, Age = age, Sex = sex, Pop = values)])
+ggplot2::ggplot(temp[iso3c == "HUN", .(sum(value)) , .(Year, variable)],
+                ggplot2::aes(x = Year, y = V1, group = variable, color = variable)) +
+  ggplot2::geom_line()
+```
+
+    ## Warning: Removed 27 rows containing missing values or values outside the scale range
+    ## (`geom_line()`).
+
+![](README_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+
+#### Végleges adatbázis konvertálása, kimentése
+
+Ahogy fent is írtam, a későbbiekben az adatbázisok közül a WPP-t fogjuk
+használni. Vegyük ezt elő, és konvertáljuk olyan formátumra, ami majd
+illeszthető a halálozási adatokkal (magyarán, kategorizáljuk az
+életkorokat):
+
+``` r
+PopData <- PopDataUN
+names(PopData)[names(PopData) == "PopUN"] <- "Pop"
 
 PopData$Age <- cut(PopData$Age, c(0:5, seq(10, 95, 5), Inf), right = FALSE, labels = paste0("Deaths", 2:25))
 PopData <- PopData[, .(Pop = sum(Pop)), .(iso3c, Year, Age, Sex)]
 
-PopData <- rbind(PopData, PopData[Age%in%paste0("Deaths", 3:6), .(Pop = sum(Pop), Age = "Deaths3456") , .(iso3c, Year, Sex)])
+PopData <- rbind(PopData, PopData[Age %in% paste0("Deaths", 3:6), .(Pop = sum(Pop), Age = "Deaths3456") , .(iso3c, Year, Sex)])
 
 PopData <- rbind(
   cbind(PopData, Frmat = 0),
-  cbind(rbind(PopData[!Age%in%paste0("Deaths", 23:25)], PopData[Age%in%paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425") , .(iso3c, Year, Sex)]), Frmat = 1),
-  cbind(rbind(PopData[!Age%in%paste0("Deaths", 23:25) & !Age%in%paste0("Deaths", 3:6)],
-              PopData[Age%in%paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425") , .(iso3c, Year, Sex)]), Frmat = 2)
+  cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25)],
+              PopData[Age %in% paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 1),
+  cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25) & !Age %in% paste0("Deaths", 3:6)],
+              PopData[Age %in% paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 2)
 )
 
 PopData$Aggregated <- ifelse(PopData$Frmat == 2, FALSE, PopData$Age == "Deaths3456")
@@ -2323,9 +2957,9 @@ oszlopokat, hogy a saját adatformátumunkkal összekapcsolható legyen:
 ESres <- as.data.table(eurostat::get_eurostat("hlth_cd_aro"))
 ```
 
-    ## indexed 0B in  0s, 0B/sindexed 30.80MB in  0s, 153.51MB/sindexed 30.93MB in  0s, 153.45MB/sindexed 31.06MB in  0s, 153.43MB/sindexed 31.19MB in  0s, 153.55MB/sindexed 31.33MB in  0s, 153.57MB/sindexed 31.46MB in  0s, 153.74MB/sindexed 31.59MB in  0s, 153.89MB/sindexed 31.72MB in  0s, 154.05MB/sindexed 31.85MB in  0s, 154.10MB/sindexed 31.98MB in  0s, 154.06MB/sindexed 32.11MB in  0s, 154.04MB/sindexed 32.24MB in  0s, 154.15MB/sindexed 32.37MB in  0s, 154.29MB/sindexed 32.51MB in  0s, 154.43MB/sindexed 32.64MB in  0s, 154.58MB/sindexed 32.77MB in  0s, 154.70MB/sindexed 32.90MB in  0s, 154.85MB/sindexed 33.03MB in  0s, 155.00MB/sindexed 33.16MB in  0s, 155.18MB/sindexed 33.29MB in  0s, 155.36MB/sindexed 33.42MB in  0s, 155.54MB/sindexed 33.55MB in  0s, 155.71MB/sindexed 33.69MB in  0s, 155.89MB/sindexed 33.82MB in  0s, 156.10MB/sindexed 33.95MB in  0s, 156.32MB/sindexed 34.08MB in  0s, 156.46MB/sindexed 34.21MB in  0s, 156.60MB/sindexed 34.34MB in  0s, 156.75MB/sindexed 34.47MB in  0s, 156.89MB/sindexed 34.60MB in  0s, 157.02MB/sindexed 34.73MB in  0s, 157.16MB/sindexed 34.86MB in  0s, 157.30MB/sindexed 35.00MB in  0s, 157.44MB/sindexed 35.13MB in  0s, 157.58MB/sindexed 35.26MB in  0s, 157.58MB/sindexed 35.39MB in  0s, 157.64MB/sindexed 35.52MB in  0s, 157.65MB/sindexed 35.65MB in  0s, 157.73MB/sindexed 35.78MB in  0s, 157.82MB/sindexed 35.91MB in  0s, 157.91MB/sindexed 36.04MB in  0s, 158.00MB/sindexed 36.18MB in  0s, 158.11MB/sindexed 36.31MB in  0s, 158.20MB/sindexed 36.44MB in  0s, 158.31MB/sindexed 36.57MB in  0s, 158.39MB/sindexed 36.70MB in  0s, 158.51MB/sindexed 36.83MB in  0s, 158.60MB/sindexed 36.96MB in  0s, 158.68MB/sindexed 37.09MB in  0s, 158.77MB/sindexed 37.22MB in  0s, 158.71MB/sindexed 37.36MB in  0s, 158.66MB/sindexed 37.49MB in  0s, 158.73MB/sindexed 37.62MB in  0s, 158.74MB/sindexed 37.75MB in  0s, 158.71MB/sindexed 37.88MB in  0s, 158.83MB/sindexed 38.01MB in  0s, 158.95MB/sindexed 38.14MB in  0s, 158.88MB/sindexed 38.27MB in  0s, 158.95MB/sindexed 38.40MB in  0s, 159.01MB/sindexed 38.53MB in  0s, 159.05MB/sindexed 38.67MB in  0s, 159.19MB/sindexed 38.80MB in  0s, 159.31MB/sindexed 38.93MB in  0s, 159.44MB/sindexed 39.06MB in  0s, 159.57MB/sindexed 39.19MB in  0s, 159.69MB/sindexed 39.32MB in  0s, 159.81MB/sindexed 39.45MB in  0s, 159.95MB/sindexed 39.58MB in  0s, 160.08MB/sindexed 39.71MB in  0s, 160.22MB/sindexed 39.85MB in  0s, 160.36MB/sindexed 39.98MB in  0s, 160.49MB/sindexed 40.11MB in  0s, 160.62MB/sindexed 40.24MB in  0s, 160.74MB/sindexed 40.37MB in  0s, 160.81MB/sindexed 40.50MB in  0s, 160.89MB/sindexed 40.63MB in  0s, 160.95MB/sindexed 40.76MB in  0s, 160.97MB/sindexed 40.89MB in  0s, 161.02MB/sindexed 41.03MB in  0s, 160.92MB/sindexed 41.16MB in  0s, 160.79MB/sindexed 41.29MB in  0s, 160.84MB/sindexed 41.42MB in  0s, 160.75MB/sindexed 41.55MB in  0s, 160.77MB/sindexed 41.68MB in  0s, 160.83MB/sindexed 41.81MB in  0s, 160.86MB/sindexed 41.94MB in  0s, 160.82MB/sindexed 42.07MB in  0s, 160.84MB/sindexed 42.20MB in  0s, 160.90MB/sindexed 42.34MB in  0s, 160.90MB/sindexed 42.47MB in  0s, 160.94MB/sindexed 42.60MB in  0s, 160.96MB/sindexed 42.73MB in  0s, 160.98MB/sindexed 42.86MB in  0s, 161.03MB/sindexed 42.99MB in  0s, 161.12MB/sindexed 43.12MB in  0s, 161.02MB/sindexed 43.25MB in  0s, 160.96MB/sindexed 43.38MB in  0s, 160.86MB/sindexed 43.52MB in  0s, 160.81MB/sindexed 43.65MB in  0s, 160.84MB/sindexed 43.78MB in  0s, 160.96MB/sindexed 43.91MB in  0s, 161.07MB/sindexed 44.04MB in  0s, 161.18MB/sindexed 44.17MB in  0s, 161.27MB/sindexed 44.30MB in  0s, 161.37MB/sindexed 44.43MB in  0s, 161.46MB/sindexed 44.56MB in  0s, 161.57MB/sindexed 44.70MB in  0s, 161.67MB/sindexed 44.83MB in  0s, 161.75MB/sindexed 44.96MB in  0s, 161.80MB/sindexed 45.09MB in  0s, 161.88MB/sindexed 45.22MB in  0s, 161.95MB/sindexed 45.35MB in  0s, 162.05MB/sindexed 45.48MB in  0s, 162.17MB/sindexed 45.61MB in  0s, 162.30MB/sindexed 45.74MB in  0s, 162.43MB/sindexed 45.87MB in  0s, 147.14MB/sindexed 46.01MB in  0s, 147.17MB/sindexed 46.14MB in  0s, 147.30MB/sindexed 46.27MB in  0s, 147.44MB/sindexed 46.40MB in  0s, 147.53MB/sindexed 46.53MB in  0s, 147.60MB/sindexed 46.66MB in  0s, 147.54MB/sindexed 46.79MB in  0s, 147.61MB/sindexed 46.92MB in  0s, 147.62MB/sindexed 47.05MB in  0s, 147.75MB/sindexed 47.19MB in  0s, 147.87MB/sindexed 47.32MB in  0s, 148.01MB/sindexed 47.45MB in  0s, 148.11MB/sindexed 47.58MB in  0s, 148.23MB/sindexed 47.71MB in  0s, 148.37MB/sindexed 47.84MB in  0s, 148.49MB/sindexed 47.97MB in  0s, 148.61MB/sindexed 48.10MB in  0s, 148.69MB/sindexed 48.23MB in  0s, 148.73MB/sindexed 48.37MB in  0s, 148.77MB/sindexed 48.50MB in  0s, 148.87MB/sindexed 48.63MB in  0s, 148.98MB/sindexed 48.76MB in  0s, 149.08MB/sindexed 48.89MB in  0s, 149.15MB/sindexed 49.02MB in  0s, 149.24MB/sindexed 49.15MB in  0s, 149.31MB/sindexed 49.28MB in  0s, 149.40MB/sindexed 49.41MB in  0s, 149.47MB/sindexed 49.54MB in  0s, 149.42MB/sindexed 49.68MB in  0s, 149.39MB/sindexed 49.81MB in  0s, 149.45MB/sindexed 49.94MB in  0s, 149.51MB/sindexed 50.07MB in  0s, 149.57MB/sindexed 50.20MB in  0s, 149.67MB/sindexed 50.33MB in  0s, 149.74MB/sindexed 50.46MB in  0s, 149.82MB/sindexed 50.59MB in  0s, 149.92MB/sindexed 50.60MB in  0s, 149.63MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
+    ## indexed 0B in  0s, 0B/sindexed 31.98MB in  0s, 159.85MB/sindexed 32.11MB in  0s, 160.00MB/sindexed 32.24MB in  0s, 160.18MB/sindexed 32.37MB in  0s, 160.35MB/sindexed 32.51MB in  0s, 160.51MB/sindexed 32.64MB in  0s, 160.34MB/sindexed 32.77MB in  0s, 160.16MB/sindexed 32.90MB in  0s, 160.22MB/sindexed 33.03MB in  0s, 160.36MB/sindexed 33.16MB in  0s, 160.52MB/sindexed 33.29MB in  0s, 160.66MB/sindexed 33.42MB in  0s, 160.78MB/sindexed 33.55MB in  0s, 160.90MB/sindexed 33.69MB in  0s, 161.05MB/sindexed 33.82MB in  0s, 161.17MB/sindexed 33.95MB in  0s, 161.30MB/sindexed 34.08MB in  0s, 161.41MB/sindexed 34.21MB in  0s, 161.50MB/sindexed 34.34MB in  0s, 161.62MB/sindexed 34.47MB in  0s, 161.75MB/sindexed 34.60MB in  0s, 161.47MB/sindexed 34.73MB in  0s, 161.54MB/sindexed 34.86MB in  0s, 161.63MB/sindexed 35.00MB in  0s, 161.75MB/sindexed 35.13MB in  0s, 161.85MB/sindexed 35.26MB in  0s, 161.96MB/sindexed 35.39MB in  0s, 161.99MB/sindexed 35.52MB in  0s, 162.14MB/sindexed 35.65MB in  0s, 162.28MB/sindexed 35.78MB in  0s, 162.43MB/sindexed 35.91MB in  0s, 162.56MB/sindexed 36.04MB in  0s, 162.71MB/sindexed 36.18MB in  0s, 162.88MB/sindexed 36.31MB in  0s, 163.05MB/sindexed 36.44MB in  0s, 163.24MB/sindexed 36.57MB in  0s, 163.28MB/sindexed 36.70MB in  0s, 163.38MB/sindexed 36.83MB in  0s, 163.49MB/sindexed 36.96MB in  0s, 163.58MB/sindexed 37.09MB in  0s, 163.67MB/sindexed 37.22MB in  0s, 163.78MB/sindexed 37.36MB in  0s, 163.89MB/sindexed 37.49MB in  0s, 164.00MB/sindexed 37.62MB in  0s, 164.10MB/sindexed 37.75MB in  0s, 164.21MB/sindexed 37.88MB in  0s, 164.14MB/sindexed 38.01MB in  0s, 163.99MB/sindexed 38.14MB in  0s, 164.07MB/sindexed 38.27MB in  0s, 164.18MB/sindexed 38.40MB in  0s, 164.12MB/sindexed 38.53MB in  0s, 164.22MB/sindexed 38.67MB in  0s, 164.30MB/sindexed 38.80MB in  0s, 164.42MB/sindexed 38.93MB in  0s, 164.51MB/sindexed 39.06MB in  0s, 164.62MB/sindexed 39.19MB in  0s, 164.72MB/sindexed 39.32MB in  0s, 164.83MB/sindexed 39.45MB in  0s, 164.92MB/sindexed 39.58MB in  0s, 165.02MB/sindexed 39.71MB in  0s, 165.11MB/sindexed 39.85MB in  0s, 165.22MB/sindexed 39.98MB in  0s, 165.32MB/sindexed 40.11MB in  0s, 165.40MB/sindexed 40.24MB in  0s, 165.50MB/sindexed 40.37MB in  0s, 165.45MB/sindexed 40.50MB in  0s, 165.53MB/sindexed 40.63MB in  0s, 165.62MB/sindexed 40.76MB in  0s, 165.71MB/sindexed 40.89MB in  0s, 165.81MB/sindexed 41.03MB in  0s, 165.59MB/sindexed 41.16MB in  0s, 165.47MB/sindexed 41.29MB in  0s, 165.54MB/sindexed 41.42MB in  0s, 165.63MB/sindexed 41.55MB in  0s, 165.70MB/sindexed 41.68MB in  0s, 165.80MB/sindexed 41.81MB in  0s, 165.87MB/sindexed 41.94MB in  0s, 165.98MB/sindexed 42.07MB in  0s, 166.07MB/sindexed 42.20MB in  0s, 165.91MB/sindexed 42.34MB in  0s, 166.00MB/sindexed 42.47MB in  0s, 166.10MB/sindexed 42.60MB in  0s, 166.20MB/sindexed 42.73MB in  0s, 166.30MB/sindexed 42.86MB in  0s, 166.38MB/sindexed 42.99MB in  0s, 166.49MB/sindexed 43.12MB in  0s, 166.57MB/sindexed 43.25MB in  0s, 166.65MB/sindexed 43.38MB in  0s, 166.74MB/sindexed 43.52MB in  0s, 166.75MB/sindexed 43.65MB in  0s, 166.82MB/sindexed 43.78MB in  0s, 166.90MB/sindexed 43.91MB in  0s, 166.98MB/sindexed 44.04MB in  0s, 167.03MB/sindexed 44.17MB in  0s, 166.96MB/sindexed 44.30MB in  0s, 167.06MB/sindexed 44.43MB in  0s, 167.16MB/sindexed 44.56MB in  0s, 167.26MB/sindexed 44.70MB in  0s, 167.37MB/sindexed 44.83MB in  0s, 151.01MB/sindexed 44.96MB in  0s, 150.89MB/sindexed 45.09MB in  0s, 150.80MB/sindexed 45.22MB in  0s, 150.76MB/sindexed 45.35MB in  0s, 150.66MB/sindexed 45.48MB in  0s, 150.61MB/sindexed 45.61MB in  0s, 150.65MB/sindexed 45.74MB in  0s, 150.61MB/sindexed 45.87MB in  0s, 150.59MB/sindexed 46.01MB in  0s, 150.54MB/sindexed 46.14MB in  0s, 150.56MB/sindexed 46.27MB in  0s, 150.58MB/sindexed 46.40MB in  0s, 150.54MB/sindexed 46.53MB in  0s, 150.61MB/sindexed 46.66MB in  0s, 150.62MB/sindexed 46.79MB in  0s, 150.66MB/sindexed 46.92MB in  0s, 150.75MB/sindexed 47.05MB in  0s, 150.86MB/sindexed 47.19MB in  0s, 150.95MB/sindexed 47.32MB in  0s, 151.04MB/sindexed 47.45MB in  0s, 150.88MB/sindexed 47.58MB in  0s, 150.96MB/sindexed 47.71MB in  0s, 151.08MB/sindexed 47.84MB in  0s, 151.22MB/sindexed 47.97MB in  0s, 151.34MB/sindexed 48.10MB in  0s, 151.45MB/sindexed 48.23MB in  0s, 151.55MB/sindexed 48.37MB in  0s, 151.66MB/sindexed 48.50MB in  0s, 151.76MB/sindexed 48.63MB in  0s, 151.86MB/sindexed 48.76MB in  0s, 151.99MB/sindexed 48.89MB in  0s, 152.11MB/sindexed 49.02MB in  0s, 152.25MB/sindexed 49.15MB in  0s, 152.28MB/sindexed 49.28MB in  0s, 152.27MB/sindexed 49.41MB in  0s, 152.30MB/sindexed 49.54MB in  0s, 152.43MB/sindexed 49.68MB in  0s, 152.53MB/sindexed 49.81MB in  0s, 152.65MB/sindexed 49.94MB in  0s, 152.76MB/sindexed 50.07MB in  0s, 152.86MB/sindexed 50.20MB in  0s, 153.00MB/sindexed 50.33MB in  0s, 153.10MB/sindexed 50.46MB in  0s, 153.22MB/sindexed 50.59MB in  0s, 153.35MB/sindexed 50.72MB in  0s, 153.43MB/sindexed 50.86MB in  0s, 153.52MB/sindexed 50.99MB in  0s, 153.63MB/sindexed 51.12MB in  0s, 153.75MB/sindexed 51.25MB in  0s, 153.87MB/sindexed 51.38MB in  0s, 153.97MB/sindexed 51.51MB in  0s, 154.04MB/sindexed 51.64MB in  0s, 154.14MB/sindexed 51.77MB in  0s, 154.24MB/sindexed 51.90MB in  0s, 154.34MB/sindexed 52.04MB in  0s, 154.33MB/sindexed 52.17MB in  0s, 154.28MB/sindexed 52.30MB in  0s, 154.23MB/sindexed 52.43MB in  0s, 154.18MB/sindexed 52.56MB in  0s, 154.15MB/sindexed 52.69MB in  0s, 154.19MB/sindexed 52.82MB in  0s, 154.22MB/sindexed 52.95MB in  0s, 154.26MB/sindexed 53.08MB in  0s, 154.26MB/sindexed 53.21MB in  0s, 154.30MB/sindexed 53.35MB in  0s, 154.37MB/sindexed 53.48MB in  0s, 154.41MB/sindexed 53.61MB in  0s, 154.49MB/sindexed 53.74MB in  0s, 154.54MB/sindexed 53.87MB in  0s, 154.65MB/sindexed 54.00MB in  0s, 154.73MB/sindexed 54.13MB in  0s, 154.79MB/sindexed 54.25MB in  0s, 154.83MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
 
-    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpMVBNXM/eurostat/43d01f4a46ebe516c39884dcf6380cf1.rds
+    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\Rtmpe4ctJp/eurostat/922993c8c25e9bb762c7ce6e28864ba2.rds
 
 ``` r
 ESres <- ESres[!geo %in% c("EU27_2020", "EU28", "FX")]
@@ -2382,11 +3016,11 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-54-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-55-1.png)<!-- -->
 
 Szinte tökéletes az egyezés, minden kategóriánál jól egyezik a saját
 számunk az Eurostat-éval! (Teljesen egzakt egyezés valószínűleg nem
-várható az adatok utólag korrekciója miatt.)
+várható az adatok utólagos korrekciói miatt.)
 
 Következő lépésben bővítsük a validációt: ne csak Magyarországot
 vizsgáljuk, hanem a többi országot is! Először itt is nézzük meg, hogy
@@ -2401,6 +3035,7 @@ temp2 <- rbindlist(lapply(intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
                                          "death",  NA, NA, "None", "count", "Year",
                                          c("Year", "CauseGroup", "EurostatCode"), NULL,
                                          "Összesen", "Összesen", NULL, FALSE)$rd))
+temp2 <- temp2[value != 0]
 temp2 <- temp2[order(iso3c, Year, CauseGroup)]
 setkey(temp2, iso3c)
 
@@ -2409,11 +3044,12 @@ temp <- dataInputFun("Groups",
                      "Multiple", NA, intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
                      "death",  NA, NA, "None", "count", "Year",
                      c("Year", "CauseGroup", "EurostatCode"), NULL, "Összesen", "Összesen", NULL, TRUE)$rd
+temp <- temp[value != 0]
 
 identical(temp, temp2)
 ```
 
-    ## [1] FALSE
+    ## [1] TRUE
 
 Itt is rendben vagyunk. Nézzük most az eredményeket:
 
@@ -2424,9 +3060,14 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
 
-Továbbra is teljesen jó az egyezés!
+Továbbra is jó az egyezés! A kevés eltérést olyan adatok adják, ahol
+egyértelmű, hogy az Eurostat adatbázisban van hiba (a K72_75 és a
+B180_182 egy sor országban 0 értékű 2017-ben, de egyedül abban az évben,
+2016-ban és 2018-ban is normális, országtól függően akár sok ezres
+számok vannak, ezen kívül az U072 értékei valamiért 0-k Törökországra
+mindhárom éven keresztül, ami szintén nem reális).
 
 Végezetül utolsó lépésben tegyünk még egy bővítést: ne csak egyben
 nézzük az életkorokat és a nemeket, hanem vizsgáljuk meg ezen túlmenően
@@ -2452,16 +3093,9 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
 
-Itt sajnos már van eltérés. Megnézve a nyers adatokat, az derül ki, hogy
-a problémát Németország adja: vannak évek, amikor olyan életkori
-formátum-kódot jelentett, mintha 95 évig le lennének bontva az adatai,
-de valójában csak 85-ig voltak. (Emiatt rossz sorokkal történik az
-Eurostat-táblához kapcsolás.) Szerintem ez egyszerű elgépelés; már
-jeleztem a hibát a WHO-nak.
-
-TODO: további validációk
+Az eltérést úgy tűnik itt is ugyanazok a tényezők okozzák.
 
 ## A weboldal
 
@@ -2481,3 +3115,4 @@ Az oldal forráskódja letölhető innen:
 
 - [ ] 103-as (és esetleg egyéb) BNO-kódolási rendszerek bekapcsolása.
 - [ ] Az 1995 előtti korábbi BNO-k bekapcsolása.
+- [ ] További validációk.

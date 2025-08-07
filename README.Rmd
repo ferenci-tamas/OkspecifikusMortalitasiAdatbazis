@@ -335,8 +335,10 @@ unzip("./inputdata/morticd10_part2.zip", exdir = td)
 unzip("./inputdata/morticd10_part3.zip", exdir = td)
 unzip("./inputdata/morticd10_part4.zip", exdir = td)
 unzip("./inputdata/morticd10_part5.zip", exdir = td)
+unzip("./inputdata/morticd10_part6.zip", exdir = td)
 
-RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd10*", full.names = TRUE), fread))
+RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd10*",
+                                       full.names = TRUE), fread))
 ```
 
 Problémát jelenthetnek az ország-kódok, amelyek egy elég szokatlan, szerintem egyedül a WHO által használt kódrendszerrel vannak kódolva (pl. Magyarország kódja 4150). Szerencsére a WHO honlapjáról letölthető egy olyan [táblázat](https://apps.who.int/gho/data/node.metadata.COUNTRY?lang=en), melyben a szokásosabb kódok is megtalálhatóak e mellett, így ez lecserélhető valamilyen bevettebb kódra; én most a [háromjegyű ISO kódot](https://www.iso.org/iso-3166-country-codes.html) fogom a későbbiekben használni az egyértelmű azonosításhoz:
@@ -355,14 +357,11 @@ unique(merge(RawData, CountryCodes[, .(Country = MORT, CountryName = DisplayStri
              all.x = TRUE)[is.na(iso3c)]$Country)
 ```
 
-Ez két egészen minimális terület, de a teljesség kedvéért pótoljuk ki (szerencsére a WHO táblázatában kézzel megtalálhatóak, csak a mortalitási tábla szerinti kód nincs feltüntetve valamiért):
+Ez két egészen minimális eltérés, de a teljesség kedvéért pótoljuk ki (pláne, mert a WHO táblázatában igazából megtalálhatóak, csak a mortalitási tábla szerinti kód nincs feltüntetve valamiért):
 
 ```{r}
-CountryCodes <- rbind(CountryCodes,
-                      data.table(MORT = c(1303, 3283),
-                                 DisplayString = c("Mayotte", "Occupied Palestinian Territory"),
-                                 ISO = c("MYT", "PSE"),
-                                 WHO_REGION_CODE = c("", "EMR")), fill = TRUE)
+CountryCodes[DisplayString == "Mayotte"]$MORT <- 1303
+CountryCodes[DisplayString == "occupied Palestinian territory, including east Jerusalem"]$MORT <- 3283
 ```
 
 Most már végrehajthatjuk veszteség nélkül az összekapcsolást:
@@ -373,77 +372,35 @@ RawData <- merge(RawData, CountryCodes[, .(Country = MORT, CountryName = Display
                  by = "Country")
 ```
 
-Azért, hogy felesleges adatokat ne tároljunk, muszáj egy kicsit előrefutni: betöltjük a lélekszám-adatokat is a HMD-ből (részleteket lásd a következő pontban), hogy csak azokat az országokat őrizzük meg, amikhez van lélekszám-adat:
+Javítsunk még egy elég nyilvánvaló elírást:
 
 ```{r}
-unzip("./inputdata/population.zip", exdir = td)
-
-list.files(paste0(td, "/Population"))
+RawData[iso3c=="CYM"&Frmat==1]$Frmat <- 2
 ```
 
-Egyedül arra kell vigyázni, hogy a HMD-ben bizonyos országok kódjai, amik a fájlnév elején jelennek meg, nem ISO-kódok; ezeket -- hogy az ISO-kódokat ne kelljen bántani -- a fájlok átnevezésével oldjuk meg:
-
-```{r, echo = FALSE}
-file.rename(paste0(td, "/Population/DEUTNP.Population.txt"),
-            paste0(td, "/Population/DEU.Population.txt")) # a kód 4085, egész Németország
-file.rename(paste0(td, "/Population/FRATNP.Population.txt"),
-            paste0(td, "/Population/FRA.Population.txt"))
-file.rename(paste0(td, "/Population/GBR_NP.Population.txt"),
-            paste0(td, "/Population/GBR.Population.txt"))
-file.rename(paste0(td, "/Population/GBRTENW.Population.txt"),
-            paste0(td, "/Population/X10.Population.txt"))
-file.rename(paste0(td, "/Population/GBR_NIR.Population.txt"),
-            paste0(td, "/Population/X11.Population.txt"))
-file.rename(paste0(td, "/Population/GBR_SCO.Population.txt"),
-            paste0(td, "/Population/X12.Population.txt"))
-file.rename(paste0(td, "/Population/NZL_NP.Population.txt"),
-            paste0(td, "/Population/NZL.Population.txt"))
-
-PopList <- sapply(strsplit(list.files(paste0(td, "/Population")), ".", fixed = TRUE), `[`, 1)
-```
-
-Ez alapján leszűkítjük a mortalitási adatokat a releváns országokra:
+Csak azokat az országokat, illetve éveket tartjuk meg, amikor 104 volt a listaszám (ez azt jelenti, hogy 4 karakteres BNO-kóddal jelentik a halálokokat):
 
 ```{r}
-RawData <- RawData[iso3c %in% PopList]
+RawData <- RawData[List == "104"]
 ```
 
-Dobjuk ki a nem megfelelő kódokat használó országokat/éveket. A 101 és UE1 lehet, hogy némi kézi küzdelemmel menthető lenne, de ezzel most nem foglkozunk:
+A többi listaszám (101, UE1, 103, 10M) könnyen lehet, hogy több-kevesebb munkával menthető lenne -- össze kellene kapcsolni a különböző kódolásokat -- de ezzel most nem foglalkozunk.
+
+Dobjuk ki az életkori bontás nélküli országokat/éveket is, illetve azokat is, ahol nincs legalább 85 éves korig legalább 5 évente felbontva az elhunyt életkora (ez azt jelenti, hogy a 0, 1 és 2 életkori formátumkódú országokat/éveket tartjuk meg):
 
 ```{r}
-RawData <- RawData[!List%in%c("101", "UE1")]
+RawData <- RawData[Frmat %in% c(0, 1, 2)]
 ```
 
-A 103 és 10M pláne menthető lenne, most csak az egyszerűség kedvéért hagyjuk el, mert nem vészesen nagy veszteség:
+Van összesen `r sum(RawData$Deaths26, na.rm = TRUE)` életkorhoz nem rendelt halálozás, de ezek aránya nagyon egyenetlenül oszlik ezl az országok között. Most kidobjuk azokat az országokat, ahol a halálesetek több mint 5 ezreléke nincs életkorhoz rendelve:
 
 ```{r}
-knitr::kable(RawData[, as.list(prop.table(table(factor(List, levels = unique(RawData$List))))),
-                     .(CountryName)][order(`104`, decreasing = TRUE)])
+RawData <- RawData[!iso3c %in% RawData[, .(sum(Deaths26, na.rm = TRUE)/sum(Deaths1) > 0.005), .(iso3c)][V1 == TRUE]$iso3c]
 ```
 
-Úgyhogy hagyjuk el ezeket is:
+A maradéknál az életkorhoz nem rendelt halálozásokat automatikusan el fogjuk majd hagyni (később, amikor majd long formátumra váltunk).
 
-```{r}
-RawData <- RawData[!List%in%c("103", "10M")]
-```
-
-Így már csak egy kód marad, minden 104-es.
-
-Dobjuk ki az életkori bontás nélküli országokat/éveket (a többit nem, azokat megmentjük):
-
-```{r}
-RawData <- RawData[Frmat != 9]
-```
-
-Van összesen `r sum(RawData$Deaths26)` életkorhoz nem rendelt halálozás, de ezek aránya egyetlen országnál sem éri el még az 1 ezreléket sem:
-
-```{r}
-knitr::kable(RawData[, .(sum(Deaths26)/sum(Deaths1)*1000), .(CountryName)][order(V1)])
-```
-
-Ennek megfelelően ezeket is el fogjuk majd hagyni (később, amikor majd long formátumra váltunk).
-
-Van `r sum(RawData[Sex == 9]$Deaths1)` nemhez nem rendelt halálozás, ezeknek pláne kicsi a száma, egyszerűen elhagyjuk:
+Van `r sum(RawData[Sex == 9]$Deaths1)` nemhez nem rendelt halálozás, ezeknek pláne kicsi a száma (egyik országnál sincs 5 ezrelék felett), egyszerűen elhagyjuk:
 
 ```{r}
 RawData <- RawData[Sex != 9]
@@ -464,11 +421,6 @@ Ugyanez a helyzet a `Deaths3`-mal, ami a 2-es formátumnál jelent mást. Itt vi
 RawData$Deaths3456 <- ifelse(RawData$Frmat == 2, RawData$Deaths3,
                              RawData$Deaths3 + RawData$Deaths4 + RawData$Deaths5 +
                                RawData$Deaths6)
-```
-
-Ezt követően beállítjuk a `Deaths3` értékét is:
-
-```{r}
 RawData$Deaths3 <- ifelse(RawData$Frmat == 2, NA, RawData$Deaths3)
 ```
 
@@ -554,15 +506,17 @@ saveRDS(RawDataAll, "./procdata/RawDataAll.rds")
 
 ### Az országnevek és -azonosítók előkészítése
 
-A későbbiekhez jól fog jönni egy lista az országokról (kóddal és névvel), de hogy feleslegesek ne legyenek köztük, ezt is szűkítsük le azokra, amik előfordulnak az adatbázisban. A `countries` csomaggal magyar fordítást is kérünk; ez három kivétellel (ezeket a kódokat nem ismeri) mindenhol működik. Ezt a hármat mentsük el kézzel külön:
+A későbbiekhez jól fog jönni egy lista az országokról (kóddal és névvel), de hogy feleslegesek ne legyenek köztük, ezt is szűkítsük le azokra, amik előfordulnak az adatbázisban. A `countries` csomaggal magyar fordítást is kérünk; néhány kivétellel (ezeket a kódokat nem ismeri) mindenhol működik. Ezeket a kivételeket mentsük el kézzel külön:
 
 ```{r}
-CountryCodes <- CountryCodes[ISO%in%unique(RawData$iso3c) & !ISO%in%c("X10", "X11", "X12"),
-                             .(iso3c = ISO, Country = countries::country_name(DisplayString,
-                                                                              to = "name_hu"))]
-CountryCodes <- rbind(CountryCodes,
-                      data.table(iso3c = c("X10", "X11", "X12"),
-                                 Country = c("Anglia és Wales", "Észak-Írország", "Skócia")))
+CountryCodes <- CountryCodes[ISO %in% unique(RawData$iso3c) &
+                               !ISO%in%c("X10", "X11", "X12", "XOD", "ANT", "SCG") &
+                               !is.na(MORT) & ISO != ""]
+CountryCodes <- CountryCodes[, .(iso3c = ISO, Country = countries::country_name(DisplayString, to = "name_hu"))]
+CountryCodes <- rbind(
+  CountryCodes,
+  data.table(iso3c = c("X10", "X11", "X12", "XOD", "ANT", "SCG"),
+             Country = c("Anglia és Wales", "Észak-Írország", "Skócia", "Rodrigues", "Holland Antillák", "Szerbia és Montenegró")))
 ```
 
 Ezután kimenthetjük az adatokat:
@@ -598,7 +552,7 @@ ICDData$NEV <- stringi::stri_encode(ICDData$NEV, "windows-852", "UTF-8")
 Ebben vannak már nem érvényes kódok is, szerencsére ezek az `ERV_VEGE` nevű változó alapján könnyen azonosíthatóak:
 
 ```{r}
-ICDData <- ICDData[ERV_VEGE=="29991231"]
+ICDData <- ICDData[ERV_VEGE == "29991231"]
 ```
 
 Ahogy már korábban is említettem, ebben a táblában minden BNO-kód pontosan 5 karakter, elvileg tehát illeszthető a WHO-s táblával (a fenti átalakításaink után). A gyakorlatban azonban sajnos lesznek olyan kódok, amik a WHO-táblában szerepelnek, de a magyar BNO-törzsben mégsem. Nézzük meg, hogy mik ezek:
@@ -609,10 +563,12 @@ unique(merge(RawData, ICDData[, .(Cause = KOD10, Nev = NEV)], all.x = TRUE)[is.n
 
 Végignézve ezeket a kódokat, a következő problémák azonosíthatóak:
 
+<!-- Ezt újra végig kell nézni a 2025-ös frissítés fényében. -->
+
 - A magyar BNO-tábla néha nem tartalmazza az alábontásokat (és H0 végződést alkalmaz helyettük), pedig léteznek. Ilyen az A09, amiből csak A09H0 van a magyar táblában, holott a WHO-nál két alábontás is van, az A090 és az A099. További példa ilyenre a C80, I48, K85, L89, O60, O96, O97, R17, R95, Y70, Y71, Y72, Y73, Y74, Y75, Y76, Y77, Y78, Y79, Y80, Y81, Y82.
 - A WHO nem alkalmazza konzisztensen az "ahol nincs alábontás, ott 3 karakter van, ahol van, ott 4" szabályt. Ilyen például az A16, aminek egy egész sor alkategóriája van, mégis szerepel önmagában az A16 is. (Ami a fenti konverzióval A16H0-ba fog menni, csakhogy ilyet nem talál, mert a magyar törzsben -- immár helyesen -- csak az alábontott kódok szerepelnek.) Talán arról lehet szó, hogy vannak országok, amik nem használnak finom felbontást, bár az furcsa, hogy ez hogyan fér össze a 104-es kóddal, ami pont azt jelenti, hogy ahol van, ott 4 jegyet kell használni. További példa ilyenre a C22, C25, C34, C43, C45, C57, C71, C94, E11, E14, E78, E85, F05, F10, F73, G30, G40, G80, G90, G91, G93, I11, I12, I21, I25, I26, I40, I49, I51, I60, I63, I70, I71, I80, J15, J18, J20, J44, K25, K31, K35, K55, K58, K70, K92, L00, N47, Q21, R09, V03, V04, V05, V12, V13, Y06, Y07, Y60, Y63, Y85, Y88.
 - Azok az esetek, ahol a magyar rendszer elhasználja az 5. karaktert is valamilyen alábontásra, szintén zavart okoznak. Ilyen a B07, ami a WHO-nál -- alábontás nélküli -- "vírusos szemölcsök", csakhogy a magyar törzs bevezett egy alkategóriát (B0701) arra, hogy "vírusos szemölcsök talpi lokalizációban 10 db felett". Ezzel nincs is gond, a probléma az, hogy emiatt az eredeti kategória B0700 kódot kapott, holott logikusabb lenne a B07H0 (és a fenti mechanizmus is ezt fogja keresni, hiszen a WHO-nál csak a háromjegyű B07 van meg). További példa ilyenre a D66, D67, E43, L26, N40, N62.
-- Az előző egy alfaja, amikor a magyar rendszerben csak az öt jegyű alábontás szerepel, a négyjegyzű kategória nem is. Erre példa a D164, ami az arc- és agykoponya csontjainak jóindulatú daganata a WHO-nál, de a magyar rendszerben D1640 nincs, csak D1641 (agykoponya csontjainak jóindulatú daganata) és D1642 (arckoponya csontjainak jóindúlatú daganata). További példa ilyenre a K834.
+- Az előző egy alfaja, amikor a magyar rendszerben csak az öt jegyű alábontás szerepel, a négyjegyű kategória nem is. Erre példa a D164, ami az arc- és agykoponya csontjainak jóindulatú daganata a WHO-nál, de a magyar rendszerben D1640 nincs, csak D1641 (agykoponya csontjainak jóindulatú daganata) és D1642 (arckoponya csontjainak jóindúlatú daganata). További példa ilyenre a K834.
 - A legbizarrabb példa az A97. Ez a WHO táblája szerint a Dengue-láz, tehát nem is egy nagyon speciális egzotikum, miközben a magyar BNO-törzsben ilyen kód *nem is szerepel*... Hogy végképp teljes legyen a zavar, a Dengue-láz valójában *benne van* a magyar BNO-törzsben, csak épp A90-es kóddal -- ami viszont a hivatalos WHO-törzsben nem létezik! Hasonlóképp komplettül hiányzik a B98, C86, G14, J09, K64, R65, W46.
 - Az előbbi enyhébb esete, amikor egy alábontás hiányzik: a B17-ből a WHO-nál B170, B171, B172, B178 és B179 van, de a magyar táblából egész egyszerűen hiányzik a B179! Nem mindig a 9-essel (k.m.n) van a baj, a B33-nál a B334 hiányzik a magyar táblából (holott a WHO-nál megvan). További példa ilyenre a B485, C799, C814, C823, C824, C825, C826, C846, C847, C848, C849, C852, C884, C903, C916, C918, C926, C928, C933, C946, C964, C965, C966, C968, D465, D466, D474, D475, D685, D686, D893, E164, E883, G214, G233, G835, G836, G04, G905, G906, G907, H549, I272, I725, I726, J123, J211, J987, K025, K123, K227, K317, K352, K353, K358, K432, K433, K434, K435, K436, K437, K523, K553, K581, K582, K588, K635, K662, K754, L987, M317, M459, M726, M797, N181, N182, N183, N184, N185, N423, O142, O432, O987, P916, P917, Q315, R003, R263, R296, R502, R508, R636.
 - Érdekes módon van példa az ellentétére is: amikor a magyar tábla szerint van lebontás, de a WHO-nál valójában nincs, ilyen a J65. (A dolog azért gond, mert a lebontás léte miatt hiányozni fog a J65H0, holott a valóságban ez lesz az egyetlen kód itt.) További példa ilyenre a J80.
@@ -1022,99 +978,225 @@ saveRDS(ICDGroups, "./procdata/ICDGroups.rds")
 
 ### A lélekszám adatok előkészítése
 
-A WHO közöl ilyen táblát is a honlapján, így nagyon kézenfekvő lenne azt használni, csak az a probléma, hogy a felbontása néha kisebb, mint a mortalitási adatoké. (Például Magyarországnál 95 éves korig megy a mortalitási adatok lebontása, de a korfa cask 85-ig.) Hogy ezen ne veszítsünk információt, a lélekszám adatokat kézzel rakjuk össze.
+Bármilyen furcsa, a lélekszámok kérdése egyáltalán nem triviális. Sőt. Az ember azt gondolná, hogy ha valamit, akkor azt azért lehet tudni (legalábbis a fejlett világban), hogy mennyi egy ország lélekszáma, esetleg nem és életkor szerint lebontva, de a valóság -- első ránézésre igen meglepő módon -- nem ilyen egyszerű. Egész viccesnek tűnhet, de a helyzet az, hogy sokkal kevésbé egyértelműen lehet tudni, hogy hányan laktak tavaly január 1-én egy országban, mint azt, hogy hányan haltak meg tavaly szövettanilag igazolt kétoldali TBC kiújulásában... (Félretéve most az adatok megbízhatóságának a kérdését -- itt most pusztán arról beszélek, hogy magát a számot ismerjük-e, bárhogy is viszonyuljon az a valósághoz.)
 
-Az egyik adatforrás a [Human Mortality Database](https://mortality.org/):
+A probléma az, hogy a lélekszámokra több adatforrás érhető el, köztük jó minőségűek is, amik azonban, nagyon meglepő módon, *nem* adnak tökéletesen azonos eredményt. (Nagyjából azonosat igen, ezért is fogom majd azt mondani, hogy ebből hatalmas probléma szerencsére nincsen, de azért ez akkor is meghökkentő, azt gondolná az ember, hogy abban a kérdésben, hogy mennyi volt Magyarország lélekszáma tavaly, nem csak "nagyjából" kellene egyezniük a különböző oldalaknak...) Én négy nagy adatforrásról tudok, melyek szóba jöhetnek egy ilyen projekthez, tehát kellő hosszúságú, sok országra kiterjedő, lehetőleg egységes metodikájú, nem szerinti és kellő finomságú életkori lebontást is tartalmazó adatbázisok:
+
+1. A Human Mortality Database (HMD). Ez egy elképesztő méretű vállalkozás, mely visszamenve a primer adatforrásokig rekonstruálja számos ország lélekszámát, sok egyéb mortalitási adata mellett. A rekonstrukcióhoz kifinomult módszertant használ, melyet az összes országra egységesen alkalmaz. A projekt a [https://mortality.org/](https://mortality.org/) címen érhető el (az adatok letöltése regisztrációt igényel).
+2. Az Eurostat. Az Európai Unió statisztikai szerve az unió országaira gyűjti a lélekszám adatokat is; a mi szempontunkból a talán legfontosabb tábla a `demo_pjan`, mely tartalmazza az életkori és nemi lebontást ([https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table?lang=en](https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table?lang=en)).
+3. Az ENSZ World Population Prospects (WPP) adatai. Ez egy érdekes adatforrás, ugyanis a WPP eredendően népességszámra vonatkozó előrevetítéseket tartalmaz, de benne vannak a múltbeli tényadatok is, így a mi céljainkra is használható. A WPP a [https://population.un.org/wpp/](https://population.un.org/wpp/) címen érhető el.
+4. A WHO által a mortalitási adatbázishoz mellékelt lélekszám adatok. A WHO a mortalitási adatokat tartalmazó honlapján lélekszám adatokat is elérhetővé tesz ([https://www.who.int/data/data-collection-tools/who-mortality-database](https://www.who.int/data/data-collection-tools/who-mortality-database)).
+
+A HMD előnye, hogy nagyon hosszú idősort ad, számos országra, teljesen egységes módszertannal számolva. Tulajdonképpen ez lenne a legjobb választás; két problémától eltekintve. A kisebbik, hogy bár sok országra érhető el, de azért az egész világtól nagyon messze van (ráadásul ami benne van, az szinte kivétel nélkül mind fejlett világbeli ország). A nagyobb probléma, hogy nem frissül sűrűn -- Magyarországra például e pillanatban, 2025 közepén is csak a 2021-es adatok érhetőek el! Ez viszont nagy baj, mert így épp a legújabb -- és így sok szempontból a legfontosabb és legizgalmasabb -- halálozási adatok vesznének el, ha ezt használnánk a lélekszám adatforrásaként.
+
+Az Eurostat ilyen szempontból jobb: sűrűn frissül (Magyarországra már a 2024-es adat is elérhető), az esetleges nemzeti frissítéseket is gyorsan átvezetik, hátránya viszont, hogy ez sem világszintű földrajzi lefedésben, sőt, ez pláne nem az, hiszen értelemszerűen csak az európai uniós országokat tartalmazza, egy-két közeli országgal kiegészítve. Az Eurostat fő problémája az életkori felbontás esetlegessége: Magyarországra például csak 2013-tól van meg a lebontás 99 évig életévente. De a dologra tényleg az esetleges a jó szó, ugyanis 2012-ben csak 89 évig ment (és felette volt egybevonva az összes korév), előtte pedig csak 84 évig, de 2006-tól valamiért megint megvan legalább 89 évig...
+
+Hadd tegyek még egy érdekes, és potenciálisan meglepő megjegyzést az Eurostat és a HMD viszonylatában. Az Eurostat a "tényadatokat" tartalmazza, olyan értelemben, hogy ezek az országok statisztikai hivatalai által jelentett konkrét számok. (Ennek megfelelően ez egyezik a KSH-s adatközléssel Magyarországra vonatkozóan.) De akkor mi van a HMD-ben, ha nem a tényadatok? -- kérdezhetné valaki. Nem véletlenül fogalmaztam fent úgy, hogy a HMD "számolja" a lélekszámokat: a HMD is a statisztikai hivatalok által közölt számokból indul ki, de aztán azokat különböző matematikai modellekkel finomítja. Az érdekes az, hogy ezt a fejlett országoknál is megteszi: a fejlődő világnál ez könnyen érthető lenne, ott nem megbízhatóak vagy hiányosak az adatok és ezért kell valamilyen közelítés, de a HMD minden országnál egységesen végrehajt ilyen korrekciókat. (Hogy egész pontos legyek, 80 éves kor felett [teszi ezt](https://mortality.org/File/GetDocument/Public/Docs/MP-Summary.pdf). Indoklásként azt [hozzák fel](https://www.demographic-research.org/volumes/vol13/14/13-14.pdf), hogy a nagyon magas életkoroknál még a legfejlettebb országban is problémásak lehetnek a hivatalos statisztikák.) E simítások miatt a HMD-ben szereplő számok nem egyeznek teljesen pontosan az Eurostat-nál -- és így a KSH-nál -- elérhető számokkal.
+
+Az WPP adatok szintén számításon alapulnak (szemben az Eurostat-tal és hasonlóan a HMD-hez), bár a számítási metodikája egy fokkal talán kevésbé kifinomult és részletes mint a HMD-é. (Hozzá kell tenni, hogy bizonyos adatokat a HMD-től vesz át, de nem mindent.) Van viszont két hatalmas előnye: ez már tényleg minden országra elérhető, továbbá friss és gyorsan aktualizálódó. Ezen előnyök miatt ezt használtam fel a számításokhoz, de a következőkben bemutatom a kódot valamennyi adatbázis letöltéséhez, illetve egy gyors összehasonlítást is végzek közöttük (ez már csak a validáció miatt is fontos, hogy ne fordulhasson elő semmi kirívó különbség, ami kérdéseket vetne fel valamelyik adatbázis helyességét illetően).
+
+Végére hagytam a talán legkézenfekvőbb lehetőséget: a WHO által a mortalitási adatbázis "mellé adott" lélekszám-adatokat. Kézenfekvő, nem csak azért, mert ugyanarról a helyről rögtön és kényelmesen elérhető, hanem azért is, mert az ember azt várná, hogy ez az adatbázis akkor minden bizonnyal harmonizál (földrajzi és időbeli lefedését, életkori felbontását tekintve) a mortalitási adatokkal -- csakhogy ez nincs így. Magyarországnál például csak 85 évig megy az életkori lebontás (miközben a halálozási adatoké 95 évig), de a még durvább, hogy bizonyos évek egyszerűen hiányoznak, például 2020 és 2022 közötti adat nincsen (de 2019 és 2023 van). Mindezen okok miatt ezt az adatbázist nem használtam fel semmilyen formában.
+
+Még egyetlen megjegyzés a végére. A HMD és az Eurostat adatbázisa az ún. január 1. lélekszámokat tartalmazza. (A lélekszám adott időpontra vonatkozó adat: nincs értelme azt mondani, hogy "tavaly mennyi volt a lélekszám", csak azt, hogy tavaly adott napon mennyi volt, hiszen lehet, sőt biztos, hogy a különböző napokon nem ugyanannyi volt. Klasszikusan ezért használják a január 1-et, vagyis, hogy január 1-én mennyi volt a lélekszám; ez persze csak a számítási módszernek beadott elméleti időpont, nem arról van szó, hogy konkrétan egy nap alatt megszámoltak mindenkit, minden évben. A lélekszám meghatározása egyébként is külön tudomány, vannak népszámlálások, de csak ritkán, 10 évente, közte valamilyen módon tovább kell vezetni a népességet, rendelkezésre állnak születési, halálozás és vándorlási adatok...) Mortalitás számításakor azonban a január 1. lélekszám nem feltétlenül szerencsés. Kezdjük a történetet az elején: az eleve egy összevonás, hogy éves mortalitásról beszélünk. Elvileg lehetne finomítani, mondjuk havi mortalitást nézni: az adott hónapban elhunytak száma (esetleg adott halálokra szűkítve) osztva a hónap lélekszámával. Sőt, mehetünk tovább, és nézhetnénk akár napi mortalitást is. Ekkor már érezhetően nem lesz jelentősége a lélekszám változásának (attól minden bizonnyal eltekinthetünk, hogy egy nap reggel nem ugyanaz az ország lélekszáma, mint este). De mi a helyzet az éves mortalitásnál? Mi legyen a lélekszám éves mortalitásnál, ha közben minden nap más volt az aznapi lélekszám? A legjobb amit tehetünk, ha az átlagos lélekszámot használjuk, tehát összeadjuk mind a 365 napon az aznapi lélekszámot, majd azt elosztjuk 365-tel. A probléma az, hogy ezt nem tudjuk, hiszen nincsen napi lélekszámunk. Akkor használjuk a január 1-én érvényeset? Ez nem a legjobb gondolat: a baj az, hogy mi van, ha a népesség változik. Mondjuk folyamatosan csökken -- ekkor a január 1. lélekszám túl magas lesz, mert az éves átlag, amit igazából használnunk kellene, alatta lesz (növekvő lélekszámnál pont fordítva). Az ötlet azonban egyszerű: vegyük a *jövő* év január 1-én érvényes lélekszámot, és képezzük a kettő átlagát! Ezt évközepi lélekszámnak szokták hívni, hiszen ha egyenletes az átmenet a két érték között, akkor ez pont az év közepén érvényes lélekszám lesz. Számunka azonban van ennek a lélekszámnak egy másik, sokkal fontosabb tulajdonsága: ennyi lesz az átlag is! Ez csak akkor igaz egzaktan, ha egyenletes az átmenet, de további információ híján ez a legjobb, amit használhatunk. Úgyhogy a mortalitás számítását érdemes az évközepi lélekszámra alapozni. (Vegyük észre, hogy ennek egy ára azért van: egy évet elveszítünk, hiszen az utolsó évhez csak január 1. lélekszámot tudunk mondani, évközepit nem, nem lévén adat a következő január 1-ről.) A HMD és az Eurostat január 1. lélekszámokat tartalmaz, így azokat előbb át kellene számítani, még ha ez nem is bonyolult. Azonban a WPP egy további előnye, hogy az eleve évközepi lélekszámokat ad meg, így ott semmilyen számításra nincsen szükség.
+
+Jöjjenek most az egyes adatbázisok! Egyetlen megjegyzés mielőtt belevágunk: mivel a halálozási adatok úgy vannak megadva, hogy legfeljebb 95 évig van lebontva az életkor (a fölötte lévők mindenképp egyetlen életkori kategóriába összesítve szerepelnek), így a lélekszám-adatoknál is e szerint végzem az előfeldolgozást, a 95 és afölötti kategóriákat eleve egybevonva.
+
+#### Human Mortality Database
+
+A HMD letöltése és előfeldolgozása:
 
 ```{r}
-PopData <- rbindlist(lapply(unique(RawData$iso3c), function(iso)
-  cbind(fread(paste0(td, "/Population/", iso, ".Population.txt"), na.strings = "."),
-        iso3c = iso)))
-PopData$YearSign <- substring(PopData$Year, 5, 5)
-PopData$Year <- as.numeric(substring(PopData$Year, 1, 4))
+unzip("./inputdata/population.zip", exdir = td)
 
-PopData <- PopData[Year >= 1955] # ennél korábbi adat nincs is a WHO HMD-ben
+PopDataHMD <- fread(paste0(td, "/Population/Population.txt"),
+                    na.strings = ".")
 
-unique(PopData[YearSign != "", .(Year, iso3c)])
+PopDataHMD[PopName == "DEUTNP"]$PopName <- "DEU" # a kód 4085, egész Németország
+PopDataHMD[PopName == "DEUTE"]$PopName <- "XX6" # NDK
+PopDataHMD[PopName == "DEUTW"]$PopName <- "XX7" # NSZK
+PopDataHMD[PopName == "FRATNP"]$PopName <- "FRA"
+PopDataHMD[PopName == "GBR_NP"]$PopName <- "GBR"
+PopDataHMD[PopName == "GBRTENW"]$PopName <- "X10"
+PopDataHMD[PopName == "GBR_NIR"]$PopName <- "X11"
+PopDataHMD[PopName == "GBR_SCO"]$PopName <- "X12"
+PopDataHMD[PopName == "NZL_NP"]$PopName <- "NZL"
 
-plot(`+` ~ `-`, data = dcast(PopData[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
+names(PopDataHMD)[names(PopDataHMD) == "PopName"] <- "iso3c"
+
+PopDataHMD$YearSign <- substring(PopDataHMD$Year, 5, 5)
+PopDataHMD$Year <- as.numeric(substring(PopDataHMD$Year, 1, 4))
+
+PopDataHMD <- PopDataHMD[iso3c %in% unique(RawData$iso3c)]
+PopDataHMD <- PopDataHMD[Year %in% unique(RawData$Year)]
+
+unique(PopDataHMD[YearSign != "", .(Year, iso3c)])
+
+plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
 abline(0, 1)
-plot(log(`+`) ~ log(`-`), data = dcast(PopData[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
+plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
 abline(0, 1)
-dcast(PopData[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)]
-dcast(PopData[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)]
+dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)]
+dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)]
 # marginális különbség, a mínuszt használjuk
+PopDataHMD <- PopDataHMD[(YearSign == "")|(YearSign == "-")]
 
-PopData <- PopData[(YearSign == "")|(YearSign == "-")]
+PopDataHMD <- melt(PopDataHMD[, -"YearSign"], id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex",
+                   variable.factor = FALSE)[Sex != "Total"]
 
-PopData <- melt(PopData[, -"YearSign"], id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex",
-                variable.factor = FALSE)[Sex != "Total"]
+PopDataHMD$Sex <- factor(PopDataHMD$Sex, levels = c("Male", "Female"), labels = c("Férfi", "Nő"))
+names(PopDataHMD)[names(PopDataHMD) == "value"] <- "PopHMD"
 
-PopData$Sex <- factor(PopData$Sex, levels = c("Male", "Female"), labels = c("Férfi", "Nő"))
-PopData[Age == "110+"]$Age <- "110"
-PopData$Age <- as.numeric(PopData$Age)
+unique(PopDataHMD$Age)
+which(is.na(as.numeric(unique(PopDataHMD[Age != "110+"]$Age))))
+
+PopDataHMD[Age %in% c(95:109, "110+")]$Age <- 95
+PopDataHMD <- PopDataHMD[, .(PopHMD = sum(PopHMD)), .(iso3c, Year, Sex, Age)]
+PopDataHMD$Age <- as.numeric(PopDataHMD$Age)
 ```
 
-A másik az Eurostat, `demo_pjan` tábla:
+#### Eurostat
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
-PopDataES <- data.table(eurostat::get_eurostat("demo_pjan", use.data.table = TRUE))
+Az Eurostat adatbázis letöltése és előfeldolgozása:
+
+```{r}
+PopDataES <- data.table(eurostat::get_eurostat("demo_pjan", use.data.table = TRUE, cache = FALSE))
 PopDataES$Year <- lubridate::year(PopDataES$TIME_PERIOD)
-PopDataES <- PopDataES[Year >= 1955]
-PopDataES <- PopDataES[geo != "DE"]
-PopDataES[geo == "DE_TOT"]$geo <- "DE" # a halálozási adatok is egész Németországra vonatkoznak
-PopDataES <- PopDataES[!geo%in%c("EA19", "EA20", "EEA30_2007", "EEA31", "EFTA", "EU27_2007", 
-                                 "EU27_2020", "EU28", "FX", "XK")]
+PopDataES <- PopDataES[!geo%in%c("EA19", "EA20", "EEA30_2007", "EEA31", "EFTA", "EU27_2007",
+                                 "EU27_2020", "EU28", "FX", "XK", "DE_TOT")]
 PopDataES$iso3c <- countrycode::countrycode(PopDataES$geo, "eurostat", "iso3c")
-PopDataES <- PopDataES[iso3c%in%unique(RawData$iso3c)]
+PopDataES[iso3c == "DEU" & Year <= 1990]$iso3c <- "XX7" # NSZK
+
+PopDataES <- PopDataES[iso3c %in% unique(RawData$iso3c)]
+PopDataES <- PopDataES[Year %in% unique(RawData$Year)]
+
 PopDataES <- PopDataES[age != "TOTAL" & sex != "T"]
-PopDataES[age == "UNK"&values>0][order(values)]
-sum(PopDataES[age == "UNK"]$values) # nem sok, elhagyjuk
+PopDataES[age == "UNK"&values>0][order(values)] # Málta 1991 és 2000 között sok, azt elhagyjuk, a többi maradhat (csak töröljünk az UNK életkorúakat)
+sum(PopDataES[age == "UNK"]$values) 
+PopDataES[,.(values[age=="UNK"]/sum(values)*100) , .(iso3c, Year, sex)][V1!=0][order(V1)]
+PopDataES <- PopDataES[!(iso3c == "MLT" & Year >= 1991 & Year <= 2000)]
 PopDataES <- PopDataES[age != "UNK"]
 PopDataES$age <- substring(PopDataES$age, 2)
 PopDataES[age == "_LT1"]$age <- "0"
 PopDataES$sex <- factor(PopDataES$sex, levels = c("M", "F"), labels = c("Férfi", "Nő"))
 
-temp <- merge(PopData[, .(iso3c, Age = as.character(Age), Sex, Year, PopHMD = value)],
-              PopDataES[, .(iso3c, Age = age, Sex = sex, Year, PopES = values)],
-              by = c("iso3c", "Year", "Age", "Sex"), all = TRUE)
-plot(PopHMD ~ PopES, data = temp[!is.na(PopHMD)&!is.na(PopES)])
-temp[is.na(PopHMD)&!is.na(PopES)&Age!="_OPEN"][order(Year)]
-temp[!is.na(PopHMD)&is.na(PopES)]
+# Most csak azt őrizzük meg, ami 95-ig itt is megvan
+PopDataES <- merge(PopDataES, PopDataES[, .(!any(!(0:94) %in% age) & "_OPEN" %in% age),
+                                        .(iso3c, Year, sex)], by = c("iso3c", "Year", "sex"))[V1 == TRUE, -"V1"]
 
-PopDataES <- PopDataES[iso3c %in% unique(PopData$iso3c)] # szigorúan csak kiegészítjük a HMD-t
+unique(PopDataES$age)
+which(is.na(as.numeric(unique(PopDataES[age != "_OPEN"]$age))))
 
-PopDataES <- merge(PopDataES, unique(PopData[, .(iso3c, Year, HMD = TRUE)]),
-                   by = c("iso3c", "Year"), all.x = TRUE)
-PopDataES <- PopDataES[is.na(HMD)]
-
-PopDataES[iso3c=="GRC"&Year==1960]
-PopDataES <- PopDataES[!((iso3c == "GRC")&(Year == 1960))] # nincs rá egyáltalán semmilyen életkori bontás
-
-PopDataES <- PopDataES[!(iso3c == "GRC" & Year>=1961 & Year <= 1978)] # ezt nem lenne kötelező kidobni, később megmenthető,
-# most csak azért, hogy mindegyik meglegyen 95 évig
-
-PopDataES <- merge(PopDataES, PopDataES[, .(OPENYear = max(as.numeric(age[age != "_OPEN"]))) , .(iso3c, Year)], by = c("iso3c", "Year"))
-PopDataES[age == "_OPEN"]$age <- PopDataES[age == "_OPEN"]$OPENYear + 1
+PopDataES[age %in% c(95:99, "_OPEN")]$age <- 95
+PopDataES <- PopDataES[, .(values = sum(values)), .(iso3c, Year, sex, age)]
 PopDataES$age <- as.numeric(PopDataES$age)
+
+temp <- table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FALSE))
+temp
+# tail(temp, 60)
+# tail(temp, 20)
+
+PopDataES <- PopDataES[, .(iso3c, Year, Sex = sex, Age = age, PopES = values)]
+PopDataES <- PopDataES[order(iso3c, Year, Sex, Age)]
 ```
 
-Majd egyesítjük őket:
+#### World Population Prospects
+
+A World Population Prospects letöltése és előfeldolgozása:
 
 ```{r}
-PopData <- rbind(PopData[, .(iso3c, Year, Age, Sex, Pop = value)],
-                 PopDataES[, .(iso3c, Year, Age = age, Sex = sex, Pop = values)])
+PopDataUN <- fread(paste0(
+  "https://population.un.org/wpp/assets/Excel%20Files/",
+  "1_Indicator%20(Standard)/CSV_FILES/",
+  "WPP2024_PopulationBySingleAgeSex_Medium_1950-2023.csv.gz"))
+
+table(PopDataUN$AgeGrpSpan) # csak 1 és -1
+table(PopDataUN[AgeGrpSpan == -1]$AgeGrpStart) # a -1 az csak a 100+ kategória
+# tökéletes a megfeleltetés AgeGrp és AgeGrpStart között
+table(apply(table(PopDataUN$AgeGrp, PopDataUN$AgeGrpStart), 1, function(x) sum(x>0)))
+table(apply(table(PopDataUN$AgeGrp, PopDataUN$AgeGrpStart), 2, function(x) sum(x>0)))
+
+PopDataUN <- melt(PopDataUN[ISO3_code != "", .(iso3c = ISO3_code, Year = Time, Age = AgeGrpStart, PopMale, PopFemale)],
+                  id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex", variable.factor = FALSE)
+PopDataUN$Sex <- factor(PopDataUN$Sex, levels = c("PopMale", "PopFemale"), labels = c("Férfi", "Nő"))
+PopDataUN$value <- PopDataUN$value * 1000
+
+PopDataUN <- PopDataUN[iso3c %in% unique(RawData$iso3c)]
+PopDataUN <- PopDataUN[Year %in% unique(RawData$Year)]
+
+PopDataUN[Age %in% 95:100]$Age <- 95
+PopDataUN <- PopDataUN[, .(value = sum(value)), .(iso3c, Year, Sex, Age)]
+
+names(PopDataUN)[names(PopDataUN) == "value"] <- "PopUN"
+```
+
+#### Összevetés
+
+Elsőként nézzük meg, hogy a három adatbázis páronként mennyire hasonló
+
+```{r}
+temp <- Reduce(function(...) merge(..., by = c("iso3c", "Year", "Age", "Sex"), all = TRUE), list(PopDataHMD, PopDataUN, PopDataES))
+
+plot(PopHMD ~ PopES, data = temp[!is.na(PopHMD) & !is.na(PopES)])
+plot(PopHMD ~ PopUN, data = temp[!is.na(PopHMD) & !is.na(PopUN)])
+plot(PopUN ~ PopES, data = temp[!is.na(PopUN) & !is.na(PopES)])
+```
+
+Érdekes lehet egy konkrét kategória, mondjuk a magyar 0-1 évesek alakulása:
+
+```{r}
+temp <- melt(temp, id.vars = c("iso3c", "Year", "Age", "Sex"))
+
+ggplot2::ggplot(temp[iso3c == "HUN" & Age == 0],
+                ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
+  ggplot2::facet_wrap(~Sex) +
+  ggplot2::geom_line()
+```
+
+Érdekes az eltérés, de az 1-2 éves kategóriában eltűnik:
+
+```{r}
+ggplot2::ggplot(temp[iso3c == "HUN" & Age == 1],
+                ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
+  ggplot2::facet_wrap(~Sex) +
+  ggplot2::geom_line()
+```
+
+Kicsit zsúfolt ábra, de megnézhetjük az összes életkort egyben (az áttekinthetőség kedvéért a férfiakat ábrázolva):
+
+```{r}
+ggplot2::ggplot(temp[iso3c == "HUN" & Sex == "Férfi"],
+                ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
+  ggplot2::facet_wrap(~Age, scales = "free") +
+  ggplot2::geom_line()
+```
+
+Egy másik összevetési lehetőség az, ha az ország teljes lélekszámának a változását nézzük a különböző adatbázisok szerint:
+
+```{r}
+ggplot2::ggplot(temp[iso3c == "HUN", .(sum(value)) , .(Year, variable)],
+                ggplot2::aes(x = Year, y = V1, group = variable, color = variable)) +
+  ggplot2::geom_line()
+```
+
+#### Végleges adatbázis konvertálása, kimentése
+
+Ahogy fent is írtam, a későbbiekben az adatbázisok közül a WPP-t fogjuk használni. Vegyük ezt elő, és konvertáljuk olyan formátumra, ami majd illeszthető a halálozási adatokkal (magyarán, kategorizáljuk az életkorokat):
+
+```{r}
+PopData <- PopDataUN
+names(PopData)[names(PopData) == "PopUN"] <- "Pop"
 
 PopData$Age <- cut(PopData$Age, c(0:5, seq(10, 95, 5), Inf), right = FALSE, labels = paste0("Deaths", 2:25))
 PopData <- PopData[, .(Pop = sum(Pop)), .(iso3c, Year, Age, Sex)]
 
-PopData <- rbind(PopData, PopData[Age%in%paste0("Deaths", 3:6), .(Pop = sum(Pop), Age = "Deaths3456") , .(iso3c, Year, Sex)])
+PopData <- rbind(PopData, PopData[Age %in% paste0("Deaths", 3:6), .(Pop = sum(Pop), Age = "Deaths3456") , .(iso3c, Year, Sex)])
 
 PopData <- rbind(
   cbind(PopData, Frmat = 0),
-  cbind(rbind(PopData[!Age%in%paste0("Deaths", 23:25)], PopData[Age%in%paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425") , .(iso3c, Year, Sex)]), Frmat = 1),
-  cbind(rbind(PopData[!Age%in%paste0("Deaths", 23:25) & !Age%in%paste0("Deaths", 3:6)],
-              PopData[Age%in%paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425") , .(iso3c, Year, Sex)]), Frmat = 2)
+  cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25)],
+              PopData[Age %in% paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 1),
+  cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25) & !Age %in% paste0("Deaths", 3:6)],
+              PopData[Age %in% paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 2)
 )
 
 PopData$Aggregated <- ifelse(PopData$Frmat == 2, FALSE, PopData$Age == "Deaths3456")
@@ -1302,7 +1384,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-Szinte tökéletes az egyezés, minden kategóriánál jól egyezik a saját számunk az Eurostat-éval! (Teljesen egzakt egyezés valószínűleg nem várható az adatok utólag korrekciója miatt.)
+Szinte tökéletes az egyezés, minden kategóriánál jól egyezik a saját számunk az Eurostat-éval! (Teljesen egzakt egyezés valószínűleg nem várható az adatok utólagos korrekciói miatt.)
 
 Következő lépésben bővítsük a validációt: ne csak Magyarországot vizsgáljuk, hanem a többi országot is! Először itt is nézzük meg, hogy működik-e a többszörös (ország)lekérdezés:
 
@@ -1315,6 +1397,7 @@ temp2 <- rbindlist(lapply(intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
                                          "death",  NA, NA, "None", "count", "Year",
                                          c("Year", "CauseGroup", "EurostatCode"), NULL,
                                          "Összesen", "Összesen", NULL, FALSE)$rd))
+temp2 <- temp2[value != 0]
 temp2 <- temp2[order(iso3c, Year, CauseGroup)]
 setkey(temp2, iso3c)
 
@@ -1323,6 +1406,7 @@ temp <- dataInputFun("Groups",
                      "Multiple", NA, intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
                      "death",  NA, NA, "None", "count", "Year",
                      c("Year", "CauseGroup", "EurostatCode"), NULL, "Összesen", "Összesen", NULL, TRUE)$rd
+temp <- temp[value != 0]
 
 identical(temp, temp2)
 ```
@@ -1336,7 +1420,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-Továbbra is teljesen jó az egyezés!
+Továbbra is jó az egyezés! A kevés eltérést olyan adatok adják, ahol egyértelmű, hogy az Eurostat adatbázisban van hiba (a K72_75 és a B180_182 egy sor országban 0 értékű 2017-ben, de egyedül abban az évben, 2016-ban és 2018-ban is normális, országtól függően akár sok ezres számok vannak, ezen kívül az U072 értékei valamiért 0-k Törökországra mindhárom éven keresztül, ami szintén nem reális).
 
 Végezetül utolsó lépésben tegyünk még egy bővítést: ne csak egyben nézzük az életkorokat és a nemeket, hanem vizsgáljuk meg ezen túlmenően az összes életkori és nemi kategóriát külön-külön is! Az eredmény:
 
@@ -1360,9 +1444,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-Itt sajnos már van eltérés. Megnézve a nyers adatokat, az derül ki, hogy a problémát Németország adja: vannak évek, amikor olyan életkori formátum-kódot jelentett, mintha 95 évig le lennének bontva az adatai, de valójában csak 85-ig voltak. (Emiatt rossz sorokkal történik az Eurostat-táblához kapcsolás.) Szerintem ez egyszerű elgépelés; már jeleztem a hibát a WHO-nak.
-
-TODO: további validációk
+Az eltérést úgy tűnik itt is ugyanazok a tényezők okozzák.
 
 ## A weboldal
 
@@ -1374,3 +1456,4 @@ Az oldal forráskódja letölhető innen: [app.R](https://github.com/tamas-feren
 
 - [ ] 103-as (és esetleg egyéb) BNO-kódolási rendszerek bekapcsolása.
 - [ ] Az 1995 előtti korábbi BNO-k bekapcsolása.
+- [ ] További validációk.
