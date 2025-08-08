@@ -1023,7 +1023,8 @@ az országokat, ahol a halálesetek több mint 5 ezreléke nincs életkorhoz
 rendelve:
 
 ``` r
-RawData <- RawData[!iso3c %in% RawData[, .(sum(Deaths26, na.rm = TRUE)/sum(Deaths1) > 0.005), .(iso3c)][V1 == TRUE]$iso3c]
+RawData <- RawData[!iso3c %in% RawData[
+  , .(sum(Deaths26, na.rm = TRUE)/sum(Deaths1) > 0.005), .(iso3c)][V1 == TRUE]$iso3c]
 ```
 
 A maradéknál az életkorhoz nem rendelt halálozásokat automatikusan el
@@ -1209,7 +1210,8 @@ ismeri) mindenhol működik. Ezeket a kivételeket mentsük el kézzel külön:
 CountryCodes <- CountryCodes[ISO %in% unique(RawData$iso3c) &
                                !ISO%in%c("X10", "X11", "X12", "XOD", "ANT", "SCG") &
                                !is.na(MORT) & ISO != ""]
-CountryCodes <- CountryCodes[, .(iso3c = ISO, Country = countries::country_name(DisplayString, to = "name_hu"))]
+CountryCodes <- CountryCodes[
+  , .(iso3c = ISO, Country = countries::country_name(DisplayString, to = "name_hu"))]
 CountryCodes <- rbind(
   CountryCodes,
   data.table(iso3c = c("X10", "X11", "X12", "XOD", "ANT", "SCG"),
@@ -1810,37 +1812,45 @@ ICDGroups <- list(
                       (Kod23>=70&Kod23<=82)))]$KOD10,
       EurostatCode = NA, Name = "Kezeléssel elkerülhető halálozás")))
 
-ICDGroups$Individual <- setNames(ICDGroups$Individual, sapply(ICDGroups$Individual, function(gr) gr[["Name"]]))
-ICDGroups$Groups <- setNames(ICDGroups$Groups, sapply(ICDGroups$Groups, function(gr) gr[["Name"]]))
-ICDGroups$Avoidable <- setNames(ICDGroups$Avoidable, sapply(ICDGroups$Avoidable, function(gr) gr[["Name"]]))
+ICDGroups$Individual <- setNames(ICDGroups$Individual,
+                                 sapply(ICDGroups$Individual, function(gr) gr[["Name"]]))
+ICDGroups$Groups <- setNames(ICDGroups$Groups,
+                             sapply(ICDGroups$Groups, function(gr) gr[["Name"]]))
+ICDGroups$Avoidable <- setNames(ICDGroups$Avoidable,
+                                sapply(ICDGroups$Avoidable, function(gr) gr[["Name"]]))
 
-ICDGroups$Individual <- lapply(ICDGroups$Individual, function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
-ICDGroups$Groups <- lapply(ICDGroups$Groups, function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
-ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
+ICDGroups$Individual <- lapply(ICDGroups$Individual,
+                               function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
+ICDGroups$Groups <- lapply(ICDGroups$Groups,
+                           function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
+ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable,
+                              function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
 
-ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l) if(l$Name == "Megelőzhető halálozás") {
-  c(l[c("ICD", "Name", "EurostatCode")],
-    list(Weights = replace(
-      l$Weights,
-      which(l$ICD%in%ICDData[
-        (Kod1=="A"&((Kod23>=15&Kod23<=19)))|(Kod1=="B"&(Kod23==90))|(Kod1=="J"&(Kod23==65))|
-          (Kod1=="C"&(Kod23==53))|(Kod1=="E"&((Kod23>=10&Kod23<=14)))|
-          (Kod1=="I"&(Kod23%in%c(71, 15, 70)|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
-                        (Kod23>=60&Kod23<=69)|(KOD10=="I7390")))]$KOD10),
-      0.5)))
-} else l)
+ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l)
+  if(l$Name == "Megelőzhető halálozás") {
+    c(l[c("ICD", "Name", "EurostatCode")],
+      list(Weights = replace(
+        l$Weights,
+        which(l$ICD%in%ICDData[
+          (Kod1=="A"&((Kod23>=15&Kod23<=19)))|(Kod1=="B"&(Kod23==90))|(Kod1=="J"&(Kod23==65))|
+            (Kod1=="C"&(Kod23==53))|(Kod1=="E"&((Kod23>=10&Kod23<=14)))|
+            (Kod1=="I"&(Kod23%in%c(71, 15, 70)|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
+                          (Kod23>=60&Kod23<=69)|(KOD10=="I7390")))]$KOD10),
+        0.5)))
+  } else l)
 
-ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l) if(l$Name == "Kezeléssel elkerülhető halálozás") {
-  c(l[c("ICD", "Name", "EurostatCode")],
-    list(Weights = replace(
-      l$Weights,
-      which(l$ICD%in%ICDData[
-        (Kod1=="A"&((Kod23>=15&Kod23<=19)))|(Kod1=="B"&(Kod23==90))|(Kod1=="J"&(Kod23==65))|
-          (Kod1=="C"&(Kod23==53))|(Kod1=="E"&((Kod23>=10&Kod23<=14)))|
-          (Kod1=="I"&(Kod23%in%c(71, 15, 70)|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
-                        (Kod23>=60&Kod23<=69)|(KOD10=="I7390")))]$KOD10),
-      0.5)))
-} else l)
+ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l)
+  if(l$Name == "Kezeléssel elkerülhető halálozás") {
+    c(l[c("ICD", "Name", "EurostatCode")],
+      list(Weights = replace(
+        l$Weights,
+        which(l$ICD%in%ICDData[
+          (Kod1=="A"&((Kod23>=15&Kod23<=19)))|(Kod1=="B"&(Kod23==90))|(Kod1=="J"&(Kod23==65))|
+            (Kod1=="C"&(Kod23==53))|(Kod1=="E"&((Kod23>=10&Kod23<=14)))|
+            (Kod1=="I"&(Kod23%in%c(71, 15, 70)|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
+                          (Kod23>=60&Kod23<=69)|(KOD10=="I7390")))]$KOD10),
+        0.5)))
+  } else l)
 ```
 
 Mint látható, három nagy kategóriát hoztam létre: szerepeltettem az
@@ -1869,13 +1879,13 @@ most az adatok megbízhatóságának a kérdését – itt most pusztán arról
 beszélek, hogy magát a számot ismerjük-e, bárhogy is viszonyuljon az a
 valósághoz.)
 
-A probléma az, hogy a lélekszámokra több adatforrás érhető el, köztük jó
-minőségűek is, amik azonban, nagyon meglepő módon, *nem* adnak
+A probléma oka az, hogy a lélekszámokra több adatforrás érhető el,
+köztük jó minőségűek is, amik azonban, nagyon meglepő módon, *nem* adnak
 tökéletesen azonos eredményt. (Nagyjából azonosat igen, ezért is fogom
 majd azt mondani, hogy ebből hatalmas probléma szerencsére nincsen, de
 azért ez akkor is meghökkentő, azt gondolná az ember, hogy abban a
 kérdésben, hogy mennyi volt Magyarország lélekszáma tavaly, nem csak
-„nagyjából” kellene egyezniük a különböző oldalaknak…) Én négy nagy
+„nagyjából” kellene egyezniük a különböző adatforrásoknak…) Én négy nagy
 adatforrásról tudok, melyek szóba jöhetnek egy ilyen projekthez, tehát
 kellő hosszúságú, sok országra kiterjedő, lehetőleg egységes metodikájú,
 nem szerinti és kellő finomságú életkori lebontást is tartalmazó
@@ -1893,7 +1903,7 @@ adatbázisok:
     nemi lebontást
     (<https://ec.europa.eu/eurostat/databrowser/view/demo_pjan/default/table?lang=en>).
 3.  Az ENSZ World Population Prospects (WPP) adatai. Ez egy érdekes
-    adatforrás, ugyanis a WPP eredendően népességszámra vonatkozó
+    adatforrás, ugyanis a WPP alapvetően népességszámra vonatkozó
     előrevetítéseket tartalmaz, de benne vannak a múltbeli tényadatok
     is, így a mi céljainkra is használható. A WPP a
     <https://population.un.org/wpp/> címen érhető el.
@@ -1915,15 +1925,14 @@ használnánk a lélekszám adatforrásaként.
 
 Az Eurostat ilyen szempontból jobb: sűrűn frissül (Magyarországra már a
 2024-es adat is elérhető), az esetleges nemzeti frissítéseket is gyorsan
-átvezetik, hátránya viszont, hogy ez sem világszintű földrajzi
-lefedésben, sőt, ez pláne nem az, hiszen értelemszerűen csak az európai
-uniós országokat tartalmazza, egy-két közeli országgal kiegészítve. Az
-Eurostat fő problémája az életkori felbontás esetlegessége:
-Magyarországra például csak 2013-tól van meg a lebontás 99 évig
-életévente. De a dologra tényleg az esetleges a jó szó, ugyanis 2012-ben
-csak 89 évig ment (és felette volt egybevonva az összes korév), előtte
-pedig csak 84 évig, de 2006-tól valamiért megint megvan legalább 89
-évig…
+átvezetik, hátránya viszont, hogy ez sem világszintű, sőt, ez pláne nem
+az, hiszen értelemszerűen csak az európai uniós országokat tartalmazza,
+egy-két közeli országgal kiegészítve. Az Eurostat fő problémája ezen túl
+az életkori felbontás esetlegessége: Magyarországra például csak
+2013-tól van meg a lebontás 99 évig életévente. De a dologra tényleg az
+esetleges a jó szó, ugyanis 2012-ben csak 89 évig ment (és felette volt
+egybevonva az összes korév), előtte pedig csak 84 évig, de 2006-tól
+valamiért megint megvan legalább 89 évig…
 
 Hadd tegyek még egy érdekes, és potenciálisan meglepő megjegyzést az
 Eurostat és a HMD viszonylatában. Az Eurostat a „tényadatokat”
@@ -1941,12 +1950,12 @@ ilyen korrekciókat. (Hogy egész pontos legyek, 80 éves kor felett [teszi
 ezt](https://mortality.org/File/GetDocument/Public/Docs/MP-Summary.pdf).
 Indoklásként azt [hozzák
 fel](https://www.demographic-research.org/volumes/vol13/14/13-14.pdf),
-hogy a nagyon magas életkoroknál még a legfejlettebb országban is
+hogy a nagyon magas életkoroknál még a fejlett országokban is
 problémásak lehetnek a hivatalos statisztikák.) E simítások miatt a
 HMD-ben szereplő számok nem egyeznek teljesen pontosan az Eurostat-nál –
 és így a KSH-nál – elérhető számokkal.
 
-Az WPP adatok szintén számításon alapulnak (szemben az Eurostat-tal és
+A WPP adatok szintén számításon alapulnak (szemben az Eurostat-tal és
 hasonlóan a HMD-hez), bár a számítási metodikája egy fokkal talán
 kevésbé kifinomult és részletes mint a HMD-é. (Hozzá kell tenni, hogy
 bizonyos adatokat a HMD-től vesz át, de nem mindent.) Van viszont két
@@ -1958,17 +1967,17 @@ már csak a validáció miatt is fontos, hogy ne fordulhasson elő semmi
 kirívó különbség, ami kérdéseket vetne fel valamelyik adatbázis
 helyességét illetően).
 
-Végére hagytam a talán legkézenfekvőbb lehetőséget: a WHO által a
-mortalitási adatbázis „mellé adott” lélekszám-adatokat. Kézenfekvő, nem
-csak azért, mert ugyanarról a helyről rögtön és kényelmesen elérhető,
-hanem azért is, mert az ember azt várná, hogy ez az adatbázis akkor
-minden bizonnyal harmonizál (földrajzi és időbeli lefedését, életkori
-felbontását tekintve) a mortalitási adatokkal – csakhogy ez nincs így.
-Magyarországnál például csak 85 évig megy az életkori lebontás (miközben
-a halálozási adatoké 95 évig), de a még durvább, hogy bizonyos évek
-egyszerűen hiányoznak, például 2020 és 2022 közötti adat nincsen (de
-2019 és 2023 van). Mindezen okok miatt ezt az adatbázist nem használtam
-fel semmilyen formában.
+A végére hagytam a talán legkézenfekvőbb lehetőséget: a WHO által a
+mortalitási adatbázis „mellé adott” lélekszám-adatokat. Kézenfekvő lenne
+a használata, nem csak azért, mert ugyanarról a helyről rögtön és
+kényelmesen elérhető, hanem azért is, mert az ember azt várná, hogy ez
+az adatbázis akkor minden bizonnyal harmonizál (földrajzi és időbeli
+lefedését, életkori felbontását tekintve) a mortalitási adatokkal –
+csakhogy ez nincs így. Magyarországnál például csak 85 évig megy az
+életkori lebontás (miközben a halálozási adatoké 95 évig), de a még
+durvább, hogy bizonyos évek egyszerűen hiányoznak, például 2020 és 2022
+közötti adat nincsen (de 2019 és 2023 van). Mindezen okok miatt ezt az
+adatbázist nem használtam fel semmilyen formában.
 
 Még egyetlen megjegyzés a végére. A HMD és az Eurostat adatbázisa az ún.
 január 1. lélekszámokat tartalmazza. (A lélekszám adott időpontra
@@ -1988,39 +1997,39 @@ beszélünk. Elvileg lehetne finomítani, mondjuk havi mortalitást nézni:
 az adott hónapban elhunytak száma (esetleg adott halálokra szűkítve)
 osztva a hónap lélekszámával. Sőt, mehetünk tovább, és nézhetnénk akár
 napi mortalitást is. Ekkor már érezhetően nem lesz jelentősége a
-lélekszám változásának (attól minden bizonnyal eltekinthetünk, hogy egy
-nap reggel nem ugyanaz az ország lélekszáma, mint este). De mi a helyzet
-az éves mortalitásnál? Mi legyen a lélekszám éves mortalitásnál, ha
-közben minden nap más volt az aznapi lélekszám? A legjobb amit tehetünk,
-ha az átlagos lélekszámot használjuk, tehát összeadjuk mind a 365 napon
-az aznapi lélekszámot, majd azt elosztjuk 365-tel. A probléma az, hogy
-ezt nem tudjuk, hiszen nincsen napi lélekszámunk. Akkor használjuk a
-január 1-én érvényeset? Ez nem a legjobb gondolat: a baj az, hogy mi
-van, ha a népesség változik. Mondjuk folyamatosan csökken – ekkor a
-január 1. lélekszám túl magas lesz, mert az éves átlag, amit igazából
-használnunk kellene, alatta lesz (növekvő lélekszámnál pont fordítva).
-Az ötlet azonban egyszerű: vegyük a *jövő* év január 1-én érvényes
-lélekszámot, és képezzük a kettő átlagát! Ezt évközepi lélekszámnak
-szokták hívni, hiszen ha egyenletes az átmenet a két érték között, akkor
-ez pont az év közepén érvényes lélekszám lesz. Számunka azonban van
-ennek a lélekszámnak egy másik, sokkal fontosabb tulajdonsága: ennyi
-lesz az átlag is! Ez csak akkor igaz egzaktan, ha egyenletes az átmenet,
-de további információ híján ez a legjobb, amit használhatunk. Úgyhogy a
-mortalitás számítását érdemes az évközepi lélekszámra alapozni. (Vegyük
-észre, hogy ennek egy ára azért van: egy évet elveszítünk, hiszen az
-utolsó évhez csak január 1. lélekszámot tudunk mondani, évközepit nem,
-nem lévén adat a következő január 1-ről.) A HMD és az Eurostat január 1.
-lélekszámokat tartalmaz, így azokat előbb át kellene számítani, még ha
-ez nem is bonyolult. Azonban a WPP egy további előnye, hogy az eleve
-évközepi lélekszámokat ad meg, így ott semmilyen számításra nincsen
-szükség.
+lélekszám változásának (attól minden bizonnyal eltekinthetünk a legtöbb
+esetben, hogy egy nap reggel nem ugyanaz az ország lélekszáma, mint
+este). De mi a helyzet az éves mortalitásnál? Mi legyen a lélekszám éves
+mortalitásnál, ha közben minden nap más volt az aznapi lélekszám? A
+legjobb amit tehetünk, ha az átlagos lélekszámot használjuk, tehát
+összeadjuk mind a 365 napon az aznapi lélekszámot, majd azt elosztjuk
+365-tel. A probléma az, hogy ezt nem tudjuk, hiszen nincsen napi
+lélekszámunk. Akkor használjuk a január 1-én érvényeset? Ez nem a
+legjobb gondolat: a baj az, hogy mi van, ha a népesség változik, mondjuk
+folyamatosan csökken – ekkor a január 1. lélekszám túl magas lesz, mert
+az éves átlag, amit igazából használnunk kellene, alatta lesz (növekvő
+lélekszámnál pont fordítva). Az ötlet azonban egyszerű: vegyük a *jövő*
+év január 1-én érvényes lélekszámot, és képezzük a kettő átlagát! Ezt
+évközepi lélekszámnak szokták hívni, hiszen ha egyenletes az átmenet a
+két érték között, akkor ez pont az év közepén érvényes lélekszám lesz.
+Számunka azonban van ennek a lélekszámnak egy másik, sokkal fontosabb
+tulajdonsága: ennyi lesz az átlagos lélekszám is! Ez csak akkor igaz
+egzaktan, ha egyenletes az átmenet, de további információ híján ez a
+legjobb, amit használhatunk. Úgyhogy a mortalitás számítását érdemes az
+évközepi lélekszámra alapozni. (Vegyük észre, hogy ennek egy ára azért
+van: egy évet elveszítünk, hiszen az utolsó évhez csak január 1.
+lélekszámot tudunk mondani, évközepit nem, nem lévén adat a következő
+január 1-ről.) A HMD és az Eurostat január 1. lélekszámokat tartalmaz,
+így azokat előbb át kellene számítani, még ha ez nem is bonyolult.
+Azonban a WPP egy további előnye, hogy az eleve évközepi lélekszámokat
+ad meg, így ott semmilyen számításra nincsen szükség.
 
 Jöjjenek most az egyes adatbázisok! Egyetlen megjegyzés mielőtt
 belevágunk: mivel a halálozási adatok úgy vannak megadva, hogy
-legfeljebb 95 évig van lebontva az életkor (a fölötte lévők mindenképp
-egyetlen életkori kategóriába összesítve szerepelnek), így a
-lélekszám-adatoknál is e szerint végzem az előfeldolgozást, a 95 és
-afölötti kategóriákat eleve egybevonva.
+legfeljebb 95 évig van lebontva az életkor a mortalitási adatbázisban (a
+fölötte lévők mindenképp egyetlen életkori kategóriába összesítve
+szerepelnek), így a lélekszám-adatoknál is e szerint végzem az
+előfeldolgozást, a 95 és afölötti kategóriákat eleve egybevonom.
 
 #### Human Mortality Database
 
@@ -2061,21 +2070,24 @@ unique(PopDataHMD[YearSign != "", .(Year, iso3c)])
     ## 4:  2001    POL
 
 ``` r
-plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
+plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
+                             value.var = "Total"))
 abline(0, 1)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 ``` r
-plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total"))
+plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
+                                       value.var = "Total"))
 abline(0, 1)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-40-2.png)<!-- -->
 
 ``` r
-dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)]
+dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
+  , .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)]
 ```
 
     ##       iso3c    Age  Year         +         -        V6
@@ -2093,7 +2105,8 @@ dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Tota
     ## 444:    NZL   110+  1991      0.00      0.00       NaN
 
 ``` r
-dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[, .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)]
+dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
+  , .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)]
 ```
 
     ##       iso3c    Age  Year      +        -       V6
@@ -2114,8 +2127,8 @@ dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Tota
 # marginális különbség, a mínuszt használjuk
 PopDataHMD <- PopDataHMD[(YearSign == "")|(YearSign == "-")]
 
-PopDataHMD <- melt(PopDataHMD[, -"YearSign"], id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex",
-                   variable.factor = FALSE)[Sex != "Total"]
+PopDataHMD <- melt(PopDataHMD[, -"YearSign"], id.vars = c("iso3c", "Year", "Age"),
+                   variable.name = "Sex", variable.factor = FALSE)[Sex != "Total"]
 
 PopDataHMD$Sex <- factor(PopDataHMD$Sex, levels = c("Male", "Female"), labels = c("Férfi", "Nő"))
 names(PopDataHMD)[names(PopDataHMD) == "value"] <- "PopHMD"
@@ -2164,69 +2177,9 @@ PopDataES <- PopDataES[iso3c %in% unique(RawData$iso3c)]
 PopDataES <- PopDataES[Year %in% unique(RawData$Year)]
 
 PopDataES <- PopDataES[age != "TOTAL" & sex != "T"]
-PopDataES[age == "UNK"&values>0][order(values)] # Málta 1991 és 2000 között sok, azt elhagyjuk, a többi maradhat (csak töröljünk az UNK életkorúakat)
-```
-
-    ##       freq   unit    age    sex    geo TIME_PERIOD values  Year  iso3c
-    ##     <char> <char> <char> <char> <char>      <Date>  <num> <num> <char>
-    ##  1:      A     NR    UNK      M     HR  2011-01-01      1  2011    HRV
-    ##  2:      A     NR    UNK      F     HR  2010-01-01      3  2010    HRV
-    ##  3:      A     NR    UNK      M     HR  2010-01-01      3  2010    HRV
-    ##  4:      A     NR    UNK      F     HR  2009-01-01      5  2009    HRV
-    ##  5:      A     NR    UNK      F     HR  2008-01-01      7  2008    HRV
-    ##  6:      A     NR    UNK      F     HR  2007-01-01      9  2007    HRV
-    ##  7:      A     NR    UNK      M     HR  2009-01-01      9  2009    HRV
-    ##  8:      A     NR    UNK      F     HR  2006-01-01     12  2006    HRV
-    ##  9:      A     NR    UNK      M     EE  1988-01-01     18  1988    EST
-    ## 10:      A     NR    UNK      F     HR  2005-01-01     18  2005    HRV
-    ## 11:      A     NR    UNK      M     HR  2008-01-01     18  2008    HRV
-    ## 12:      A     NR    UNK      F     EE  1988-01-01     23  1988    EST
-    ## 13:      A     NR    UNK      F     HR  2004-01-01     23  2004    HRV
-    ## 14:      A     NR    UNK      M     HR  2007-01-01     28  2007    HRV
-    ## 15:      A     NR    UNK      F     HR  2003-01-01     29  2003    HRV
-    ## 16:      A     NR    UNK      F     HR  2002-01-01     33  2002    HRV
-    ## 17:      A     NR    UNK      M     HR  2006-01-01     41  2006    HRV
-    ## 18:      A     NR    UNK      F     HR  2001-01-01     42  2001    HRV
-    ## 19:      A     NR    UNK      M     HR  2005-01-01     49  2005    HRV
-    ## 20:      A     NR    UNK      M     HR  2004-01-01     60  2004    HRV
-    ## 21:      A     NR    UNK      M     HR  2003-01-01     68  2003    HRV
-    ## 22:      A     NR    UNK      M     HR  2002-01-01     79  2002    HRV
-    ## 23:      A     NR    UNK      M     HR  2001-01-01     83  2001    HRV
-    ## 24:      A     NR    UNK      M     GE  2011-01-01     87  2011    GEO
-    ## 25:      A     NR    UNK      M     GE  2009-01-01    200  2009    GEO
-    ## 26:      A     NR    UNK      M     GE  2010-01-01    201  2010    GEO
-    ## 27:      A     NR    UNK      F     GE  2011-01-01    320  2011    GEO
-    ## 28:      A     NR    UNK      F     GE  2009-01-01    360  2009    GEO
-    ## 29:      A     NR    UNK      F     GE  2010-01-01    361  2010    GEO
-    ## 30:      A     NR    UNK      F     GE  2008-01-01    492  2008    GEO
-    ## 31:      A     NR    UNK      M     GE  2008-01-01    881  2008    GEO
-    ## 32:      A     NR    UNK      F     GE  2007-01-01    978  2007    GEO
-    ## 33:      A     NR    UNK      M     GE  2007-01-01   1039  2007    GEO
-    ## 34:      A     NR    UNK      F     GE  2006-01-01   1225  2006    GEO
-    ## 35:      A     NR    UNK      M     GE  2006-01-01   1391  2006    GEO
-    ## 36:      A     NR    UNK      M     MT  1991-01-01   2157  1991    MLT
-    ## 37:      A     NR    UNK      M     MT  1992-01-01   2158  1992    MLT
-    ## 38:      A     NR    UNK      M     MT  1993-01-01   2222  1993    MLT
-    ## 39:      A     NR    UNK      M     MT  1994-01-01   2239  1994    MLT
-    ## 40:      A     NR    UNK      M     MT  1995-01-01   2241  1995    MLT
-    ## 41:      A     NR    UNK      M     MT  1997-01-01   3133  1997    MLT
-    ## 42:      A     NR    UNK      M     MT  1998-01-01   3304  1998    MLT
-    ## 43:      A     NR    UNK      M     MT  1996-01-01   3379  1996    MLT
-    ## 44:      A     NR    UNK      M     MT  1999-01-01   3431  1999    MLT
-    ## 45:      A     NR    UNK      F     MT  1996-01-01   3610  1996    MLT
-    ## 46:      A     NR    UNK      M     MT  2000-01-01   3839  2000    MLT
-    ## 47:      A     NR    UNK      F     MT  1991-01-01   3841  1991    MLT
-    ## 48:      A     NR    UNK      F     MT  1992-01-01   4080  1992    MLT
-    ## 49:      A     NR    UNK      F     MT  1993-01-01   4256  1993    MLT
-    ## 50:      A     NR    UNK      F     MT  1997-01-01   4314  1997    MLT
-    ## 51:      A     NR    UNK      F     MT  1998-01-01   4359  1998    MLT
-    ## 52:      A     NR    UNK      F     MT  1999-01-01   4448  1999    MLT
-    ## 53:      A     NR    UNK      F     MT  1994-01-01   4491  1994    MLT
-    ## 54:      A     NR    UNK      F     MT  2000-01-01   4719  2000    MLT
-    ## 55:      A     NR    UNK      F     MT  1995-01-01   4741  1995    MLT
-    ##       freq   unit    age    sex    geo TIME_PERIOD values  Year  iso3c
-
-``` r
+# Málta 1991 és 2000 között sok, azt elhagyjuk, a többi maradhat (csak
+# töröljünk az UNK életkorúakat)
+# PopDataES[age == "UNK"&values>0][order(values)]
 sum(PopDataES[age == "UNK"]$values) 
 ```
 
@@ -2303,8 +2256,9 @@ PopDataES[age == "_LT1"]$age <- "0"
 PopDataES$sex <- factor(PopDataES$sex, levels = c("M", "F"), labels = c("Férfi", "Nő"))
 
 # Most csak azt őrizzük meg, ami 95-ig itt is megvan
-PopDataES <- merge(PopDataES, PopDataES[, .(!any(!(0:94) %in% age) & "_OPEN" %in% age),
-                                        .(iso3c, Year, sex)], by = c("iso3c", "Year", "sex"))[V1 == TRUE, -"V1"]
+PopDataES <- merge(PopDataES, PopDataES[
+  , .(!any(!(0:94) %in% age) & "_OPEN" %in% age),
+  .(iso3c, Year, sex)], by = c("iso3c", "Year", "sex"))[V1 == TRUE, -"V1"]
 
 unique(PopDataES$age)
 ```
@@ -2333,8 +2287,7 @@ PopDataES[age %in% c(95:99, "_OPEN")]$age <- 95
 PopDataES <- PopDataES[, .(values = sum(values)), .(iso3c, Year, sex, age)]
 PopDataES$age <- as.numeric(PopDataES$age)
 
-temp <- table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FALSE))
-temp
+table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FALSE))
 ```
 
     ##     
@@ -2633,9 +2586,6 @@ temp
     ##   95       0       0       0       0     1986
 
 ``` r
-# tail(temp, 60)
-# tail(temp, 20)
-
 PopDataES <- PopDataES[, .(iso3c, Year, Sex = sex, Age = age, PopES = values)]
 PopDataES <- PopDataES[order(iso3c, Year, Sex, Age)]
 ```
@@ -2683,8 +2633,10 @@ table(apply(table(PopDataUN$AgeGrp, PopDataUN$AgeGrpStart), 2, function(x) sum(x
     ## 101
 
 ``` r
-PopDataUN <- melt(PopDataUN[ISO3_code != "", .(iso3c = ISO3_code, Year = Time, Age = AgeGrpStart, PopMale, PopFemale)],
-                  id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex", variable.factor = FALSE)
+PopDataUN <- melt(
+  PopDataUN[ISO3_code != "", .(iso3c = ISO3_code, Year = Time,
+                               Age = AgeGrpStart, PopMale, PopFemale)],
+  id.vars = c("iso3c", "Year", "Age"), variable.name = "Sex", variable.factor = FALSE)
 PopDataUN$Sex <- factor(PopDataUN$Sex, levels = c("PopMale", "PopFemale"), labels = c("Férfi", "Nő"))
 PopDataUN$value <- PopDataUN$value * 1000
 
@@ -2699,10 +2651,11 @@ names(PopDataUN)[names(PopDataUN) == "value"] <- "PopUN"
 
 #### Összevetés
 
-Elsőként nézzük meg, hogy a három adatbázis páronként mennyire hasonló
+Elsőként nézzük meg, hogy a három adatbázis páronként mennyire hasonló:
 
 ``` r
-temp <- Reduce(function(...) merge(..., by = c("iso3c", "Year", "Age", "Sex"), all = TRUE), list(PopDataHMD, PopDataUN, PopDataES))
+temp <- Reduce(function(...) merge(..., by = c("iso3c", "Year", "Age", "Sex"), all = TRUE),
+               list(PopDataHMD, PopDataUN, PopDataES))
 
 plot(PopHMD ~ PopES, data = temp[!is.na(PopHMD) & !is.na(PopES)])
 ```
@@ -2721,49 +2674,41 @@ plot(PopUN ~ PopES, data = temp[!is.na(PopUN) & !is.na(PopES)])
 
 ![](README_files/figure-gfm/unnamed-chunk-43-3.png)<!-- -->
 
-Érdekes lehet egy konkrét kategória, mondjuk a magyar 0-1 évesek
+Megnézhetünk konkrét kategóriákat is, mondjuk a magyar 0-1 évesek
 alakulása:
 
 ``` r
 temp <- melt(temp, id.vars = c("iso3c", "Year", "Age", "Sex"))
 
-ggplot2::ggplot(temp[iso3c == "HUN" & Age == 0],
+ggplot2::ggplot(temp[iso3c == "HUN" & Age == 0 & !is.na(value)],
                 ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
   ggplot2::facet_wrap(~Sex) +
   ggplot2::geom_line()
 ```
-
-    ## Warning: Removed 27 rows containing missing values or values outside the scale range
-    ## (`geom_line()`).
 
 ![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
-Érdekes az eltérés, de az 1-2 éves kategóriában eltűnik:
+Érdekes módon az Eurostat adat eltér a másik kettőtől, de a még
+érdekesebb, hogy ez az eltérés az 1-2 éves kategóriában eltűnik:
 
 ``` r
-ggplot2::ggplot(temp[iso3c == "HUN" & Age == 1],
+ggplot2::ggplot(temp[iso3c == "HUN" & Age == 1 & !is.na(value)],
                 ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
   ggplot2::facet_wrap(~Sex) +
   ggplot2::geom_line()
 ```
 
-    ## Warning: Removed 27 rows containing missing values or values outside the scale range
-    ## (`geom_line()`).
-
 ![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
-Kicsit zsúfolt ábra, de megnézhetjük az összes életkort egyben (az
-áttekinthetőség kedvéért a férfiakat ábrázolva):
+Megnézhetünk több életkort is egyben, ennek inkább csak az ábra
+zsúfoltsága szab határt:
 
 ``` r
-ggplot2::ggplot(temp[iso3c == "HUN" & Sex == "Férfi"],
+ggplot2::ggplot(temp[iso3c == "HUN" & Age <= 5 & !is.na(value)],
                 ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
-  ggplot2::facet_wrap(~Age, scales = "free") +
+  ggplot2::facet_grid(Age ~ Sex) +
   ggplot2::geom_line()
 ```
-
-    ## Warning: Removed 27 rows containing missing values or values outside the scale range
-    ## (`geom_line()`).
 
 ![](README_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
@@ -2771,13 +2716,10 @@ Egy másik összevetési lehetőség az, ha az ország teljes lélekszámának a
 változását nézzük a különböző adatbázisok szerint:
 
 ``` r
-ggplot2::ggplot(temp[iso3c == "HUN", .(sum(value)) , .(Year, variable)],
+ggplot2::ggplot(temp[iso3c == "HUN", .(sum(value)) , .(Year, variable)][!is.na(V1)],
                 ggplot2::aes(x = Year, y = V1, group = variable, color = variable)) +
   ggplot2::geom_line()
 ```
-
-    ## Warning: Removed 27 rows containing missing values or values outside the scale range
-    ## (`geom_line()`).
 
 ![](README_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
 
@@ -2792,17 +2734,21 @@ illeszthető a halálozási adatokkal (magyarán, kategorizáljuk az
 PopData <- PopDataUN
 names(PopData)[names(PopData) == "PopUN"] <- "Pop"
 
-PopData$Age <- cut(PopData$Age, c(0:5, seq(10, 95, 5), Inf), right = FALSE, labels = paste0("Deaths", 2:25))
+PopData$Age <- cut(PopData$Age, c(0:5, seq(10, 95, 5), Inf), right = FALSE,
+                   labels = paste0("Deaths", 2:25))
 PopData <- PopData[, .(Pop = sum(Pop)), .(iso3c, Year, Age, Sex)]
 
-PopData <- rbind(PopData, PopData[Age %in% paste0("Deaths", 3:6), .(Pop = sum(Pop), Age = "Deaths3456") , .(iso3c, Year, Sex)])
+PopData <- rbind(PopData, PopData[Age %in% paste0("Deaths", 3:6),
+                                  .(Pop = sum(Pop), Age = "Deaths3456") , .(iso3c, Year, Sex)])
 
 PopData <- rbind(
   cbind(PopData, Frmat = 0),
   cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25)],
-              PopData[Age %in% paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 1),
+              PopData[Age %in% paste0("Deaths", 23:25),
+                      .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 1),
   cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25) & !Age %in% paste0("Deaths", 3:6)],
-              PopData[Age %in% paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 2)
+              PopData[Age %in% paste0("Deaths", 23:25),
+                      .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 2)
 )
 
 PopData$Aggregated <- ifelse(PopData$Frmat == 2, FALSE, PopData$Age == "Deaths3456")
@@ -2880,7 +2826,8 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
                                                       Weights, EurostatCode))))
   
   if(!is.na(multipleCountry)) {
-    country <- if((multipleICD == "MultiIndiv" && is.null(comp) && !valid) || (multipleCountry == "Single"))
+    country <- if((multipleICD == "MultiIndiv" && is.null(comp) && !valid) ||
+                  (multipleCountry == "Single"))
       countrySingle else countryMultiple
     if(is.null(country)) return(NULL)
     
@@ -2957,9 +2904,9 @@ oszlopokat, hogy a saját adatformátumunkkal összekapcsolható legyen:
 ESres <- as.data.table(eurostat::get_eurostat("hlth_cd_aro"))
 ```
 
-    ## indexed 0B in  0s, 0B/sindexed 31.98MB in  0s, 159.85MB/sindexed 32.11MB in  0s, 160.00MB/sindexed 32.24MB in  0s, 160.18MB/sindexed 32.37MB in  0s, 160.35MB/sindexed 32.51MB in  0s, 160.51MB/sindexed 32.64MB in  0s, 160.34MB/sindexed 32.77MB in  0s, 160.16MB/sindexed 32.90MB in  0s, 160.22MB/sindexed 33.03MB in  0s, 160.36MB/sindexed 33.16MB in  0s, 160.52MB/sindexed 33.29MB in  0s, 160.66MB/sindexed 33.42MB in  0s, 160.78MB/sindexed 33.55MB in  0s, 160.90MB/sindexed 33.69MB in  0s, 161.05MB/sindexed 33.82MB in  0s, 161.17MB/sindexed 33.95MB in  0s, 161.30MB/sindexed 34.08MB in  0s, 161.41MB/sindexed 34.21MB in  0s, 161.50MB/sindexed 34.34MB in  0s, 161.62MB/sindexed 34.47MB in  0s, 161.75MB/sindexed 34.60MB in  0s, 161.47MB/sindexed 34.73MB in  0s, 161.54MB/sindexed 34.86MB in  0s, 161.63MB/sindexed 35.00MB in  0s, 161.75MB/sindexed 35.13MB in  0s, 161.85MB/sindexed 35.26MB in  0s, 161.96MB/sindexed 35.39MB in  0s, 161.99MB/sindexed 35.52MB in  0s, 162.14MB/sindexed 35.65MB in  0s, 162.28MB/sindexed 35.78MB in  0s, 162.43MB/sindexed 35.91MB in  0s, 162.56MB/sindexed 36.04MB in  0s, 162.71MB/sindexed 36.18MB in  0s, 162.88MB/sindexed 36.31MB in  0s, 163.05MB/sindexed 36.44MB in  0s, 163.24MB/sindexed 36.57MB in  0s, 163.28MB/sindexed 36.70MB in  0s, 163.38MB/sindexed 36.83MB in  0s, 163.49MB/sindexed 36.96MB in  0s, 163.58MB/sindexed 37.09MB in  0s, 163.67MB/sindexed 37.22MB in  0s, 163.78MB/sindexed 37.36MB in  0s, 163.89MB/sindexed 37.49MB in  0s, 164.00MB/sindexed 37.62MB in  0s, 164.10MB/sindexed 37.75MB in  0s, 164.21MB/sindexed 37.88MB in  0s, 164.14MB/sindexed 38.01MB in  0s, 163.99MB/sindexed 38.14MB in  0s, 164.07MB/sindexed 38.27MB in  0s, 164.18MB/sindexed 38.40MB in  0s, 164.12MB/sindexed 38.53MB in  0s, 164.22MB/sindexed 38.67MB in  0s, 164.30MB/sindexed 38.80MB in  0s, 164.42MB/sindexed 38.93MB in  0s, 164.51MB/sindexed 39.06MB in  0s, 164.62MB/sindexed 39.19MB in  0s, 164.72MB/sindexed 39.32MB in  0s, 164.83MB/sindexed 39.45MB in  0s, 164.92MB/sindexed 39.58MB in  0s, 165.02MB/sindexed 39.71MB in  0s, 165.11MB/sindexed 39.85MB in  0s, 165.22MB/sindexed 39.98MB in  0s, 165.32MB/sindexed 40.11MB in  0s, 165.40MB/sindexed 40.24MB in  0s, 165.50MB/sindexed 40.37MB in  0s, 165.45MB/sindexed 40.50MB in  0s, 165.53MB/sindexed 40.63MB in  0s, 165.62MB/sindexed 40.76MB in  0s, 165.71MB/sindexed 40.89MB in  0s, 165.81MB/sindexed 41.03MB in  0s, 165.59MB/sindexed 41.16MB in  0s, 165.47MB/sindexed 41.29MB in  0s, 165.54MB/sindexed 41.42MB in  0s, 165.63MB/sindexed 41.55MB in  0s, 165.70MB/sindexed 41.68MB in  0s, 165.80MB/sindexed 41.81MB in  0s, 165.87MB/sindexed 41.94MB in  0s, 165.98MB/sindexed 42.07MB in  0s, 166.07MB/sindexed 42.20MB in  0s, 165.91MB/sindexed 42.34MB in  0s, 166.00MB/sindexed 42.47MB in  0s, 166.10MB/sindexed 42.60MB in  0s, 166.20MB/sindexed 42.73MB in  0s, 166.30MB/sindexed 42.86MB in  0s, 166.38MB/sindexed 42.99MB in  0s, 166.49MB/sindexed 43.12MB in  0s, 166.57MB/sindexed 43.25MB in  0s, 166.65MB/sindexed 43.38MB in  0s, 166.74MB/sindexed 43.52MB in  0s, 166.75MB/sindexed 43.65MB in  0s, 166.82MB/sindexed 43.78MB in  0s, 166.90MB/sindexed 43.91MB in  0s, 166.98MB/sindexed 44.04MB in  0s, 167.03MB/sindexed 44.17MB in  0s, 166.96MB/sindexed 44.30MB in  0s, 167.06MB/sindexed 44.43MB in  0s, 167.16MB/sindexed 44.56MB in  0s, 167.26MB/sindexed 44.70MB in  0s, 167.37MB/sindexed 44.83MB in  0s, 151.01MB/sindexed 44.96MB in  0s, 150.89MB/sindexed 45.09MB in  0s, 150.80MB/sindexed 45.22MB in  0s, 150.76MB/sindexed 45.35MB in  0s, 150.66MB/sindexed 45.48MB in  0s, 150.61MB/sindexed 45.61MB in  0s, 150.65MB/sindexed 45.74MB in  0s, 150.61MB/sindexed 45.87MB in  0s, 150.59MB/sindexed 46.01MB in  0s, 150.54MB/sindexed 46.14MB in  0s, 150.56MB/sindexed 46.27MB in  0s, 150.58MB/sindexed 46.40MB in  0s, 150.54MB/sindexed 46.53MB in  0s, 150.61MB/sindexed 46.66MB in  0s, 150.62MB/sindexed 46.79MB in  0s, 150.66MB/sindexed 46.92MB in  0s, 150.75MB/sindexed 47.05MB in  0s, 150.86MB/sindexed 47.19MB in  0s, 150.95MB/sindexed 47.32MB in  0s, 151.04MB/sindexed 47.45MB in  0s, 150.88MB/sindexed 47.58MB in  0s, 150.96MB/sindexed 47.71MB in  0s, 151.08MB/sindexed 47.84MB in  0s, 151.22MB/sindexed 47.97MB in  0s, 151.34MB/sindexed 48.10MB in  0s, 151.45MB/sindexed 48.23MB in  0s, 151.55MB/sindexed 48.37MB in  0s, 151.66MB/sindexed 48.50MB in  0s, 151.76MB/sindexed 48.63MB in  0s, 151.86MB/sindexed 48.76MB in  0s, 151.99MB/sindexed 48.89MB in  0s, 152.11MB/sindexed 49.02MB in  0s, 152.25MB/sindexed 49.15MB in  0s, 152.28MB/sindexed 49.28MB in  0s, 152.27MB/sindexed 49.41MB in  0s, 152.30MB/sindexed 49.54MB in  0s, 152.43MB/sindexed 49.68MB in  0s, 152.53MB/sindexed 49.81MB in  0s, 152.65MB/sindexed 49.94MB in  0s, 152.76MB/sindexed 50.07MB in  0s, 152.86MB/sindexed 50.20MB in  0s, 153.00MB/sindexed 50.33MB in  0s, 153.10MB/sindexed 50.46MB in  0s, 153.22MB/sindexed 50.59MB in  0s, 153.35MB/sindexed 50.72MB in  0s, 153.43MB/sindexed 50.86MB in  0s, 153.52MB/sindexed 50.99MB in  0s, 153.63MB/sindexed 51.12MB in  0s, 153.75MB/sindexed 51.25MB in  0s, 153.87MB/sindexed 51.38MB in  0s, 153.97MB/sindexed 51.51MB in  0s, 154.04MB/sindexed 51.64MB in  0s, 154.14MB/sindexed 51.77MB in  0s, 154.24MB/sindexed 51.90MB in  0s, 154.34MB/sindexed 52.04MB in  0s, 154.33MB/sindexed 52.17MB in  0s, 154.28MB/sindexed 52.30MB in  0s, 154.23MB/sindexed 52.43MB in  0s, 154.18MB/sindexed 52.56MB in  0s, 154.15MB/sindexed 52.69MB in  0s, 154.19MB/sindexed 52.82MB in  0s, 154.22MB/sindexed 52.95MB in  0s, 154.26MB/sindexed 53.08MB in  0s, 154.26MB/sindexed 53.21MB in  0s, 154.30MB/sindexed 53.35MB in  0s, 154.37MB/sindexed 53.48MB in  0s, 154.41MB/sindexed 53.61MB in  0s, 154.49MB/sindexed 53.74MB in  0s, 154.54MB/sindexed 53.87MB in  0s, 154.65MB/sindexed 54.00MB in  0s, 154.73MB/sindexed 54.13MB in  0s, 154.79MB/sindexed 54.25MB in  0s, 154.83MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
+    ## indexed 0B in  0s, 0B/sindexed 30.67MB in  0s, 153.03MB/sindexed 30.80MB in  0s, 153.22MB/sindexed 30.93MB in  0s, 153.37MB/sindexed 31.06MB in  0s, 153.53MB/sindexed 31.19MB in  0s, 153.69MB/sindexed 31.33MB in  0s, 153.70MB/sindexed 31.46MB in  0s, 153.77MB/sindexed 31.59MB in  0s, 153.67MB/sindexed 31.72MB in  0s, 153.72MB/sindexed 31.85MB in  0s, 153.84MB/sindexed 31.98MB in  0s, 153.98MB/sindexed 32.11MB in  0s, 154.11MB/sindexed 32.24MB in  0s, 154.26MB/sindexed 32.37MB in  0s, 154.42MB/sindexed 32.51MB in  0s, 154.61MB/sindexed 32.64MB in  0s, 154.76MB/sindexed 32.77MB in  0s, 154.90MB/sindexed 32.90MB in  0s, 154.91MB/sindexed 33.03MB in  0s, 155.04MB/sindexed 33.16MB in  0s, 155.18MB/sindexed 33.29MB in  0s, 155.09MB/sindexed 33.42MB in  0s, 155.15MB/sindexed 33.55MB in  0s, 155.13MB/sindexed 33.69MB in  0s, 155.26MB/sindexed 33.82MB in  0s, 155.39MB/sindexed 33.95MB in  0s, 155.51MB/sindexed 34.08MB in  0s, 155.64MB/sindexed 34.21MB in  0s, 155.77MB/sindexed 34.34MB in  0s, 155.66MB/sindexed 34.47MB in  0s, 155.73MB/sindexed 34.60MB in  0s, 155.84MB/sindexed 34.73MB in  0s, 155.96MB/sindexed 34.86MB in  0s, 156.08MB/sindexed 35.00MB in  0s, 156.20MB/sindexed 35.13MB in  0s, 156.30MB/sindexed 35.26MB in  0s, 156.39MB/sindexed 35.39MB in  0s, 156.40MB/sindexed 35.52MB in  0s, 156.55MB/sindexed 35.65MB in  0s, 156.68MB/sindexed 35.78MB in  0s, 156.83MB/sindexed 35.91MB in  0s, 156.82MB/sindexed 36.04MB in  0s, 156.96MB/sindexed 36.18MB in  0s, 156.95MB/sindexed 36.31MB in  0s, 157.11MB/sindexed 36.44MB in  0s, 157.29MB/sindexed 36.57MB in  0s, 157.42MB/sindexed 36.70MB in  0s, 157.57MB/sindexed 36.83MB in  0s, 157.67MB/sindexed 36.96MB in  0s, 157.76MB/sindexed 37.09MB in  0s, 157.85MB/sindexed 37.22MB in  0s, 157.91MB/sindexed 37.36MB in  0s, 157.93MB/sindexed 37.49MB in  0s, 157.89MB/sindexed 37.62MB in  0s, 157.99MB/sindexed 37.75MB in  0s, 158.10MB/sindexed 37.88MB in  0s, 158.19MB/sindexed 38.01MB in  0s, 158.29MB/sindexed 38.14MB in  0s, 158.39MB/sindexed 38.27MB in  0s, 158.49MB/sindexed 38.40MB in  0s, 158.60MB/sindexed 38.53MB in  0s, 158.69MB/sindexed 38.67MB in  0s, 158.79MB/sindexed 38.80MB in  0s, 158.91MB/sindexed 38.93MB in  0s, 159.02MB/sindexed 39.06MB in  0s, 158.79MB/sindexed 39.19MB in  0s, 158.79MB/sindexed 39.32MB in  0s, 158.90MB/sindexed 39.45MB in  0s, 158.99MB/sindexed 39.58MB in  0s, 159.08MB/sindexed 39.71MB in  0s, 159.17MB/sindexed 39.85MB in  0s, 159.28MB/sindexed 39.98MB in  0s, 159.37MB/sindexed 40.11MB in  0s, 159.47MB/sindexed 40.24MB in  0s, 159.56MB/sindexed 40.37MB in  0s, 159.67MB/sindexed 40.50MB in  0s, 159.77MB/sindexed 40.63MB in  0s, 159.68MB/sindexed 40.76MB in  0s, 159.77MB/sindexed 40.89MB in  0s, 159.78MB/sindexed 41.03MB in  0s, 159.84MB/sindexed 41.16MB in  0s, 159.93MB/sindexed 41.29MB in  0s, 160.02MB/sindexed 41.42MB in  0s, 160.11MB/sindexed 41.55MB in  0s, 160.20MB/sindexed 41.68MB in  0s, 160.29MB/sindexed 41.81MB in  0s, 160.32MB/sindexed 41.94MB in  0s, 160.33MB/sindexed 42.07MB in  0s, 160.14MB/sindexed 42.20MB in  0s, 160.23MB/sindexed 42.34MB in  0s, 160.32MB/sindexed 42.47MB in  0s, 160.41MB/sindexed 42.60MB in  0s, 160.48MB/sindexed 42.73MB in  0s, 160.48MB/sindexed 42.86MB in  0s, 160.57MB/sindexed 42.99MB in  0s, 160.66MB/sindexed 43.12MB in  0s, 160.75MB/sindexed 43.25MB in  0s, 160.84MB/sindexed 43.38MB in  0s, 160.93MB/sindexed 43.52MB in  0s, 160.94MB/sindexed 43.65MB in  0s, 160.92MB/sindexed 43.78MB in  0s, 161.00MB/sindexed 43.91MB in  0s, 161.07MB/sindexed 44.04MB in  0s, 161.16MB/sindexed 44.17MB in  0s, 161.26MB/sindexed 44.30MB in  0s, 161.37MB/sindexed 44.43MB in  0s, 161.47MB/sindexed 44.56MB in  0s, 161.39MB/sindexed 44.70MB in  0s, 161.41MB/sindexed 44.83MB in  0s, 145.62MB/sindexed 44.96MB in  0s, 145.69MB/sindexed 45.09MB in  0s, 145.75MB/sindexed 45.22MB in  0s, 145.85MB/sindexed 45.35MB in  0s, 145.93MB/sindexed 45.48MB in  0s, 146.07MB/sindexed 45.61MB in  0s, 146.18MB/sindexed 45.74MB in  0s, 146.23MB/sindexed 45.87MB in  0s, 146.37MB/sindexed 46.01MB in  0s, 146.49MB/sindexed 46.14MB in  0s, 146.63MB/sindexed 46.27MB in  0s, 146.75MB/sindexed 46.40MB in  0s, 146.70MB/sindexed 46.53MB in  0s, 146.81MB/sindexed 46.66MB in  0s, 146.93MB/sindexed 46.79MB in  0s, 147.03MB/sindexed 46.92MB in  0s, 147.16MB/sindexed 47.05MB in  0s, 147.29MB/sindexed 47.19MB in  0s, 147.42MB/sindexed 47.32MB in  0s, 147.47MB/sindexed 47.45MB in  0s, 147.56MB/sindexed 47.58MB in  0s, 147.56MB/sindexed 47.71MB in  0s, 147.68MB/sindexed 47.84MB in  0s, 147.82MB/sindexed 47.97MB in  0s, 147.93MB/sindexed 48.10MB in  0s, 148.04MB/sindexed 48.23MB in  0s, 148.13MB/sindexed 48.37MB in  0s, 148.19MB/sindexed 48.50MB in  0s, 148.29MB/sindexed 48.63MB in  0s, 148.40MB/sindexed 48.76MB in  0s, 148.51MB/sindexed 48.89MB in  0s, 148.63MB/sindexed 49.02MB in  0s, 148.75MB/sindexed 49.15MB in  0s, 148.86MB/sindexed 49.28MB in  0s, 148.98MB/sindexed 49.41MB in  0s, 149.09MB/sindexed 49.54MB in  0s, 149.22MB/sindexed 49.68MB in  0s, 149.33MB/sindexed 49.81MB in  0s, 149.44MB/sindexed 49.94MB in  0s, 149.54MB/sindexed 50.07MB in  0s, 149.65MB/sindexed 50.20MB in  0s, 149.78MB/sindexed 50.33MB in  0s, 149.81MB/sindexed 50.46MB in  0s, 149.92MB/sindexed 50.59MB in  0s, 149.98MB/sindexed 50.72MB in  0s, 149.97MB/sindexed 50.86MB in  0s, 150.04MB/sindexed 50.99MB in  0s, 150.15MB/sindexed 51.12MB in  0s, 150.27MB/sindexed 51.25MB in  0s, 150.38MB/sindexed 51.38MB in  0s, 150.50MB/sindexed 51.51MB in  0s, 150.62MB/sindexed 51.64MB in  0s, 150.73MB/sindexed 51.77MB in  0s, 150.81MB/sindexed 51.90MB in  0s, 150.91MB/sindexed 52.04MB in  0s, 151.02MB/sindexed 52.17MB in  0s, 151.05MB/sindexed 52.30MB in  0s, 151.00MB/sindexed 52.43MB in  0s, 151.07MB/sindexed 52.56MB in  0s, 151.14MB/sindexed 52.69MB in  0s, 151.23MB/sindexed 52.82MB in  0s, 151.32MB/sindexed 52.95MB in  0s, 151.38MB/sindexed 53.08MB in  0s, 151.47MB/sindexed 53.21MB in  0s, 151.56MB/sindexed 53.35MB in  0s, 151.64MB/sindexed 53.48MB in  0s, 151.72MB/sindexed 53.61MB in  0s, 151.81MB/sindexed 53.74MB in  0s, 151.63MB/sindexed 53.87MB in  0s, 151.56MB/sindexed 54.00MB in  0s, 151.55MB/sindexed 54.13MB in  0s, 151.65MB/sindexed 54.25MB in  0s, 151.69MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
 
-    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\Rtmpe4ctJp/eurostat/922993c8c25e9bb762c7ce6e28864ba2.rds
+    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpG2nF0U/eurostat/922993c8c25e9bb762c7ce6e28864ba2.rds
 
 ``` r
 ESres <- ESres[!geo %in% c("EU27_2020", "EU28", "FX")]
@@ -2988,7 +2935,8 @@ temp2 <- rbindlist(lapply(names(ICDGroups$Groups), function(icd)
                "Single", icd, NA,
                "Single", "HUN", NA,
                "death",  NA, NA, "None", "count", "Year",
-               c("Year", "CauseGroup", "EurostatCode"), NULL, "Összesen", "Összesen", NULL, FALSE)$rd))
+               c("Year", "CauseGroup", "EurostatCode"), NULL,
+               "Összesen", "Összesen", NULL, FALSE)$rd))
 temp2 <- temp2[order(Year, CauseGroup)]
 setkey(temp2, iso3c)
 
@@ -2996,7 +2944,8 @@ temp <- dataInputFun("Groups",
                      "MultiIndiv", NA, names(ICDGroups$Groups),
                      "Single", "HUN", NA,
                      "death",  NA, NA, "None", "count", "Year",
-                     c("Year", "CauseGroup", "EurostatCode"), NULL, "Összesen", "Összesen", NULL, FALSE)$rd
+                     c("Year", "CauseGroup", "EurostatCode"), NULL,
+                     "Összesen", "Összesen", NULL, FALSE)$rd
 
 identical(temp, temp2)
 ```
@@ -3043,7 +2992,8 @@ temp <- dataInputFun("Groups",
                      "MultiIndiv", NA, names(ICDGroups$Groups),
                      "Multiple", NA, intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
                      "death",  NA, NA, "None", "count", "Year",
-                     c("Year", "CauseGroup", "EurostatCode"), NULL, "Összesen", "Összesen", NULL, TRUE)$rd
+                     c("Year", "CauseGroup", "EurostatCode"), NULL,
+                     "Összesen", "Összesen", NULL, TRUE)$rd
 temp <- temp[value != 0]
 
 identical(temp, temp2)
