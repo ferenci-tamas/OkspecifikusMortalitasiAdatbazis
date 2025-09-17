@@ -250,7 +250,7 @@ ui <- navbarPage(
                 nonce = "mr8Yvh3Y"),
     
     p("A program használatát részletesen bemutató súgó, valamint a technikai részletek",
-      a("itt", href = "https://github.com/tamas-ferenci/OkspecifikusMortalitasiAdatbazis",
+      a("itt", href = "https://github.com/ferenci-tamas/OkspecifikusMortalitasiAdatbazis",
         target = "_blank" ), "olvashatóak el."),
     
     div(style = "line-height: 13px;",
@@ -271,7 +271,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.38"),
+                  .noWS = "outside"), ", v0.39"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -527,7 +527,7 @@ server <- function(input, output) {
       p(paste0("Az adatok értelmezése, az adatminőség, a különféle összehasonlítások nem ",
                "nyilvánvaló problémákat vetnek fel, így érdemes bármilyen következtetés ",
                "levonása előtt tanulmányozni az oldalhoz kapcsolódó "),
-        a(href = "https://github.com/tamas-ferenci/OkspecifikusMortalitasiAdatbazis",
+        a(href = "https://github.com/ferenci-tamas/OkspecifikusMortalitasiAdatbazis",
           target = "_blank", "leírást", .noWS = "outside"),
         ", mely igyekszik közérthetően összefoglalni a legfontosabb szempontokat."),
       p(paste0("Ugyanezen a linken elérhető részletes technikai magyarázat is a weboldal ",
