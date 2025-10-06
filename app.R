@@ -38,11 +38,11 @@ hcoptslang$numericSymbols <- NA
 options(highcharter.lang = hcoptslang)
 options(highcharter.download_map_data = FALSE)
 
-RawData <- arrow::read_feather("WHO-MDB.feather")
+RawData <- arrow::read_feather("./procdata/WHO-MDB.feather")
 
-RawDataAll <- readRDS("RawDataAll.rds")
+RawDataAll <- readRDS("./procdata/RawDataAll.rds")
 
-PopData <- readRDS("WHO-MDB-Population.rds")
+PopData <- readRDS("./procdata/WHO-MDB-Population.rds")
 
 AgeTable <- data.table(Age = c(NA, paste0("Deaths", 2:25), "Deaths3456", "Deaths232425"),
                        AgeNum = c(NA, (0:4) + 0.5, seq(5, 90, 5) + 2.5, 100, 3, 95),
@@ -51,12 +51,12 @@ AgeTable <- data.table(Age = c(NA, paste0("Deaths", 2:25), "Deaths3456", "Deaths
 
 PopData <- merge(PopData, AgeTable, by = "Age")
 
-ICDGroups <- readRDS("ICDGroups.rds")
+ICDGroups <- readRDS("./procdata/ICDGroups.rds")
 stratsel <- c("Nincs" = "None", "Nem szerint" = "Sex", "Életkor szerint" = "AgeLabel")
-StdPop <- fread("ESP2013.csv", dec = ",")
+StdPop <- fread("./inputdata/ESP2013.csv", dec = ",")
 StdPop$Frmat <- as.factor(StdPop$Frmat)
 
-CountryCodes <- readRDS("CountryCodes.rds")
+CountryCodes <- readRDS("./procdata/CountryCodes.rds")
 CountryCodes <- CountryCodes[order(names(CountryCodes))]
 
 EUCountries <- list(
@@ -67,7 +67,7 @@ EUCountries <- list(
   "V4" = c("SVK", "CZE", "HUN", "POL")
 )
 
-dimredvizData <- readRDS("dimredvizData.rds")
+dimredvizData <- readRDS("./procdata/dimredvizData.rds")
 
 desctext <- paste0("Hazai és nemzetközi halálozási adatok, halálokok vizsgálatát,",
                    "összehasonlítását lehetővé tevő alkalmazás. Írta: Ferenci Tamás.")
@@ -271,7 +271,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.39"),
+                  .noWS = "outside"), ", v0.40"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -790,8 +790,7 @@ server <- function(input, output) {
       hc_add_theme(hc_theme(
         chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, chartOptions = list(legend = TRUE),
-                   sourceWidth = 1600/2, sourceHeight = 900/2)
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
     
     if("HUN" %in% di$country) p <- p |> hc_xAxis(plotLines = list(
       list(
@@ -846,8 +845,7 @@ server <- function(input, output) {
       hc_add_theme(hc_theme(
         chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, chartOptions = list(legend = TRUE),
-                   sourceWidth = 1600/2, sourceHeight = 900/2)
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
   })
   
   output$agesexPlot <- renderHighchart({
@@ -890,8 +888,7 @@ server <- function(input, output) {
       hc_tooltip(valueDecimals = 1, headerFormat = "{point.point.AgeLabel} év<br>") |>
       hc_add_theme(hc_theme(chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, chartOptions = list(legend = TRUE),
-                   sourceWidth = 1600/2, sourceHeight = 900/2)
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
     
     p
   })
@@ -950,8 +947,7 @@ server <- function(input, output) {
       (this.x / this.y * 100).toFixed(1) + '%-a (a különbség ' + (this.x - this.y).toFixed(1) + '/100 ezer fő/év)'); }"))) |>
       hc_add_theme(hc_theme(chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, chartOptions = list(legend = TRUE),
-                   sourceWidth = 1600/2, sourceHeight = 900/2)
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
     
     p
   })
@@ -1000,8 +996,7 @@ server <- function(input, output) {
       hc_legend(enabled = FALSE) |>
       hc_add_theme(hc_theme(chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, chartOptions = list(legend = TRUE),
-                   sourceWidth = 1600/2, sourceHeight = 900/2)
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
     
     if(input$hconvType == "ratio") p <-
       p |> hc_yAxis(title = list(text = paste0("Hányados (", invcountryname, " / többi)")), softMin = 0.9, softMax = 1.1,
@@ -1088,8 +1083,7 @@ server <- function(input, output) {
       hc_legend(enabled = FALSE) |>
       hc_add_theme(hc_theme(chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, chartOptions = list(legend = TRUE),
-                   sourceWidth = 1600/2, sourceHeight = 900/2)
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
     
     p
   })
@@ -1121,8 +1115,7 @@ server <- function(input, output) {
         align = "left", verticalAlign = "bottom") |>
       hc_add_theme(hc_theme(chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, chartOptions = list(legend = TRUE),
-                   sourceWidth = 1600/2, sourceHeight = 900/2) |>
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2) |>
       hc_xAxis(title = list(text = ""), gridLineWidth = 1, labels = list(enabled = FALSE),
                tickLength = 0, startOnTick = TRUE, endOnTick = TRUE) |>
       hc_yAxis(title = list(text = ""), labels = list(enabled = FALSE), tickLength = 0) |>
