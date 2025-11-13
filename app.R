@@ -271,7 +271,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.40"),
+                  .noWS = "outside"), ", v0.41"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -792,14 +792,15 @@ server <- function(input, output) {
       hc_credits(enabled = TRUE) |>
       hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
     
-    if("HUN" %in% di$country) p <- p |> hc_xAxis(plotLines = list(
-      list(
-        label = list(text = "Módszertani változás (HUN)"),
-        dashStyle = "Dash",
-        value = 2004.5
-      )
-    ))
-    
+    if("HUN" %in% di$country &&
+       !(input$timeCategory == "Groups" &&
+         input$timeGroupsICDSingle == "Összes halálok (A00-Y89)")) p <- p |> hc_xAxis(plotLines = list(
+           list(
+             label = list(text = "Módszertani változás (HUN)"),
+             dashStyle = "Dash",
+             value = 2004.5
+           )
+         ))
     p
   })
   
