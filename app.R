@@ -204,7 +204,8 @@ ownpanel <- function(idPrefix, singleICD = FALSE, map = FALSE, indicators = TRUE
                       value = defaultLogY),
         checkboxInput(paste0(idPrefix, "YFromZero"), "A függőleges tengely nullától indul")
       )
-    }
+    },
+    list(if(idPrefix == "time" || hconv) checkboxInput(paste0(idPrefix, "ShowNavigator"), "Navigátor megjelenítése"))
   )
 }
 
@@ -271,7 +272,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.41"),
+                  .noWS = "outside"), ", v0.42"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -758,14 +759,14 @@ server <- function(input, output) {
     
     if(input$timeMultipleICD %in% c("Single", "MultiSum") && input$timeMultipleCountry == "Single" && input$timeStratification == "None")
       p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = NA),
-                              name = paste0(di$icd, collapse = ", "))
+                              name = paste0(di$icd, collapse = ", "), showInNavigator = TRUE)
     if(input$timeMultipleICD %in% c("Single", "MultiSum") && input$timeMultipleCountry == "Single" && input$timeStratification == "Sex")
-      p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = Sex))
+      p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = Sex), showInNavigator = TRUE)
     if(input$timeMultipleICD %in% c("Single", "MultiSum") && input$timeMultipleCountry == "Single" && input$timeStratification == "AgeLabel")
-      p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = AgeLabel))
+      p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = AgeLabel), showInNavigator = TRUE)
     if(input$timeMultipleICD %in% c("Single", "MultiSum") && input$timeMultipleCountry == "Multiple")
-      p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = CountryName))
-    if(input$timeMultipleICD == "MultiIndiv") p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = CauseGroup))
+      p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = CountryName), showInNavigator = TRUE)
+    if(input$timeMultipleICD == "MultiIndiv") p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = CauseGroup), showInNavigator = TRUE)
     
     p <- p |>
       hc_title(text = paste0("<b>", if(input$timeIndicator == "death") "Halálozás" else
@@ -790,7 +791,12 @@ server <- function(input, output) {
       hc_add_theme(hc_theme(
         chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2,
+                   sourceHeight = 900/2, chartOptions = list(navigator = list(enabled = FALSE)))
+    
+    if(input$timeShowNavigator)
+      p <- p |> hc_navigator(enabled = TRUE, yAxis = list(title = list(text = "")),
+                             xAxis = list(labels = list(formatter = JS("function() { return this.value; }"))))
     
     if("HUN" %in% di$country &&
        !(input$timeCategory == "Groups" &&
@@ -982,9 +988,9 @@ server <- function(input, output) {
                 "scatter" = hchart(mortdat, "scatter",
                                    hcaes(x = Investigated, y = Comparator, group = Year, color = Year)),
                 "ratio" = hchart(mortdat, "line", hcaes(x = Year, y = Ratio),
-                                 name = "Hányados"),
+                                 name = "Hányados", showInNavigator = TRUE),
                 "difference" = hchart(mortdat, "line", hcaes(x = Year, y = Difference),
-                                      name = "Különbség"))
+                                      name = "Különbség", showInNavigator = TRUE))
     
     p <- p |>
       hc_title(text = paste0("<b>", invcountryname, " konvergenciája más országokhoz</b><br>",
@@ -997,7 +1003,12 @@ server <- function(input, output) {
       hc_legend(enabled = FALSE) |>
       hc_add_theme(hc_theme(chart = list(backgroundColor = "white"))) |>
       hc_credits(enabled = TRUE) |>
-      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2)
+      hc_exporting(enabled = TRUE, sourceWidth = 1600/2, sourceHeight = 900/2,
+                   chartOptions = list(navigator = list(enabled = FALSE)))
+    
+    if(input$hconvShowNavigator)
+      p <- p |> hc_navigator(enabled = TRUE, yAxis = list(title = list(text = "")),
+                             xAxis = list(labels = list(formatter = JS("function() { return this.value; }"))))
     
     if(input$hconvType == "ratio") p <-
       p |> hc_yAxis(title = list(text = paste0("Hányados (", invcountryname, " / többi)")), softMin = 0.9, softMax = 1.1,
