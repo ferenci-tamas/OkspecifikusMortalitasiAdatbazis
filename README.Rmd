@@ -372,10 +372,11 @@ RawData <- merge(RawData, CountryCodes[, .(Country = MORT, CountryName = Display
                  by = "Country")
 ```
 
-Javítsunk még egy elég nyilvánvaló elírást:
+Javítsunk még két elég nyilvánvaló elírást:
 
 ```{r}
-RawData[iso3c=="CYM"&Frmat==1]$Frmat <- 2
+RawData[iso3c == "CYM" & Year == 2014]$Frmat <- 2
+RawData[iso3c == "IRL" & Year %in% c(2016, 2017, 2019, 2020)]$Frmat <- 2
 ```
 
 Csak azokat az országokat, illetve éveket tartjuk meg, amikor 104 volt a listaszám (ez azt jelenti, hogy 4 karakteres BNO-kóddal jelentik a halálokokat):
