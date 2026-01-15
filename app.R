@@ -665,21 +665,24 @@ server <- function(input, output) {
     if(!is.na(comp)) rd$iso3c <- ifelse(rd$iso3c == comp, "Investigated", "Comparator")
     rd <- rd[, .(value = sum(value), Pop = sum(Pop)), setdiff(names(rd), c("value", "Pop"))]
     
-    rd <- switch(metric,
-                 "count" = rd[Aggregated == FALSE, .(value = sum(value)), byvars],
-                 "cruderate" = rd[Aggregated == FALSE,
-                                  .(value = sum(value)/sum(Pop)*1e5), byvars],
-                 "adjrate" = merge(
-                   rd[, .(value = sum(value), Pop = sum(Pop)),
-                      c(byvars, "Frmat", "Age")],
-                   StdPop, by = c("Frmat", "Age"))[
-                     , as.list(epitools::ageadjust.direct(value, Pop, stdpop = StdPop)),
-                     byvars][, c(.SD, .(value = adj.rate*1e5))])
-    
-    if(!is.na(ordVar)) rd <- rd[order(rd[[ordVar]])]
-    
-    if(is.na(comp)) rd <- merge(rd, data.table(iso3c = CountryCodes,
-                                               CountryName = names(CountryCodes)))
+    if(nrow(rd) != 0) {
+      rd <- switch(
+        metric,
+        "count" = rd[Aggregated == FALSE, .(value = sum(value)), byvars],
+        "cruderate" = rd[Aggregated == FALSE,
+                         .(value = sum(value)/sum(Pop)*1e5), byvars],
+        "adjrate" = merge(
+          rd[, .(value = sum(value), Pop = sum(Pop)),
+             c(byvars, "Frmat", "Age")],
+          StdPop, by = c("Frmat", "Age"))[
+            , as.list(epitools::ageadjust.direct(value, Pop, stdpop = StdPop)),
+            byvars][, c(.SD, .(value = adj.rate*1e5))])
+      
+      if(!is.na(ordVar)) rd <- rd[order(rd[[ordVar]])]
+      
+      if(is.na(comp)) rd <- merge(rd, data.table(iso3c = CountryCodes,
+                                                 CountryName = names(CountryCodes)))
+    }
     
     return(list(rd = rd, icd = icd, country = country))
   }
