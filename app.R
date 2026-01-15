@@ -624,7 +624,7 @@ server <- function(input, output) {
       rdAll <- if(length(country) == 1) rdAll[iso3c == country] else rdAll[iso3c %in% country]
     } else country <- NA
     
-    if(!is.null(yearFilter)) {
+    if(!any(is.na(yearFilter))) {
       yearSel <- seq(yearFilter[1], yearFilter[2], 1)
       rd <- rd[Year %in% yearSel]
       rdAll <- rdAll[Year %in% yearSel]
@@ -679,7 +679,7 @@ server <- function(input, output) {
     if(!is.na(ordVar)) rd <- rd[order(rd[[ordVar]])]
     
     if(is.na(comp)) rd <- merge(rd, data.table(iso3c = CountryCodes,
-                                                 CountryName = names(CountryCodes)))
+                                               CountryName = names(CountryCodes)))
     
     return(list(rd = rd, icd = icd, country = country))
   }
@@ -714,7 +714,7 @@ server <- function(input, output) {
     metric = input$timeMetric,
     ordVar = "Year",
     byvarAdd = c("Year", "CauseGroup"),
-    yearFilter = NULL,
+    yearFilter = NA,
     sexFilter = "Összesen",
     ageFilter = "Összesen",
     comp = NA,
@@ -745,11 +745,11 @@ server <- function(input, output) {
     category = input$agesexCategory,
     multipleICD = input$agesexMultipleICD,
     ICDSingle = switch(input$agesexCategory, "Groups" = input$agesexGroupsICDSingle,
-           "Individual" = input$agesexIndividualICDSingle,
-           "Avoidable" = input$agesexAvoidableICDSingle),
+                       "Individual" = input$agesexIndividualICDSingle,
+                       "Avoidable" = input$agesexAvoidableICDSingle),
     ICDMultiple = switch(input$agesexCategory, "Groups" = input$agesexGroupsICDMultiple,
-           "Individual" = input$agesexIndividualICDMultiple,
-           "Avoidable" = input$agesexAvoidableICDMultiple),
+                         "Individual" = input$agesexIndividualICDMultiple,
+                         "Avoidable" = input$agesexAvoidableICDMultiple),
     multipleCountry = input$agesexMultipleCountry,
     countrySingle = input$agesexCountrySingle,
     countryMultiple = input$agesexCountryMultiple,
@@ -791,8 +791,8 @@ server <- function(input, output) {
     category = input$hconvCategory,
     multipleICD = "Single",
     ICDSingle = switch(input$hconvCategory, "Groups" = input$hconvGroupsICDSingle,
-           "Individual" = input$hconvIndividualICDSingle,
-           "Avoidable" = input$hconvAvoidableICDSingle),
+                       "Individual" = input$hconvIndividualICDSingle,
+                       "Avoidable" = input$hconvAvoidableICDSingle),
     ICDMultiple = NA,
     multipleCountry = "Multiple",
     countrySingle = NA,
@@ -804,7 +804,7 @@ server <- function(input, output) {
     metric = input$hconvMetric,
     ordVar = NA,
     byvarAdd = "Year",
-    yearFilter = NULL,
+    yearFilter = NA,
     sexFilter = "Összesen",
     ageFilter = "Összesen",
     comp = input$hconvCountryInvestigated,
@@ -825,7 +825,7 @@ server <- function(input, output) {
     metric = "adjrate",
     ordVar = "EurostatCode",
     byvarAdd = c("Year", "CauseGroup", "EurostatCode"),
-    yearFilter = NULL,
+    yearFilter = NA,
     sexFilter = "Összesen",
     ageFilter = "Összesen",
     comp = input$hconvdecompCountryInvestigated,
