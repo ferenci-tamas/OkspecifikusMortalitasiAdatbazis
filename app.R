@@ -616,7 +616,7 @@ server <- function(input, output) {
                                                         Weights, EurostatCode))))
     
     if(!is.na(multipleCountry)) {
-      country <- if((multipleICD == "MultiIndiv" && is.null(comp) && !valid) || (multipleCountry == "Single"))
+      country <- if((multipleICD == "MultiIndiv" && is.na(comp) && !valid) || (multipleCountry == "Single"))
         countrySingle else countryMultiple
       if(is.null(country)) return(NULL)
       
@@ -662,7 +662,7 @@ server <- function(input, output) {
     if(multipleICD != "MultiIndiv" && !is.na(strat) && multipleCountry == "Single")
       byvars <- c(byvars, strat[strat != "None"])
     
-    if(!is.null(comp)) rd$iso3c <- ifelse(rd$iso3c == comp, "Investigated", "Comparator")
+    if(!is.na(comp)) rd$iso3c <- ifelse(rd$iso3c == comp, "Investigated", "Comparator")
     rd <- rd[, .(value = sum(value), Pop = sum(Pop)), setdiff(names(rd), c("value", "Pop"))]
     
     rd <- switch(metric,
@@ -678,7 +678,7 @@ server <- function(input, output) {
     
     if(!is.na(ordVar)) rd <- rd[order(rd[[ordVar]])]
     
-    if(is.null(comp)) rd <- merge(rd, data.table(iso3c = CountryCodes,
+    if(is.na(comp)) rd <- merge(rd, data.table(iso3c = CountryCodes,
                                                  CountryName = names(CountryCodes)))
     
     return(list(rd = rd, icd = icd, country = country))
@@ -717,7 +717,7 @@ server <- function(input, output) {
     yearFilter = NULL,
     sexFilter = "Összesen",
     ageFilter = "Összesen",
-    comp = NULL,
+    comp = NA,
     valid = FALSE))
   
   dataInputMap <- reactive(dataInputFun(
@@ -738,7 +738,7 @@ server <- function(input, output) {
     yearFilter = input$mapYear,
     sexFilter = input$mapSex,
     ageFilter = input$mapAge,
-    comp = NULL,
+    comp = NA,
     valid = FALSE))
   
   dataInputAgesex <- reactive(dataInputFun(
@@ -763,7 +763,7 @@ server <- function(input, output) {
     yearFilter = input$agesexYear,
     sexFilter = "Összesen",
     ageFilter = "Összesen",
-    comp = NULL,
+    comp = NA,
     valid = FALSE))
   
   dataInputHunworld <- reactive(dataInputFun(
