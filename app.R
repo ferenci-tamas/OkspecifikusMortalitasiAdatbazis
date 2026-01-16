@@ -658,7 +658,7 @@ server <- function(input, output) {
     if(indicator == "yll" && yllMethod == "pyll")
       rd$value <- rd$value * pmax(0, yllPyllTarget - rd$AgeNum)
     
-    byvars <- c("iso3c", byvarAdd)
+    if(!any(is.na(byvarAdd))) byvars <- c("iso3c", byvarAdd)
     if(multipleICD != "MultiIndiv" && !is.na(strat) && multipleCountry == "Single")
       byvars <- c(byvars, strat[strat != "None"])
     
@@ -737,7 +737,7 @@ server <- function(input, output) {
     strat = NA,
     metric = input$mapMetric,
     ordVar = NA,
-    byvarAdd = NULL,
+    byvarAdd = NA,
     yearFilter = input$mapYear,
     sexFilter = input$mapSex,
     ageFilter = input$mapAge,
