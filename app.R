@@ -122,7 +122,7 @@ ownpanel <- function(idPrefix, singleICD = FALSE, map = FALSE, indicators = TRUE
       lapply(1:length(ICDGroups), function(i)
         conditionalPanel(paste0("input.", idPrefix, "Category == '", names(ICDGroups)[i], "'"),
                          shinyWidgets::pickerInput(paste0(idPrefix, names(ICDGroups)[i], "ICDSingle"), "Kiválasztott halálok",
-                                                   sapply(ICDGroups[[i]], `[[`, "Name"), multiple = FALSE,
+                                                   names(ICDGroups[[i]]), multiple = FALSE,
                                                    options = pickeropts)))
     } else {
       c(
@@ -131,7 +131,7 @@ ownpanel <- function(idPrefix, singleICD = FALSE, map = FALSE, indicators = TRUE
                                   "'& input.", idPrefix, "MultipleICD == 'Single'"),
                            shinyWidgets::pickerInput(paste0(idPrefix, names(ICDGroups)[i], "ICDSingle"),
                                                      "Kiválasztott halálok",
-                                                     sapply(ICDGroups[[i]], `[[`, "Name"),
+                                                     names(ICDGroups[[i]]),
                                                      multiple = FALSE,
                                                      options = pickeropts))),
         lapply(1:length(ICDGroups), function(i)
@@ -139,7 +139,7 @@ ownpanel <- function(idPrefix, singleICD = FALSE, map = FALSE, indicators = TRUE
                                   "'& input.", idPrefix, "MultipleICD != 'Single'"),
                            shinyWidgets::pickerInput(paste0(idPrefix, names(ICDGroups)[i], "ICDMultiple"),
                                                      "Kiválasztott halálokok",
-                                                     sapply(ICDGroups[[i]], `[[`, "Name"),
+                                                     names(ICDGroups[[i]]),
                                                      multiple = TRUE,
                                                      options = pickeropts))),
         list(
@@ -272,7 +272,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.42"),
+                  .noWS = "outside"), ", v0.43"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -522,7 +522,7 @@ server <- function(input, output) {
     showModal(modalDialog(
       h1("Okspecifikus Mortalitási Adatbázis"),
       p(paste0("Ez a weboldal a magyar halálozási adatokat tartalmazza halálok, nem és ",
-               "életkor szerinti lebontásban, évente, 1995-ig visszamenően, valamint lehetővé ",
+               "életkor szerinti lebontásban, évente, 1979-ig visszamenően, valamint lehetővé ",
                "teszi ezek számos vetületben történő elemzését, vizualizálását és nemzetközi ",
                "összehasonlítását.")),
       p(paste0("Az adatok értelmezése, az adatminőség, a különféle összehasonlítások nem ",
@@ -605,52 +605,36 @@ server <- function(input, output) {
                            indicator, yllMethod, yllPyllTarget,
                            strat, metric, ordVar, byvarAdd,
                            yearFilter, sexFilter, ageFilter, comp, valid) {
-    
-    rd <- RawData
-    rdAll <- RawDataAll
-    
+
     icd <- if(multipleICD == "Single") ICDSingle else ICDMultiple
     if(is.null(icd)) return(NULL)
-    icdtable <- rbindlist(lapply(icd, function(icdcode)
-      with(ICDGroups[[category]][[icdcode]], data.table(CauseGroup = Name, Cause = ICD,
-                                                        Weights, EurostatCode))))
+    icdtable <- rbindlist(ICDGroups[[category]][icd])
     
     if(!is.na(multipleCountry)) {
-      country <- if((multipleICD == "MultiIndiv" && is.na(comp) && !valid) || (multipleCountry == "Single"))
+      iso3cSel <- if((multipleICD == "MultiIndiv" && is.na(comp) && !valid) || (multipleCountry == "Single"))
         countrySingle else countryMultiple
-      if(is.null(country)) return(NULL)
-      
-      rd <- if(length(country) == 1) rd[iso3c == country] else rd[iso3c %in% country]
-      rdAll <- if(length(country) == 1) rdAll[iso3c == country] else rdAll[iso3c %in% country]
-    } else country <- NA
+      if(is.null(iso3cSel)) return(NULL)
+    } else iso3cSel <- as.character(unique(RawData$iso3c))
     
-    if(!any(is.na(yearFilter))) {
-      yearSel <- seq(yearFilter[1], yearFilter[2], 1)
-      rd <- rd[Year %in% yearSel]
-      rdAll <- rdAll[Year %in% yearSel]
-    }
-    if(sexFilter != "Összesen") {
-      rd <- rd[Sex == sexFilter]
-      rdAll <- rdAll[Sex == sexFilter]
-    }
-    if((ageFilter != "Összesen") && (metric != "adjrate")) {
-      rd <- rd[Age == ageFilter]
-      rdAll <- rdAll[Age == ageFilter]
+    yearSel <- if(!any(is.na(yearFilter))) seq(yearFilter[1], yearFilter[2], 1) else min(RawData$Year):max(RawData$Year)
+    if(sexFilter == "Összesen") sexFilter <- c("Férfi", "Nő")
+
+    if(ageFilter == "Összesen" || metric == "adjrate") {
+      rd <- RawData[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
+      skeleton <- RawDataAll[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
+    } else {
+      rd <- RawData[CJ(iso3cSel, yearSel, sexFilter, ageFilter), nomatch = NULL]
+      skeleton <- RawDataAll[CJ(iso3cSel, yearSel, sexFilter, ageFilter), nomatch = NULL]
     }
     
-    rd <- merge(rd, icdtable, allow.cartesian = TRUE)
+    if(multipleICD == "MultiSum") icdtable[, c("CauseGroup", "EurostatCode") := list("Összeg", NA)]
+
+    skeleton <- unique(icdtable[, .(List, EurostatCode, CauseGroup)])[skeleton, on = .(List), nomatch = NULL, allow.cartesian = TRUE]
     
-    if(multipleICD == "MultiSum") rd$CauseGroup <- "Összeg"
-    
-    rd <- rd[, .(value = round(sum(value*Weights))),
-             .(iso3c, Year, Sex, Age, Frmat, CauseGroup, EurostatCode)]
-    
-    rd <- merge(
-      data.table(base::merge.data.frame(rdAll, unique(rd[,.(CauseGroup, EurostatCode)]))),
-      rd, by = c("iso3c", "Year", "Sex", "Age", "Frmat", "CauseGroup", "EurostatCode"),
-      all.x = TRUE)
-    rd[is.na(value)]$value <- 0
-    
+    rd <- icdtable[rd, on = .(List, Cause), nomatch = NULL, allow.cartesian = TRUE][
+      skeleton, on = .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode),
+      .(value = round(sum(value * Weight, na.rm = TRUE))), by = .EACHI]
+
     rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
     
     if(category == "Avoidable") rd <- rd[AgeNum < yllPyllTarget]
@@ -658,7 +642,8 @@ server <- function(input, output) {
     if(indicator == "yll" && yllMethod == "pyll")
       rd$value <- rd$value * pmax(0, yllPyllTarget - rd$AgeNum)
     
-    if(!any(is.na(byvarAdd))) byvars <- c("iso3c", byvarAdd)
+    byvars <- "iso3c"
+    if(!any(is.na(byvarAdd))) byvars <- c(byvars, byvarAdd)
     if(multipleICD != "MultiIndiv" && !is.na(strat) && multipleCountry == "Single")
       byvars <- c(byvars, strat[strat != "None"])
     
@@ -684,7 +669,7 @@ server <- function(input, output) {
                                                  CountryName = names(CountryCodes)))
     }
     
-    return(list(rd = rd, icd = icd, country = country))
+    return(list(rd = rd, icd = icd, country = iso3cSel))
   }
   
   # countrySel <- function(multipleCountry, countrySingle, countryMultiple) {

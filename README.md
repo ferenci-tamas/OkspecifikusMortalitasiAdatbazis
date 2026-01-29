@@ -6,6 +6,8 @@ Ferenci Tamás (<https://www.medstat.hu/>)
   epidemiológia?](#előhang-mi-az-hogy-epidemiológia)
 - [Kik, mikor és hol betegek?](#kik-mikor-és-hol-betegek)
 - [Miért betegek?](#miért-betegek)
+- [A halálokok (betegségek)
+  kódolásáról](#a-halálokok-betegségek-kódolásáról)
 - [Az adatok begyűjtése és
   előkészítése](#az-adatok-begyűjtése-és-előkészítése)
 - [Az adatok és a számítás
@@ -79,272 +81,263 @@ vagy nem jó. A következőkben az idevágó szempontokat tekintjük át.
 
 1.  Elérhetőek betegségek egy széles körére
 
-    Szemben a halálozással, a betegségek előfordulására vonatkozó adatok
-    általában sokkal szűkebb körben, azaz sokkal kevesebb betegségre
-    vonatkozóan érhetőek el. A halálozásokból ugyanis minden egyes
-    esetet besorolnak halálok szerint és nyilvánosan jelentenek, addig
-    egy betegség puszta fellépésére vonatkozó információ begyűjtése
-    általában komoly többlet-energia befektetését igényli, hiszen ilyen
-    adatot – szemben a halálozással – rutinszerűen nem gyűjtenek a
-    népegészségügyi rendszerek. Alapvetően három megoldási lehetőség jön
-    szóba ha előfordulásra vonatkozó adatot szeretnénk gyűjteni; hogy
-    jobban megértsük az ezzel kapcsolatos nehézségeket, tekintsük át
-    ezeket röviden:
+Szemben a halálozással, a betegségek előfordulására vonatkozó adatok
+általában sokkal szűkebb körben, azaz sokkal kevesebb betegségre
+vonatkozóan érhetőek el. A halálozásokból ugyanis minden egyes esetet
+besorolnak halálok szerint és nyilvánosan jelentenek, addig egy betegség
+puszta fellépésére vonatkozó információ begyűjtése általában komoly
+többlet-energia befektetését igényli, hiszen ilyen adatot – szemben a
+halálozással – rutinszerűen nem gyűjtenek a népegészségügyi rendszerek.
+Alapvetően három megoldási lehetőség jön szóba ha előfordulásra
+vonatkozó adatot szeretnénk gyűjteni; hogy jobban megértsük az ezzel
+kapcsolatos nehézségeket, tekintsük át ezeket röviden:
 
-    - Az egyik megoldási lehetőség ad hoc vizsgálatok szervezése.
-      (Például egy mintavétellel történő felmérés – jó esetben
-      véletlenszerűen a populációból, rosszabb esetben ún. kényelmi
-      mintaként, például egyetlen, általunk könnyen lekérdezhető kórház
-      adatainak feldolgozásával.) Ez kevesebb erőforrást igényel, de
-      csak egy pillanatfelvételt ad, és semmiképp nem teljeskörű,
-      kényelmi minta esetén pedig erősen kérdéses is az
-      általánosíthatósága.
-    - A másik lehetőség az ún. adminisztratív/finanszírozási adatok
-      felhasználása. Az alapötlet, hogy a kórházak amúgy is jelentenek
-      finanszírozási célból adatokat – miért ne használjuk fel ezt
-      epidemiológiai célokra is? Csakugyan, ha valaki egészségügyi
-      ellátásban részesül, akkor keletkezik róla egy adatsor, amit
-      beküldenek a NEAK-ba, benne a személy nemével, életkorával,
-      lakhelyével, betegségével, az elvégzett beavatkozással; ebből
-      tényleg kiolvasható lehet a megbetegedés fellépése. Ez nagyon
-      csábítóan hangzik, hiszen az erőforrás-igénye csekély (amúgy is
-      begyűjtött adatokat dolgozunk fel), de mégis teljeskörű és
-      folyamatosan frissülő az adatbázis, legalábbis a közfinanszírozott
-      ellátásokra vonatkozóan. Bár ez eddig nagyon jól hangzik, a
-      módszernek vannak hátrányai is, egyrészt az adatminőség (ezeket a
-      jelentéseket a kórházak rutinszerűen meghamisítják, hogy
-      „optimalizálják” a finanszírozásukat), másrészt a klinikai adatok
-      hiánya (azt tudjuk, hogy valakit megröntgeneztek, de azt nem
-      tudjuk, hogy mi volt a röngtenképen, azt tudjuk, hogy az alany
-      hány éves, de azt nem tudjuk, hogy dohányzik-e). Ezzel együtt is,
-      ma már egyre több ilyen vizsgálat készül; egy példa tisztán
-      akadémiai célokat szolgáló ilyen kutatásra a
-      [HUNVASCDATA](https://hunvascdata.hu/)-projekt.
-    - Végezetül a harmadik lehetőség a betegségregiszterek használata.
-      Ez szó szerint véve „a” megoldás a problémára, hiszen a regiszter
-      definíció szerint azt jelenti, hogy valamely megbetegedés
-      előfordulásáról a teljesség igényével történő gyűjtés. (Tipikusan
-      jogszabály írja el a kötelező jelentést az egészségügyi
-      ellátóknak.) Ez látszólag az ideális megoldás: teljeskörű,
-      folyamatos, validálható adatminőségű, részletgazdag klinikai
-      adatokat is tartalmazhat, egyetlen apró problémája van: az, hogy
-      hatalmas az erőforrásigénye. Nem csak „forintban” értve, hanem az
-      adatszolgáltatói teherre nézve is, hiszen ez azt is jelenti, hogy
-      az észlelő orvosoknak a betegek után egy plusz jelentést is ki
-      kell tölteniük, és feltölteni a regiszterbe.
+- Az egyik megoldási lehetőség ad hoc vizsgálatok szervezése. (Például
+  egy mintavétellel történő felmérés – jó esetben véletlenszerűen a
+  populációból, rosszabb esetben ún. kényelmi mintaként, például
+  egyetlen, általunk könnyen lekérdezhető kórház adatainak
+  feldolgozásával.) Ez kevesebb erőforrást igényel, de csak egy
+  pillanatfelvételt ad, és semmiképp nem teljeskörű, kényelmi minta
+  esetén pedig erősen kérdéses is az általánosíthatósága.
+- A másik lehetőség az ún. adminisztratív/finanszírozási adatok
+  felhasználása. Az alapötlet, hogy a kórházak amúgy is jelentenek
+  finanszírozási célból adatokat – miért ne használjuk fel ezt
+  epidemiológiai célokra is? Csakugyan, ha valaki egészségügyi
+  ellátásban részesül, akkor keletkezik róla egy adatsor, amit
+  beküldenek a NEAK-ba, benne a személy nemével, életkorával,
+  lakhelyével, betegségével, az elvégzett beavatkozással; ebből tényleg
+  kiolvasható lehet a megbetegedés fellépése. Ez nagyon csábítóan
+  hangzik, hiszen az erőforrás-igénye csekély (amúgy is begyűjtött
+  adatokat dolgozunk fel), de mégis teljeskörű és folyamatosan frissülő
+  az adatbázis, legalábbis a közfinanszírozott ellátásokra vonatkozóan.
+  Bár ez eddig nagyon jól hangzik, a módszernek vannak hátrányai is,
+  egyrészt az adatminőség (ezeket a jelentéseket a kórházak rutinszerűen
+  meghamisítják, hogy „optimalizálják” a finanszírozásukat), másrészt a
+  klinikai adatok hiánya (azt tudjuk, hogy valakit megröntgeneztek, de
+  azt nem tudjuk, hogy mi volt a röngtenképen, azt tudjuk, hogy az alany
+  hány éves, de azt nem tudjuk, hogy dohányzik-e). Ezzel együtt is, ma
+  már egyre több ilyen vizsgálat készül; egy példa tisztán akadémiai
+  célokat szolgáló ilyen kutatásra a
+  [HUNVASCDATA](https://hunvascdata.hu/)-projekt.
+- Végezetül a harmadik lehetőség a betegségregiszterek használata. Ez
+  szó szerint véve „a” megoldás a problémára, hiszen a regiszter
+  definíció szerint azt jelenti, hogy valamely megbetegedés
+  előfordulásáról a teljesség igényével történő gyűjtés. (Tipikusan
+  jogszabály írja el a kötelező jelentést az egészségügyi ellátóknak.)
+  Ez látszólag az ideális megoldás: teljeskörű, folyamatos, validálható
+  adatminőségű, részletgazdag klinikai adatokat is tartalmazhat,
+  egyetlen apró problémája van: az, hogy hatalmas az erőforrásigénye.
+  Nem csak „forintban” értve, hanem az adatszolgáltatói teherre nézve
+  is, hiszen ez azt is jelenti, hogy az észlelő orvosoknak a betegek
+  után egy plusz jelentést is ki kell tölteniük, és feltölteni a
+  regiszterbe.
 
-    A jogszabály szerint Magyarországon több mint egy tucat regiszter
-    kell, hogy [működjön](https://njt.hu/jogszabaly/2018-49-20-5H),
-    ezekből gyakorlatilag kettő az aminek értelmezhető, ténylegesen
-    teljeskörű, folyamatosan frissülő, kívülről is látható –
-    publikációkban megjelenő, weboldalon lekérdezhető – aktivitása van,
-    a [Nemzeti Szívinfarktusregiszter](https://nszr.gokvi.hu/ir/fooldal)
-    és a [Nemzeti
-    Rákregiszter](https://onkol.hu/nemzeti-rakregiszter-es-biostatisztikai-kozpont/).
-    Az összes többi regiszterről még én sem tudom, hogy mit csinálnak,
-    van ami elvileg működik, de kívülről nézve aligha betöltve a
-    funkcióját (a szívelégtelenség regiszter 2021-ben eredményként
-    [számolt be](https://mkardio.hu/hirek.aspx?nid=106368) arról, hogy
-    2015 óta összesen 1600 beteget bevontak – miközben Magyarországon
-    majdnem 10 ezer *halál* történik ebből, *évente*), van, aminek a
-    nevére
-    [rákeresve](https://www.google.com/search?client=firefox-b-d&q=%22Feln%C5%91tt+Sz%C3%ADvseb%C3%A9szeti+Regiszter%22)
-    kizárólag a jogszabály szövegét kapjuk meg találatként…
+A jogszabály szerint Magyarországon több mint egy tucat regiszter kell,
+hogy [működjön](https://njt.hu/jogszabaly/2018-49-20-5H), ezekből
+gyakorlatilag kettő az aminek értelmezhető, ténylegesen teljeskörű,
+folyamatosan frissülő, kívülről is látható – publikációkban megjelenő,
+weboldalon lekérdezhető – aktivitása van, a [Nemzeti
+Szívinfarktusregiszter](https://nszr.gokvi.hu/ir/fooldal) és a [Nemzeti
+Rákregiszter](https://onkol.hu/nemzeti-rakregiszter-es-biostatisztikai-kozpont/).
+Az összes többi regiszterről még én sem tudom, hogy mit csinálnak, van
+ami elvileg működik, de kívülről nézve aligha betöltve a funkcióját (a
+szívelégtelenség regiszter 2021-ben eredményként [számolt
+be](https://mkardio.hu/hirek.aspx?nid=106368) arról, hogy 2015 óta
+összesen 1600 beteget bevontak – miközben Magyarországon majdnem 10 ezer
+*halál* történik ebből, *évente*), van, aminek a nevére
+[rákeresve](https://www.google.com/search?client=firefox-b-d&q=%22Feln%C5%91tt+Sz%C3%ADvseb%C3%A9szeti+Regiszter%22)
+kizárólag a jogszabály szövegét kapjuk meg találatként…
 
-    Remélem a fentiekkel tudtam érzékeltetni, hogy mi az oka annak, hogy
-    előfordulásra vonatkozó adatok csak betegségek egy szűk körére
-    érhetőek el, valamint, hogy az sem várható, hogy ez lényegesen
-    megváltozzon a közeljövőben.
+Remélem a fentiekkel tudtam érzékeltetni, hogy mi az oka annak, hogy
+előfordulásra vonatkozó adatok csak betegségek egy szűk körére érhetőek
+el, valamint, hogy az sem várható, hogy ez lényegesen megváltozzon a
+közeljövőben.
 
 2.  Ez különösen igaz, ha időben visszafelé megyünk
 
-    Az előbbi állítás végképp igaz, ha szeretnénk múltbeli adatokat is
-    vizsgálni; minél messzebb megyünk vissza, annál inkább. A Nemzeti
-    Szívinfarktusregiszter 2014 óta működik mint teljeskörű regiszter, a
-    Nemzeti Rákregiszter 2000 óta. Nyugati regisztereknél van példa
-    nagyobb időtartamra, de összességében véve legjobb esetben is néhány
-    évtizedről beszélünk, ami az előfordulás-jellegű adatok
-    elérhetőségét illeti. Ehhez képest az angol haláloki adatok 1851-re
-    is
-    [elérhetőek](http://doc.ukdataservice.ac.uk/doc/3552/mrdoc/pdf/guide.pdf),
-    de a londoniakat már 1603-tól (!) minden évben nyomtatásban
-    [közlik](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30725-X/fulltext).
+Az előbbi állítás végképp igaz, ha szeretnénk múltbeli adatokat is
+vizsgálni; minél messzebb megyünk vissza, annál inkább. A Nemzeti
+Szívinfarktusregiszter 2014 óta működik mint teljeskörű regiszter, a
+Nemzeti Rákregiszter 2000 óta. Nyugati regisztereknél van példa nagyobb
+időtartamra, de összességében véve legjobb esetben is néhány évtizedről
+beszélünk, ami az előfordulás-jellegű adatok elérhetőségét illeti. Ehhez
+képest az angol haláloki adatok 1851-re is
+[elérhetőek](http://doc.ukdataservice.ac.uk/doc/3552/mrdoc/pdf/guide.pdf),
+de a londoniakat már 1603-tól (!) minden évben nyomtatásban
+[közlik](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30725-X/fulltext).
 
 3.  A halálozás sokszor az egyik legfontosabb mutatója egy betegség
     terhének
 
-    Ha nem egyszerűen a betegség előfordulása érdekel minket, hanem a
-    betegség jelentette teher, akkor nagyon sok szempont merül fel:
-    szenvedés, maradványtünetekkel gyógyulás, munkából kiesés,
-    egészségügyi ellátórendszer igénybevétele és így tovább. Ezek közül
-    a halálozás azonban kiemelkedik, egyrészt mert egyértelműen
-    definiált és egyértelműen mérhető (mi az, hogy „szenvedés” és hogyan
-    lehet számszerűen lemérni?), másrészt mert sok esetben ez a
-    legfontosabb, legnagyobb relevanciával bíró szempont, a köznapi
-    szóhasználatban és népegészségügyi szempontból is.
+Ha nem egyszerűen a betegség előfordulása érdekel minket, hanem a
+betegség jelentette teher, akkor nagyon sok szempont merül fel:
+szenvedés, maradványtünetekkel gyógyulás, munkából kiesés, egészségügyi
+ellátórendszer igénybevétele és így tovább. Ezek közül a halálozás
+azonban kiemelkedik, egyrészt mert egyértelműen definiált és
+egyértelműen mérhető (mi az, hogy „szenvedés” és hogyan lehet
+számszerűen lemérni?), másrészt mert sok esetben ez a legfontosabb,
+legnagyobb relevanciával bíró szempont, a köznapi szóhasználatban és
+népegészségügyi szempontból is.
 
 4.  Ha a halálozási arány állandó, akkor a halálozás az incidenciát is
     jellemzi
 
-    A betegségbe belehaló emberek száma egy szorzat: a megbetegedő
-    emberek száma szorozva a halálozási aránnyal. Amennyiben
-    feltételezzük, hogy ez utóbbi állandó, akkor a halálozás valójában
-    igenis méri az incidenciát is! Igen, a konkrét szám nem fog
-    stimmelni (hacsak a halálozási arány nem 100%), de a *relatív
-    viszonyok* rendben lesznek: ha kétszer annyi halálozás van, akkor
-    tudhatjuk, hogy az előfordulás is kétszeresére nőtt. Amennyiben az
-    „állandó” alatt azt értjük, hogy nem változik időben egy országban,
-    akkor az adott ország különböző időszaki adatai vethetőek egybe
-    ilyen módon, ha pedig különböző országokban is ugyanaz a halálozási
-    arány, akkor még a különböző országok adatai is összevethetőek
-    (mondhatjuk, hogy ahol kétszer akkorra a halálozás, ott kétszer
-    annyi megbetegedés is van).
+A betegségbe belehaló emberek száma egy szorzat: a megbetegedő emberek
+száma szorozva a halálozási aránnyal. Amennyiben feltételezzük, hogy ez
+utóbbi állandó, akkor a halálozás valójában igenis méri az incidenciát
+is! Igen, a konkrét szám nem fog stimmelni (hacsak a halálozási arány
+nem 100%), de a *relatív viszonyok* rendben lesznek: ha kétszer annyi
+halálozás van, akkor tudhatjuk, hogy az előfordulás is kétszeresére
+nőtt. Amennyiben az „állandó” alatt azt értjük, hogy nem változik időben
+egy országban, akkor az adott ország különböző időszaki adatai vethetőek
+egybe ilyen módon, ha pedig különböző országokban is ugyanaz a
+halálozási arány, akkor még a különböző országok adatai is
+összevethetőek (mondhatjuk, hogy ahol kétszer akkorra a halálozás, ott
+kétszer annyi megbetegedés is van).
 
 #### Milyen bajai vannak a halálozási adatoknak?
 
 1.  A haláloki besorolás problémái
 
-    Ez a kérdés a koronavírus-járvány alatt hatalmas publicitást kapott.
-    Egy ahhoz kapcsolódó
-    [írásomban](https://github.com/ferenci-tamas/ExcessMortEUR)
-    részletesen
-    [kifejtettem](https://github.com/ferenci-tamas/ExcessMortEUR?tab=readme-ov-file#a-hal%C3%A1loki-statisztik%C3%A1k-probl%C3%A9m%C3%A1i)
-    a problémakört, itt szinte szó szerint meg tudom ismételni az akkor
-    leírtakat: gond az, hogy a haláloki statisztikákban mindenkit egy,
-    és csak egy halálokhoz kell besorolni. (Magán a halottvizsgálati
-    bizonyítványon ennél komplexebb haláloki helyzet is feltüntethető,
-    de a végső statisztikában ez nem fog látszni, csak egy pontosan
-    definiált, ún. előztetési eljárással kiválasztott halálok, amit
-    statisztikai közlésre kiválasztott elsődleges haláloknak szoktak
-    nevezni.) A probléma az, hogy az embereknek sokszor nem egyetlen
-    halálokuk van: elveszítünk egy szívelégtelen, cukorbeteg alanyt
-    stroke-ban; ő akkor most mibe halt bele? A szívelégetelenségbe? A
-    cukorbetegségbe? A stroke-ba?
+Ez a kérdés a koronavírus-járvány alatt hatalmas publicitást kapott. Egy
+ahhoz kapcsolódó
+[írásomban](https://github.com/ferenci-tamas/ExcessMortEUR) részletesen
+[kifejtettem](https://github.com/ferenci-tamas/ExcessMortEUR?tab=readme-ov-file#a-hal%C3%A1loki-statisztik%C3%A1k-probl%C3%A9m%C3%A1i)
+a problémakört, itt szinte szó szerint meg tudom ismételni az akkor
+leírtakat: gond az, hogy a haláloki statisztikákban mindenkit egy, és
+csak egy halálokhoz kell besorolni. (Magán a halottvizsgálati
+bizonyítványon ennél komplexebb haláloki helyzet is feltüntethető, de a
+végső statisztikában ez nem fog látszni, csak egy pontosan definiált,
+ún. előztetési eljárással kiválasztott halálok, amit statisztikai
+közlésre kiválasztott elsődleges haláloknak szoktak nevezni.) A probléma
+az, hogy az embereknek sokszor nem egyetlen halálokuk van: elveszítünk
+egy szívelégtelen, cukorbeteg alanyt stroke-ban; ő akkor most mibe halt
+bele? A szívelégetelenségbe? A cukorbetegségbe? A stroke-ba?
 
-    Ritkák a vegytiszta esetek, mégpedig mindkét irányban ritkák: hogy
-    egy egyébként makkegészséges alanyt elvisz egy stroke vagy hogy egy
-    stroke-os beteg fejére rádől egy kémény az utcán. Ezek a tiszta
-    esetek, amikor 100% vagy 0% a stroke hozzájárulása a halálozáshoz,
-    de a valódi történetek többsége nem ilyen, hanem szürke zóna, mint
-    azt az előző bekezdés példája is mutatja.
+Ritkák a vegytiszta esetek, mégpedig mindkét irányban ritkák: hogy egy
+egyébként makkegészséges alanyt elvisz egy stroke vagy hogy egy
+stroke-os beteg fejére rádől egy kémény az utcán. Ezek a tiszta esetek,
+amikor 100% vagy 0% a stroke hozzájárulása a halálozáshoz, de a valódi
+történetek többsége nem ilyen, hanem szürke zóna, mint azt az előző
+bekezdés példája is mutatja.
 
-    Ráadásul nem arról van szó, hogy ez „bonyolult” probléma (és majd
-    jövőre okosabbak leszünk, és megoldjuk), hanem arról, hogy ez
-    *megoldhatatlan* probléma. Valamennyi ok *hozzájárult* a halálához,
-    nyilván nem tett jót, hogy szívelégtelen, nem tett jót, hogy
-    cukorbeteg, tehát, ha szigorúan vesszük, valami olyasmit kellene
-    mondani, hogy 33 százalékban a szívelégtelenségbe halt bele, 19
-    százalékban a cukorbetegségbe és 48 százalékban a stroke-ba.
-    (Természetesen ezek a számok teljesen hasraütésszerűek.) Hiába is
-    lenne *elvileg* ez a helyes, az orvosi realitásnak megfelelő kép,
-    ilyet nem csinálunk – annyiban érthető módon is, hogy ember legyen a
-    talpán, aki ezeket a százalékokat megmondja.
+Ráadásul nem arról van szó, hogy ez „bonyolult” probléma (és majd jövőre
+okosabbak leszünk, és megoldjuk), hanem arról, hogy ez *megoldhatatlan*
+probléma. Valamennyi ok *hozzájárult* a halálához, nyilván nem tett jót,
+hogy szívelégtelen, nem tett jót, hogy cukorbeteg, tehát, ha szigorúan
+vesszük, valami olyasmit kellene mondani, hogy 33 százalékban a
+szívelégtelenségbe halt bele, 19 százalékban a cukorbetegségbe és 48
+százalékban a stroke-ba. (Természetesen ezek a számok teljesen
+hasraütésszerűek.) Hiába is lenne *elvileg* ez a helyes, az orvosi
+realitásnak megfelelő kép, ilyet nem csinálunk – annyiban érthető módon
+is, hogy ember legyen a talpán, aki ezeket a százalékokat megmondja.
 
-    Ez tehát a probléma; annyit azért fontos hangsúlyozni, hogy a dolog
-    egy részletekbe menően szabályozott, egységes algoritmus alapján
-    zajlik (ez nyilvánosan elolvasható, mind a
-    [KSH-nál](https://www.ksh.hu/docs/hun/info/02osap/torveny/d159006_2.doc),
-    mind a
-    [WHO-nál](https://icd.who.int/browse10/Content/statichtml/ICD10Volume2_en_2019.pdf)),
-    tehát bár a problémára nincs varázsütésszerű megoldás, de legalább
-    az elmondható, hogy a pontos besorolási döntés, még ha nem is
-    vitathatlan, de jó esetben legalább egységes országok között is, és
-    időben is.
+Ez tehát a probléma; annyit azért fontos hangsúlyozni, hogy a dolog egy
+részletekbe menően szabályozott, egységes algoritmus alapján zajlik (ez
+nyilvánosan elolvasható, mind a
+[KSH-nál](https://www.ksh.hu/docs/hun/info/02osap/torveny/d159006_2.doc),
+mind a
+[WHO-nál](https://icd.who.int/browse10/Content/statichtml/ICD10Volume2_en_2019.pdf)),
+tehát bár a problémára nincs varázsütésszerű megoldás, de legalább az
+elmondható, hogy a pontos besorolási döntés, még ha nem is vitathatlan,
+de jó esetben legalább egységes országok között is, és időben is.
 
 2.  Az adatminőség kérdése
 
-    Úgy tűnhet, hogy ilyen szempontból nincs nagy gond, sőt, valójában
-    még jobb is a helyzet, mint az incidencia-jellegű adatoknál, hiszen
-    míg egy diagnózist el lehet nézni, azért legkésőbb a halálnál,
-    felboncolva az alanyt, csak kiderül egész bizonyosan, hogy mi baja
-    volt. Valójában azért ez ennyire biztosan nem igaz (kezdve azzal,
-    hogy egyáltalán nincs minden elhunyt felboncolva; Magyarországon
-    2021-ben 23% volt a [boncolási
-    arány](https://gateway.euro.who.int/en/indicators/hfa_545-6410-autopsy-rate-for-all-deaths)
-    és ez még egy kiugróan magas szám, a legtöbb nyugati országban ez a
-    10%-ot sem éri el), ráadásul további problémák is vannak.
+Úgy tűnhet, hogy ilyen szempontból nincs nagy gond, sőt, valójában még
+jobb is a helyzet, mint az incidencia-jellegű adatoknál, hiszen míg egy
+diagnózist el lehet nézni, azért legkésőbb a halálnál, felboncolva az
+alanyt, csak kiderül egész bizonyosan, hogy mi baja volt. Valójában
+azért ez ennyire biztosan nem igaz (kezdve azzal, hogy egyáltalán nincs
+minden elhunyt felboncolva; Magyarországon 2021-ben 23% volt a
+[boncolási
+arány](https://gateway.euro.who.int/en/indicators/hfa_545-6410-autopsy-rate-for-all-deaths)
+és ez még egy kiugróan magas szám, a legtöbb nyugati országban ez a
+10%-ot sem éri el, ami [nagyon is
+befolyásolhatja](https://www.frontiersin.org/journals/oncology/articles/10.3389/fonc.2022.1032366/full)
+az országok közötti összehasonlítást), ráadásul további problémák is
+vannak.
 
-    Az első kérdés a használt osztályozási rendszer, a Betegségek
-    Nemzetközi Osztályozása (röviden BNO) ami meghatározza, hogy milyen
-    halálokok léteznek és hogy azokba milyen algoritmus szerint kell
-    besorolni az elhunytakat. A gond az, hogy az orvosi tudás
-    bővülésével ez folyamatosan változik, tipikusan bővül, mégpedig elég
-    drámaian: a BNO 1900-ban bevezetett első változata 191 kódot
-    tartalmazott, a 2022-ben elindított 11. revízió pedig 17 ezret…
-    Közben bizonyos kódokat törölnek is, vagy egybevonnak másokkal, a
-    bővülés sem feltétlenül új betegségek megjelenését jelenti, hanem
-    meglevőek részletesebb szétbontását és így tovább. Az [külön
-    tudomány](https://www.tandfonline.com/doi/abs/10.1080/01615440.1996.10112731),
-    hogy az eltérő verziókat hogyan kell összekapcsolni, de látszik,
-    hogy ez tökéletesen soha nem tehető meg. Ez eleve korlátozza az
-    egységességet, ha különböző időpontokról beszélünk.
+Az első kérdés a használt osztályozási rendszer, a Betegségek Nemzetközi
+Osztályozása (röviden BNO) ami meghatározza, hogy milyen halálokok
+léteznek és hogy azokba milyen algoritmus szerint kell besorolni az
+elhunytakat. A gond az, hogy az orvosi tudás bővülésével ez folyamatosan
+változik, tipikusan bővül, mégpedig elég drámaian: a BNO 1900-ban
+bevezetett első változata 191 kódot tartalmazott, a 2022-ben elindított
+11. revízió pedig 17 ezret… Közben bizonyos kódokat törölnek is, vagy
+egybevonnak másokkal, a bővülés sem feltétlenül új betegségek
+megjelenését jelenti, hanem meglevőek részletesebb szétbontását és így
+tovább. Az [külön
+tudomány](https://www.tandfonline.com/doi/abs/10.1080/01615440.1996.10112731),
+hogy az eltérő verziókat hogyan kell összekapcsolni, de látszik, hogy ez
+tökéletesen soha nem tehető meg. Ez eleve korlátozza az egységességet,
+ha különböző időpontokról beszélünk.
 
-    Valójában ennél kicsit rosszabb a helyzet, mert egy revízió
-    érvényességi időtartamán belül is lehetnek változások. Ezt azért
-    említem külön, mert a magyar adatokat érinti: 1995-től 2022-ig a 10.
-    revízió volt érvényben, mégis, 2005-től érzékelhetően megváltoztak a
-    számok. (Az össz-halálozás természetesen adott, így ez lényegében a
-    különböző kategóriák közötti átrendeződést jelenti.) Ennek az oka
-    egyrészt, hogy ekkor [tértek
-    át](https://www.ksh.hu/docs/hun/modsz/nep_modsz.html) a KSH-nál az
-    automatikus, gépi haláloki besorolási rendszerre a korábbi kézi
-    besorolás helyett, egy új halottvizsgálati bizonyítvány formátum,
-    valamint szigorúbb orvos-szakmai ellenőrzés elindításával együtt,
-    másrészt ekkor [vezették
-    át](http://diploma.uni-sopron.hu/1890/1/kplhi1604.pdf) egyben az
-    1995 óta a WHO által kiadott apróbb, revízión belüli változásokat.
-    Ezek miatt a 2005 előtti és utáni magyar adatok összehasonlítása
-    esetén óvatosan, erre tekintettel kell eljárni.
+Valójában ennél kicsit rosszabb a helyzet, mert egy revízió érvényességi
+időtartamán belül is lehetnek változások. Ezt azért említem külön, mert
+a magyar adatokat érinti: 1995-től 2022-ig a 10. revízió volt érvényben,
+mégis, 2005-től érzékelhetően megváltoztak a számok. (Az össz-halálozás
+természetesen adott, így ez lényegében a különböző kategóriák közötti
+átrendeződést jelenti.) Ennek az oka egyrészt, hogy ekkor [tértek
+át](https://www.ksh.hu/docs/hun/modsz/nep_modsz.html) a KSH-nál az
+automatikus, gépi haláloki besorolási rendszerre a korábbi kézi
+besorolás helyett, egy új halottvizsgálati bizonyítvány formátum,
+valamint szigorúbb orvos-szakmai ellenőrzés elindításával együtt,
+másrészt ekkor [vezették
+át](http://diploma.uni-sopron.hu/1890/1/kplhi1604.pdf) egyben az 1995
+óta a WHO által kiadott apróbb, revízión belüli változásokat. Ezek miatt
+a 2005 előtti és utáni magyar adatok összehasonlítása esetén óvatosan,
+erre tekintettel kell eljárni.
 
-    Természetesen a kódolás minősége is kérdés lehet, történhetnek
-    adminisztratív hibák, hiányos vagy téves kódolások, nem biztos, hogy
-    tökéletes a jelentési fegyelem stb., ez különösen igaz, ha a fejlett
-    világon túli [országokat
-    is](https://iris.who.int/bitstream/handle/10665/269355/PMC2624200.pdf)
-    be akarjuk vonni a vizsgálatokba. Több nemzetközi tanulmány
-    vizsgálta a kódolási minőséget (például az
-    [autóbalesetekre](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10523810/)
-    vagy épp az
-    [esésekre](https://bmcgeriatr.biomedcentral.com/articles/10.1186/s12877-021-02744-3)
-    vonatkozóan); de talán még érdekesebbek azok a nagyon izgalmas hazai
-    vizsgálatok, melyek azt [vetették
-    egybe](https://akjournals.com/view/journals/650/163/37/article-p1481.xml),
-    hogy a Nemzeti Rákregiszterben szereplő adatok hogyan viszonyulnak a
-    – KSH-s – haláloki besoroláshoz: egy eredményt kiemelve, 2018-ban 32
-    586 halálozás volt rosszindulatú dagantként besorolva, ebből 29
-    970-et „sikerült megtalálni” a Rákregiszterben.
+Természetesen a kódolás minősége is kérdés lehet, történhetnek
+adminisztratív hibák, hiányos vagy téves kódolások, nem biztos, hogy
+tökéletes a jelentési fegyelem stb., ez különösen igaz, ha a fejlett
+világon túli [országokat
+is](https://iris.who.int/bitstream/handle/10665/269355/PMC2624200.pdf)
+be akarjuk vonni a vizsgálatokba. Több nemzetközi tanulmány vizsgálta a
+kódolási minőséget (például az
+[autóbalesetekre](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10523810/)
+vagy épp az
+[esésekre](https://bmcgeriatr.biomedcentral.com/articles/10.1186/s12877-021-02744-3)
+vonatkozóan); de talán még érdekesebbek azok a nagyon izgalmas hazai
+vizsgálatok, melyek azt [vetették
+egybe](https://akjournals.com/view/journals/650/163/37/article-p1481.xml),
+hogy a Nemzeti Rákregiszterben szereplő adatok hogyan viszonyulnak a –
+KSH-s – haláloki besoroláshoz: egy eredményt kiemelve, 2018-ban 32 586
+halálozás volt rosszindulatú dagantként besorolva, ebből 29 970-et
+„sikerült megtalálni” a Rákregiszterben.
 
-    Mindezek a problémák hatványozottan igazak az emlegetett régi
-    adatokra: szép-szép, hogy megvan már 1603-ból is London haláloki
-    adatbázisa, de vajon mire megyünk azzal, hogy hányan [haltak
-    meg](https://worldhistorycommons.org/londons-bill-mortality)
-    fényemelkedésben vagy ijedtségben? (Ennél azért jobb a helyzet,
-    valójában sok betegség beazonosítható, bár az adatminőség nyilván
-    ott is hihetetlenül rossz mai szemmel nézve. De azért ne becsüljük
-    le: például a pestis-járványok lefolyása [kiválóan
-    rekonstruálható](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0008401)
-    ilyen adatokból is.)
+Mindezek a problémák hatványozottan igazak az emlegetett régi adatokra:
+szép-szép, hogy megvan már 1603-ból is London haláloki adatbázisa, de
+vajon mire megyünk azzal, hogy hányan [haltak
+meg](https://worldhistorycommons.org/londons-bill-mortality)
+fényemelkedésben vagy ijedtségben? (Ennél azért jobb a helyzet,
+valójában sok betegség beazonosítható, bár az adatminőség nyilván ott is
+hihetetlenül rossz mai szemmel nézve. De azért ne becsüljük le: például
+a pestis-járványok lefolyása [kiválóan
+rekonstruálható](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0008401)
+ilyen adatokból is.)
 
 3.  Csak olyan betegségeknél jó, aminél van egyáltalán releváns
     halálozás
 
-    Ha valaki a megfázással szeretne foglalkozni, akkor nem sokra megy a
-    halálozási adatokkal.
+Ha valaki a megfázással szeretne foglalkozni, akkor nem sokra megy a
+halálozási adatokkal.
 
 4.  A halálozás egybeméri az incidenciát és a gyógyítás hatásfokát
 
-    Az előnyök között említettük azt az értelmezést, ami úgy kezdődik,
-    hogy „ha a halálozási arány állandó” – de mi van ha nem? Ha változik
-    időben (például mert fejlődik az orvostudomány), akkor sajnos mégsem
-    működik az előnyöknél elmondott logika, és nem tudunk következtetni
-    a halálozásból az előfordulásnak még a relatív viszonyaira sem: ha
-    csökken a halálozás, akkor nem biztos, hogy csökken az előfordulás,
-    lehet, hogy egyszerűen csak hatékonyabbá vált a gyógyítás. Ha eltér
-    a halálozási arány országok között (például mert valahol jobb
-    kezelési lehetőségek érhetőek el), akkor nem vethetőek össze ezzel a
-    logikával a különböző országok: nem biztos, hogy ahol kevesebb halál
-    van, ott kevesebb – pláne pontosan arányban kevesebb – a
-    megbetegedés, lehet, hogy csak hatékonyabban gyógyítanak.
+Az előnyök között említettük azt az értelmezést, ami úgy kezdődik, hogy
+„ha a halálozási arány állandó” – de mi van ha nem? Ha változik időben
+(például mert fejlődik az orvostudomány), akkor sajnos mégsem működik az
+előnyöknél elmondott logika, és nem tudunk következtetni a halálozásból
+az előfordulásnak még a relatív viszonyaira sem: ha csökken a halálozás,
+akkor nem biztos, hogy csökken az előfordulás, lehet, hogy egyszerűen
+csak hatékonyabbá vált a gyógyítás. Ha eltér a halálozási arány országok
+között (például mert valahol jobb kezelési lehetőségek érhetőek el),
+akkor nem vethetőek össze ezzel a logikával a különböző országok: nem
+biztos, hogy ahol kevesebb halál van, ott kevesebb – pláne pontosan
+arányban kevesebb – a megbetegedés, lehet, hogy csak hatékonyabban
+gyógyítanak.
 
 ### Az adatok lebontása
 
@@ -853,6 +846,249 @@ oltás bevezetése nélkül még kevesebb lett volna), vagy fordítva, több
 lett, de az oltás *mégis* véd az infarktus ellen (ha oltás nélkül még
 több lett volna). Ez a confounding problémája.
 
+## A halálokok (betegségek) kódolásáról
+
+Beszéljünk még egy látszólag technikai, de valójában fontos, és
+önmagában is izgalmas kérdéskörről. Abból indultunk ki ebben az írásban,
+hogy a kérdéseink vizsgálatához halálozásra vonatkozó adatokat
+használunk, meg is tárgyaltuk, hogy miért, milyen módon, illetve, hogy
+ennek milyen előnyei és limitációi vannak. Természetesen fontos lesz a
+halálozás oka is, tehát, hogy milyen betegségbe halt bele az elhunyt,
+hiszen így még finomabb elemzéseket tudunk készíteni. A haláloki
+besorolás kérdését [érintettem
+már](#mi%C3%A9rt-j%C3%B3k-a-hal%C3%A1loz%C3%A1si-adatok) ebben az
+írásban is, hangsúlyozva, hogy ez a besorolás nem egyszerű (sőt, sokszor
+nem is egyértelműen megoldható) feladat. Van azonban itt egy másik, e
+problémától teljesen független kérdéskör: még ha félre is tesszük ezt,
+és azt mondjuk, hogy egyértelműen meghatároztuk a halálokot, azt hogyan
+adjuk meg?
+
+Első ránézésre talán nem is érhető a probléma: hát leírjuk, hogy
+„tüdőgyulladás”, aztán ennyi, nem? Valójában azonban van itt két nem
+elhanyagolható apróság: az, hogy pontosnak és egységesnek kell lenni.
+Mert mi az, hogy „tüdőgyulladás”? Ez nem egyetlen betegség, jó lenne
+megkülönböztetni, hogy mi okozta: vírus, baktérium, gomba? Hiszen a
+nagyobb felbontású, finomabb adat mélyebb elemzést tesz lehetővé.
+Esetleg nem kellene még mélyebbre ásni, és megkülönböztetni azt is, hogy
+pontosan milyen baktérium, pseudomonas vagy épp staphylococcus? Nem
+kellene valahogy megadni, hogy milyen kiterjedt volt a tüdőgyulladás?
+Vagy ennyire ne aprózzuk el, az egybevonható? Na és mi a helyzet a
+veleszületett tüdőgyulladással, az is idetartozik egyáltalán? Egyszóval
+nagyon gyorsan ezernyi kérdés merül fel, már egyetlen betegségnél is.
+Ráadásul itt nemzetközi adatgyűjtésről van szó, tehát azt is el kell
+érni, hogy a rendszert a világ összes országa elfogadja, és egységesen
+használja (mellesleg tehát nyilvánvalóan valamilyen kódokra is szükség
+lesz, nem lehet azt írni, hogy „tüdőgyulladás”).
+
+A fentiekből összességében az látszik, hogy szükség volna az összes
+létező betegség kellő részletezettségű, strukturált, *és* az egész
+világon egységesen használt osztályozási rendszerére. Gigantikus
+vállalkozásnak tűnik egy ilyen adatbázis összeállítása! És valóban az
+is, de az Egészségügyi Világszervezet égisze alatt már több mint egy
+évszázada folyik az ezt célzó – és véglegesen természetesen soha véget
+nem érő – munka. Ennek az eredménye a Betegségek Nemzetközi
+Osztályozása, röviden BNO (angolul International Classification of
+Diseases, ICD).
+
+A BNO lehetővé teszi, hogy az összes ismert, relevánsan elkülöníthető
+betegséget leírjuk egyetlen kóddal, egy nemzetközileg egységes,
+hierarchikus osztályozási rendszerben. A BNO-t folyamatosan
+karbantartják, ám időnként teljes revíziót is tartanak, ami gyakran
+fundamentálisan megváltoztatja a kódrendszert. Egyrészt mindig – és
+általában igen nagy mértékben – bővül a rendszer: az 1-es revízióban
+[191 betegség](https://www.meb.ki.se/svesan/ICD/icd1h.htm) szerepelt, a
+11-esben nagyjából [17 ezer
+van](https://www.who.int/news/item/14-02-2025-who-releases-2025-update-to-the-international-classification-of-diseases-(icd-11)).
+De nem csak erről van szó: maga a felépítés, a struktrúra is gyakran
+változik, ahogy igyekszik leírni az orvosi tudásunk egyre nagyobb
+komplexitását. Ami azonban változatlan, hogy minden betegség egy
+egyértelmű kóddal rendelkezik minden BNO verzióban (noha a kódnak a
+struktúrája is változott az évtizedek alatt).
+
+A BNO aktuális változata elvileg a 11-es, de az átállás még csak most
+kezdődött meg, a mortalitási adatbázisban egyelőre még nincs 11-es
+szerint jelentő ország. A 10-es verziót 1995 körül vezették be (azért
+fogalmazok ilyen homályosan, mert több évnyi eltérések is vannak abban,
+hogy melyik ország mikor állt át). A BNO-10-ben a kód formátuma – és
+ebből fakadóan a hierarchia – a következő. A kód első karaktere egy
+betű, ami a főcsoportot adja meg (pl. C: „rosszindulatú daganatok”). A
+második és harmadik karakter szám, ami ezen belül adja meg a betegséget
+(pl. C92: „myeloid leukémia”); ezek általában valamilyen logikus –
+jellemzően anatómiai vagy klinikai – sorrendben vannak megadva (példának
+okáért, C00-tól C14-ig az az ajak, a szájüreg és garat rosszindulatú
+daganatai vannak, C15 a nyelőcső rosszindulatú daganata, C16 a gyomoré
+és így tovább a tápcsatorna mentén). A negyedik karakter a betegség
+további lebontása, jellemzően típus vagy anatómiai lokalizáció szerint
+(pl. C925: „akut myelomonocytás leukémia”). A WHO ezt az első 4
+karaktert kontrollálja központilag, az 5. karaktert az egyes országok
+szabadon használhatják fel saját – finanszírozási,
+tudományos-statisztikai vagy egyéb célt szolgáló – osztályozásukra (pl.
+Magyarországon C9251: „akut myelomonocytás leukémia, alacsony-közepes
+malignitás”).
+
+A 9-es revízióban ennél sokkal szimplább volt a struktúra: egész
+egyszerűen 1-től kezdődően meg voltak számozva a betegségek, azzal, hogy
+az összetartozóak egymás után jöttek (tehát például 1-től 139-ig a
+fertőző és parazitás betegségek szerepeltek, 140-től 239-ig a különböző
+ráktípusok; tehát ezt a strukturáltságot maga a kód nem jelölte, 139 egy
+fertőző betegséges kód, a 140 meg egyszercsak a nyelvrák). Ezen kívül
+voltak kiegészítő kódok: E betűvel kezdődtek a mortalitás külső okai, V
+betűvel lehetett egyéb eseményeket (pl. laborvizsgálat, szülés) kódolni.
+Ezek mind háromjegyű kódok voltak, de elvileg a BNO-9-ben is lehetett
+részletesebb kódokat használni (pl. 041 a máshová nem osztályozott
+bakteriális fertőzés, 041.0 a streptococcus okozta fertőzés, 041.02 a B
+csoportú streptococcus okozta fertőzés); ezt azonban ritkán használták.
+
+Én most adottságnak vettem a BNO-t, de azért egy mondattal érdemes
+megjegyezni, hogy [szó nincs
+róla](https://www.sciencedirect.com/science/article/abs/pii/S1386505698001713?via%3Dihub),
+hogy maga az osztályozási rendszer teljesen problémamentes volna. (És
+akkor arról nem is beszéltünk, hogy ha nem haláloki, hanem megbetegedési
+besorolásról beszélünk, akkor a kódolást a kórházak anyagi érdekei is
+[befolyásolhatják](https://www.sciencedirect.com/science/article/abs/pii/S0168851006001369),
+a finanszírozási rendszertől függő módon, még egy tökéletes osztályozási
+rendszer esetén is; szerencsére ez halálozási adatoknál nem releváns.)
+
+Egy dologról kell még szót ejteni: a felbontásról. Nem minden ország és
+minden évben használta ugyanis még az aktuális revízión belül sem az
+elérhető legrészletesebb kódot, néha csak nagyobb, összevontabb
+kategóriákat jelentettek. (Például nem azt adták meg, hogy hány akut
+myelomonocytás leukaemia, C925, volt – és külön azt, hogy mennyi akut
+myeloid leukémia, C920, mennyi krónikus myeloid leukémia, C921, stb. –
+hanem csak azt, hogy mennyi myeloid leukaemia, C92.) Ilyen szemmel nézve
+azonnal feltűnik a BNO-10 egy nagy előnye (avagy, fordítva nézve, a 9-es
+revízió nagy hátránya). Jelesül, hogy a 10-es verzióban ezeket az
+összevonásokat automatikusan el lehet végezni, egyszerűen csak le kell
+vágni a kód végét: C9251 az „akut myelomonocytás leukémia,
+alacsony-közepes malignitás”, de ha levágom az utolsó karaktert, akkor
+az „akut myelomonocytás leukémia” kódját kapom, ha még egyet levágok,
+akkor a „myeloid leukémia”-ét, ha pedig csak a legeleső betűt tartom
+meg, akkor azt kapom, hogy „rák”. Ez egy nagyon kellemes tulajdonsága a
+BNO-10-nek, de sajnos a 9-ben, a korábban már látott egyszerű
+felsorolásból adódóan, értelemszerűen nincs meg. (Kivéve a
+háromjegyűeken túli kiterjesztéseket, azok így működnek, de a háromjegyű
+kódok maguk nem.) Azért, hogy ezen segítsenek, és a 9-es revízióban is
+lehessen nagyobb csoportokról beszélni, jobb híján erre létrehoztak egy
+külön listát, amelynek a kódjai ezeket a nagyobb csoportokat
+tartalmazzák; például a 22-es kód azt jelenti, hogy „idegrendszer
+betegségei” és tartalmazza az összes kódot 320-tól 359-ig. Mint látható,
+ezt sem a legszerencsésebben sikerült megoldani, mert a összevont lista
+olyan kódokat használ, amik lehetnének az összevonás nélküli, teljes
+lista kódjai is (a 22 a lépfene kódja), ezért a WHO megkülönböztetésül
+egy B betűt ír az összevont listás kódok, elé, így ha B22-t látunk,
+akkor lehet tudni, hogy az az összevont lista 22-es kódja, nem a sima
+lista 22-ese. Ráadásul, ha szeretnénk többféle szintű, kisebb és nagyobb
+összevonást, akkor azt is kézzel kell megoldani, de itt igyekeztek némi
+hierarchiát tartani: B220 jelenti a különböző meningitiseket (a kódok
+320-tól 329-ig).
+
+Azt, hogy ki melyik BNO verziót, és azon belül milyen felbontást
+használt adott évben, a `List` nevű, három karakterből álló mező adja
+meg. E mező jellemző formátuma az, hogy az első két karakter a BNO
+revíziószáma (09 a 9-es verzió, 10 a 10-es stb.), a harmadik karakter a
+jelentés formátuma. Például a 104-es kód azt jelenti, hogy BNO-10
+revízió szerint, az első 4 karaktert megadva. 103-as kód: BNO-10 revízió
+szerint, az első 3 karaktert megadva. (Mint láttuk, ez automatikusan
+jelent különféle mélységű hierarchikát, úgyhogy itt elég megadni, hogy
+hány karaktert közlünk.) A 9-es revíziónál zűrösebb a helyzet. Itt négy
+különböző változat is van (09A, 09B, 09C és 09N) ezek abban térnek el,
+hogy pontosan milyen összevonási listát használnak: a 09A és 09B az,
+amit én az imént leírtam (azzal az egészen minimális eltéréssel, hogy az
+B-ben hiányzik egy speciális, egyetlen ország egyetlen évében használt
+kód, de cserében szerepel benne két kód a HIV-re), a 09C és 09N pedig
+még jobban összevont, nem-standard listák, előbbit Kína, az utóbbiakat a
+szovjet utódállamok használták egy ideig.
+
+Ha valakit csak az utóbbi nagyjából 30 év adatai érdekelnek, akkor
+nincsen probléma, mert ez egységesen a BNO-10 érája, tehát minden adat
+ugyanabban a kódrendszerben van (legfeljebb a felbontás lehet a kérdés).
+Szerencsére nagyon sok problémánál ez elég is, hiszen érthető módon sok
+kérdés megválaszolásához elég a utóbbi pár évtized adata. De mi a
+helyzet akkor, ha szeretnénk régebbre visszamenni? Adja magát a
+probléma: valahogy össze kellene kötni a különböző kódrendszereket…! Ezt
+azonban könnyebb mondani, mint megcsinálni. A probléma egy része
+ránézésre, már a fenti leírás alapján látszik: ha régen kevesebb kód
+volt, most meg több van, akkor szükségszerűen adódik, hogy lesznek olyan
+esetek, ahol több különböző mai kódnak ugyanaz a régi kód felel meg. (Ez
+nem probléma akkor, ha a mai adatokat a régi rendszerben akarjuk
+kifejezni – egyszerűen össze kell adni a ma különböző kódon jelentett
+számokat – de probléma akkor, ha a régi adatokat a mai rendszerben
+akarjuk kifejezni, hiszen nem tudjuk megmondani, hogy a régi kódon
+jelentett számot milyen arányban osszuk szét a több új kód között.) Ha
+csak ennyi lenne a gond, ezen még valamennyire lehetne segíteni. Az
+egyik megoldás az ún. bridge-coding, ami azt jelenti, hogy ugyazon év
+adatait elkódolják így is, meg úgy is, a régi rendszerben és az új
+rendszerben is, ami szó szerint felesleges munka, de pont az a célja,
+hogy az ilyen összekapcsolásokat támogassa (például: ki lehet belőle
+olvasni a szétosztási arányokat; kérdés persze, hogy ez időben
+állandó-e). Ezt meg is szokták csinálni ténylegesen, és fontos, hasznos
+eszköz is, de sajnos a problémák nem érnek itt véget. Valóbaján ugyanis
+olyan esetek is vannak, amikor több régi kódnak felel meg egy új,
+olyanok is, amikor nem egyértelmű, hogy melyik kód melyiknek felel meg,
+egyszóval a kód-szintű leképezés különböző BNO-revíziók között messze
+nem triviális feladat. Vannak tanulmányok melyek – sokszor igen
+fáradságos munkával – igyekeztek
+[megvalósítani](https://www.tandfonline.com/doi/abs/10.1080/01615440.1996.10112731)
+teljeskörűen ezt az összekapcsolást, igyekezvén
+[rekonstruálni](https://link.springer.com/article/10.1007/s10680-017-9453-1)
+a hosszú távú halálozási idősorokat, esetleg csak [egy
+irányban](https://link.springer.com/article/10.1007/s10654-023-01027-y),
+léteznek különféle [táblázatok és
+adatbázisok](https://www.cms.gov/medicare/coding-billing/icd-10-codes/icd-10-cm-icd-10-pcs-gem-archive)
+az összekapcsolásra, amelyek persze, az előbbiekből adódóan, soha nem
+lehetnek tökéletesek, [vizsgálják
+is](https://www.ahajournals.org/doi/10.1161/CIRCOUTCOMES.118.004782)
+ezek jóságát; egy szó mint száz, ez egy nehéz, zűrös terület.
+
+Azért, hogy ezeket a zűröket elkerüljem, én egy szerényebb célt tűztem
+ki magam elé: nem kód-, hanem csoportszinten igyekeztem összekapcsolni a
+különböző verziókat. Tehát nem arra törekedtem, hogy az „akut
+myelomonocytás leukémia” megfelelőjét megtaláljam, megelégedtem azzal,
+hogy a „rosszindulatú daganat” – vagy legfeljebb a „leukémia” –
+megfelelőjét megtaláljam. Ez azért nagy könnyítés, mert a zűrök abszolút
+túlnyomó többsége csoporton *belül* jelentkezik: régi rák-kód szinte
+biztos, hogy új rák-kódnak felel meg, és viszont (még ha nem is
+egyértelmű vagy egyszerű, hogy melyiknek). Ezért a csoportszintű
+megfeleltetés sokkal egyszerűbb, reálisabb – és sokkal aggálytalanabbul
+elvégezhető – feladat. (Azt csak halkan teszem hozzá, hogy a BNO-9
+esetében a WHO adatbázisában kizárólag összevont listás kódok vannak,
+tehát ott, ha akarnánk sem tudnánk legfinomabb kód-szinten
+összekapcsolni, ez a kérdés fel sem merül.) Az általam használt
+összekapcsolást a lenti kód `ICDGroups` változója mutatja. Ehhez alapul
+vettem egy releváns kanadai
+[publikációt](https://www150.statcan.gc.ca/n1/pub/84-548-x/84-548-x2005001-eng.htm)
+(különösen a [2.
+táblázatát](https://www150.statcan.gc.ca/n1/pub/84-548-x/2005001/t/4078901-eng.htm)
+és a [4.
+táblázatát](https://www150.statcan.gc.ca/n1/pub/84-548-x/2005001/t/4158977-eng.htm)),
+egy kanadai tartomány
+[tanulmányát](https://open.alberta.ca/dataset/0778534944) és egy holland
+[publikációt](https://link.springer.com/article/10.1007/s10680-013-9307-4)
+(különösen a [2.
+táblázatát](https://link.springer.com/article/10.1007/s10680-013-9307-4/tables/2));
+de ebben az esetben valójában legtöbbször józan ésszel is egyértelmű
+volt a helyzet.
+
+Jelen állás szerint a 104-es kódú adatokat használtam teljeskörűen, az
+összes többiből pedig azokat, amiknél elkészült a megfeleltetési tábla.
+(Technikailag ez úgy néz ki, hogy minden adatot beolvasok, de amikhez az
+`ICDGroups` táblában nincs bejegyzés, azok nem fognak látszódni a
+felületen.)
+
+És még egyetlen megjegyzés a végére. A fentiekben végig a BNO különböző
+revízióiról volt szó (ami nagyon ritkán változik, évtizedes az a
+nagyságrend, amíg új készül), de említettem, hogy egy revízión belül is
+vannak frissítések. Ezek hatása sem feltétlenül elhanyagolható, erre
+nagyon jó példa pont Magyarország, ahol 2005-ben történt – ugyanazon
+BNO-revízió éráján belül! – egy nagyon komoly
+[változás](https://www.ksh.hu/evkonyvek/2020/demografiai-evkonyv-2020/pdf/valtozasok_2005_2020.pdf),
+ami miatt érzékelhetően megváltoztak, egyik évről a másikra, a haláloki
+besorolások (bizonyos halálokok visszaszorultak, másokból több lett).
+Azért is hangsúlyozom, hogy egyik évről a másikra, mert jól mutatja,
+hogy ez a halálokok közötti átrendeződés nem valamiféle természetes
+változás eredménye, hanem tisztán az osztályozási rendszer
+(változásának) hatása.
+
 ## Az adatok begyűjtése és előkészítése
 
 Az adatok előkészítése két alapvető feladatot jelent: a mortalitási
@@ -860,8 +1096,8 @@ adatbázis és a lélekszámra vonatkozó adatok előkészítését. Ezt egész�
 ki a BNO-kódok és az országnevek előkészítése.
 
 A feladatot az [R statisztikai
-környezet](https://www.youtube.com/c/FerenciTam%C3%A1s/playlists?view=50&sort=dd&shelf_id=2)
-alatt oldottam meg, a `data.table` csomagot használva:
+környezet](https://ferenci-tamas.github.io/r-nyelv/) alatt oldottam meg,
+a `data.table` csomagot használva:
 
 ``` r
 library(data.table)
@@ -873,43 +1109,10 @@ A mortalitási adatok (halálozások számai) az Egészségügyi Világszervezet
 (WHO) mortalitási
 [adatbázisából](https://www.who.int/data/data-collection-tools/who-mortality-database)
 származnak. Ez tartalmazza az egyes jelentést adó országok halálozási
-számait életkor, nem, év és halálok szerint lebontva. E tényezők szinte
-mindegyike igényel kommentárt:
+számait év, halálok, életkor és nem szerint lebontva. A haláloki
+besorolás az – éppen aktuális – BNO szerint történt; e rendszer
+részleteit korábban már tárgyaltam. Ami a maradék két tényezőt illeti:
 
-- A halál oka a Betegségek Nemzetközi Osztályozása (BNO, angolul
-  International Classification of Diseases, ICD) szerint van megadva. Ez
-  egy gigantikus nemzetközi vállalkozás, melyet több mint egy évszázada
-  fejlesztenek, és amely azt célozza meg, hogy az összes ismert,
-  relevánsan elkülöníthető betegség nemzetközileg egységes, hierarchikus
-  osztályozási rendszere legyen. A WHO adatbázisa 1995-től a BNO 10-es
-  változatát használja; ez több mint 11 ezer önálló betegséget
-  tartalmaz. (Már létezik BNO-11 is, azonban ennek bevezetése még csak
-  jelenleg zajlik, eddig még nem e szerintiek a jelentetett adatok.) E
-  verzióban a kód formátuma – és ebből fakadóan a hierarchia – a
-  következő. A kód első karaktere egy betű, ami a főcsoportot adja meg
-  (pl. C: „rosszindulatú daganatok”). A második és harmadik karakter
-  szám, ami ezen belül adja meg a betegséget (pl. C92: „myeloid
-  leukaemia”); ezek általában valamilyen logikus – pl. anatómiai vagy
-  klinikai – sorrendben vannak megadva (pl. C00-tól C14-ig az az ajak, a
-  szájüreg és garat rosszindulatú daganatai vannak, C15 a nyelőcső
-  rosszindulatú daganata, C16 a gyomoré és így tovább a tápcsatorna
-  mentén). A negyedik karakter a betegség további lebontása, jellemzően
-  típus vagy anatómiai lokalizáció szerint (pl. C925: „akut
-  myelomonocytás leukaemia”). A WHO ezt az első 4 karaktert kontrollálja
-  központilag, az 5. karaktert az egyes országok szabadon használhatják
-  fel saját – finanszírozási, tudományos-statisztikai vagy egyéb célt
-  szolgáló – osztályozásukra (pl. Magyarországon C9251: „Akut
-  myelomonocytás leukaemia, alacsony-közepes malignitás”). A WHO
-  mortalitási adatbázisában ennek megfelelően legfeljebb 4 karaktert
-  kell jelenteni, de ezt sem kötelező, van ország, ami csak 3 karaktert,
-  vagy akár ennél is jobban összevont listát használ. Ez a `List` nevű
-  mezőből olvasható ki (pl. 104-es kód a 4 karakterű jelentés, 103-as a
-  3 karakteres jelentés). Én most csak a 104-et, tehát a legfinomabb
-  jelentéseket használtam, fontos továbbfejlesztési lehetőség a többi,
-  nem 104-es ország/év bekapcsolása. (Ez relatíve könnyű, hiszen a kódok
-  eleje ugyanaz.) Nagyobb feladat az 1995 előtti adatok, azaz a 10-es
-  verzió előtti BNO-k bekapcsolása, ez azért zűrösebb, mert a különböző
-  verziók kódjai között messzemenőkig nincs egy-egy megfeleltetés.
 - Az életkori felbontás nem biztos, hogy ugyanaz minden országban,
   illetve évben. A WHO 9 különböző életkori lebontási lehetőséget
   használ, a `Frmat` nevű változó adja meg, hogy egy adott ország egy
@@ -917,20 +1120,21 @@ mindegyike igényel kommentárt:
   4 évig évente, onnantól 5 évente 95-ig, a fölött egyben), az 1-es
   ugyanaz, de már 85 felett egyben, és így tovább, a 8-asban 1-4 után
   már 10 éves csoportok jönnek, és az is csak 65 évig, a fölött egyben,
-  míg a 9-es az, ha nincs életkori lebontás. Szerencsére nálam az
-  országok/évek szinte kivétel nélkül a 0-s, 1-es, vagy 2-es kategóriába
-  tartoztak; mindegyiket felhasználtam. (Ez megfelelő lélekszám adatokat
-  igényel, és persze odafigyelést a kódolás során arra, hogy melyik
-  ország/év melyik csoportba tartozik. Az sem biztos, hogy egy ország
-  minden évben ugyanazt a bontást használja.)
+  míg a 9-es az, ha nincs életkori lebontás. Én most, a későbbi
+  elemzések miatt, csak a 0-s, 1-es és 2-es kategóriájú adatokat fogom
+  használni; szerencsére ez az országok nagy részét jelenti, pláne a
+  fejlett világban. (Ez megfelelő, tehát ehhez passzoló részletezettségű
+  lélekszám adatokat is igényel, és persze odafigyelést a kódolás során
+  arra, hogy melyik ország/év melyik csoportba tartozik. Az sem biztos,
+  hogy egy ország minden évben ugyanazt a bontást használja.)
 - A nem változó az alany születési nemét jelenti, 1 (férfi) vagy 2 (nő)
   értéket vehet fel, ezen kívül a 9-es (ismeretlen) fordul elő, de
   nagyon kis számban, ezeket elhagytam.
 
-Az 1995 utáni (BNO-10 szerint kódolt) adatok 5 darab tömörített fájlban
-érhetőek el, ezeket letöltjük, kibontjuk (egy ideiglenes mappába), majd
-beolvassuk. Szerencsére a formátumuk állandó, és a `data.table::fread`
-pontosan felismeri:
+Az adatok (adott esetben több) tömörített fájlban érhetőek el,
+BNO-revíziók szerint külön-külön. Ezeket a fájlokat letöltjük, kibontjuk
+egy ideiglenes mappába, majd beolvassuk. Szerencsére a formátumuk
+állandó, és a `data.table::fread` pontosan felismeri:
 
 ``` r
 td <- tempdir()
@@ -942,7 +1146,9 @@ unzip("./inputdata/morticd10_part4.zip", exdir = td)
 unzip("./inputdata/morticd10_part5.zip", exdir = td)
 unzip("./inputdata/morticd10_part6.zip", exdir = td)
 
-RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd10*",
+unzip("./inputdata/morticd09.zip", exdir = td)
+
+RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd*",
                                        full.names = TRUE), fread))
 ```
 
@@ -966,9 +1172,10 @@ Nézzük meg, hogy ez összekapcsolható-e a korábbi táblával, azaz, minden
 ország(kód) megvan-e:
 
 ``` r
-unique(merge(RawData, CountryCodes[, .(Country = MORT, CountryName = DisplayString, iso3c = ISO,
-                                       Region = WHO_REGION_CODE)], by = "Country",
-             all.x = TRUE)[is.na(iso3c)]$Country)
+unique(merge(RawData,
+             CountryCodes[, .(Country = MORT, CountryName = DisplayString,
+                              iso3c = ISO, Region = WHO_REGION_CODE)],
+             by = "Country", all.x = TRUE)[is.na(iso3c)]$Country)
 ```
 
     ## [1] 1303 3283
@@ -985,8 +1192,9 @@ CountryCodes[DisplayString == "occupied Palestinian territory, including east Je
 Most már végrehajthatjuk veszteség nélkül az összekapcsolást:
 
 ``` r
-RawData <- merge(RawData, CountryCodes[, .(Country = MORT, CountryName = DisplayString,
-                                           iso3c = ISO, Region = WHO_REGION_CODE)],
+RawData <- merge(RawData,
+                 CountryCodes[, .(Country = MORT, CountryName = DisplayString,
+                                  iso3c = ISO, Region = WHO_REGION_CODE)],
                  by = "Country")
 ```
 
@@ -997,48 +1205,37 @@ RawData[iso3c == "CYM" & Year == 2014]$Frmat <- 2
 RawData[iso3c == "IRL" & Year %in% c(2016, 2017, 2019, 2020)]$Frmat <- 2
 ```
 
-Csak azokat az országokat, illetve éveket tartjuk meg, amikor 104 volt a
-listaszám (ez azt jelenti, hogy 4 karakteres BNO-kóddal jelentik a
-halálokokat):
-
-``` r
-RawData <- RawData[List == "104"]
-```
-
-A többi listaszám (101, UE1, 103, 10M) könnyen lehet, hogy több-kevesebb
-munkával menthető lenne – össze kellene kapcsolni a különböző
-kódolásokat – de ezzel most nem foglalkozunk.
-
-Dobjuk ki az életkori bontás nélküli országokat/éveket is, illetve
-azokat is, ahol nincs legalább 85 éves korig legalább 5 évente felbontva
-az elhunyt életkora (ez azt jelenti, hogy a 0, 1 és 2 életkori
+Dobjuk ki az életkori bontás nélküli országokat/éveket, illetve azokat
+is, ahol nincs legalább 85 éves korig legalább 5 évente felbontva az
+elhunyt életkora (ez azt jelenti, hogy csak a 0, 1 és 2 életkori
 formátumkódú országokat/éveket tartjuk meg):
 
 ``` r
 RawData <- RawData[Frmat %in% c(0, 1, 2)]
 ```
 
-Van összesen 891345 életkorhoz nem rendelt halálozás, de ezek aránya
+Van összesen 3668443 életkorhoz nem rendelt halálozás, de ezek aránya
 nagyon egyenetlenül oszlik ezl az országok között. Most kidobjuk azokat
 az országokat, ahol a halálesetek több mint 5 ezreléke nincs életkorhoz
 rendelve:
 
 ``` r
 RawData <- RawData[!iso3c %in% RawData[
-  , .(sum(Deaths26, na.rm = TRUE)/sum(Deaths1) > 0.005), .(iso3c)][V1 == TRUE]$iso3c]
+  , .(sum(Deaths26, na.rm = TRUE)/sum(Deaths1) > 0.005),
+  .(iso3c)][V1 == TRUE]$iso3c]
 ```
 
 A maradéknál az életkorhoz nem rendelt halálozásokat automatikusan el
 fogjuk majd hagyni (később, amikor majd long formátumra váltunk).
 
-Van 110096 nemhez nem rendelt halálozás, ezeknek pláne kicsi a száma
-(egyik országnál sincs 5 ezrelék felett), egyszerűen elhagyjuk:
+Van 84604 nemhez nem rendelt halálozás, ezeknek pláne kicsi a száma
+(egyik országnál sincs 5 ezrelék felett), úgyhogy egyszerűen elhagyjuk:
 
 ``` r
 RawData <- RawData[Sex != 9]
 ```
 
-A következő feladat a 3 különböző életkori felbontás kezelése.
+A következő feladat a három különböző életkori felbontás kezelése.
 
 Először is, a `Deaths23` tartalma problémás, ugyanis függ a formátumtól:
 0-s formátumban azt jelenti, hogy „85-89”, viszont 1-es és 2-es
@@ -1060,9 +1257,9 @@ teljesen más oka van (a referencia-populáció is csak az összevont
 életkori kategóriát fogja tartalmazni):
 
 ``` r
-RawData$Deaths3456 <- ifelse(RawData$Frmat == 2, RawData$Deaths3,
-                             RawData$Deaths3 + RawData$Deaths4 + RawData$Deaths5 +
-                               RawData$Deaths6)
+RawData$Deaths3456 <- ifelse(
+  RawData$Frmat == 2, RawData$Deaths3,
+  RawData$Deaths3 + RawData$Deaths4 + RawData$Deaths5 + RawData$Deaths6)
 RawData$Deaths3 <- ifelse(RawData$Frmat == 2, NA, RawData$Deaths3)
 ```
 
@@ -1074,9 +1271,11 @@ halálozás, de erre nincs szükség, mert redundáns, ezt úgyis elő tudjuk
 állítani később:
 
 ``` r
-RawData <- melt(RawData[, c("iso3c", "Year", "Cause", "Sex", "Frmat", paste0("Deaths", 2:25),
-                            "Deaths3456", "Deaths232425")],
-                id.vars = c("iso3c", "Year", "Cause", "Sex", "Frmat"), variable.name = "Age")
+RawData <- melt(RawData[
+  , c("iso3c", "Year", "List", "Cause", "Sex", "Frmat",
+      paste0("Deaths", 2:25), "Deaths3456", "Deaths232425")],
+  id.vars = c("iso3c", "Year", "List", "Cause", "Sex", "Frmat"),
+  variable.name = "Age")
 ```
 
 Ahol `NA` van az életkornál, az a fenti manőverjeink miatt van: ez jelzi
@@ -1087,21 +1286,13 @@ jelentett. Long formátumban viszont egyszerűen elhagyhatjuk ezeket:
 RawData <- RawData[!is.na(value)]
 ```
 
-Szintén hagyjuk el az „összes halálozás”-t jelző, teljesen irreguláris
-„AAA” kódot (különösen, mert szintén redundáns, úgyis bármikor elő
-tudjuk állítani, ha kellene):
-
-``` r
-RawData <- RawData[Cause != "AAA"]
-```
-
-Még egy előkészítő lépést teszünk. A W00-Y34 kódok kilenc kivételtől
-eltekintve (W26, X34, X47, X59, X67, X88, Y06, Y07, Y17) nincsenek
-alábontva három karakteren túl, ennek ellenére néhol szerepel az
-adatbázisban negyedik karakter is. Ennek az az oka, hogy a kód-kézikönyv
-megengedi ezekben az esetekben egy ún. „előfordulás helye” kód
-alkalmazását (0: otthon, 1: bentlakásos intézmény stb.); ez kerülhet a
-4. karakter pozíciójába. Mivel ennek az alkalmazása nem egységes (van
+Még egy előkészítő lépést teszünk. A 104-es formátum esetében a W00-Y34
+kódok kilenc kivételtől eltekintve (W26, X34, X47, X59, X67, X88, Y06,
+Y07, Y17) nincsenek alábontva három karakteren túl, ennek ellenére néhol
+szerepel az adatbázisban negyedik karakter is. Ennek az az oka, hogy a
+kód-kézikönyv ezekben az esetekben megengedi egy ún. „előfordulás helye”
+kód alkalmazását (0: otthon, 1: bentlakásos intézmény stb.); ez kerülhet
+a 4. karakter pozíciójába. Mivel ennek az alkalmazása nem egységes (van
 ország, ami ilyen kódra is jelentett eseményt, de az alábontás nélküli,
 három karakteresre is – noha a 9-es kód az, hogy nem meghatározott
 helyen), ráadásul elvileg itt egy tevékenység-kód is szerepelhet, ami
@@ -1112,16 +1303,13 @@ jelentőségű; ha valakinek mégis kellene ez, akkor a nyers adatbázisból
 természetesen kiolvasható. Az átalakítás:
 
 ``` r
-RawData[substring(Cause, 1, 1) == "W"]$Cause <-
-  substring(RawData[substring(Cause, 1, 1) == "W"]$Cause, 1, 3)
-RawData[substring(Cause, 1, 1) == "X"]$Cause <-
-  substring(RawData[substring(Cause, 1, 1) == "X"]$Cause, 1, 3)
-RawData[(substring(Cause, 1, 1) == "Y")][
-  (as.numeric(substring(Cause, 2, 3)) <= 34) &
-    (!as.numeric(substring(Cause, 2, 3)) %in% c(6, 7))]$Cause <-
-  substring(RawData[(substring(Cause, 1, 1) == "Y")][
-    (as.numeric(substring(Cause, 2, 3)) <= 34) &
-      (!as.numeric(substring(Cause, 2, 3)) %in% c(6, 7))]$Cause, 1, 3)
+RawData[List == "104" & substring(Cause, 1, 1) == "W",
+        Cause := substring(Cause, 1, 3)]
+RawData[List == "104" & substring(Cause, 1, 1) == "X",
+        Cause := substring(Cause, 1, 3)]
+RawData[List == "104" & substring(Cause, 1, 3) %in%
+          paste0("Y", sprintf("%02d", setdiff(0:34, 6:7))),
+        Cause := substring(Cause, 1, 3)]
 ```
 
 (Mint látható, a kilenc kivételből hétnél mégis összevontam az adatokat,
@@ -1138,22 +1326,25 @@ duplikátumok keletkeznek a sorokban, amiket szintén össze kell vonni,
 szummázással:
 
 ``` r
-RawData <- RawData[, .(value = sum(value)), .(iso3c, Year, Cause, Sex, Frmat, Age)]
+RawData <- RawData[, .(value = sum(value)),
+                   .(iso3c, Year, List, Cause, Sex, Frmat, Age)]
 ```
 
-A WHO adatbázisában a BNO-kódok annak ellenére sem mind 4 jegyűek, hogy
-már leszűkítettük magunkat csak a 104-es formátumra. Ennek az az oka,
-hogy amelyik kódnál nincs alábontás, tehát nem is szerepel 4 jegyű
-kategória alatta, ott a kód három karakterrel szerepel. (Sajnos ez nem
-konzisztens, de erről majd később, a BNO-kódoknál.) A magyar szokás
-azonban az, hogy a kódok mindenképp 5 jegyűek legyenek, ezért a 4
-jegyűek végére „0”-t, a 3 jegyűek végére „H0”-t kell fűzni a hazai
-konvenció szerint; tegyük ezt most meg, hogy később össze tudjuk
-kapcsolni a WHO-s mortalitási táblákat a magyar BNO táblával:
+A WHO adatbázisában a BNO-kódok még a 104-es formátumban sem mind 4
+jegyűek. Ennek az az oka, hogy amelyik kódnál nincs alábontás, tehát nem
+is szerepel 4 jegyű kategória alatta, ott a kód három karakterrel
+szerepel. (Sajnos ez nem konzisztens, de erről majd később, a
+BNO-kódoknál.) A magyar szokás azonban az, hogy a kódok mindenképp 5
+jegyűek legyenek, ezért a 4 jegyűek végére „0”-t, a 3 jegyűek végére
+„H0”-t kell fűzni a hazai konvenció szerint; tegyük ezt most meg, hogy
+később össze tudjuk kapcsolni a WHO-s mortalitási táblákat a magyar BNO
+táblával:
 
 ``` r
-RawData[nchar(Cause) == 3]$Cause <- paste0(RawData[nchar(Cause) == 3]$Cause, "H0")
-RawData[nchar(Cause) == 4]$Cause <- paste0(RawData[nchar(Cause) == 4]$Cause, "0")
+RawData[List == "104" & nchar(Cause) == 3,
+        Cause := paste0(Cause, "H0")]
+RawData[List == "104" & nchar(Cause) == 4,
+        Cause := paste0(Cause, "0")]
 ```
 
 Ezután már csak technikai apróság van hátra: a kategoriális változókat
@@ -1163,60 +1354,99 @@ a tárigényt, mivel nem szövegeket kell tárolni). Ugyanez okból állítsunk
 be egy kulcsot is:
 
 ``` r
-RawData$Sex <- factor(RawData$Sex, levels = 1:2, labels = c("Férfi", "Nő"))
 RawData$iso3c <- as.factor(RawData$iso3c)
+RawData$List <- as.factor(RawData$List)
 RawData$Cause <- as.factor(RawData$Cause)
+RawData$Sex <- factor(RawData$Sex, levels = 1:2, labels = c("Férfi", "Nő"))
 RawData$Frmat <- as.factor(RawData$Frmat)
-
-setkey(RawData, "Cause")
-```
-
-Ezzel végeztünk, ezután már kimenthetjük a végleges adatbázist:
-
-``` r
-saveRDS(RawData, "./procdata/WHO-MDB.rds")
-```
-
-Mentsük ki `feather` formátumban is, a weboldal később ezt fogja
-használni (mert gyorsabb beolvasni):
-
-``` r
-arrow::write_feather(RawData, "./procdata/WHO-MDB.feather")
 ```
 
 A WHO adatbázisának megvan az a problémája, hogy a 0-s adatok – az
 életkor kivételével – nem 0-val szerepelnek, hanem egyszerűen
 hiányoznak. (Magyarán, ha például egy BNO-ból egyáltalán nem volt adott
 országban és adott évben halálozás, akkor nem 0-val fog szerepelni az
-adott BNO, hanem egyszerűen nem lesz benne a BNO a kérdéses országban és
-évnél. Az életkor azért kivétel, mert az külön oszlopokban van az
-eredeti táblában, így ott a 0-k is mindenképp ki vannak írva.) Ennek a
-későbbi kezeléséhez szükségünk lesz országonként és évenként az összes
-nem és életkor kombinációjára:
+adott BNO, hanem nem lesz benne a BNO a kérdéses országban és évnél. Az
+életkor azért kivétel, mert az külön oszlopokban van az eredeti
+táblában, így ott a 0-k is mindenképp ki vannak írva.) Ahhoz, hogy ezt
+később tudjuk kezelni, muszáj tudnunk, hogy egyáltalán milyen
+kombinációk léteznek. Ehhez az sem elég, ha változónként külön-külön
+feljegyezzük, hogy mik a lehetséges értékeik – ami R-ben a faktorral
+könnyen megvalósítható lenne – hiszen azoknak meg nem minden
+kombinációja lesz valid, például egy országnak egy évben csak egyféle
+életkor-formátuma lesz, nem mindhárom. Ezért itt nincs más lehetőség,
+egyszerűen megnézzük a konkrét kombinációkat. Egyedül a nemet kell külön
+kezelni: mivel elképzelhető, hogy a nem sincs beírva (ha abból nem volt
+halálozás), így ott kézzel tesszük hozzá, hogy gondoskodjunk róla, hogy
+biztos mindkettő meglegyen. Felmerülhet, hogy a BNO-kódokat miért nem
+mentjük el – ennek az az oka, hogy hatalmas táblát eredményezne, és
+feleslegesen, mert a `List`-ből úgyis kiolvasható, hogy milyen kódok
+lehetségesek, így azt racionálisabb lesz majd csak a ténylegesen
+szükséges kódokkal felfújni. Így a végleges megvalósítás:
 
 ``` r
-RawDataAll <- unique(RawData[, .(iso3c, Year, Sex, Age, Frmat)])
+RawDataAll <- unique(RawData[, .(iso3c, Year, List, Age, Frmat)])
+RawDataAll[, .N, .(iso3c, Year, List, Age, Frmat)][N > 1]
+```
+
+    ## Empty data.table (0 rows and 6 cols): iso3c,Year,List,Age,Frmat,N
+
+``` r
+RawDataAll <- rbind(cbind(RawDataAll, Sex = "Férfi"),
+                    cbind(RawDataAll, Sex = "Nő"))
+setkey(RawDataAll, iso3c, Year, Sex, Age)
 saveRDS(RawDataAll, "./procdata/RawDataAll.rds")
+```
+
+Visszatérve a fő-fájlra, érdemes kulcsot beállítani a későbbi gyorsabb
+leválogatás érdekében (ez egyúttal fizikailag is sorbarendezi az
+adatbázist, ami a későbbi kimentésnél, helyigény szempontjából is jobb):
+
+``` r
+setkey(RawData, iso3c, Year, Sex, Age)
+```
+
+Ezután már kimenthetjük a végleges adatbázist. Fontos észrevétel:
+nyugodtan megtehetjük, hogy csak azokat mentjük ki, ahol nem 0 az érték!
+(Gondoljunk bele: ha valahol nem volt az adott BNO vagy nem, az amúgy is
+0 lenne! A kulcs itt az, hogy a `RawDataAll`-nak köszönhetően tudjuk
+rekonstruálni a vázat, 0-któl függetlenül is, így sokkal takarékosabb,
+ha azt nem is mentjük ki). Azaz:
+
+``` r
+saveRDS(RawData[value > 0], "./procdata/WHO-MDB.rds")
+```
+
+Mentsük ki `feather` formátumban is, a weboldal később ezt fogja
+használni (mert gyorsabb beolvasni):
+
+``` r
+arrow::write_feather(RawData[value > 0], "./procdata/WHO-MDB.feather")
 ```
 
 ### Az országnevek és -azonosítók előkészítése
 
 A későbbiekhez jól fog jönni egy lista az országokról (kóddal és
-névvel), de hogy feleslegesek ne legyenek köztük, ezt is szűkítsük le
-azokra, amik előfordulnak az adatbázisban. A `countries` csomaggal
-magyar fordítást is kérünk; néhány kivétellel (ezeket a kódokat nem
-ismeri) mindenhol működik. Ezeket a kivételeket mentsük el kézzel külön:
+névvel). A `countries` csomaggal magyar fordítást is kérünk; néhány
+kivétellel (ezeket a kódokat nem ismeri) mindenhol működik. Ezeket a
+kivételeket mentsük el kézzel külön:
 
 ``` r
-CountryCodes <- CountryCodes[ISO %in% unique(RawData$iso3c) &
-                               !ISO%in%c("X10", "X11", "X12", "XOD", "ANT", "SCG") &
-                               !is.na(MORT) & ISO != ""]
 CountryCodes <- CountryCodes[
-  , .(iso3c = ISO, Country = countries::country_name(DisplayString, to = "name_hu"))]
+  ISO %in% unique(RawData$iso3c) &
+    !ISO%in%c("X10", "X11", "X12", "XOD", "ANT", "SCG", "X13", "XX5",
+              "XX6", "XX7", "XX9")]
+CountryCodes <- CountryCodes[
+  , .(iso3c = ISO,
+      Country = countries::country_name(DisplayString, to = "name_hu"))]
 CountryCodes <- rbind(
   CountryCodes,
-  data.table(iso3c = c("X10", "X11", "X12", "XOD", "ANT", "SCG"),
-             Country = c("Anglia és Wales", "Észak-Írország", "Skócia", "Rodrigues", "Holland Antillák", "Szerbia és Montenegró")))
+  data.table(
+    iso3c = c("X10", "X11", "X12", "XOD", "ANT", "SCG", "X13", "XX5", "XX6",
+              "XX7", "XX9"),
+    Country = c("Anglia és Wales", "Észak-Írország", "Skócia", "Rodrigues",
+                "Holland Antillák", "Szerbia és Montenegró", "Jugoszlávia",
+                "Csehszlovákia", "Német Demokratikus Köztársaság",
+                "Német Szövetségi Köztársaság", "Szovjetunió")))
 ```
 
 Ezután kimenthetjük az adatokat:
@@ -1231,10 +1461,12 @@ régiók szerint is:
 
 ``` r
 EUCountries <- list(
-  "EU27" = countrycode::countrycode(eurostat::eu_countries$code, "eurostat", "iso3c"),
-  "EU15" = c("AUT", "BEL", "DNK", "FIN", "FRA", "DEU", "GRC", "IRL", "ITA", "LUX", "NLD", "PRT",
-             "ESP", "SWE", "GBR"),
-  "EU11" = c("CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "BGR", "ROU", "HRV"),
+  "EU27" = countrycode::countrycode(eurostat::eu_countries$code,
+                                    "eurostat", "iso3c"),
+  "EU15" = c("AUT", "BEL", "DNK", "FIN", "FRA", "DEU", "GRC", "IRL", "ITA",
+             "LUX", "NLD", "PRT", "ESP", "SWE", "GBR"),
+  "EU11" = c("CZE", "EST", "HUN", "LVA", "LTU", "POL", "SVK", "SVN", "BGR",
+             "ROU", "HRV"),
   "V4" = c("SVK", "CZE", "HUN", "POL")
 )
 ```
@@ -1247,7 +1479,8 @@ nem tudjuk szemantikusan kezelni őket (pl. a főcsoportra, vagy adott
 betegségre szűrni), hiszen jelenleg egyetlen sztringként egyben kezeljük
 a kódokat. Oldjuk ezeket meg!
 
-Elsőként beolvassuk a hivatalos magyar BNO-törzset a [NEAK
+Elsőként beolvassuk a hivatalos magyar 10-es revíziójú BNO-törzset a
+[NEAK
 honlapjáról](https://www.neak.gov.hu/felso_menu/szakmai_oldalak/gyogyito_megeleozo_ellatas/adatbazisok/torzsek/torzsek),
 figyelve a jó kódolásra:
 
@@ -1267,10 +1500,11 @@ Ahogy már korábban is említettem, ebben a táblában minden BNO-kód
 pontosan 5 karakter, elvileg tehát illeszthető a WHO-s táblával (a fenti
 átalakításaink után). A gyakorlatban azonban sajnos lesznek olyan kódok,
 amik a WHO-táblában szerepelnek, de a magyar BNO-törzsben mégsem. Nézzük
-meg, hogy mik ezek:
+meg, hogy mik ezek (természetesen csak a 104-es kódú tábla érdekes):
 
 ``` r
-unique(merge(RawData, ICDData[, .(Cause = KOD10, Nev = NEV)], all.x = TRUE)[is.na(Nev)]$Cause)
+unique(merge(RawData[List == 104], ICDData[, .(Cause = KOD10, Nev = NEV)],
+             by = "Cause", all.x = TRUE)[is.na(Nev)]$Cause)
 ```
 
     ##   [1] "A01H0" "A02H0" "A03H0" "A04H0" "A05H0" "A06H0" "A07H0" "A08H0" "A0900"
@@ -1278,68 +1512,68 @@ unique(merge(RawData, ICDData[, .(Cause = KOD10, Nev = NEV)], all.x = TRUE)[is.n
     ##  [19] "A26H0" "A27H0" "A32H0" "A36H0" "A37H0" "A40H0" "A41H0" "A43H0" "A48H0"
     ##  [28] "A49H0" "A51H0" "A52H0" "A66H0" "A79H0" "A81H0" "A83H0" "A84H0" "A85H0"
     ##  [37] "A87H0" "A88H0" "A9250" "A92H0" "A96H0" "A9700" "A9710" "A9720" "A9790"
-    ##  [46] "B07H0" "B15H0" "B16H0" "B1790" "B17H0" "B18H0" "B19H0" "B20H0" "B22H0"
-    ##  [55] "B25H0" "B27H0" "B3340" "B34H0" "B44H0" "B47H0" "B4850" "B48H0" "B55H0"
-    ##  [64] "B57H0" "B58H0" "B6530" "B67H0" "B69H0" "B71H0" "B74H0" "B87H0" "B88H0"
-    ##  [73] "B90H0" "B94H0" "B9800" "B9810" "C00H0" "C02H0" "C03H0" "C04H0" "C05H0"
-    ##  [82] "C06H0" "C08H0" "C09H0" "C10H0" "C11H0" "C13H0" "C14H0" "C15H0" "C16H0"
-    ##  [91] "C17H0" "C18H0" "C21H0" "C22H0" "C24H0" "C25H0" "C26H0" "C30H0" "C31H0"
-    ## [100] "C32H0" "C34H0" "C38H0" "C39H0" "C40H0" "C41H0" "C43H0" "C44H0" "C45H0"
-    ## [109] "C46H0" "C47H0" "C48H0" "C49H0" "C50H0" "C51H0" "C53H0" "C54H0" "C57H0"
-    ## [118] "C62H0" "C63H0" "C67H0" "C68H0" "C69H0" "C70H0" "C71H0" "C72H0" "C74H0"
-    ## [127] "C75H0" "C7990" "C8000" "C8090" "C8140" "C81H0" "C8230" "C8240" "C8250"
-    ## [136] "C8260" "C82H0" "C83H0" "C8460" "C8470" "C8480" "C8490" "C84H0" "C8520"
-    ## [145] "C85H0" "C8600" "C8610" "C8620" "C8630" "C8640" "C8650" "C8660" "C86H0"
-    ## [154] "C8840" "C88H0" "C9030" "C90H0" "C9160" "C9180" "C91H0" "C9260" "C9280"
-    ## [163] "C92H0" "C9330" "C93H0" "C9460" "C94H0" "C95H0" "C9640" "C9650" "C9660"
-    ## [172] "C9680" "C96H0" "D00H0" "D01H0" "D02H0" "D03H0" "D04H0" "D05H0" "D06H0"
-    ## [181] "D07H0" "D09H0" "D10H0" "D12H0" "D13H0" "D15H0" "D1640" "D16H0" "D18H0"
-    ## [190] "D21H0" "D22H0" "D28H0" "D29H0" "D30H0" "D32H0" "D33H0" "D35H0" "D36H0"
-    ## [199] "D37H0" "D38H0" "D39H0" "D40H0" "D41H0" "D43H0" "D44H0" "D4650" "D4660"
-    ## [208] "D46H0" "D4740" "D4750" "D47H0" "D48H0" "D50H0" "D51H0" "D53H0" "D55H0"
-    ## [217] "D56H0" "D57H0" "D58H0" "D59H0" "D60H0" "D61H0" "D64H0" "D66H0" "D67H0"
-    ## [226] "D6850" "D6860" "D68H0" "D69H0" "D72H0" "D73H0" "D75H0" "D76H0" "D80H0"
-    ## [235] "D81H0" "D82H0" "D83H0" "D84H0" "D86H0" "D8930" "D89H0" "E00H0" "E03H0"
-    ## [244] "E04H0" "E05H0" "E10H0" "E11H0" "E12H0" "E13H0" "E14H0" "E1640" "E16H0"
-    ## [253] "E20H0" "E21H0" "E22H0" "E23H0" "E26H0" "E27H0" "E29H0" "E30H0" "E31H0"
-    ## [262] "E34H0" "E43H0" "E44H0" "E51H0" "E55H0" "E64H0" "E66H0" "E70H0" "E71H0"
-    ## [271] "E72H0" "E73H0" "E74H0" "E75H0" "E76H0" "E77H0" "E78H0" "E80H0" "E83H0"
-    ## [280] "E84H0" "E85H0" "E87H0" "E8830" "E88H0" "F01H0" "F05H0" "F06H0" "F10H0"
-    ## [289] "F20H0" "F23H0" "F25H0" "F31H0" "F32H0" "F41H0" "F44H0" "F51H0" "F70H0"
-    ## [298] "F71H0" "F72H0" "F73H0" "F78H0" "F79H0" "F90H0" "G00H0" "G03H0" "G04H0"
-    ## [307] "G06H0" "G11H0" "G12H0" "G14H0" "G2140" "G21H0" "G2330" "G23H0" "G24H0"
-    ## [316] "G25H0" "G30H0" "G31H0" "G36H0" "G37H0" "G40H0" "G41H0" "G44H0" "G45H0"
-    ## [325] "G47H0" "G50H0" "G51H0" "G54H0" "G58H0" "G60H0" "G61H0" "G62H0" "G70H0"
-    ## [334] "G71H0" "G72H0" "G80H0" "G81H0" "G82H0" "G8350" "G8360" "G83H0" "G9040"
-    ## [343] "G9050" "G9060" "G9070" "G90H0" "G91H0" "G93H0" "G95H0" "G96H0" "H18H0"
-    ## [352] "H25H0" "H44H0" "H5490" "H57H0" "H60H0" "H70H0" "H80H0" "H81H0" "I01H0"
-    ## [361] "I02H0" "I05H0" "I06H0" "I07H0" "I08H0" "I09H0" "I11H0" "I12H0" "I13H0"
-    ## [370] "I15H0" "I20H0" "I21H0" "I24H0" "I25H0" "I26H0" "I2720" "I27H0" "I28H0"
-    ## [379] "I30H0" "I31H0" "I33H0" "I34H0" "I35H0" "I36H0" "I37H0" "I40H0" "I42H0"
-    ## [388] "I44H0" "I45H0" "I47H0" "I4800" "I4810" "I4820" "I4830" "I4840" "I4890"
-    ## [397] "I49H0" "I50H0" "I51H0" "I60H0" "I61H0" "I62H0" "I63H0" "I67H0" "I69H0"
-    ## [406] "I70H0" "I71H0" "I7250" "I7260" "I72H0" "I73H0" "I74H0" "I77H0" "I80H0"
-    ## [415] "I82H0" "I85H0" "I86H0" "I87H0" "I88H0" "I89H0" "I95H0" "J01H0" "J03H0"
-    ## [424] "J05H0" "J06H0" "J09H0" "J10H0" "J11H0" "J1230" "J12H0" "J15H0" "J16H0"
-    ## [433] "J18H0" "J20H0" "J2110" "J21H0" "J37H0" "J38H0" "J39H0" "J41H0" "J43H0"
-    ## [442] "J44H0" "J45H0" "J62H0" "J63H0" "J65H0" "J68H0" "J69H0" "J70H0" "J80H0"
-    ## [451] "J84H0" "J85H0" "J86H0" "J92H0" "J93H0" "J94H0" "J96H0" "J9870" "J98H0"
-    ## [460] "K0250" "K03H0" "K07H0" "K11H0" "K1230" "K12H0" "K13H0" "K14H0" "K21H0"
-    ## [469] "K2270" "K22H0" "K25H0" "K26H0" "K27H0" "K28H0" "K29H0" "K3170" "K31H0"
-    ## [478] "K3520" "K3530" "K3580" "K35H0" "K38H0" "K40H0" "K41H0" "K42H0" "K4320"
-    ## [487] "K4330" "K4340" "K4350" "K4360" "K4370" "K43H0" "K44H0" "K45H0" "K46H0"
-    ## [496] "K50H0" "K51H0" "K5230" "K52H0" "K5530" "K55H0" "K56H0" "K57H0" "K5810"
-    ## [505] "K5820" "K5880" "K58H0" "K59H0" "K60H0" "K61H0" "K62H0" "K6350" "K63H0"
-    ## [514] "K6400" "K6410" "K6420" "K6430" "K6440" "K6450" "K6480" "K6490" "K64H0"
-    ## [523] "K65H0" "K6620" "K66H0" "K70H0" "K71H0" "K72H0" "K73H0" "K74H0" "K7540"
-    ## [532] "K75H0" "K76H0" "K80H0" "K81H0" "K82H0" "K8340" "K83H0" "K8500" "K8510"
-    ## [541] "K8520" "K8530" "K8580" "K8590" "K86H0" "K90H0" "K92H0" "L00H0" "L02H0"
-    ## [550] "L03H0" "L04H0" "L08H0" "L10H0" "L11H0" "L12H0" "L13H0" "L21H0" "L23H0"
-    ## [559] "L24H0" "L25H0" "L26H0" "L30H0" "L40H0" "L50H0" "L51H0" "L53H0" "L55H0"
-    ## [568] "L63H0" "L64H0" "L72H0" "L73H0" "L8900" "L8910" "L8920" "L8930" "L8990"
-    ## [577] "L92H0" "L93H0" "L94H0" "L95H0" "L9870" "L98H0" "M00H0" "M05H0" "M06H0"
-    ## [586] "M13H0" "M18H0" "M25H0" "M3170" "M31H0" "M32H0" "M33H0" "M34H0" "M35H0"
-    ## [595] "M40H0" "M41H0" "M43H0" "M4520" "M4590" "M46H0" "M48H0" "M50H0" "M54H0"
+    ##  [46] "AAAH0" "B07H0" "B15H0" "B16H0" "B1790" "B17H0" "B18H0" "B19H0" "B20H0"
+    ##  [55] "B22H0" "B25H0" "B27H0" "B3340" "B34H0" "B44H0" "B47H0" "B4850" "B48H0"
+    ##  [64] "B55H0" "B57H0" "B58H0" "B6530" "B67H0" "B69H0" "B71H0" "B74H0" "B87H0"
+    ##  [73] "B88H0" "B90H0" "B94H0" "B9800" "B9810" "C00H0" "C02H0" "C03H0" "C04H0"
+    ##  [82] "C05H0" "C06H0" "C08H0" "C09H0" "C10H0" "C11H0" "C13H0" "C14H0" "C15H0"
+    ##  [91] "C16H0" "C17H0" "C18H0" "C21H0" "C22H0" "C24H0" "C25H0" "C26H0" "C30H0"
+    ## [100] "C31H0" "C32H0" "C34H0" "C38H0" "C39H0" "C40H0" "C41H0" "C43H0" "C44H0"
+    ## [109] "C45H0" "C46H0" "C47H0" "C48H0" "C49H0" "C50H0" "C51H0" "C53H0" "C54H0"
+    ## [118] "C57H0" "C62H0" "C63H0" "C67H0" "C68H0" "C69H0" "C70H0" "C71H0" "C72H0"
+    ## [127] "C74H0" "C75H0" "C7990" "C8000" "C8090" "C8140" "C81H0" "C8230" "C8240"
+    ## [136] "C8250" "C8260" "C82H0" "C83H0" "C8460" "C8470" "C8480" "C8490" "C84H0"
+    ## [145] "C8520" "C85H0" "C8600" "C8610" "C8620" "C8630" "C8640" "C8650" "C8660"
+    ## [154] "C86H0" "C8840" "C88H0" "C9030" "C90H0" "C9160" "C9180" "C91H0" "C9260"
+    ## [163] "C9280" "C92H0" "C9330" "C93H0" "C9460" "C94H0" "C95H0" "C9640" "C9650"
+    ## [172] "C9660" "C9680" "C96H0" "D00H0" "D01H0" "D02H0" "D03H0" "D04H0" "D05H0"
+    ## [181] "D06H0" "D07H0" "D09H0" "D10H0" "D12H0" "D13H0" "D15H0" "D1640" "D16H0"
+    ## [190] "D18H0" "D21H0" "D22H0" "D28H0" "D29H0" "D30H0" "D32H0" "D33H0" "D35H0"
+    ## [199] "D36H0" "D37H0" "D38H0" "D39H0" "D40H0" "D41H0" "D43H0" "D44H0" "D4650"
+    ## [208] "D4660" "D46H0" "D4740" "D4750" "D47H0" "D48H0" "D50H0" "D51H0" "D53H0"
+    ## [217] "D55H0" "D56H0" "D57H0" "D58H0" "D59H0" "D60H0" "D61H0" "D64H0" "D66H0"
+    ## [226] "D67H0" "D6850" "D6860" "D68H0" "D69H0" "D72H0" "D73H0" "D75H0" "D76H0"
+    ## [235] "D80H0" "D81H0" "D82H0" "D83H0" "D84H0" "D86H0" "D8930" "D89H0" "E00H0"
+    ## [244] "E03H0" "E04H0" "E05H0" "E10H0" "E11H0" "E12H0" "E13H0" "E14H0" "E1640"
+    ## [253] "E16H0" "E20H0" "E21H0" "E22H0" "E23H0" "E26H0" "E27H0" "E29H0" "E30H0"
+    ## [262] "E31H0" "E34H0" "E43H0" "E44H0" "E51H0" "E55H0" "E64H0" "E66H0" "E70H0"
+    ## [271] "E71H0" "E72H0" "E73H0" "E74H0" "E75H0" "E76H0" "E77H0" "E78H0" "E80H0"
+    ## [280] "E83H0" "E84H0" "E85H0" "E87H0" "E8830" "E88H0" "F01H0" "F05H0" "F06H0"
+    ## [289] "F10H0" "F20H0" "F23H0" "F25H0" "F31H0" "F32H0" "F41H0" "F44H0" "F51H0"
+    ## [298] "F70H0" "F71H0" "F72H0" "F73H0" "F78H0" "F79H0" "F90H0" "G00H0" "G03H0"
+    ## [307] "G04H0" "G06H0" "G11H0" "G12H0" "G14H0" "G2140" "G21H0" "G2330" "G23H0"
+    ## [316] "G24H0" "G25H0" "G30H0" "G31H0" "G36H0" "G37H0" "G40H0" "G41H0" "G44H0"
+    ## [325] "G45H0" "G47H0" "G50H0" "G51H0" "G54H0" "G58H0" "G60H0" "G61H0" "G62H0"
+    ## [334] "G70H0" "G71H0" "G72H0" "G80H0" "G81H0" "G82H0" "G8350" "G8360" "G83H0"
+    ## [343] "G9040" "G9050" "G9060" "G9070" "G90H0" "G91H0" "G93H0" "G95H0" "G96H0"
+    ## [352] "H18H0" "H25H0" "H44H0" "H5490" "H57H0" "H60H0" "H70H0" "H80H0" "H81H0"
+    ## [361] "I01H0" "I02H0" "I05H0" "I06H0" "I07H0" "I08H0" "I09H0" "I11H0" "I12H0"
+    ## [370] "I13H0" "I15H0" "I20H0" "I21H0" "I24H0" "I25H0" "I26H0" "I2720" "I27H0"
+    ## [379] "I28H0" "I30H0" "I31H0" "I33H0" "I34H0" "I35H0" "I36H0" "I37H0" "I40H0"
+    ## [388] "I42H0" "I44H0" "I45H0" "I47H0" "I4800" "I4810" "I4820" "I4830" "I4840"
+    ## [397] "I4890" "I49H0" "I50H0" "I51H0" "I60H0" "I61H0" "I62H0" "I63H0" "I67H0"
+    ## [406] "I69H0" "I70H0" "I71H0" "I7250" "I7260" "I72H0" "I73H0" "I74H0" "I77H0"
+    ## [415] "I80H0" "I82H0" "I85H0" "I86H0" "I87H0" "I88H0" "I89H0" "I95H0" "J01H0"
+    ## [424] "J03H0" "J05H0" "J06H0" "J09H0" "J10H0" "J11H0" "J1230" "J12H0" "J15H0"
+    ## [433] "J16H0" "J18H0" "J20H0" "J2110" "J21H0" "J37H0" "J38H0" "J39H0" "J41H0"
+    ## [442] "J43H0" "J44H0" "J45H0" "J62H0" "J63H0" "J65H0" "J68H0" "J69H0" "J70H0"
+    ## [451] "J80H0" "J84H0" "J85H0" "J86H0" "J92H0" "J93H0" "J94H0" "J96H0" "J9870"
+    ## [460] "J98H0" "K0250" "K03H0" "K07H0" "K11H0" "K1230" "K12H0" "K13H0" "K14H0"
+    ## [469] "K21H0" "K2270" "K22H0" "K25H0" "K26H0" "K27H0" "K28H0" "K29H0" "K3170"
+    ## [478] "K31H0" "K3520" "K3530" "K3580" "K35H0" "K38H0" "K40H0" "K41H0" "K42H0"
+    ## [487] "K4320" "K4330" "K4340" "K4350" "K4360" "K4370" "K43H0" "K44H0" "K45H0"
+    ## [496] "K46H0" "K50H0" "K51H0" "K5230" "K52H0" "K5530" "K55H0" "K56H0" "K57H0"
+    ## [505] "K5810" "K5820" "K5880" "K58H0" "K59H0" "K60H0" "K61H0" "K62H0" "K6350"
+    ## [514] "K63H0" "K6400" "K6410" "K6420" "K6430" "K6440" "K6450" "K6480" "K6490"
+    ## [523] "K64H0" "K65H0" "K6620" "K66H0" "K70H0" "K71H0" "K72H0" "K73H0" "K74H0"
+    ## [532] "K7540" "K75H0" "K76H0" "K80H0" "K81H0" "K82H0" "K8340" "K83H0" "K8500"
+    ## [541] "K8510" "K8520" "K8530" "K8580" "K8590" "K86H0" "K90H0" "K92H0" "L00H0"
+    ## [550] "L02H0" "L03H0" "L04H0" "L08H0" "L10H0" "L11H0" "L12H0" "L13H0" "L21H0"
+    ## [559] "L23H0" "L24H0" "L25H0" "L26H0" "L30H0" "L40H0" "L50H0" "L51H0" "L53H0"
+    ## [568] "L55H0" "L63H0" "L64H0" "L72H0" "L73H0" "L8900" "L8910" "L8920" "L8930"
+    ## [577] "L8990" "L92H0" "L93H0" "L94H0" "L95H0" "L9870" "L98H0" "M00H0" "M05H0"
+    ## [586] "M06H0" "M13H0" "M18H0" "M25H0" "M3170" "M31H0" "M32H0" "M33H0" "M34H0"
+    ## [595] "M35H0" "M40H0" "M41H0" "M43H0" "M4590" "M46H0" "M48H0" "M50H0" "M54H0"
     ## [604] "M60H0" "M62H0" "M65H0" "M70H0" "M71H0" "M7260" "M72H0" "M7970" "M79H0"
     ## [613] "M80H0" "M81H0" "M83H0" "M84H0" "M85H0" "M86H0" "M87H0" "M88H0" "M89H0"
     ## [622] "M95H0" "N00H0" "N02H0" "N03H0" "N04H0" "N05H0" "N07H0" "N11H0" "N13H0"
@@ -1348,37 +1582,37 @@ unique(merge(RawData, ICDData[, .(Cause = KOD10, Nev = NEV)], all.x = TRUE)[is.n
     ## [649] "N41H0" "N4230" "N42H0" "N45H0" "N47H0" "N49H0" "N62H0" "N64H0" "N82H0"
     ## [658] "N84H0" "N88H0" "N90H0" "N91H0" "N93H0" "O06H0" "O1420" "O4320" "O6000"
     ## [667] "O6010" "O6020" "O6030" "O72H0" "O9600" "O9610" "O9690" "O9700" "O9710"
-    ## [676] "O9790" "O9870" "O99H0" "P00H0" "P01H0" "P02H0" "P05H0" "P07H0" "P08H0"
-    ## [685] "P10H0" "P12H0" "P15H0" "P20H0" "P21H0" "P22H0" "P23H0" "P24H0" "P25H0"
-    ## [694] "P26H0" "P27H0" "P28H0" "P29H0" "P35H0" "P36H0" "P37H0" "P50H0" "P52H0"
-    ## [703] "P54H0" "P56H0" "P59H0" "P61H0" "P70H0" "P72H0" "P76H0" "P78H0" "P80H0"
-    ## [712] "P83H0" "P9160" "P9170" "P91H0" "P92H0" "P94H0" "P96H0" "Q00H0" "Q01H0"
-    ## [721] "Q03H0" "Q04H0" "Q05H0" "Q07H0" "Q10H0" "Q20H0" "Q21H0" "Q22H0" "Q23H0"
-    ## [730] "Q24H0" "Q25H0" "Q26H0" "Q27H0" "Q28H0" "Q30H0" "Q3150" "Q31H0" "Q32H0"
-    ## [739] "Q33H0" "Q34H0" "Q35H0" "Q36H0" "Q37H0" "Q39H0" "Q40H0" "Q41H0" "Q42H0"
-    ## [748] "Q43H0" "Q44H0" "Q45H0" "Q55H0" "Q56H0" "Q60H0" "Q61H0" "Q62H0" "Q63H0"
-    ## [757] "Q64H0" "Q66H0" "Q67H0" "Q68H0" "Q72H0" "Q74H0" "Q75H0" "Q76H0" "Q77H0"
-    ## [766] "Q78H0" "Q79H0" "Q80H0" "Q81H0" "Q82H0" "Q85H0" "Q86H0" "Q87H0" "Q89H0"
-    ## [775] "Q90H0" "Q91H0" "Q92H0" "Q93H0" "Q95H0" "Q96H0" "Q99H0" "R0030" "R04H0"
-    ## [784] "R06H0" "R07H0" "R09H0" "R10H0" "R16H0" "R1700" "R1790" "R23H0" "R2630"
-    ## [793] "R26H0" "R2960" "R40H0" "R41H0" "R45H0" "R46H0" "R47H0" "R5020" "R5080"
-    ## [802] "R50H0" "R52H0" "R56H0" "R57H0" "R60H0" "R61H0" "R62H0" "R6360" "R63H0"
-    ## [811] "R6520" "R6530" "R68H0" "R78H0" "R82H0" "R83H0" "R84H0" "R85H0" "R86H0"
-    ## [820] "R87H0" "R89H0" "R90H0" "R93H0" "R94H0" "R9500" "R9590" "R96H0" "U0490"
-    ## [829] "U0690" "U0700" "U0990" "U1090" "U1290" "V02H0" "V03H0" "V04H0" "V05H0"
-    ## [838] "V12H0" "V13H0" "V14H0" "V18H0" "V20H0" "V22H0" "V23H0" "V24H0" "V27H0"
-    ## [847] "V28H0" "V29H0" "V40H0" "V41H0" "V43H0" "V44H0" "V47H0" "V48H0" "V49H0"
-    ## [856] "V53H0" "V54H0" "V58H0" "V63H0" "V64H0" "V67H0" "V68H0" "V69H0" "V73H0"
-    ## [865] "V74H0" "V76H0" "V78H0" "V80H0" "V90H0" "W46H0" "Y06H0" "Y07H0" "Y35H0"
-    ## [874] "Y36H0" "Y40H0" "Y43H0" "Y44H0" "Y45H0" "Y46H0" "Y49H0" "Y57H0" "Y59H0"
-    ## [883] "Y60H0" "Y63H0" "Y7000" "Y7010" "Y7020" "Y7030" "Y7080" "Y7100" "Y7110"
-    ## [892] "Y7120" "Y7130" "Y7180" "Y7200" "Y7210" "Y7220" "Y7230" "Y7280" "Y7300"
-    ## [901] "Y7310" "Y7320" "Y7330" "Y7380" "Y7400" "Y7410" "Y7420" "Y7430" "Y7480"
-    ## [910] "Y7500" "Y7510" "Y7520" "Y7530" "Y7580" "Y7600" "Y7610" "Y7620" "Y7630"
-    ## [919] "Y7680" "Y7700" "Y7720" "Y7800" "Y7810" "Y7820" "Y7880" "Y7900" "Y7910"
-    ## [928] "Y7920" "Y7930" "Y7980" "Y8000" "Y8010" "Y8020" "Y8030" "Y8080" "Y8100"
-    ## [937] "Y8110" "Y8120" "Y8130" "Y8180" "Y8200" "Y8210" "Y8220" "Y8230" "Y8280"
-    ## [946] "Y83H0" "Y84H0" "Y85H0" "Y87H0" "Y88H0" "Y89H0"
+    ## [676] "O9790" "O9870" "P00H0" "P01H0" "P02H0" "P05H0" "P07H0" "P08H0" "P10H0"
+    ## [685] "P12H0" "P15H0" "P20H0" "P21H0" "P22H0" "P23H0" "P24H0" "P25H0" "P26H0"
+    ## [694] "P27H0" "P28H0" "P29H0" "P35H0" "P36H0" "P37H0" "P50H0" "P52H0" "P54H0"
+    ## [703] "P56H0" "P59H0" "P61H0" "P70H0" "P72H0" "P76H0" "P78H0" "P80H0" "P83H0"
+    ## [712] "P9160" "P9170" "P91H0" "P92H0" "P94H0" "P96H0" "Q00H0" "Q01H0" "Q03H0"
+    ## [721] "Q04H0" "Q05H0" "Q07H0" "Q10H0" "Q20H0" "Q21H0" "Q22H0" "Q23H0" "Q24H0"
+    ## [730] "Q25H0" "Q26H0" "Q27H0" "Q28H0" "Q30H0" "Q3150" "Q31H0" "Q32H0" "Q33H0"
+    ## [739] "Q34H0" "Q35H0" "Q36H0" "Q37H0" "Q39H0" "Q40H0" "Q41H0" "Q42H0" "Q43H0"
+    ## [748] "Q44H0" "Q45H0" "Q55H0" "Q56H0" "Q60H0" "Q61H0" "Q62H0" "Q63H0" "Q64H0"
+    ## [757] "Q66H0" "Q67H0" "Q68H0" "Q72H0" "Q74H0" "Q75H0" "Q76H0" "Q77H0" "Q78H0"
+    ## [766] "Q79H0" "Q80H0" "Q81H0" "Q82H0" "Q85H0" "Q86H0" "Q87H0" "Q89H0" "Q90H0"
+    ## [775] "Q91H0" "Q92H0" "Q93H0" "Q95H0" "Q96H0" "Q99H0" "R0030" "R04H0" "R06H0"
+    ## [784] "R07H0" "R09H0" "R10H0" "R16H0" "R1700" "R1790" "R23H0" "R2630" "R26H0"
+    ## [793] "R2960" "R40H0" "R41H0" "R45H0" "R46H0" "R47H0" "R5020" "R5080" "R50H0"
+    ## [802] "R52H0" "R56H0" "R57H0" "R60H0" "R61H0" "R62H0" "R6360" "R63H0" "R6520"
+    ## [811] "R6530" "R68H0" "R78H0" "R82H0" "R83H0" "R84H0" "R85H0" "R86H0" "R87H0"
+    ## [820] "R89H0" "R90H0" "R93H0" "R94H0" "R9500" "R9590" "R96H0" "U0490" "U0700"
+    ## [829] "U0990" "U1090" "U1290" "V02H0" "V03H0" "V04H0" "V05H0" "V12H0" "V13H0"
+    ## [838] "V14H0" "V18H0" "V20H0" "V22H0" "V23H0" "V24H0" "V27H0" "V28H0" "V29H0"
+    ## [847] "V40H0" "V41H0" "V43H0" "V44H0" "V47H0" "V48H0" "V49H0" "V53H0" "V54H0"
+    ## [856] "V58H0" "V63H0" "V64H0" "V67H0" "V68H0" "V69H0" "V73H0" "V74H0" "V76H0"
+    ## [865] "V78H0" "V80H0" "V90H0" "W46H0" "Y06H0" "Y07H0" "Y35H0" "Y36H0" "Y40H0"
+    ## [874] "Y43H0" "Y44H0" "Y45H0" "Y46H0" "Y49H0" "Y57H0" "Y59H0" "Y60H0" "Y63H0"
+    ## [883] "Y7000" "Y7010" "Y7020" "Y7030" "Y7080" "Y7100" "Y7110" "Y7120" "Y7130"
+    ## [892] "Y7180" "Y7200" "Y7210" "Y7220" "Y7230" "Y7280" "Y7300" "Y7310" "Y7320"
+    ## [901] "Y7330" "Y7380" "Y7400" "Y7410" "Y7420" "Y7430" "Y7480" "Y7500" "Y7510"
+    ## [910] "Y7520" "Y7530" "Y7580" "Y7610" "Y7620" "Y7630" "Y7680" "Y7700" "Y7720"
+    ## [919] "Y7800" "Y7810" "Y7820" "Y7880" "Y7900" "Y7910" "Y7920" "Y7930" "Y7980"
+    ## [928] "Y8000" "Y8010" "Y8020" "Y8030" "Y8080" "Y8100" "Y8110" "Y8120" "Y8130"
+    ## [937] "Y8180" "Y8200" "Y8210" "Y8220" "Y8230" "Y8280" "Y83H0" "Y84H0" "Y85H0"
+    ## [946] "Y87H0" "Y88H0" "Y89H0"
 
 Végignézve ezeket a kódokat, a következő problémák azonosíthatóak:
 
@@ -1455,11 +1689,21 @@ névként is a kód fog megjelenni):
 
 ``` r
 ICDData <- rbind(ICDData, data.table(
-  KOD10 = unique(merge(RawData, ICDData[, .(Cause = KOD10, Nev = NEV)],
+  KOD10 = unique(merge(RawData[List == 104],
+                       ICDData[, .(Cause = KOD10, Nev = NEV)], by = "Cause",
                        all.x = TRUE)[is.na(Nev)]$Cause),
-  JEL = NA, NEV = unique(merge(RawData, ICDData[, .(Cause = KOD10, Nev = NEV)],
-                               all.x = TRUE)[is.na(Nev)]$Cause),
-  NEM = 0, KOR_A = 0, KOR_F = 99, ERV_KEZD = "19950101", ERV_VEGE = "29991231"))
+  JEL = NA, NEV = unique(merge(RawData[List == 104],
+                               ICDData[, .(Cause = KOD10, Nev = NEV)],
+                               by = "Cause", all.x = TRUE)[is.na(Nev)]$Cause),
+  NEM = 0, KOR_A = 0, KOR_F = 99, ERV_KEZD = "19950101",
+  ERV_VEGE = "29991231"))
+```
+
+Dobjuk ki a – nem is valid – „AAA” kódot, amit a WHO az „összes kód
+együtt” kategóriára használ; ez amúgy is felesleges:
+
+``` r
+ICDData <- ICDData[KOD10 != "AAAH0"]
 ```
 
 A későbbi feldolgozhatóság kedvéért az 1. karaktert és a 2-3. számot
@@ -1477,388 +1721,385 @@ használtam:
 ``` r
 ICDGroups <- list(
   Groups =
-    list(list(ICD = ICDData[Kod1!="Z"&(Kod1!="Y"|Kod23<=89)]$KOD10,
-              EurostatCode = "A-R_V-Y", Name = "Összes halálok (A00-Y89)"),
-         list(ICD = ICDData[Kod1%in%c("A", "B")]$KOD10,
-              EurostatCode = "A_B", Name = "Fertőző és parazitás betegségek (A00-B99)"),
-         list(ICD = ICDData[(Kod1=="A"&Kod23>=15&Kod23<=19)|(Kod1=="B"&Kod23==90)]$KOD10,
-              EurostatCode = "A15-A19_B90", Name = "Gümőkór (A15-A19, B90)"),
-         list(ICD = ICDData[KOD10 %in% c("B1800", "B1810", "B1820")]$KOD10,
-              EurostatCode = "B180-B182",
-              Name = "Idült vírusos B- és C-típusú hepatitis (B180-B182)"),
-         list(ICD = ICDData[Kod1=="B"&Kod23>=20&Kod23<=24]$KOD10,
-              EurostatCode = "B20-B24",
-              Name = "Humán immunodeficiencia vírus (HIV) betegség (B20-B24)"),
-         list(ICD = ICDData[(Kod1=="B"&Kod23>=15&Kod23<=19)|KOD10=="B9420"]$KOD10,
-              EurostatCode = "B15-B19_B942", Name = "Vírusos májgyulladás (B15-B19, B94.2)"),
-         list(ICD = ICDData[(Kod1=="A"&(Kod23<=9|Kod23>=20))|
-                              (Kod1=="B"&(Kod23<=9|
-                                            (Kod23>=25&Kod23<=89)|
-                                            (Kod23>=91&Kod23<=93)|
-                                            (Kod23>=95&Kod23<=99)|
-                                            (KOD10%in%c("B940", "B941", "B948",
-                                                        "B949", "B9481"))))]$KOD10,
-              EurostatCode = "A_B_OTH",
-              Name = paste0("Egyéb fertőző és parazitás betegségek (A00-A09, A20-B09, B25-B89, ",
-                            "B91-B94.1, B94.8-B99)")),
-         list(ICD = ICDData[Kod1=="C"|(Kod1=="D"&Kod23<=48)]$KOD10,
-              EurostatCode = "C00-D48", Name = "Daganatok (C00-D48)"),
-         list(ICD = ICDData[Kod1=="C"]$KOD10,
-              EurostatCode = "C", Name = "Rosszindulatú daganatok (C00-C97)"),
-         list(ICD = ICDData[Kod1=="C"&(Kod23>=0&Kod23<=14)]$KOD10,
-              EurostatCode = "C00-C14",
-              Name = "Az ajak, a szájüreg és garat rosszindulatú daganatai (C00-C14)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==15]$KOD10,
-              EurostatCode = "C15", Name = "A nyelőcső rosszindulatú daganata (C15)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==16]$KOD10,
-              EurostatCode = "C16", Name = "A gyomor rosszindulatú daganata (C16)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23>=18&Kod23<=21]$KOD10,
-              EurostatCode = "C18-C21",
-              Name = "A vastagbél, végbél és a végbélnyílás rosszindulatú daganatai (C18-C21)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==22]$KOD10,
-              EurostatCode = "C22",
-              Name = "A máj és intrahepaticus epeutak rosszindulatú daganata (C22)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==25]$KOD10,
-              EurostatCode = "C25", Name = "A hasnyálmirigy rosszindulatú daganata (C25)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==32]$KOD10,
-              EurostatCode = "C32", Name = "A gége rosszindulatú daganata (C32)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23>=33&Kod23<=34]$KOD10,
-              EurostatCode = "C33_C34",
-              Name = "A légcső, a hörgő és a tüdő rosszindulatú daganatai (C33-C34)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==43]$KOD10,
-              EurostatCode = "C43", Name = "A bőr rosszindulatú melanomája (C43)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==50]$KOD10,
-              EurostatCode = "C50", Name = "Az emlő rosszindulatú daganata (C50)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==53]$KOD10,
-              EurostatCode = "C53", Name = "A méhnyak rosszindulatú daganata (C53)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23>=54&Kod23<=55]$KOD10,
-              EurostatCode = "C54_C55",
-              Name = paste0("A méhtest és a méh nem meghatározott részének rosszindulatú ",
-                            "daganatai (C54-55)")),
-         list(ICD = ICDData[Kod1=="C"&Kod23==56]$KOD10,
-              EurostatCode = "C56", Name = "A petefészek rosszindulatú daganata (C56)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==61]$KOD10,
-              EurostatCode = "C61", Name = "A prostata rosszindulatú daganata (C61)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==64]$KOD10,
-              EurostatCode = "C64",
-              Name = "A vese rosszindulatú daganata, kivéve a vesemedencét (C64)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23==67]$KOD10,
-              EurostatCode = "C67", Name = "A húgyhólyag rosszindulatú daganata (C67)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23>=70&Kod23<=72]$KOD10,
-              EurostatCode = "C70-C72",
-              Name = paste0("Az agyburkok, az agy, a gerincvelő, az agyidegek és a központi ",
-                            "idegrendszer egyéb részeinek rosszindulatú daganatai (C70-C72)")),
-         list(ICD = ICDData[Kod1=="C"&Kod23==73]$KOD10,
-              EurostatCode = "C73", Name = "A pajzsmirigy rosszindulatú daganata (C73)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23>=81&Kod23<=86]$KOD10,
-              EurostatCode = "C81-C86", Name = "Hodgkin kór és lymphomák (C81-C86)"),
-         list(ICD = ICDData[Kod1=="C"&Kod23>=91&Kod23<=95]$KOD10,
-              EurostatCode = "C91-C95", Name = "Leukémia (C91-C95)"),
-         list(ICD = ICDData[Kod1=="C"&(Kod23==88|Kod23==90|Kod23==96)]$KOD10,
-              EurostatCode = "C88_C90_C96",
-              Name = paste0("A nyirok-, a vérképző- és kapcsolódó szövetek egyéb rosszindulatú ",
-                            "daganatai (C88, C90, C96)")),
-         list(ICD = ICDData[Kod1=="C"&
-                              (Kod23==17|(Kod23>=23&Kod23<=24)|(Kod23>=26&Kod23<=31)|
-                                 (Kod23>=37&Kod23<=41)|(Kod23>=44&Kod23<=49)|
-                                 (Kod23>=51&Kod23<=52)|(Kod23>=57&Kod23<=60)|
-                                 (Kod23>=62&Kod23<=63)|(Kod23>=65&Kod23<=66)|
-                                 (Kod23>=68&Kod23<=69)|(Kod23>=74&Kod23<=80)|Kod23==97)]$KOD10,
-              EurostatCode = "C_OTH",
-              Name = paste0("Egyéb rosszindulatú daganatok (C17, C23-C24, C26-C31, C37-C41, ",
-                            "C44-C49, C51-C52, C57-C60, C62-C63, C65-C66, C68-C69, C74-C80, ",
-                            "C97)")),
-         list(ICD = ICDData[Kod1=="D"&Kod23>=0&Kod23<=48]$KOD10,
-              EurostatCode = "D00-D48",
-              Name = paste0("In situ, jóindulatú, vagy bizonytalan vagy ismeretlen viselkedésű ",
-                            "daganatok (D00-D48)")),
-         list(ICD = ICDData[Kod1=="D"&Kod23>=50&Kod23<=89]$KOD10,
-              EurostatCode = "D50-D89",
-              Name = paste0("A vér és a vérképző szervek betegségei és az immunrendszert érintő ",
-                            "egyéb rendellenességek (D50-D89)")),
-         list(ICD = ICDData[Kod1=="E"&Kod23>=0&Kod23<=89]$KOD10,
-              EurostatCode = "E",
-              Name = "Endokrin, táplálkozási és anyagcsere betegségek (E00-E89)"),
-         list(ICD = ICDData[Kod1=="E"&Kod23>=10&Kod23<=14]$KOD10,
-              EurostatCode = "E10-E14", Name = "Cukorbetegség (E10-E14)"),
-         list(ICD = ICDData[Kod1=="E"&((Kod23>=0&Kod23<=7)|(Kod23>=15&Kod23<=89))]$KOD10,
-              EurostatCode = "E_OTH",
-              Name = "Egyéb endokrin, táplálkozási és anyagcsere betegségek (E00-E07, E15-E89)"),
-         list(ICD = ICDData[Kod1=="F"&Kod23>=1&Kod23<=99]$KOD10,
-              EurostatCode = "F", Name = "Mentális- és viselkedészavarok (F01-F99)"),
-         list(ICD = ICDData[Kod1=="F"&(Kod23==1|Kod23==3)]$KOD10,
-              EurostatCode = "F01_F03", Name = "Dementia (F01, F03)"),
-         list(ICD = ICDData[Kod1=="F"&Kod23==10]$KOD10,
-              EurostatCode = "F10", Name = "Alkohol okozta mentális- és viselkedészavarok (F10)"),
-         list(ICD = ICDData[Kod1=="F"&((Kod23>=11&Kod23<=16)|(Kod23>=18&Kod23<=19))]$KOD10,
-              EurostatCode = "TOXICO",
-              Name = paste0("Drog és pszichoaktív anyagok használata által okozott mentális- és ",
-                            "viselkedészavarok (F11-F16, F18-F19)")),
-         list(ICD = ICDData[Kod1=="F"&((Kod23>=4&Kod23<=9)|(Kod23==17)|
-                                         (Kod23>=20&Kod23<=99))]$KOD10,
-              EurostatCode = "F_OTH",
-              Name = "Egyéb mentális- és viselkedészavarok (F04-F09, F17, F20-F99)"),
-         list(ICD = ICDData[Kod1=="G"|Kod1=="H"]$KOD10,
-              EurostatCode = "G_H",
-              Name = "Az idegrendszer és az érzékszervek betegségei (G00-H95)"),
-         list(ICD = ICDData[Kod1=="G"&Kod23==20]$KOD10,
-              EurostatCode = "G20", Name = "Parkinson-kór (G20)"),
-         list(ICD = ICDData[Kod1=="G"&Kod23==30]$KOD10,
-              EurostatCode = "G30", Name = "Alzheimer-kór (G30)"),
-         list(ICD = ICDData[(Kod1=="G"&((Kod23>=0&Kod23<=12)|(Kod23==14)|(Kod23>=21&Kod23<=25)|
-                                          (Kod23>=31)))|Kod1=="H"]$KOD10,
-              EurostatCode = "G_H_OTH",
-              Name = paste0("Az idegrendszer és az érzékszervek egyéb betegségei (G00-G12, G14, ",
-                            "G21-G25, G31-H95)")),
-         list(ICD = ICDData[Kod1=="I"&Kod23>=0&Kod23<=99]$KOD10,
-              EurostatCode = "I", Name = "A keringési rendszer betegségei (I00-I99)"),
-         list(ICD = ICDData[Kod1=="I"&Kod23>=20&Kod23<=25]$KOD10,
-              EurostatCode = "I20-I25", Name = "Ischaemiás szívbetegségek (I20-I25)"),
-         list(ICD = ICDData[Kod1=="I"&Kod23>=21&Kod23<=22]$KOD10,
-              EurostatCode = "I21_I22",
-              Name = "Heveny szívizomelhalás és ismétlődő szívizomelhalás (I21-I22)"),
-         list(ICD = ICDData[Kod1=="I"&((Kod23==20)|(Kod23>=23&Kod23<=25))]$KOD10,
-              EurostatCode = "I20_I23-I25",
-              Name = "Egyéb ischaemiás szívbetegségek (I20, I23-I25)"),
-         list(ICD = ICDData[Kod1=="I"&Kod23>=30&Kod23<=51]$KOD10,
-              EurostatCode = "I30-I51", Name = "A szívbetegség egyéb formái (I30-I51)"),
-         list(ICD = ICDData[Kod1=="I"&Kod23>=60&Kod23<=69]$KOD10,
-              EurostatCode = "I60-I69", Name = "Cerebrovaszkuláris betegségek (I60-I69)"),
-         list(ICD = ICDData[Kod1=="I"&((Kod23>=0&Kod23<=15)|(Kod23>=26&Kod23<=28)|
-                                         (Kod23>=70&Kod23<=99))]$KOD10,
-              EurostatCode = "I_OTH",
-              Name = "A keringési rendszer egyéb betegségei (I00-I15, I26-I28, I70-I99)"),
-         list(ICD = ICDData[Kod1=="J"&Kod23>=0&Kod23<=99]$KOD10,
-              EurostatCode = "J", Name = "A légzőrendszer betegségei (J00-J99)"),
-         list(ICD = ICDData[Kod1=="J"&Kod23>=9&Kod23<=11]$KOD10,
-              EurostatCode = "J09-J11", Name = "Influenza (J09-J11)"),
-         list(ICD = ICDData[Kod1=="J"&Kod23>=12&Kod23<=18]$KOD10,
-              EurostatCode = "J12-J18", Name = "Tüdőgyulladás (J12-J18)"),
-         list(ICD = ICDData[Kod1=="J"&Kod23>=40&Kod23<=47]$KOD10,
-              EurostatCode = "J40-J47", Name = "Idült alsó légúti betegségek (J40-J47)"),
-         list(ICD = ICDData[Kod1=="J"&Kod23>=45&Kod23<=46]$KOD10,
-              EurostatCode = "J45_J46", Name = "Asztma (J45-J46)"),
-         list(ICD = ICDData[Kod1=="J"&((Kod23>=40&Kod23<=44)|(Kod23==47))]$KOD10,
-              EurostatCode = "J40-J44_J47",
-              Name = "Egyéb idült alsó légúti megbetegedések (J40-J44, J47)"),
-         list(ICD = ICDData[Kod1=="J"&((Kod23>=0&Kod23<=6)|(Kod23>=20&Kod23<=39)|
-                                         (Kod23>=60&Kod23<=99))]$KOD10,
-              EurostatCode = "J_OTH",
-              Name = "A légzőrendszer egyéb betegségei (J00-J06, J20-J39, J60-J99)"),
-         list(ICD = ICDData[Kod1=="K"&Kod23>=0&Kod23<=92]$KOD10,
-              EurostatCode = "K", Name = "Az emésztőrendszer betegségei (K00-K92)"),
-         list(ICD = ICDData[Kod1=="K"&Kod23>=25&Kod23<=28]$KOD10,
-              EurostatCode = "K25-K28",
-              Name = "Gyomor-, nyombél-, pepticus- és gastrojejunalis fekély (K25-K28)"),
-         list(ICD = ICDData[Kod1=="K"&((Kod23==70)|(Kod23>=73&Kod23<=74))]$KOD10,
-              EurostatCode = "K70_K73_K74",
-              Name = paste0("Idült májgyulladás, májfibrózis és májzsugorodás, valamint ",
-                            "alkoholos májbetegség (K70, K73-K74)")),
-         list(ICD = ICDData[Kod1=="K"&(Kod23>=72&Kod23<=75)]$KOD10,
-              EurostatCode = "K72-K75",
-              Name = paste0("Idült májbetegség, kivéve az alkoholos és toxikus ",
-                            "májbetegséget (K72-K75)")),
-         list(ICD = ICDData[Kod1=="K"&((Kod23>=0&Kod23<=22)|(Kod23>=29&Kod23<=66)|
-                                         (Kod23>=71&Kod23<=72)|(Kod23>=75&Kod23<=92))]$KOD10,
-              EurostatCode = "K_OTH",
-              Name = "Az emésztőrendszer egyéb betegségei (K00-K22, K29-K66, K71-K72, K75-K92)"),
-         list(ICD = ICDData[Kod1=="L"&Kod23>=0&Kod23<=99]$KOD10,
-              EurostatCode = "L", Name = "A bőr és a bőralatti szövet betegségei (L00-L99)"),
-         list(ICD = ICDData[Kod1=="M"&Kod23>=0&Kod23<=99]$KOD10,
-              EurostatCode = "M",
-              Name = "A csont-izomrendszer és kötőszövet betegségei (M00-M99)"),
-         list(ICD = ICDData[Kod1=="M"&((Kod23>=05&Kod23<=06)|(Kod23>=15&Kod23<=19))]$KOD10,
-              EurostatCode = "RHEUM_ARTHRO",
-              Name = "Rheumatoid arthritis és arthrosis (M05-M06, M15-M19)"),
-         list(ICD = ICDData[Kod1=="M"&((Kod23>=0&Kod23<=2)|(Kod23>=8&Kod23<=13)|
-                                         (Kod23>=20&Kod23<=99))]$KOD10,
-              EurostatCode = "M_OTH",
-              Name = paste0("A csont-izomrendszer és kötőszövet egyéb betegségei (M00-M02, ",
-                            "M08-M13, M20-M99)")),
-         list(ICD = ICDData[Kod1=="N"&Kod23>=0&Kod23<=99]$KOD10,
-              EurostatCode = "N", Name = "Az urogenitális rendszer megbetegedései (N00-N99)"),
-         list(ICD = ICDData[Kod1=="N"&Kod23>=0&Kod23<=29]$KOD10,
-              EurostatCode = "N00-N29", Name = "Vese és az ureter betegségei (N00-N29)"),
-         list(ICD = ICDData[Kod1=="N"&Kod23>=30&Kod23<=99]$KOD10,
-              EurostatCode = "N_OTH",
-              Name = "Az urogenitális rendszer egyéb betegségei (N30-N99)"),
-         list(ICD = ICDData[Kod1=="O"&Kod23>=0&Kod23<=99]$KOD10,
-              EurostatCode = "O",
-              Name = "A terhesség, a szülés és a gyermekágy komplikációi (O00-O99)"),
-         list(ICD = ICDData[Kod1=="P"&Kod23>=0&Kod23<=96]$KOD10,
-              EurostatCode = "P",
-              Name = "A perinatális szakban keletkező bizonyos állapotok (P00-P96)"),
-         list(ICD = ICDData[Kod1=="Q"&Kod23>=0&Kod23<=99]$KOD10,
-              EurostatCode = "Q",
-              Name = paste0("Veleszületett rendellenességek, deformitások és ",
-                            "kromoszómaabnormitások (Q00-Q99)")),
-         list(ICD = ICDData[Kod1=="R"&Kod23>=0&Kod23<=99]$KOD10,
-              EurostatCode = "R",
-              Name = paste0("Máshova nem osztályozott panaszok, tünetek és kóros klinikai és ",
-                            "laboratóriumi leletek (R00-R99)")),
-         list(ICD = ICDData[Kod1=="R"&Kod23==95]$KOD10,
-              EurostatCode = "R95", Name = "Hirtelen csecsemőhalál szindróma  (R95)"),
-         list(ICD = ICDData[Kod1=="R"&Kod23>=96&Kod23<=99]$KOD10,
-              EurostatCode = "R96-R99",
-              Name = paste0("Egyéb hirtelen halál ismeretlen okból, halál tanú nélkül, a ",
-                            "halálozás rosszul meghatározott és külön megnevezés nélküli okai ",
-                            "(R96-R99)")),
-         list(ICD = ICDData[Kod1=="R"&Kod23>=0&Kod23<=94]$KOD10,
-              EurostatCode = "R_OTH",
-              Name = paste0("Egyéb máshova nem osztályozott panaszok, tünetek és kóros klinikai ",
-                            "és laboratóriumi leletek (R00-R94)")),
-         list(ICD = ICDData[Kod1=="U"]$KOD10, EurostatCode = "U",
-              Name = "Speciális kódok, beleértve a COVID-19-et (U)"),
-         list(ICD = ICDData[KOD10 == "U0710"]$KOD10, EurostatCode = "U071",
-              Name = "COVID-19, kimutatott vírussal (U071)"),
-         list(ICD = ICDData[KOD10 == "U0720"]$KOD10, EurostatCode = "U072",
-              Name = "COVID-19, vírus kimutatása nélkül (U072)"),
-         list(ICD = ICDData[KOD10 %in% c("U0990", "U1090")]$KOD10,
-              EurostatCode = "U_COV19_OTH", Name = "COVID-19, egyéb (U099, U109)"),
-         list(ICD = ICDData[(Kod1=="V")|(Kod1=="W")|(Kod1=="X")|(Kod1=="Y"&Kod23>=0&Kod23<=89)]$KOD10,
-              EurostatCode = "V01-Y89", Name = "A morbiditás és mortalitás külső okai (V00-Y89)"),
-         list(ICD = ICDData[(Kod1=="V")|(Kod1=="W")|(Kod1=="X"&Kod23>=0&Kod23<=59)|
-                              (Kod1=="Y"&Kod23>=85&Kod23<=86)]$KOD10,
-              EurostatCode = "ACC", Name = "Balesetek (V01-X59, Y85-Y86)"),
-         list(ICD = ICDData[Kod1=="V"|(Kod1=="Y"&Kod23==85)]$KOD10,
-              EurostatCode = "V_Y85", Name = "Közlekedési balesetek (V01-V99, Y85)"),
-         list(ICD = ICDData[Kod1=="W"&Kod23>=0&Kod23<=19]$KOD10,
-              EurostatCode = "W00-W19", Name = "Esések (W00-W19)"),
-         list(ICD = ICDData[Kod1=="W"&Kod23>=65&Kod23<=74]$KOD10,
-              EurostatCode = "W65-W74",
-              Name = "Balesetszerű vízbefulladás vagy elmerülés (W65-W74)"),
-         list(ICD = ICDData[Kod1=="X"&Kod23>=40&Kod23<=49]$KOD10,
-              EurostatCode = "X40-X49",
-              Name = "Káros anyagok által okozott balesetszerű mérgezés (X40-X49)"),
-         list(ICD = ICDData[(Kod1=="W"&Kod23>=20&Kod23<=64)|(Kod1=="W"&Kod23>=75)|
-                              (Kod1=="X"&Kod23<=39)|(Kod1=="X"&Kod23>=50&Kod23<=59)|
-                              (Kod1=="Y"&Kod23==86)]$KOD10,
-              EurostatCode = "ACC_OTH",
-              Name = "Egyéb balesetek (W20-W64, W75-X39, X50-X59, Y86)"),
-         list(ICD = ICDData[(Kod1=="X"&Kod23>=60&Kod23<=84)|(KOD10=="Y8700")]$KOD10,
-              EurostatCode = "X60-X84_Y870", Name = "Szándékos önártalom (X60-X84, Y87.0)"),
-         list(ICD = ICDData[(Kod1=="X"&Kod23>=85)|(Kod1=="Y"&Kod23<=9)|(KOD10=="Y8710")]$KOD10,
-              EurostatCode = "X85-Y09_Y871", Name = "Testi sértés (X85-Y09, Y87.1)"),
-         list(ICD = ICDData[(Kod1=="Y"&Kod23>=10&Kod23<=34)|(KOD10=="Y8720")]$KOD10,
-              EurostatCode = "Y10-Y34_Y872",
-              Name = "Nem meghatározott szándékú esemény (Y10-Y34, Y87.2)"),
-         list(ICD = ICDData[(Kod1=="Y"&Kod23>=35&Kod23<=84)|
-                              (Kod1=="Y"&Kod23>=88&Kod23<=89)]$KOD10,
-              EurostatCode = "V01-Y89_OTH",
-              Name = paste0("Törvényes beavatkozás és háborús cselekmények, az orvosi ellátás ",
-                            "szövődményei, egyéb külső ok (Y35-Y84, Y88-Y89)"))),
+    list(
+      data.table(rbind(data.table(Cause = ICDData[Kod1!="Z"&(Kod1!="Y"|Kod23<=89)]$KOD10, List = "104"),
+                       data.table(Cause = "B00", List = "09B")),
+                 EurostatCode = "A-R_V-Y", CauseGroup = "Összes halálok (A00-Y89)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1%in%c("A", "B")]$KOD10, List = "104")),
+                 EurostatCode = "A_B", CauseGroup = "Fertőző és parazitás betegségek (A00-B99)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="A"&Kod23>=15&Kod23<=19)|(Kod1=="B"&Kod23==90)]$KOD10, List = "104")),
+                 EurostatCode = "A15-A19_B90", CauseGroup = "Gümőkór (A15-A19, B90)"),
+      data.table(rbind(data.table(Cause = ICDData[KOD10 %in% c("B1800", "B1810", "B1820")]$KOD10, List = "104")),
+                 EurostatCode = "B180-B182",
+                 CauseGroup = "Idült vírusos B- és C-típusú hepatitis (B180-B182)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="B"&Kod23>=20&Kod23<=24]$KOD10, List = "104")),
+                 EurostatCode = "B20-B24",
+                 CauseGroup = "Humán immunodeficiencia vírus (HIV) betegség (B20-B24)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="B"&Kod23>=15&Kod23<=19)|KOD10=="B9420"]$KOD10, List = "104")),
+                 EurostatCode = "B15-B19_B942", CauseGroup = "Vírusos májgyulladás (B15-B19, B94.2)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="A"&(Kod23<=9|Kod23>=20))|
+                                                    (Kod1=="B"&(Kod23<=9|
+                                                                  (Kod23>=25&Kod23<=89)|
+                                                                  (Kod23>=91&Kod23<=93)|
+                                                                  (Kod23>=95&Kod23<=99)|
+                                                                  (KOD10%in%c("B940", "B941", "B948",
+                                                                              "B949", "B9481"))))]$KOD10, List = "104")),
+                 EurostatCode = "A_B_OTH",
+                 CauseGroup = paste0("Egyéb fertőző és parazitás betegségek (A00-A09, A20-B09, B25-B89, ",
+                                     "B91-B94.1, B94.8-B99)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"|(Kod1=="D"&Kod23<=48)]$KOD10, List = "104")),
+                 EurostatCode = "C00-D48", CauseGroup = "Daganatok (C00-D48)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"]$KOD10, List = "104")),
+                 EurostatCode = "C", CauseGroup = "Rosszindulatú daganatok (C00-C97)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&(Kod23>=0&Kod23<=14)]$KOD10, List = "104")),
+                 EurostatCode = "C00-C14",
+                 CauseGroup = "Az ajak, a szájüreg és garat rosszindulatú daganatai (C00-C14)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==15]$KOD10, List = "104")),
+                 EurostatCode = "C15", CauseGroup = "A nyelőcső rosszindulatú daganata (C15)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==16]$KOD10, List = "104")),
+                 EurostatCode = "C16", CauseGroup = "A gyomor rosszindulatú daganata (C16)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=18&Kod23<=21]$KOD10, List = "104")),
+                 EurostatCode = "C18-C21",
+                 CauseGroup = "A vastagbél, végbél és a végbélnyílás rosszindulatú daganatai (C18-C21)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==22]$KOD10, List = "104")),
+                 EurostatCode = "C22",
+                 CauseGroup = "A máj és intrahepaticus epeutak rosszindulatú daganata (C22)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==25]$KOD10, List = "104")),
+                 EurostatCode = "C25", CauseGroup = "A hasnyálmirigy rosszindulatú daganata (C25)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==32]$KOD10, List = "104")),
+                 EurostatCode = "C32", CauseGroup = "A gége rosszindulatú daganata (C32)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=33&Kod23<=34]$KOD10, List = "104")),
+                 EurostatCode = "C33_C34",
+                 CauseGroup = "A légcső, a hörgő és a tüdő rosszindulatú daganatai (C33-C34)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==43]$KOD10, List = "104")),
+                 EurostatCode = "C43", CauseGroup = "A bőr rosszindulatú melanomája (C43)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==50]$KOD10, List = "104")),
+                 EurostatCode = "C50", CauseGroup = "Az emlő rosszindulatú daganata (C50)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==53]$KOD10, List = "104")),
+                 EurostatCode = "C53", CauseGroup = "A méhnyak rosszindulatú daganata (C53)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=54&Kod23<=55]$KOD10, List = "104")),
+                 EurostatCode = "C54_C55",
+                 CauseGroup = paste0("A méhtest és a méh nem meghatározott részének rosszindulatú ",
+                                     "daganatai (C54-55)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==56]$KOD10, List = "104")),
+                 EurostatCode = "C56", CauseGroup = "A petefészek rosszindulatú daganata (C56)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==61]$KOD10, List = "104")),
+                 EurostatCode = "C61", CauseGroup = "A prostata rosszindulatú daganata (C61)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==64]$KOD10, List = "104")),
+                 EurostatCode = "C64",
+                 CauseGroup = "A vese rosszindulatú daganata, kivéve a vesemedencét (C64)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==67]$KOD10, List = "104")),
+                 EurostatCode = "C67", CauseGroup = "A húgyhólyag rosszindulatú daganata (C67)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=70&Kod23<=72]$KOD10, List = "104")),
+                 EurostatCode = "C70-C72",
+                 CauseGroup = paste0("Az agyburkok, az agy, a gerincvelő, az agyidegek és a központi ",
+                                     "idegrendszer egyéb részeinek rosszindulatú daganatai (C70-C72)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==73]$KOD10, List = "104")),
+                 EurostatCode = "C73", CauseGroup = "A pajzsmirigy rosszindulatú daganata (C73)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=81&Kod23<=86]$KOD10, List = "104")),
+                 EurostatCode = "C81-C86", CauseGroup = "Hodgkin kór és lymphomák (C81-C86)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=91&Kod23<=95]$KOD10, List = "104")),
+                 EurostatCode = "C91-C95", CauseGroup = "Leukémia (C91-C95)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&(Kod23==88|Kod23==90|Kod23==96)]$KOD10, List = "104")),
+                 EurostatCode = "C88_C90_C96",
+                 CauseGroup = paste0("A nyirok-, a vérképző- és kapcsolódó szövetek egyéb rosszindulatú ",
+                                     "daganatai (C88, C90, C96)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&
+                                                    (Kod23==17|(Kod23>=23&Kod23<=24)|(Kod23>=26&Kod23<=31)|
+                                                       (Kod23>=37&Kod23<=41)|(Kod23>=44&Kod23<=49)|
+                                                       (Kod23>=51&Kod23<=52)|(Kod23>=57&Kod23<=60)|
+                                                       (Kod23>=62&Kod23<=63)|(Kod23>=65&Kod23<=66)|
+                                                       (Kod23>=68&Kod23<=69)|(Kod23>=74&Kod23<=80)|Kod23==97)]$KOD10, List = "104")),
+                 EurostatCode = "C_OTH",
+                 CauseGroup = paste0("Egyéb rosszindulatú daganatok (C17, C23-C24, C26-C31, C37-C41, ",
+                                     "C44-C49, C51-C52, C57-C60, C62-C63, C65-C66, C68-C69, C74-C80, ",
+                                     "C97)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="D"&Kod23>=0&Kod23<=48]$KOD10, List = "104")),
+                 EurostatCode = "D00-D48",
+                 CauseGroup = paste0("In situ, jóindulatú, vagy bizonytalan vagy ismeretlen viselkedésű ",
+                                     "daganatok (D00-D48)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="D"&Kod23>=50&Kod23<=89]$KOD10, List = "104")),
+                 EurostatCode = "D50-D89",
+                 CauseGroup = paste0("A vér és a vérképző szervek betegségei és az immunrendszert érintő ",
+                                     "egyéb rendellenességek (D50-D89)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="E"&Kod23>=0&Kod23<=89]$KOD10, List = "104")),
+                 EurostatCode = "E",
+                 CauseGroup = "Endokrin, táplálkozási és anyagcsere betegségek (E00-E89)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="E"&Kod23>=10&Kod23<=14]$KOD10, List = "104")),
+                 EurostatCode = "E10-E14", CauseGroup = "Cukorbetegség (E10-E14)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="E"&((Kod23>=0&Kod23<=7)|(Kod23>=15&Kod23<=89))]$KOD10, List = "104")),
+                 EurostatCode = "E_OTH",
+                 CauseGroup = "Egyéb endokrin, táplálkozási és anyagcsere betegségek (E00-E07, E15-E89)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="F"&Kod23>=1&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "F", CauseGroup = "Mentális- és viselkedészavarok (F01-F99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="F"&(Kod23==1|Kod23==3)]$KOD10, List = "104")),
+                 EurostatCode = "F01_F03", CauseGroup = "Dementia (F01, F03)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="F"&Kod23==10]$KOD10, List = "104")),
+                 EurostatCode = "F10", CauseGroup = "Alkohol okozta mentális- és viselkedészavarok (F10)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="F"&((Kod23>=11&Kod23<=16)|(Kod23>=18&Kod23<=19))]$KOD10, List = "104")),
+                 EurostatCode = "TOXICO",
+                 CauseGroup = paste0("Drog és pszichoaktív anyagok használata által okozott mentális- és ",
+                                     "viselkedészavarok (F11-F16, F18-F19)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="F"&((Kod23>=4&Kod23<=9)|(Kod23==17)|
+                                                               (Kod23>=20&Kod23<=99))]$KOD10, List = "104")),
+                 EurostatCode = "F_OTH",
+                 CauseGroup = "Egyéb mentális- és viselkedészavarok (F04-F09, F17, F20-F99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="G"|Kod1=="H"]$KOD10, List = "104")),
+                 EurostatCode = "G_H",
+                 CauseGroup = "Az idegrendszer és az érzékszervek betegségei (G00-H95)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="G"&Kod23==20]$KOD10, List = "104")),
+                 EurostatCode = "G20", CauseGroup = "Parkinson-kór (G20)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="G"&Kod23==30]$KOD10, List = "104")),
+                 EurostatCode = "G30", CauseGroup = "Alzheimer-kór (G30)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="G"&((Kod23>=0&Kod23<=12)|(Kod23==14)|(Kod23>=21&Kod23<=25)|
+                                                                (Kod23>=31)))|Kod1=="H"]$KOD10, List = "104")),
+                 EurostatCode = "G_H_OTH",
+                 CauseGroup = paste0("Az idegrendszer és az érzékszervek egyéb betegségei (G00-G12, G14, ",
+                                     "G21-G25, G31-H95)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=0&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "I", CauseGroup = "A keringési rendszer betegségei (I00-I99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=20&Kod23<=25]$KOD10, List = "104")),
+                 EurostatCode = "I20-I25", CauseGroup = "Ischaemiás szívbetegségek (I20-I25)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=21&Kod23<=22]$KOD10, List = "104")),
+                 EurostatCode = "I21_I22",
+                 CauseGroup = "Heveny szívizomelhalás és ismétlődő szívizomelhalás (I21-I22)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&((Kod23==20)|(Kod23>=23&Kod23<=25))]$KOD10, List = "104")),
+                 EurostatCode = "I20_I23-I25",
+                 CauseGroup = "Egyéb ischaemiás szívbetegségek (I20, I23-I25)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=30&Kod23<=51]$KOD10, List = "104")),
+                 EurostatCode = "I30-I51", CauseGroup = "A szívbetegség egyéb formái (I30-I51)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=60&Kod23<=69]$KOD10, List = "104")),
+                 EurostatCode = "I60-I69", CauseGroup = "Cerebrovaszkuláris betegségek (I60-I69)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&((Kod23>=0&Kod23<=15)|(Kod23>=26&Kod23<=28)|
+                                                               (Kod23>=70&Kod23<=99))]$KOD10, List = "104")),
+                 EurostatCode = "I_OTH",
+                 CauseGroup = "A keringési rendszer egyéb betegségei (I00-I15, I26-I28, I70-I99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=0&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "J", CauseGroup = "A légzőrendszer betegségei (J00-J99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=9&Kod23<=11]$KOD10, List = "104")),
+                 EurostatCode = "J09-J11", CauseGroup = "Influenza (J09-J11)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=12&Kod23<=18]$KOD10, List = "104")),
+                 EurostatCode = "J12-J18", CauseGroup = "Tüdőgyulladás (J12-J18)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=40&Kod23<=47]$KOD10, List = "104")),
+                 EurostatCode = "J40-J47", CauseGroup = "Idült alsó légúti betegségek (J40-J47)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=45&Kod23<=46]$KOD10, List = "104")),
+                 EurostatCode = "J45_J46", CauseGroup = "Asztma (J45-J46)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&((Kod23>=40&Kod23<=44)|(Kod23==47))]$KOD10, List = "104")),
+                 EurostatCode = "J40-J44_J47",
+                 CauseGroup = "Egyéb idült alsó légúti megbetegedések (J40-J44, J47)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&((Kod23>=0&Kod23<=6)|(Kod23>=20&Kod23<=39)|
+                                                               (Kod23>=60&Kod23<=99))]$KOD10, List = "104")),
+                 EurostatCode = "J_OTH",
+                 CauseGroup = "A légzőrendszer egyéb betegségei (J00-J06, J20-J39, J60-J99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&Kod23>=0&Kod23<=92]$KOD10, List = "104")),
+                 EurostatCode = "K", CauseGroup = "Az emésztőrendszer betegségei (K00-K92)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&Kod23>=25&Kod23<=28]$KOD10, List = "104")),
+                 EurostatCode = "K25-K28",
+                 CauseGroup = "Gyomor-, nyombél-, pepticus- és gastrojejunalis fekély (K25-K28)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&((Kod23==70)|(Kod23>=73&Kod23<=74))]$KOD10, List = "104")),
+                 EurostatCode = "K70_K73_K74",
+                 CauseGroup = paste0("Idült májgyulladás, májfibrózis és májzsugorodás, valamint ",
+                                     "alkoholos májbetegség (K70, K73-K74)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&(Kod23>=72&Kod23<=75)]$KOD10, List = "104")),
+                 EurostatCode = "K72-K75",
+                 CauseGroup = paste0("Idült májbetegség, kivéve az alkoholos és toxikus ",
+                                     "májbetegséget (K72-K75)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&((Kod23>=0&Kod23<=22)|(Kod23>=29&Kod23<=66)|
+                                                               (Kod23>=71&Kod23<=72)|(Kod23>=75&Kod23<=92))]$KOD10, List = "104")),
+                 EurostatCode = "K_OTH",
+                 CauseGroup = "Az emésztőrendszer egyéb betegségei (K00-K22, K29-K66, K71-K72, K75-K92)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="L"&Kod23>=0&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "L", CauseGroup = "A bőr és a bőralatti szövet betegségei (L00-L99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="M"&Kod23>=0&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "M",
+                 CauseGroup = "A csont-izomrendszer és kötőszövet betegségei (M00-M99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="M"&((Kod23>=05&Kod23<=06)|(Kod23>=15&Kod23<=19))]$KOD10, List = "104")),
+                 EurostatCode = "RHEUM_ARTHRO",
+                 CauseGroup = "Rheumatoid arthritis és arthrosis (M05-M06, M15-M19)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="M"&((Kod23>=0&Kod23<=2)|(Kod23>=8&Kod23<=13)|
+                                                               (Kod23>=20&Kod23<=99))]$KOD10, List = "104")),
+                 EurostatCode = "M_OTH",
+                 CauseGroup = paste0("A csont-izomrendszer és kötőszövet egyéb betegségei (M00-M02, ",
+                                     "M08-M13, M20-M99)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="N"&Kod23>=0&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "N", CauseGroup = "Az urogenitális rendszer megbetegedései (N00-N99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="N"&Kod23>=0&Kod23<=29]$KOD10, List = "104")),
+                 EurostatCode = "N00-N29", CauseGroup = "Vese és az ureter betegségei (N00-N29)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="N"&Kod23>=30&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "N_OTH",
+                 CauseGroup = "Az urogenitális rendszer egyéb betegségei (N30-N99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="O"&Kod23>=0&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "O",
+                 CauseGroup = "A terhesség, a szülés és a gyermekágy komplikációi (O00-O99)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="P"&Kod23>=0&Kod23<=96]$KOD10, List = "104")),
+                 EurostatCode = "P",
+                 CauseGroup = "A perinatális szakban keletkező bizonyos állapotok (P00-P96)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="Q"&Kod23>=0&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "Q",
+                 CauseGroup = paste0("Veleszületett rendellenességek, deformitások és ",
+                                     "kromoszómaabnormitások (Q00-Q99)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="R"&Kod23>=0&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "R",
+                 CauseGroup = paste0("Máshova nem osztályozott panaszok, tünetek és kóros klinikai és ",
+                                     "laboratóriumi leletek (R00-R99)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="R"&Kod23==95]$KOD10, List = "104")),
+                 EurostatCode = "R95", CauseGroup = "Hirtelen csecsemőhalál szindróma  (R95)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="R"&Kod23>=96&Kod23<=99]$KOD10, List = "104")),
+                 EurostatCode = "R96-R99",
+                 CauseGroup = paste0("Egyéb hirtelen halál ismeretlen okból, halál tanú nélkül, a ",
+                                     "halálozás rosszul meghatározott és külön megnevezés nélküli okai ",
+                                     "(R96-R99)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="R"&Kod23>=0&Kod23<=94]$KOD10, List = "104")),
+                 EurostatCode = "R_OTH",
+                 CauseGroup = paste0("Egyéb máshova nem osztályozott panaszok, tünetek és kóros klinikai ",
+                                     "és laboratóriumi leletek (R00-R94)")),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="U"]$KOD10, List = "104")), EurostatCode = "U",
+                 CauseGroup = "Speciális kódok, beleértve a COVID-19-et (U)"),
+      data.table(rbind(data.table(Cause = ICDData[KOD10 == "U0710"]$KOD10, List = "104")), EurostatCode = "U071",
+                 CauseGroup = "COVID-19, kimutatott vírussal (U071)"),
+      data.table(rbind(data.table(Cause = ICDData[KOD10 == "U0720"]$KOD10, List = "104")), EurostatCode = "U072",
+                 CauseGroup = "COVID-19, vírus kimutatása nélkül (U072)"),
+      data.table(rbind(data.table(Cause = ICDData[KOD10 %in% c("U0990", "U1090")]$KOD10, List = "104")),
+                 EurostatCode = "U_COV19_OTH", CauseGroup = "COVID-19, egyéb (U099, U109)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="V")|(Kod1=="W")|(Kod1=="X")|(Kod1=="Y"&Kod23>=0&Kod23<=89)]$KOD10, List = "104")),
+                 EurostatCode = "V01-Y89", CauseGroup = "A morbiditás és mortalitás külső okai (V00-Y89)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="V")|(Kod1=="W")|(Kod1=="X"&Kod23>=0&Kod23<=59)|
+                                                    (Kod1=="Y"&Kod23>=85&Kod23<=86)]$KOD10, List = "104")),
+                 EurostatCode = "ACC", CauseGroup = "Balesetek (V01-X59, Y85-Y86)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="V"|(Kod1=="Y"&Kod23==85)]$KOD10, List = "104")),
+                 EurostatCode = "V_Y85", CauseGroup = "Közlekedési balesetek (V01-V99, Y85)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="W"&Kod23>=0&Kod23<=19]$KOD10, List = "104")),
+                 EurostatCode = "W00-W19", CauseGroup = "Esések (W00-W19)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="W"&Kod23>=65&Kod23<=74]$KOD10, List = "104")),
+                 EurostatCode = "W65-W74",
+                 CauseGroup = "Balesetszerű vízbefulladás vagy elmerülés (W65-W74)"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="X"&Kod23>=40&Kod23<=49]$KOD10, List = "104")),
+                 EurostatCode = "X40-X49",
+                 CauseGroup = "Káros anyagok által okozott balesetszerű mérgezés (X40-X49)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="W"&Kod23>=20&Kod23<=64)|(Kod1=="W"&Kod23>=75)|
+                                                    (Kod1=="X"&Kod23<=39)|(Kod1=="X"&Kod23>=50&Kod23<=59)|
+                                                    (Kod1=="Y"&Kod23==86)]$KOD10, List = "104")),
+                 EurostatCode = "ACC_OTH",
+                 CauseGroup = "Egyéb balesetek (W20-W64, W75-X39, X50-X59, Y86)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="X"&Kod23>=60&Kod23<=84)|(KOD10=="Y8700")]$KOD10, List = "104")),
+                 EurostatCode = "X60-X84_Y870", CauseGroup = "Szándékos önártalom (X60-X84, Y87.0)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="X"&Kod23>=85)|(Kod1=="Y"&Kod23<=9)|(KOD10=="Y8710")]$KOD10, List = "104")),
+                 EurostatCode = "X85-Y09_Y871", CauseGroup = "Testi sértés (X85-Y09, Y87.1)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="Y"&Kod23>=10&Kod23<=34)|(KOD10=="Y8720")]$KOD10, List = "104")),
+                 EurostatCode = "Y10-Y34_Y872",
+                 CauseGroup = "Nem meghatározott szándékú esemény (Y10-Y34, Y87.2)"),
+      data.table(rbind(data.table(Cause = ICDData[(Kod1=="Y"&Kod23>=35&Kod23<=84)|
+                                                    (Kod1=="Y"&Kod23>=88&Kod23<=89)]$KOD10, List = "104")),
+                 EurostatCode = "V01-Y89_OTH",
+                 CauseGroup = paste0("Törvényes beavatkozás és háborús cselekmények, az orvosi ellátás ",
+                                     "szövődményei, egyéb külső ok (Y35-Y84, Y88-Y89)"))),
   Individual = lapply(1:nrow(ICDData), function(i)
-    list(ICD = ICDData[i]$KOD10, EurostatCode = NA,
-         Name = paste0(ICDData[i]$KOD10, " - ", ICDData[i]$NEV))),
+    data.table(Cause = ICDData[i]$KOD10, EurostatCode = NA,
+               CauseGroup = paste0(ICDData[i]$KOD10, " - ", ICDData[i]$NEV))),
   Avoidable = list(
-    list(ICD = ICDData[(Kod1=="A"&((Kod23>=0&Kod23<=9)|(Kod23>=50&Kod23<=60)|
-                                     (Kod23>=15&Kod23<=19)|
-                                     Kod23%in%c(35, 36, 80, 37, 39, 63, 64, 33, 34)|
-                                     KOD10%in%c("A4030", "A4130", "A4920")))|
-                         (Kod1=="B"&((Kod23>=15&Kod23<=19)|(Kod23>=20&Kod23<=24)|
-                                       (Kod23>=50&Kod23<=54)|Kod23%in%c(1, 5, 6, 90)))|
-                         (Kod1=="C"&((Kod23>=0&Kod23<=14)|(Kod23>=33&Kod23<=34)|
-                                       Kod23%in%c(15, 16, 22, 45, 43, 67, 53)))|
-                         (Kod1=="D"&((Kod23>=50&Kod23<=53)))|
-                         (Kod1=="E"&((Kod23>=10&Kod23<=14)|KOD10=="E2440"))|
-                         (Kod1=="F"&(Kod23==10|(Kod23>=11&Kod23<=16)|(Kod23>=18&Kod23<=19)))|
-                         (Kod1=="G"&(KOD10%in%c("G0000", "G0010", "G3120", "G6210", "G7210")))|
-                         (Kod1=="I"&((Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
-                                       (Kod23>=60&Kod23<=69)|
-                                       Kod23%in%c(71, 15, 70)|KOD10%in%c("I7390", "I4260")))|
-                         (Kod1=="J"&((Kod23>=9&Kod23<=11)|(Kod23>=13&Kod23<=14)|
-                                       (Kod23>=40&Kod23<=44)|(Kod23>=60&Kod23<=64)|
-                                       (Kod23>=66&Kod23<=70)|Kod23%in%c(65, 82, 92)))|
-                         (Kod1=="K"&(Kod23%in%c(70, 73)|
-                                       KOD10%in%c("K2920", "K8520", "K8600", "K7400",
-                                                  "K7410", "K7420", "K7460")))|
-                         (Kod1=="Q"&(Kod23%in%c(0, 1, 5)|KOD10=="Q8600"))|
-                         (Kod1=="R"&(KOD10=="R7800"))|
-                         (Kod1=="U"&(KOD10%in%c("U0710", "U0720")))|
-                         (Kod1=="V"&((Kod23>=0&Kod23<=99)))|
-                         (Kod1=="W")|
-                         (Kod1=="X"&((Kod23<=39)|(Kod23>=46&Kod23<=59)|(Kod23>=66&Kod23<=84)|
-                                       (Kod23>=40&Kod23<=44)|(Kod23>=60&Kod23<=64)|(Kod23>=86)|
-                                       Kod23%in%c(45, 65, 85)))|
-                         (Kod1=="Y"&((Kod23<=9)|(Kod23>=16&Kod23<=34)|
-                                       (Kod23>=10&Kod23<=14)|Kod23==15))]$KOD10,
-         EurostatCode = NA, Name = "Megelőzhető halálozás"),
-    list(ICD = ICDData[
-      (Kod1=="A"&((Kod23>=15&Kod23<=19)|Kod23%in%c(38, 46)|(Kod23==40&KOD10!="A4030")|
-                    (Kod23==41&KOD10!="A4130")|KOD10%in%c("A4810", "A4910")))|
-        (Kod1=="B"&(Kod23==90))|
-        (Kod1=="D"&((Kod23>=10&Kod23<=36)))|
-        (Kod1=="E"&(Kod23==27|(Kod23>=10&Kod23<=14)|(Kod23>=0&Kod23<=7)|
-                      (Kod23>=24&Kod23<=25&KOD10!="E2440")))|
-        (Kod1=="C"&(Kod23%in%c(53, 50, 54, 55, 62, 73, 81)|(Kod23>=18&Kod23<=21)|
-                      KOD10%in%c("C9100", "C9101", "C9102", "C9110")))|
-        (Kod1=="G"&(KOD10%in%c("G0020", "G0030", "G0080", "G0090")|Kod23%in%c(3, 40, 41)))|
-        (Kod1=="I"&((Kod23%in%c(71, 15, 70, 26, 80))|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
-                      (Kod23>=60&Kod23<=69)|(Kod23>=0&Kod23<=9)|KOD10%in%c("I7390", "I8290")))|
-        (Kod1=="J"&(Kod23%in%c(65, 12, 15, 80, 81, 85, 86, 90, 93, 94)|(Kod23>=0&Kod23<=6)|
-                      (Kod23>=30&Kod23<=39)|(Kod23>=16&Kod23<=18)|(Kod23>=20&Kod23<=22)|
-                      (Kod23>=45&Kod23<=47)))|
-        (Kod1=="K"&((Kod23>=25&Kod23<=28)|(Kod23>=35&Kod23<=38)|(Kod23>=40&Kod23<=46)|
-                      (Kod23>=80&Kod23<=81)|(Kod23>=82&Kod23<=83)|
-                      KOD10%in%c("K8500", "K8510", "K8530", "K8580", "K8590",
-                                 "K8610", "K8620", "K8630", "K8680", "K8681", "K8690")))|
-        (Kod1=="L"&(Kod23==3))|
-        (Kod1=="N"&(Kod23%in%c(13, 35, 23, 25, 40)|(Kod23>=0&Kod23<=7)|(Kod23>=20&Kod23<=21)|
-                      (Kod23>=17&Kod23<=19)|(Kod23>=26&Kod23<=27)|(Kod23>=70&Kod23<=73)|
-                      KOD10%in%c("N3410", "N7500", "N7510", "N7640", "N7660")))|
-        (Kod1=="O"&((Kod23>=0&Kod23<=99)))|
-        (Kod1=="P"&((Kod23>=0&Kod23<=96)))|
-        (Kod1=="Q"&((Kod23>=20&Kod23<=28)))|
-        (Kod1=="Y"&((Kod23>=40&Kod23<=59)|(Kod23>=60&Kod23<=69)|(Kod23>=83&Kod23<=84)|
-                      (Kod23>=70&Kod23<=82)))]$KOD10,
-      EurostatCode = NA, Name = "Kezeléssel elkerülhető halálozás")))
+    "Megelőzhető halálozás" =
+      data.table(Cause = ICDData[
+        (Kod1=="A"&((Kod23>=0&Kod23<=9)|(Kod23>=50&Kod23<=60)|
+                      (Kod23>=15&Kod23<=19)|
+                      Kod23%in%c(35, 36, 80, 37, 39, 63, 64, 33, 34)|
+                      KOD10%in%c("A4030", "A4130", "A4920")))|
+          (Kod1=="B"&((Kod23>=15&Kod23<=19)|(Kod23>=20&Kod23<=24)|
+                        (Kod23>=50&Kod23<=54)|Kod23%in%c(1, 5, 6, 90)))|
+          (Kod1=="C"&((Kod23>=0&Kod23<=14)|(Kod23>=33&Kod23<=34)|
+                        Kod23%in%c(15, 16, 22, 45, 43, 67, 53)))|
+          (Kod1=="D"&((Kod23>=50&Kod23<=53)))|
+          (Kod1=="E"&((Kod23>=10&Kod23<=14)|KOD10=="E2440"))|
+          (Kod1=="F"&(Kod23==10|(Kod23>=11&Kod23<=16)|(Kod23>=18&Kod23<=19)))|
+          (Kod1=="G"&(KOD10%in%c("G0000", "G0010", "G3120", "G6210", "G7210")))|
+          (Kod1=="I"&((Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
+                        (Kod23>=60&Kod23<=69)|
+                        Kod23%in%c(71, 15, 70)|KOD10%in%c("I7390", "I4260")))|
+          (Kod1=="J"&((Kod23>=9&Kod23<=11)|(Kod23>=13&Kod23<=14)|
+                        (Kod23>=40&Kod23<=44)|(Kod23>=60&Kod23<=64)|
+                        (Kod23>=66&Kod23<=70)|Kod23%in%c(65, 82, 92)))|
+          (Kod1=="K"&(Kod23%in%c(70, 73)|
+                        KOD10%in%c("K2920", "K8520", "K8600", "K7400",
+                                   "K7410", "K7420", "K7460")))|
+          (Kod1=="Q"&(Kod23%in%c(0, 1, 5)|KOD10=="Q8600"))|
+          (Kod1=="R"&(KOD10=="R7800"))|
+          (Kod1=="U"&(KOD10%in%c("U0710", "U0720")))|
+          (Kod1=="V"&((Kod23>=0&Kod23<=99)))|
+          (Kod1=="W")|
+          (Kod1=="X"&((Kod23<=39)|(Kod23>=46&Kod23<=59)|(Kod23>=66&Kod23<=84)|
+                        (Kod23>=40&Kod23<=44)|(Kod23>=60&Kod23<=64)|(Kod23>=86)|
+                        Kod23%in%c(45, 65, 85)))|
+          (Kod1=="Y"&((Kod23<=9)|(Kod23>=16&Kod23<=34)|
+                        (Kod23>=10&Kod23<=14)|Kod23==15))]$KOD10,
+        EurostatCode = NA, CauseGroup = "Megelőzhető halálozás"),
+    "Kezeléssel elkerülhető halálozás" =
+      data.table(Cause = ICDData[
+        (Kod1=="A"&((Kod23>=15&Kod23<=19)|Kod23%in%c(38, 46)|(Kod23==40&KOD10!="A4030")|
+                      (Kod23==41&KOD10!="A4130")|KOD10%in%c("A4810", "A4910")))|
+          (Kod1=="B"&(Kod23==90))|
+          (Kod1=="D"&((Kod23>=10&Kod23<=36)))|
+          (Kod1=="E"&(Kod23==27|(Kod23>=10&Kod23<=14)|(Kod23>=0&Kod23<=7)|
+                        (Kod23>=24&Kod23<=25&KOD10!="E2440")))|
+          (Kod1=="C"&(Kod23%in%c(53, 50, 54, 55, 62, 73, 81)|(Kod23>=18&Kod23<=21)|
+                        KOD10%in%c("C9100", "C9101", "C9102", "C9110")))|
+          (Kod1=="G"&(KOD10%in%c("G0020", "G0030", "G0080", "G0090")|Kod23%in%c(3, 40, 41)))|
+          (Kod1=="I"&((Kod23%in%c(71, 15, 70, 26, 80))|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
+                        (Kod23>=60&Kod23<=69)|(Kod23>=0&Kod23<=9)|KOD10%in%c("I7390", "I8290")))|
+          (Kod1=="J"&(Kod23%in%c(65, 12, 15, 80, 81, 85, 86, 90, 93, 94)|(Kod23>=0&Kod23<=6)|
+                        (Kod23>=30&Kod23<=39)|(Kod23>=16&Kod23<=18)|(Kod23>=20&Kod23<=22)|
+                        (Kod23>=45&Kod23<=47)))|
+          (Kod1=="K"&((Kod23>=25&Kod23<=28)|(Kod23>=35&Kod23<=38)|(Kod23>=40&Kod23<=46)|
+                        (Kod23>=80&Kod23<=81)|(Kod23>=82&Kod23<=83)|
+                        KOD10%in%c("K8500", "K8510", "K8530", "K8580", "K8590",
+                                   "K8610", "K8620", "K8630", "K8680", "K8681", "K8690")))|
+          (Kod1=="L"&(Kod23==3))|
+          (Kod1=="N"&(Kod23%in%c(13, 35, 23, 25, 40)|(Kod23>=0&Kod23<=7)|(Kod23>=20&Kod23<=21)|
+                        (Kod23>=17&Kod23<=19)|(Kod23>=26&Kod23<=27)|(Kod23>=70&Kod23<=73)|
+                        KOD10%in%c("N3410", "N7500", "N7510", "N7640", "N7660")))|
+          (Kod1=="O"&((Kod23>=0&Kod23<=99)))|
+          (Kod1=="P"&((Kod23>=0&Kod23<=96)))|
+          (Kod1=="Q"&((Kod23>=20&Kod23<=28)))|
+          (Kod1=="Y"&((Kod23>=40&Kod23<=59)|(Kod23>=60&Kod23<=69)|(Kod23>=83&Kod23<=84)|
+                        (Kod23>=70&Kod23<=82)))]$KOD10,
+        EurostatCode = NA, CauseGroup = "Kezeléssel elkerülhető halálozás")))
 
-ICDGroups$Individual <- setNames(ICDGroups$Individual,
-                                 sapply(ICDGroups$Individual, function(gr) gr[["Name"]]))
-ICDGroups$Groups <- setNames(ICDGroups$Groups,
-                             sapply(ICDGroups$Groups, function(gr) gr[["Name"]]))
-ICDGroups$Avoidable <- setNames(ICDGroups$Avoidable,
-                                sapply(ICDGroups$Avoidable, function(gr) gr[["Name"]]))
+ICDGroups$Groups <- setNames(ICDGroups$Groups, sapply(ICDGroups$Groups, function(gr) gr$CauseGroup[1]))
+ICDGroups$Individual <- setNames(ICDGroups$Individual, sapply(ICDGroups$Individual, function(gr) gr$CauseGroup[1]))
 
-ICDGroups$Individual <- lapply(ICDGroups$Individual,
-                               function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
-ICDGroups$Groups <- lapply(ICDGroups$Groups,
-                           function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
-ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable,
-                              function(l) c(l, list(Weights = rep(1, length(l$ICD)))))
+ICDGroups$Individual <- lapply(ICDGroups$Individual, function(l) cbind(l, List = "104"))
+ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l) cbind(l, List = "104"))
 
-ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l)
-  if(l$Name == "Megelőzhető halálozás") {
-    c(l[c("ICD", "Name", "EurostatCode")],
-      list(Weights = replace(
-        l$Weights,
-        which(l$ICD%in%ICDData[
-          (Kod1=="A"&((Kod23>=15&Kod23<=19)))|(Kod1=="B"&(Kod23==90))|(Kod1=="J"&(Kod23==65))|
-            (Kod1=="C"&(Kod23==53))|(Kod1=="E"&((Kod23>=10&Kod23<=14)))|
-            (Kod1=="I"&(Kod23%in%c(71, 15, 70)|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
-                          (Kod23>=60&Kod23<=69)|(KOD10=="I7390")))]$KOD10),
-        0.5)))
-  } else l)
+ICDGroups$Groups <- lapply(ICDGroups$Groups, function(l) cbind(l, Weight = 1))
+ICDGroups$Individual <- lapply(ICDGroups$Individual, function(l) cbind(l, Weight = 1))
+ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l) cbind(l, Weight = 1))
 
-ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l)
-  if(l$Name == "Kezeléssel elkerülhető halálozás") {
-    c(l[c("ICD", "Name", "EurostatCode")],
-      list(Weights = replace(
-        l$Weights,
-        which(l$ICD%in%ICDData[
-          (Kod1=="A"&((Kod23>=15&Kod23<=19)))|(Kod1=="B"&(Kod23==90))|(Kod1=="J"&(Kod23==65))|
-            (Kod1=="C"&(Kod23==53))|(Kod1=="E"&((Kod23>=10&Kod23<=14)))|
-            (Kod1=="I"&(Kod23%in%c(71, 15, 70)|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
-                          (Kod23>=60&Kod23<=69)|(KOD10=="I7390")))]$KOD10),
-        0.5)))
-  } else l)
+ICDGroups$Avoidable$`Megelőzhető halálozás`[
+  Cause %in% ICDData[
+    (Kod1=="A"&((Kod23>=15&Kod23<=19)))|(Kod1=="B"&(Kod23==90))|(Kod1=="J"&(Kod23==65))|
+      (Kod1=="C"&(Kod23==53))|(Kod1=="E"&((Kod23>=10&Kod23<=14)))|
+      (Kod1=="I"&(Kod23%in%c(71, 15, 70)|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
+                    (Kod23>=60&Kod23<=69)|(KOD10=="I7390")))]$KOD10
+]$Weight <- 0.5
+
+ICDGroups$Avoidable$`Kezeléssel elkerülhető halálozás`[
+  Cause %in% ICDData[
+    (Kod1=="A"&((Kod23>=15&Kod23<=19)))|(Kod1=="B"&(Kod23==90))|(Kod1=="J"&(Kod23==65))|
+      (Kod1=="C"&(Kod23==53))|(Kod1=="E"&((Kod23>=10&Kod23<=14)))|
+      (Kod1=="I"&(Kod23%in%c(71, 15, 70)|(Kod23>=10&Kod23<=13)|(Kod23>=20&Kod23<=25)|
+                    (Kod23>=60&Kod23<=69)|(KOD10=="I7390")))]$KOD10
+]$Weight <- 0.5
 ```
 
-Mint látható, három nagy kategóriát hoztam létre: szerepeltettem az
-egyedi kódokat, az említett nagy kategóriákat, és itt hozta létre az
-elkerülhető halálozás
+Három nagy kategóriát hoztam létre: szerepeltettem az egyedi kódokat, az
+említett nagy kategóriákat, és itt hoztam létre az elkerülhető halálozás
 [kódjait](https://ec.europa.eu/eurostat/cache/metadata/Annexes/hlth_cdeath_sims_an_5.pdf)
 is.
+
+Mint látható, a dolog nagyon szabályos: az összevont kódoknál mindenhol
+megadom a `List`-et is, ami azonosítja, hogy melyik formátumról van szó
+– ez azért is fontos, mert így lehet ott többféle formátumot is megadni!
+Az egyedi kódoknál és az elkerülhető halálozásnál nem adtam meg ilyet,
+azért, mert azok mindenképp a 104-es kódra vonatkoznak (ez esetleg
+később fejleszthető, bővíthető).
 
 Ezután az adatok kimenthetőek:
 
@@ -1918,22 +2159,23 @@ egységes módszertannal számolva. Tulajdonképpen ez lenne a legjobb
 választás; két problémától eltekintve. A kisebbik, hogy bár sok országra
 érhető el, de azért az egész világtól nagyon messze van (ráadásul ami
 benne van, az szinte kivétel nélkül mind fejlett világbeli ország). A
-nagyobb probléma, hogy nem frissül sűrűn – Magyarországra például e
-pillanatban, 2025 közepén is csak a 2021-es adatok érhetőek el! Ez
-viszont nagy baj, mert így épp a legújabb – és így sok szempontból a
-legfontosabb és legizgalmasabb – halálozási adatok vesznének el, ha ezt
-használnánk a lélekszám adatforrásaként.
+nagyobb probléma, hogy nem frissül sűrűn – Magyarországra például 2025
+közepén is csak a 2021-es adatok érhetőek el! Ez viszont nagy baj, mert
+így épp a legújabb – és így sok szempontból a legfontosabb és
+legizgalmasabb – halálozási adatok vesznének el, ha ezt használnánk a
+lélekszám adatforrásaként.
 
-Az Eurostat ilyen szempontból jobb: sűrűn frissül (Magyarországra már a
-2024-es adat is elérhető), az esetleges nemzeti frissítéseket is gyorsan
-átvezetik, hátránya viszont, hogy ez sem világszintű, sőt, ez pláne nem
-az, hiszen értelemszerűen csak az európai uniós országokat tartalmazza,
-egy-két közeli országgal kiegészítve. Az Eurostat fő problémája ezen túl
-az életkori felbontás esetlegessége: Magyarországra például csak
-2013-tól van meg a lebontás 99 évig életévente. De a dologra tényleg az
-esetleges a jó szó, ugyanis 2012-ben csak 89 évig ment (és felette volt
-egybevonva az összes korév), előtte pedig csak 84 évig, de 2006-tól
-valamiért megint megvan legalább 89 évig…
+Az Eurostat ilyen szempontból jobb: sűrűn frissül (Magyarországra 2025
+közepén már a 2024-es adat is elérhető), az esetleges nemzeti
+frissítéseket is gyorsan átvezetik, hátránya viszont, hogy ez sem
+világszintű, sőt, ez pláne nem az, hiszen értelemszerűen csak az európai
+uniós országokat tartalmazza, egy-két közeli országgal kiegészítve. Az
+Eurostat fő problémája ezen túl az életkori felbontás esetlegessége:
+Magyarországra például csak 2013-tól van meg a lebontás 99 évig
+életévente. De a dologra tényleg az esetleges a jó szó, ugyanis 2012-ben
+csak 89 évig ment (és felette volt egybevonva az összes korév), előtte
+pedig csak 84 évig, de 2006-tól valamiért megint megvan legalább 89
+évig…
 
 Hadd tegyek még egy érdekes, és potenciálisan meglepő megjegyzést az
 Eurostat és a HMD viszonylatában. Az Eurostat a „tényadatokat”
@@ -1990,40 +2232,41 @@ lélekszám; ez persze csak a számítási módszernek beadott elméleti
 időpont, nem arról van szó, hogy konkrétan egy nap alatt megszámoltak
 mindenkit, minden évben. A lélekszám meghatározása egyébként is külön
 tudomány, vannak népszámlálások, de csak ritkán, 10 évente, közte
-valamilyen módon tovább kell vezetni a népességet, rendelkezésre állnak
-születési, halálozás és vándorlási adatok…) Mortalitás számításakor
-azonban a január 1. lélekszám nem feltétlenül szerencsés. Kezdjük a
-történetet az elején: az eleve egy összevonás, hogy éves mortalitásról
-beszélünk. Elvileg lehetne finomítani, mondjuk havi mortalitást nézni:
-az adott hónapban elhunytak száma (esetleg adott halálokra szűkítve)
-osztva a hónap lélekszámával. Sőt, mehetünk tovább, és nézhetnénk akár
-napi mortalitást is. Ekkor már érezhetően nem lesz jelentősége a
-lélekszám változásának (attól minden bizonnyal eltekinthetünk a legtöbb
-esetben, hogy egy nap reggel nem ugyanaz az ország lélekszáma, mint
-este). De mi a helyzet az éves mortalitásnál? Mi legyen a lélekszám éves
-mortalitásnál, ha közben minden nap más volt az aznapi lélekszám? A
-legjobb amit tehetünk, ha az átlagos lélekszámot használjuk, tehát
-összeadjuk mind a 365 napon az aznapi lélekszámot, majd azt elosztjuk
-365-tel. A probléma az, hogy ezt nem tudjuk, hiszen nincsen napi
-lélekszámunk. Akkor használjuk a január 1-én érvényeset? Ez nem a
-legjobb gondolat: a baj az, hogy mi van, ha a népesség változik, mondjuk
-folyamatosan csökken – ekkor a január 1. lélekszám túl magas lesz, mert
-az éves átlag, amit igazából használnunk kellene, alatta lesz (növekvő
-lélekszámnál pont fordítva). Az ötlet azonban egyszerű: vegyük a *jövő*
-év január 1-én érvényes lélekszámot, és képezzük a kettő átlagát! Ezt
-évközepi lélekszámnak szokták hívni, hiszen ha egyenletes az átmenet a
-két érték között, akkor ez pont az év közepén érvényes lélekszám lesz.
-Számunka azonban van ennek a lélekszámnak egy másik, sokkal fontosabb
-tulajdonsága: ennyi lesz az átlagos lélekszám is! Ez csak akkor igaz
-egzaktan, ha egyenletes az átmenet, de további információ híján ez a
-legjobb, amit használhatunk. Úgyhogy a mortalitás számítását érdemes az
-évközepi lélekszámra alapozni. (Vegyük észre, hogy ennek egy ára azért
-van: egy évet elveszítünk, hiszen az utolsó évhez csak január 1.
-lélekszámot tudunk mondani, évközepit nem, nem lévén adat a következő
-január 1-ről.) A HMD és az Eurostat január 1. lélekszámokat tartalmaz,
-így azokat előbb át kellene számítani, még ha ez nem is bonyolult.
-Azonban a WPP egy további előnye, hogy az eleve évközepi lélekszámokat
-ad meg, így ott semmilyen számításra nincsen szükség.
+valamilyen módon tovább kell vezetni a népességet, amihez rendelkezésre
+állnak születési, halálozás és vándorlási adatok…) Mortalitás
+számításakor azonban a január 1. lélekszám nem feltétlenül szerencsés.
+Kezdjük a történetet az elején: az eleve egy összevonás, hogy éves
+mortalitásról beszélünk. Elvileg lehetne finomítani, mondjuk havi
+mortalitást nézni: az adott hónapban elhunytak száma (esetleg adott
+halálokra szűkítve) osztva a hónap lélekszámával. Sőt, mehetünk tovább,
+és nézhetnénk akár napi mortalitást is. Ekkor már érezhetően nem lesz
+jelentősége a lélekszám változásának (attól minden bizonnyal
+eltekinthetünk a legtöbb esetben, hogy egy nap reggel nem ugyanaz az
+ország lélekszáma, mint este). De mi a helyzet az éves mortalitásnál? Mi
+legyen a lélekszám éves mortalitásnál, ha közben minden nap más volt az
+aznapi lélekszám? A legjobb amit tehetünk, ha az átlagos lélekszámot
+használjuk, tehát összeadjuk mind a 365 napon az aznapi lélekszámot,
+majd azt elosztjuk 365-tel. A probléma az, hogy ezt nem tudjuk, hiszen
+nincsen napi lélekszámunk. Akkor használjuk a január 1-én érvényeset? Ez
+nem a legjobb gondolat: a baj az, hogy mi van, ha a népesség változik,
+mondjuk folyamatosan csökken – ekkor a január 1. lélekszám túl magas
+lesz, mert az éves átlag, amit igazából használnunk kellene, alatta lesz
+(növekvő lélekszámnál pont fordítva). Az ötlet azonban egyszerű: vegyük
+a *jövő* év január 1-én érvényes lélekszámot, és képezzük a kettő
+átlagát! Ezt évközepi lélekszámnak szokták hívni, hiszen ha egyenletes
+az átmenet a két érték között, akkor ez pont az év közepén érvényes
+lélekszám lesz. Számunkra azonban van ennek a lélekszámnak egy másik,
+sokkal fontosabb tulajdonsága: ebben az esetben, tehát az egyenletes
+változásnál, ennyi lesz az átlagos lélekszám is! Fontos hangsúlyozni,
+hogy ez csak akkor igaz egzaktan, ha egyenletes az átmenet, de további
+információ híján ez a legjobb, amit használhatunk. Úgyhogy a mortalitás
+számítását érdemes az évközepi lélekszámra alapozni. (Vegyük észre, hogy
+ennek egy ára azért van: egy évet elveszítünk, hiszen az utolsó évhez
+csak január 1. lélekszámot tudunk mondani, évközepit nem, nem lévén adat
+a következő január 1-ről.) A HMD és az Eurostat január 1. lélekszámokat
+tartalmaz, így azokat előbb át kellene számítani, még ha ez nem is
+bonyolult. Azonban a WPP egy további előnye, hogy az eleve évközepi
+lélekszámokat ad meg, így ott semmilyen számításra nincsen szükség.
 
 Jöjjenek most az egyes adatbázisok! Egyetlen megjegyzés mielőtt
 belevágunk: mivel a halálozási adatok úgy vannak megadva, hogy
@@ -2063,12 +2306,18 @@ PopDataHMD <- PopDataHMD[Year %in% unique(RawData$Year)]
 unique(PopDataHMD[YearSign != "", .(Year, iso3c)])
 ```
 
-    ##     Year  iso3c
-    ##    <num> <char>
-    ## 1:  2010    BEL
-    ## 2:  2011    BEL
-    ## 3:  1991    NZL
-    ## 4:  2001    POL
+    ##      Year  iso3c
+    ##     <num> <char>
+    ##  1:  2010    BEL
+    ##  2:  2011    BEL
+    ##  3:  2016    XX6
+    ##  4:  2016    XX7
+    ##  5:  1981    ITA
+    ##  6:  1991    NZL
+    ##  7:  2001    POL
+    ##  8:  1993    RUS
+    ##  9:  1995    RUS
+    ## 10:  2003    RUS
 
 ``` r
 plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
@@ -2091,38 +2340,38 @@ dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Tota
   , .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)]
 ```
 
-    ##       iso3c    Age  Year         +         -        V6
-    ##      <char> <char> <num>     <num>     <num>     <num>
-    ##   1:    POL     75  2001 235145.00 237311.50 0.9908706
-    ##   2:    POL     76  2001 210323.00 212231.93 0.9910055
-    ##   3:    POL     77  2001 197476.00 199245.06 0.9911212
-    ##   4:    POL     78  2001 172314.00 173826.50 0.9912988
-    ##   5:    POL     79  2001 140108.00 141335.01 0.9913184
-    ##  ---                                                  
-    ## 440:    NZL     14  1991  53696.33  52315.21 1.0264000
-    ## 441:    NZL     11  1991  51701.77  50371.95 1.0264000
-    ## 442:    NZL     12  1991  51505.82  50181.04 1.0264000
-    ## 443:    NZL     13  1991  52007.67  50669.98 1.0264000
-    ## 444:    NZL   110+  1991      0.00      0.00       NaN
+    ##        iso3c    Age  Year         +         -        V6
+    ##       <char> <char> <num>     <num>     <num>     <num>
+    ##    1:    ITA    109  1981      1.00      1.13 0.8849558
+    ##    2:    ITA    101  1981    239.00    260.32 0.9181008
+    ##    3:    ITA    100  1981    440.00    478.79 0.9189833
+    ##    4:    ITA    103  1981     63.00     68.47 0.9201110
+    ##    5:    RUS    101  1993   1550.09   1682.40 0.9213564
+    ##   ---                                                  
+    ## 1106:    XX6     22  2016 124376.00  99130.00 1.2546757
+    ## 1107:    XX6     23  2016 134165.00 106742.00 1.2569092
+    ## 1108:    ITA    108  1981      0.00      0.00       NaN
+    ## 1109:    ITA   110+  1981      0.00      0.00       NaN
+    ## 1110:    NZL   110+  1991      0.00      0.00       NaN
 
 ``` r
 dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
   , .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)]
 ```
 
-    ##       iso3c    Age  Year      +        -       V6
-    ##      <char> <char> <num>  <num>    <num>    <num>
-    ##   1:    POL     17  2001 692787 695591.8 -2804.84
-    ##   2:    POL     16  2001 672579 675305.3 -2726.33
-    ##   3:    POL     18  2001 670210 672924.6 -2714.55
-    ##   4:    POL     15  2001 651424 654063.5 -2639.54
-    ##   5:    POL     19  2001 641888 644484.8 -2596.75
-    ##  ---                                             
-    ## 440:    POL     23  2001 625513 614200.6 11312.44
-    ## 441:    POL     24  2001 627452 616105.6 11346.38
-    ## 442:    POL     22  2001 630562 619158.8 11403.22
-    ## 443:    POL     21  2001 649207 637465.8 11741.24
-    ## 444:    POL     20  2001 653625 641806.3 11818.72
+    ##        iso3c    Age  Year       +         -        V6
+    ##       <char> <char> <num>   <num>     <num>     <num>
+    ##    1:    RUS      2  1993 1940992 1978784.0 -37792.00
+    ##    2:    RUS      3  1993 2094744 2131622.0 -36878.00
+    ##    3:    XX7     27  2016  874635  911203.8 -36568.83
+    ##    4:    XX7     51  2016 1148308 1184340.1 -36032.15
+    ##    5:    XX7     28  2016  851057  886914.3 -35857.26
+    ##   ---                                                
+    ## 1106:    XX6     52  2016  283638  248299.0  35339.00
+    ## 1107:    XX6     29  2016  219441  184022.0  35419.00
+    ## 1108:    XX6     28  2016  226394  190537.0  35857.00
+    ## 1109:    XX6     51  2016  277909  241877.0  36032.00
+    ## 1110:    XX6     27  2016  224442  187873.0  36569.00
 
 ``` r
 # marginális különbség, a mínuszt használjuk
@@ -2184,71 +2433,25 @@ PopDataES <- PopDataES[age != "TOTAL" & sex != "T"]
 sum(PopDataES[age == "UNK"]$values) 
 ```
 
-    ## [1] 79158
+    ## [1] 140198
 
 ``` r
 PopDataES[,.(values[age=="UNK"]/sum(values)*100) , .(iso3c, Year, sex)][V1!=0][order(V1)]
 ```
 
-    ##      iso3c  Year    sex           V1
-    ##     <char> <num> <char>        <num>
-    ##  1:    HRV  2011      M 4.833832e-05
-    ##  2:    HRV  2010      F 1.346381e-04
-    ##  3:    HRV  2010      M 1.446026e-04
-    ##  4:    HRV  2009      F 2.239111e-04
-    ##  5:    HRV  2008      F 3.132020e-04
-    ##  6:    HRV  2007      F 4.022618e-04
-    ##  7:    HRV  2009      M 4.333659e-04
-    ##  8:    HRV  2006      F 5.360603e-04
-    ##  9:    HRV  2005      F 8.040812e-04
-    ## 10:    HRV  2008      M 8.666396e-04
-    ## 11:    HRV  2004      F 1.028216e-03
-    ## 12:    HRV  2003      F 1.296380e-03
-    ## 13:    HRV  2007      M 1.348630e-03
-    ## 14:    HRV  2002      F 1.475542e-03
-    ## 15:    HRV  2001      F 1.882303e-03
-    ## 16:    HRV  2006      M 1.976920e-03
-    ## 17:    HRV  2005      M 2.364544e-03
-    ## 18:    EST  1988      M 2.475305e-03
-    ## 19:    EST  1988      F 2.767903e-03
-    ## 20:    HRV  2004      M 2.900175e-03
-    ## 21:    HRV  2003      M 3.287589e-03
-    ## 22:    HRV  2002      M 3.818220e-03
-    ## 23:    HRV  2001      M 4.021129e-03
-    ## 24:    GEO  2011      M 4.089733e-03
-    ## 25:    GEO  2010      M 9.530972e-03
-    ## 26:    GEO  2009      M 9.611655e-03
-    ## 27:    GEO  2011      F 1.366370e-02
-    ## 28:    GEO  2010      F 1.551036e-02
-    ## 29:    GEO  2009      F 1.562078e-02
-    ## 30:    GEO  2008      F 2.135718e-02
-    ## 31:    GEO  2007      F 4.224336e-02
-    ## 32:    GEO  2008      M 4.238848e-02
-    ## 33:    GEO  2007      M 4.996285e-02
-    ## 34:    GEO  2006      F 5.286096e-02
-    ## 35:    GEO  2006      M 6.675010e-02
-    ## 36:    MLT  1995      M 1.210834e+00
-    ## 37:    MLT  1992      M 1.420185e+00
-    ## 38:    MLT  1994      M 1.435404e+00
-    ## 39:    MLT  1991      M 1.438575e+00
-    ## 40:    MLT  1993      M 1.443701e+00
-    ## 41:    MLT  1997      M 1.662492e+00
-    ## 42:    MLT  1998      M 1.739240e+00
-    ## 43:    MLT  1999      M 1.795207e+00
-    ## 44:    MLT  1996      M 1.807242e+00
-    ## 45:    MLT  1996      F 1.885767e+00
-    ## 46:    MLT  2000      M 1.995032e+00
-    ## 47:    MLT  1997      F 2.235778e+00
-    ## 48:    MLT  1998      F 2.244501e+00
-    ## 49:    MLT  1999      F 2.277790e+00
-    ## 50:    MLT  2000      F 2.403594e+00
-    ## 51:    MLT  1991      F 2.442405e+00
-    ## 52:    MLT  1995      F 2.477607e+00
-    ## 53:    MLT  1992      F 2.560900e+00
-    ## 54:    MLT  1993      F 2.636535e+00
-    ## 55:    MLT  1994      F 2.744405e+00
-    ##      iso3c  Year    sex           V1
-    ##     <char> <num> <char>        <num>
+    ##       iso3c  Year    sex           V1
+    ##      <char> <num> <char>        <num>
+    ##   1:    HRV  2011      M 4.833832e-05
+    ##   2:    HRV  2010      F 1.346381e-04
+    ##   3:    HRV  2010      M 1.446026e-04
+    ##   4:    HRV  2009      F 2.239111e-04
+    ##   5:    HRV  2008      F 3.132020e-04
+    ##  ---                                 
+    ## 113:    MLT  1991      F 2.442405e+00
+    ## 114:    MLT  1995      F 2.477607e+00
+    ## 115:    MLT  1992      F 2.560900e+00
+    ## 116:    MLT  1993      F 2.636535e+00
+    ## 117:    MLT  1994      F 2.744405e+00
 
 ``` r
 PopDataES <- PopDataES[!(iso3c == "MLT" & Year >= 1991 & Year <= 2000)]
@@ -2275,8 +2478,8 @@ unique(PopDataES$age)
     ##  [64] "67"    "68"    "69"    "7"     "70"    "71"    "72"    "73"    "74"   
     ##  [73] "75"    "76"    "77"    "78"    "79"    "8"     "80"    "81"    "82"   
     ##  [82] "83"    "84"    "85"    "86"    "87"    "88"    "89"    "9"     "90"   
-    ##  [91] "91"    "92"    "93"    "94"    "0"     "_OPEN" "95"    "96"    "97"   
-    ## [100] "98"    "99"
+    ##  [91] "91"    "92"    "93"    "94"    "95"    "96"    "97"    "98"    "0"    
+    ## [100] "_OPEN" "99"
 
 ``` r
 which(is.na(as.numeric(unique(PopDataES[age != "_OPEN"]$age))))
@@ -2294,36 +2497,36 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
 
     ##     
     ##      [0,1) [1,2) [2,3) [3,4) [4,5) [5,10) [10,15) [15,20) [20,25) [25,30)
-    ##   0   1986     0     0     0     0      0       0       0       0       0
-    ##   1      0  1986     0     0     0      0       0       0       0       0
-    ##   2      0     0  1986     0     0      0       0       0       0       0
-    ##   3      0     0     0  1986     0      0       0       0       0       0
-    ##   4      0     0     0     0  1986      0       0       0       0       0
-    ##   5      0     0     0     0     0   1986       0       0       0       0
-    ##   6      0     0     0     0     0   1986       0       0       0       0
-    ##   7      0     0     0     0     0   1986       0       0       0       0
-    ##   8      0     0     0     0     0   1986       0       0       0       0
-    ##   9      0     0     0     0     0   1986       0       0       0       0
-    ##   10     0     0     0     0     0      0    1986       0       0       0
-    ##   11     0     0     0     0     0      0    1986       0       0       0
-    ##   12     0     0     0     0     0      0    1986       0       0       0
-    ##   13     0     0     0     0     0      0    1986       0       0       0
-    ##   14     0     0     0     0     0      0    1986       0       0       0
-    ##   15     0     0     0     0     0      0       0    1986       0       0
-    ##   16     0     0     0     0     0      0       0    1986       0       0
-    ##   17     0     0     0     0     0      0       0    1986       0       0
-    ##   18     0     0     0     0     0      0       0    1986       0       0
-    ##   19     0     0     0     0     0      0       0    1986       0       0
-    ##   20     0     0     0     0     0      0       0       0    1986       0
-    ##   21     0     0     0     0     0      0       0       0    1986       0
-    ##   22     0     0     0     0     0      0       0       0    1986       0
-    ##   23     0     0     0     0     0      0       0       0    1986       0
-    ##   24     0     0     0     0     0      0       0       0    1986       0
-    ##   25     0     0     0     0     0      0       0       0       0    1986
-    ##   26     0     0     0     0     0      0       0       0       0    1986
-    ##   27     0     0     0     0     0      0       0       0       0    1986
-    ##   28     0     0     0     0     0      0       0       0       0    1986
-    ##   29     0     0     0     0     0      0       0       0       0    1986
+    ##   0   2622     0     0     0     0      0       0       0       0       0
+    ##   1      0  2622     0     0     0      0       0       0       0       0
+    ##   2      0     0  2622     0     0      0       0       0       0       0
+    ##   3      0     0     0  2622     0      0       0       0       0       0
+    ##   4      0     0     0     0  2622      0       0       0       0       0
+    ##   5      0     0     0     0     0   2622       0       0       0       0
+    ##   6      0     0     0     0     0   2622       0       0       0       0
+    ##   7      0     0     0     0     0   2622       0       0       0       0
+    ##   8      0     0     0     0     0   2622       0       0       0       0
+    ##   9      0     0     0     0     0   2622       0       0       0       0
+    ##   10     0     0     0     0     0      0    2622       0       0       0
+    ##   11     0     0     0     0     0      0    2622       0       0       0
+    ##   12     0     0     0     0     0      0    2622       0       0       0
+    ##   13     0     0     0     0     0      0    2622       0       0       0
+    ##   14     0     0     0     0     0      0    2622       0       0       0
+    ##   15     0     0     0     0     0      0       0    2622       0       0
+    ##   16     0     0     0     0     0      0       0    2622       0       0
+    ##   17     0     0     0     0     0      0       0    2622       0       0
+    ##   18     0     0     0     0     0      0       0    2622       0       0
+    ##   19     0     0     0     0     0      0       0    2622       0       0
+    ##   20     0     0     0     0     0      0       0       0    2622       0
+    ##   21     0     0     0     0     0      0       0       0    2622       0
+    ##   22     0     0     0     0     0      0       0       0    2622       0
+    ##   23     0     0     0     0     0      0       0       0    2622       0
+    ##   24     0     0     0     0     0      0       0       0    2622       0
+    ##   25     0     0     0     0     0      0       0       0       0    2622
+    ##   26     0     0     0     0     0      0       0       0       0    2622
+    ##   27     0     0     0     0     0      0       0       0       0    2622
+    ##   28     0     0     0     0     0      0       0       0       0    2622
+    ##   29     0     0     0     0     0      0       0       0       0    2622
     ##   30     0     0     0     0     0      0       0       0       0       0
     ##   31     0     0     0     0     0      0       0       0       0       0
     ##   32     0     0     0     0     0      0       0       0       0       0
@@ -2422,51 +2625,51 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
     ##   27       0       0       0       0       0       0       0       0       0
     ##   28       0       0       0       0       0       0       0       0       0
     ##   29       0       0       0       0       0       0       0       0       0
-    ##   30    1986       0       0       0       0       0       0       0       0
-    ##   31    1986       0       0       0       0       0       0       0       0
-    ##   32    1986       0       0       0       0       0       0       0       0
-    ##   33    1986       0       0       0       0       0       0       0       0
-    ##   34    1986       0       0       0       0       0       0       0       0
-    ##   35       0    1986       0       0       0       0       0       0       0
-    ##   36       0    1986       0       0       0       0       0       0       0
-    ##   37       0    1986       0       0       0       0       0       0       0
-    ##   38       0    1986       0       0       0       0       0       0       0
-    ##   39       0    1986       0       0       0       0       0       0       0
-    ##   40       0       0    1986       0       0       0       0       0       0
-    ##   41       0       0    1986       0       0       0       0       0       0
-    ##   42       0       0    1986       0       0       0       0       0       0
-    ##   43       0       0    1986       0       0       0       0       0       0
-    ##   44       0       0    1986       0       0       0       0       0       0
-    ##   45       0       0       0    1986       0       0       0       0       0
-    ##   46       0       0       0    1986       0       0       0       0       0
-    ##   47       0       0       0    1986       0       0       0       0       0
-    ##   48       0       0       0    1986       0       0       0       0       0
-    ##   49       0       0       0    1986       0       0       0       0       0
-    ##   50       0       0       0       0    1986       0       0       0       0
-    ##   51       0       0       0       0    1986       0       0       0       0
-    ##   52       0       0       0       0    1986       0       0       0       0
-    ##   53       0       0       0       0    1986       0       0       0       0
-    ##   54       0       0       0       0    1986       0       0       0       0
-    ##   55       0       0       0       0       0    1986       0       0       0
-    ##   56       0       0       0       0       0    1986       0       0       0
-    ##   57       0       0       0       0       0    1986       0       0       0
-    ##   58       0       0       0       0       0    1986       0       0       0
-    ##   59       0       0       0       0       0    1986       0       0       0
-    ##   60       0       0       0       0       0       0    1986       0       0
-    ##   61       0       0       0       0       0       0    1986       0       0
-    ##   62       0       0       0       0       0       0    1986       0       0
-    ##   63       0       0       0       0       0       0    1986       0       0
-    ##   64       0       0       0       0       0       0    1986       0       0
-    ##   65       0       0       0       0       0       0       0    1986       0
-    ##   66       0       0       0       0       0       0       0    1986       0
-    ##   67       0       0       0       0       0       0       0    1986       0
-    ##   68       0       0       0       0       0       0       0    1986       0
-    ##   69       0       0       0       0       0       0       0    1986       0
-    ##   70       0       0       0       0       0       0       0       0    1986
-    ##   71       0       0       0       0       0       0       0       0    1986
-    ##   72       0       0       0       0       0       0       0       0    1986
-    ##   73       0       0       0       0       0       0       0       0    1986
-    ##   74       0       0       0       0       0       0       0       0    1986
+    ##   30    2622       0       0       0       0       0       0       0       0
+    ##   31    2622       0       0       0       0       0       0       0       0
+    ##   32    2622       0       0       0       0       0       0       0       0
+    ##   33    2622       0       0       0       0       0       0       0       0
+    ##   34    2622       0       0       0       0       0       0       0       0
+    ##   35       0    2622       0       0       0       0       0       0       0
+    ##   36       0    2622       0       0       0       0       0       0       0
+    ##   37       0    2622       0       0       0       0       0       0       0
+    ##   38       0    2622       0       0       0       0       0       0       0
+    ##   39       0    2622       0       0       0       0       0       0       0
+    ##   40       0       0    2622       0       0       0       0       0       0
+    ##   41       0       0    2622       0       0       0       0       0       0
+    ##   42       0       0    2622       0       0       0       0       0       0
+    ##   43       0       0    2622       0       0       0       0       0       0
+    ##   44       0       0    2622       0       0       0       0       0       0
+    ##   45       0       0       0    2622       0       0       0       0       0
+    ##   46       0       0       0    2622       0       0       0       0       0
+    ##   47       0       0       0    2622       0       0       0       0       0
+    ##   48       0       0       0    2622       0       0       0       0       0
+    ##   49       0       0       0    2622       0       0       0       0       0
+    ##   50       0       0       0       0    2622       0       0       0       0
+    ##   51       0       0       0       0    2622       0       0       0       0
+    ##   52       0       0       0       0    2622       0       0       0       0
+    ##   53       0       0       0       0    2622       0       0       0       0
+    ##   54       0       0       0       0    2622       0       0       0       0
+    ##   55       0       0       0       0       0    2622       0       0       0
+    ##   56       0       0       0       0       0    2622       0       0       0
+    ##   57       0       0       0       0       0    2622       0       0       0
+    ##   58       0       0       0       0       0    2622       0       0       0
+    ##   59       0       0       0       0       0    2622       0       0       0
+    ##   60       0       0       0       0       0       0    2622       0       0
+    ##   61       0       0       0       0       0       0    2622       0       0
+    ##   62       0       0       0       0       0       0    2622       0       0
+    ##   63       0       0       0       0       0       0    2622       0       0
+    ##   64       0       0       0       0       0       0    2622       0       0
+    ##   65       0       0       0       0       0       0       0    2622       0
+    ##   66       0       0       0       0       0       0       0    2622       0
+    ##   67       0       0       0       0       0       0       0    2622       0
+    ##   68       0       0       0       0       0       0       0    2622       0
+    ##   69       0       0       0       0       0       0       0    2622       0
+    ##   70       0       0       0       0       0       0       0       0    2622
+    ##   71       0       0       0       0       0       0       0       0    2622
+    ##   72       0       0       0       0       0       0       0       0    2622
+    ##   73       0       0       0       0       0       0       0       0    2622
+    ##   74       0       0       0       0       0       0       0       0    2622
     ##   75       0       0       0       0       0       0       0       0       0
     ##   76       0       0       0       0       0       0       0       0       0
     ##   77       0       0       0       0       0       0       0       0       0
@@ -2565,27 +2768,27 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
     ##   72       0       0       0       0        0
     ##   73       0       0       0       0        0
     ##   74       0       0       0       0        0
-    ##   75    1986       0       0       0        0
-    ##   76    1986       0       0       0        0
-    ##   77    1986       0       0       0        0
-    ##   78    1986       0       0       0        0
-    ##   79    1986       0       0       0        0
-    ##   80       0    1986       0       0        0
-    ##   81       0    1986       0       0        0
-    ##   82       0    1986       0       0        0
-    ##   83       0    1986       0       0        0
-    ##   84       0    1986       0       0        0
-    ##   85       0       0    1986       0        0
-    ##   86       0       0    1986       0        0
-    ##   87       0       0    1986       0        0
-    ##   88       0       0    1986       0        0
-    ##   89       0       0    1986       0        0
-    ##   90       0       0       0    1986        0
-    ##   91       0       0       0    1986        0
-    ##   92       0       0       0    1986        0
-    ##   93       0       0       0    1986        0
-    ##   94       0       0       0    1986        0
-    ##   95       0       0       0       0     1986
+    ##   75    2622       0       0       0        0
+    ##   76    2622       0       0       0        0
+    ##   77    2622       0       0       0        0
+    ##   78    2622       0       0       0        0
+    ##   79    2622       0       0       0        0
+    ##   80       0    2622       0       0        0
+    ##   81       0    2622       0       0        0
+    ##   82       0    2622       0       0        0
+    ##   83       0    2622       0       0        0
+    ##   84       0    2622       0       0        0
+    ##   85       0       0    2622       0        0
+    ##   86       0       0    2622       0        0
+    ##   87       0       0    2622       0        0
+    ##   88       0       0    2622       0        0
+    ##   89       0       0    2622       0        0
+    ##   90       0       0       0    2622        0
+    ##   91       0       0       0    2622        0
+    ##   92       0       0       0    2622        0
+    ##   93       0       0       0    2622        0
+    ##   94       0       0       0    2622        0
+    ##   95       0       0       0       0     2622
 
 ``` r
 PopDataES <- PopDataES[, .(iso3c, Year, Sex = sex, Age = age, PopES = values)]
@@ -2683,9 +2886,10 @@ alakulása:
 temp <- melt(temp, id.vars = c("iso3c", "Year", "Age", "Sex"))
 
 ggplot2::ggplot(temp[iso3c == "HUN" & Age == 0 & !is.na(value)],
-                ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
+                ggplot2::aes(x = Year, y = value, group = variable,
+                             color = variable)) +
   ggplot2::facet_wrap(~Sex) +
-  ggplot2::geom_line()
+  ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
@@ -2697,7 +2901,7 @@ ggplot2::ggplot(temp[iso3c == "HUN" & Age == 0 & !is.na(value)],
 ggplot2::ggplot(temp[iso3c == "HUN" & Age == 1 & !is.na(value)],
                 ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
   ggplot2::facet_wrap(~Sex) +
-  ggplot2::geom_line()
+  ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
@@ -2709,7 +2913,7 @@ zsúfoltsága szab határt:
 ggplot2::ggplot(temp[iso3c == "HUN" & Age <= 5 & !is.na(value)],
                 ggplot2::aes(x = Year, y = value, group = variable, color = variable)) +
   ggplot2::facet_grid(Age ~ Sex) +
-  ggplot2::geom_line()
+  ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
@@ -2718,9 +2922,11 @@ Egy másik összevetési lehetőség az, ha az ország teljes lélekszámának a
 változását nézzük a különböző adatbázisok szerint:
 
 ``` r
-ggplot2::ggplot(temp[iso3c == "HUN", .(sum(value)) , .(Year, variable)][!is.na(V1)],
-                ggplot2::aes(x = Year, y = V1, group = variable, color = variable)) +
-  ggplot2::geom_line()
+ggplot2::ggplot(temp[iso3c == "HUN", .(sum(value)),
+                     .(Year, variable)][!is.na(V1)],
+                ggplot2::aes(x = Year, y = V1, group = variable,
+                             color = variable)) +
+  ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
@@ -2759,6 +2965,7 @@ PopData$Aggregated <- ifelse(PopData$Frmat == 2, FALSE, PopData$Age == "Deaths34
 Végül a szokásos módon kimentjük:
 
 ``` r
+PopData$iso3c <- as.factor(PopData$iso3c)
 PopData$Frmat <- as.factor(PopData$Frmat)
 PopData$Age <- as.factor(PopData$Age)
 
@@ -2804,98 +3011,86 @@ adatszolgáltatásának köszönhetően. (A „nagyrészt” azt jelenti, hogy a
 egyedi kódokat nem lehet az Eurostat-tól lekérdezni, így az nem
 validálható, csak a fő kategóriák, de mivel a fő kategóriákat most
 manuálisan számoljuk az egyedi kódokból, így ha az előbbiek stimmelnek,
-akkor igen valószínű, hogy az utóbbiak is.) Külön Eurostat táblából
-kérdezhetjük le a mortalitást (ezen belül is külön lesz az abszolút
-szám, a nyers ráta és a standardizált ráta), az elvesztett életéveket és
-a megelőzhető halálozást.
+akkor igen valószínű, hogy az utóbbiak is. A másik hátrány, hogy csak
+egyes éveket kérhetünk le, több év aggregált adatát nem.) Külön Eurostat
+táblából kérdezhetjük le a mortalitást (ezen belül is külön lesz az
+abszolút szám, a nyers ráta és a standardizált ráta), az elvesztett
+életéveket és a megelőzhető halálozást.
 
 Elsőként betöltjük a weboldal mögött lévő kód számításokat végző részét:
 
 ``` r
 dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
-                         multipleCountry, countrySingle, countryMultiple,
-                         indicator, yllMethod, yllPyllTarget,
-                         strat, metric, ordVar, byvarAdd,
-                         yearFilter, sexFilter, ageFilter, comp, valid) {
-  
-  rd <- RawData
-  rdAll <- RawDataAll
-  
-  icd <- if(multipleICD == "Single") ICDSingle else ICDMultiple
-  if(is.null(icd)) return(NULL)
-  icdtable <- rbindlist(lapply(icd, function(icdcode)
-    with(ICDGroups[[category]][[icdcode]], data.table(CauseGroup = Name, Cause = ICD,
-                                                      Weights, EurostatCode))))
-  
-  if(!is.na(multipleCountry)) {
-    country <- if((multipleICD == "MultiIndiv" && is.null(comp) && !valid) ||
-                  (multipleCountry == "Single"))
-      countrySingle else countryMultiple
-    if(is.null(country)) return(NULL)
+                           multipleCountry, countrySingle, countryMultiple,
+                           indicator, yllMethod, yllPyllTarget,
+                           strat, metric, ordVar, byvarAdd,
+                           yearFilter, sexFilter, ageFilter, comp, valid) {
+
+    icd <- if(multipleICD == "Single") ICDSingle else ICDMultiple
+    if(is.null(icd)) return(NULL)
+    icdtable <- rbindlist(ICDGroups[[category]][icd])
     
-    rd <- if(length(country) == 1) rd[iso3c == country] else rd[iso3c %in% country]
-    rdAll <- if(length(country) == 1) rdAll[iso3c == country] else rdAll[iso3c %in% country]
-  } else country <- NA
-  
-  if(!is.null(yearFilter)) {
-    yearSel <- seq(yearFilter[1], yearFilter[2], 1)
-    rd <- rd[Year %in% yearSel]
-    rdAll <- rdAll[Year %in% yearSel]
+    if(!is.na(multipleCountry)) {
+      iso3cSel <- if((multipleICD == "MultiIndiv" && is.na(comp) && !valid) || (multipleCountry == "Single"))
+        countrySingle else countryMultiple
+      if(is.null(iso3cSel)) return(NULL)
+    } else iso3cSel <- as.character(unique(RawData$iso3c))
+    
+    yearSel <- if(!any(is.na(yearFilter))) seq(yearFilter[1], yearFilter[2], 1) else min(RawData$Year):max(RawData$Year)
+    if(sexFilter == "Összesen") sexFilter <- c("Férfi", "Nő")
+
+    if(ageFilter == "Összesen" || metric == "adjrate") {
+      rd <- RawData[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
+      skeleton <- RawDataAll[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
+    } else {
+      rd <- RawData[CJ(iso3cSel, yearSel, sexFilter, ageFilter), nomatch = NULL]
+      skeleton <- RawDataAll[CJ(iso3cSel, yearSel, sexFilter, ageFilter), nomatch = NULL]
+    }
+    
+    if(multipleICD == "MultiSum") icdtable[, c("CauseGroup", "EurostatCode") := list("Összeg", NA)]
+
+    skeleton <- unique(icdtable[, .(List, EurostatCode, CauseGroup)])[skeleton, on = .(List), nomatch = NULL, allow.cartesian = TRUE]
+    
+    rd <- icdtable[rd, on = .(List, Cause), nomatch = NULL, allow.cartesian = TRUE][
+      skeleton, on = .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode),
+      .(value = round(sum(value * Weight, na.rm = TRUE))), by = .EACHI]
+
+    rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
+    
+    if(category == "Avoidable") rd <- rd[AgeNum < yllPyllTarget]
+    
+    if(indicator == "yll" && yllMethod == "pyll")
+      rd$value <- rd$value * pmax(0, yllPyllTarget - rd$AgeNum)
+    
+    byvars <- "iso3c"
+    if(!any(is.na(byvarAdd))) byvars <- c(byvars, byvarAdd)
+    if(multipleICD != "MultiIndiv" && !is.na(strat) && multipleCountry == "Single")
+      byvars <- c(byvars, strat[strat != "None"])
+    
+    if(!is.na(comp)) rd$iso3c <- ifelse(rd$iso3c == comp, "Investigated", "Comparator")
+    rd <- rd[, .(value = sum(value), Pop = sum(Pop)), setdiff(names(rd), c("value", "Pop"))]
+    
+    if(nrow(rd) != 0) {
+      rd <- switch(
+        metric,
+        "count" = rd[Aggregated == FALSE, .(value = sum(value)), byvars],
+        "cruderate" = rd[Aggregated == FALSE,
+                         .(value = sum(value)/sum(Pop)*1e5), byvars],
+        "adjrate" = merge(
+          rd[, .(value = sum(value), Pop = sum(Pop)),
+             c(byvars, "Frmat", "Age")],
+          StdPop, by = c("Frmat", "Age"))[
+            , as.list(epitools::ageadjust.direct(value, Pop, stdpop = StdPop)),
+            byvars][, c(.SD, .(value = adj.rate*1e5))])
+      
+      if(!is.na(ordVar)) rd <- rd[order(rd[[ordVar]])]
+      
+      if(is.na(comp)) rd <- merge(rd, data.table(iso3c = CountryCodes,
+                                                 CountryName = names(CountryCodes)))
+    }
+    
+    return(list(rd = rd, icd = icd, country = iso3cSel))
   }
-  if(sexFilter != "Összesen") {
-    rd <- rd[Sex == sexFilter]
-    rdAll <- rdAll[Sex == sexFilter]
-  }
-  if((ageFilter != "Összesen") && (metric != "adjrate")) {
-    rd <- rd[Age == ageFilter]
-    rdAll <- rdAll[Age == ageFilter]
-  }
-  
-  rd <- merge(rd, icdtable, allow.cartesian = TRUE)
-  
-  if(multipleICD == "MultiSum") rd$CauseGroup <- "Összeg"
-  
-  rd <- rd[, .(value = round(sum(value*Weights))),
-           .(iso3c, Year, Sex, Age, Frmat, CauseGroup, EurostatCode)]
-  
-  rd <- merge(
-    data.table(base::merge.data.frame(rdAll, unique(rd[,.(CauseGroup, EurostatCode)]))),
-    rd, by = c("iso3c", "Year", "Sex", "Age", "Frmat", "CauseGroup", "EurostatCode"),
-    all.x = TRUE)
-  rd[is.na(value)]$value <- 0
-  
-  rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
-  
-  if(category == "Avoidable") rd <- rd[AgeNum < 75]
-  
-  if(indicator == "yll" && yllMethod == "pyll")
-    rd$value <- rd$value * pmax(0, yllPyllTarget - rd$AgeNum)
-  
-  byvars <- c("iso3c", byvarAdd)
-  if(multipleICD != "MultiIndiv" && !is.na(strat) && multipleCountry == "Single")
-    byvars <- c(byvars, strat[strat != "None"])
-  
-  if(!is.null(comp)) rd$iso3c <- ifelse(rd$iso3c == comp, "Investigated", "Comparator")
-  rd <- rd[, .(value = sum(value), Pop = sum(Pop)), setdiff(names(rd), c("value", "Pop"))]
-  
-  rd <- switch(metric,
-               "count" = rd[Aggregated == FALSE, .(value = sum(value)), byvars],
-               "cruderate" = rd[Aggregated == FALSE,
-                                .(value = sum(value)/sum(Pop)*1e5), byvars],
-               "adjrate" = merge(
-                 rd[, .(value = sum(value), Pop = sum(Pop)),
-                    c(byvars, "Frmat", "Age")],
-                 StdPop, by = c("Frmat", "Age"))[
-                   , as.list(epitools::ageadjust.direct(value, Pop, stdpop = StdPop)),
-                   byvars][, c(.SD, .(value = adj.rate*1e5))])
-  
-  if(!is.na(ordVar)) rd <- rd[order(rd[[ordVar]])]
-  
-  if(is.null(comp)) rd <- merge(rd, data.table(iso3c = CountryCodes,
-                                               CountryName = names(CountryCodes)))
-  
-  return(list(rd = rd, icd = icd, country = country))
-}
 ```
 
 Kezdjük a mortalitási adatok validációjával, azon belül is az abszolút
@@ -2906,9 +3101,9 @@ oszlopokat, hogy a saját adatformátumunkkal összekapcsolható legyen:
 ESres <- as.data.table(eurostat::get_eurostat("hlth_cd_aro"))
 ```
 
-    ## indexed 0B in  0s, 0B/sindexed 25.17MB in  0s, 125.50MB/sindexed 25.30MB in  0s, 125.65MB/sindexed 25.43MB in  0s, 125.76MB/sindexed 25.56MB in  0s, 125.87MB/sindexed 25.69MB in  0s, 126.04MB/sindexed 25.82MB in  0s, 126.23MB/sindexed 25.95MB in  0s, 126.21MB/sindexed 26.08MB in  0s, 126.19MB/sindexed 26.21MB in  0s, 125.89MB/sindexed 26.35MB in  0s, 125.66MB/sindexed 26.48MB in  0s, 125.44MB/sindexed 26.61MB in  0s, 125.37MB/sindexed 26.74MB in  0s, 125.21MB/sindexed 26.87MB in  0s, 125.27MB/sindexed 27.00MB in  0s, 125.37MB/sindexed 27.13MB in  0s, 125.43MB/sindexed 27.26MB in  0s, 125.48MB/sindexed 27.39MB in  0s, 121.36MB/sindexed 27.52MB in  0s, 121.29MB/sindexed 27.66MB in  0s, 121.35MB/sindexed 27.79MB in  0s, 121.48MB/sindexed 27.92MB in  0s, 121.56MB/sindexed 28.05MB in  0s, 121.62MB/sindexed 28.18MB in  0s, 121.74MB/sindexed 28.31MB in  0s, 121.81MB/sindexed 28.44MB in  0s, 121.87MB/sindexed 28.57MB in  0s, 121.98MB/sindexed 28.70MB in  0s, 122.14MB/sindexed 28.84MB in  0s, 122.23MB/sindexed 28.97MB in  0s, 122.28MB/sindexed 29.10MB in  0s, 122.25MB/sindexed 29.23MB in  0s, 122.24MB/sindexed 29.36MB in  0s, 122.28MB/sindexed 29.49MB in  0s, 122.34MB/sindexed 29.62MB in  0s, 122.22MB/sindexed 29.75MB in  0s, 122.25MB/sindexed 29.88MB in  0s, 122.41MB/sindexed 30.02MB in  0s, 122.45MB/sindexed 30.15MB in  0s, 122.52MB/sindexed 30.28MB in  0s, 122.58MB/sindexed 30.41MB in  0s, 122.77MB/sindexed 30.54MB in  0s, 122.82MB/sindexed 30.67MB in  0s, 122.91MB/sindexed 30.80MB in  0s, 123.08MB/sindexed 30.93MB in  0s, 123.15MB/sindexed 31.06MB in  0s, 123.25MB/sindexed 31.19MB in  0s, 123.27MB/sindexed 31.33MB in  0s, 123.39MB/sindexed 31.46MB in  0s, 123.45MB/sindexed 31.59MB in  0s, 123.62MB/sindexed 31.72MB in  0s, 123.80MB/sindexed 31.85MB in  0s, 123.96MB/sindexed 31.98MB in  0s, 123.88MB/sindexed 32.11MB in  0s, 123.92MB/sindexed 32.24MB in  0s, 123.96MB/sindexed 32.37MB in  0s, 124.11MB/sindexed 32.51MB in  0s, 124.24MB/sindexed 32.64MB in  0s, 124.32MB/sindexed 32.77MB in  0s, 124.21MB/sindexed 32.90MB in  0s, 124.39MB/sindexed 33.03MB in  0s, 124.45MB/sindexed 33.16MB in  0s, 124.48MB/sindexed 33.29MB in  0s, 124.54MB/sindexed 33.42MB in  0s, 124.68MB/sindexed 33.55MB in  0s, 124.76MB/sindexed 33.69MB in  0s, 124.82MB/sindexed 33.82MB in  0s, 124.89MB/sindexed 33.95MB in  0s, 125.05MB/sindexed 34.08MB in  0s, 125.10MB/sindexed 34.21MB in  0s, 125.19MB/sindexed 34.34MB in  0s, 125.24MB/sindexed 34.47MB in  0s, 125.18MB/sindexed 34.60MB in  0s, 125.21MB/sindexed 34.73MB in  0s, 125.33MB/sindexed 34.86MB in  0s, 125.22MB/sindexed 35.00MB in  0s, 125.30MB/sindexed 35.13MB in  0s, 125.22MB/sindexed 35.26MB in  0s, 125.24MB/sindexed 35.39MB in  0s, 125.28MB/sindexed 35.52MB in  0s, 125.39MB/sindexed 35.65MB in  0s, 125.43MB/sindexed 35.78MB in  0s, 125.49MB/sindexed 35.91MB in  0s, 125.55MB/sindexed 36.04MB in  0s, 125.62MB/sindexed 36.18MB in  0s, 125.78MB/sindexed 36.31MB in  0s, 125.82MB/sindexed 36.44MB in  0s, 125.93MB/sindexed 36.57MB in  0s, 126.07MB/sindexed 36.70MB in  0s, 126.07MB/sindexed 36.83MB in  0s, 126.03MB/sindexed 36.96MB in  0s, 126.01MB/sindexed 37.09MB in  0s, 126.05MB/sindexed 37.22MB in  0s, 126.07MB/sindexed 37.36MB in  0s, 126.17MB/sindexed 37.49MB in  0s, 126.22MB/sindexed 37.62MB in  0s, 126.33MB/sindexed 37.75MB in  0s, 126.41MB/sindexed 37.88MB in  0s, 126.52MB/sindexed 38.01MB in  0s, 126.58MB/sindexed 38.14MB in  0s, 126.61MB/sindexed 38.27MB in  0s, 126.65MB/sindexed 38.40MB in  0s, 126.66MB/sindexed 38.53MB in  0s, 126.78MB/sindexed 38.67MB in  0s, 126.82MB/sindexed 38.80MB in  0s, 126.91MB/sindexed 38.93MB in  0s, 126.96MB/sindexed 39.06MB in  0s, 126.98MB/sindexed 39.19MB in  0s, 126.97MB/sindexed 39.32MB in  0s, 126.98MB/sindexed 39.45MB in  0s, 127.07MB/sindexed 39.58MB in  0s, 127.10MB/sindexed 39.71MB in  0s, 127.23MB/sindexed 39.85MB in  0s, 127.26MB/sindexed 39.98MB in  0s, 127.30MB/sindexed 40.11MB in  0s, 127.36MB/sindexed 40.24MB in  0s, 127.51MB/sindexed 40.37MB in  0s, 127.57MB/sindexed 40.50MB in  0s, 127.62MB/sindexed 40.63MB in  0s, 127.69MB/sindexed 40.76MB in  0s, 127.76MB/sindexed 40.89MB in  0s, 127.81MB/sindexed 41.03MB in  0s, 127.86MB/sindexed 41.16MB in  0s, 127.88MB/sindexed 41.29MB in  0s, 127.77MB/sindexed 41.42MB in  0s, 127.81MB/sindexed 41.55MB in  0s, 127.74MB/sindexed 41.68MB in  0s, 127.80MB/sindexed 41.81MB in  0s, 127.83MB/sindexed 41.94MB in  0s, 127.87MB/sindexed 42.07MB in  0s, 127.90MB/sindexed 42.20MB in  0s, 127.94MB/sindexed 42.34MB in  0s, 127.98MB/sindexed 42.47MB in  0s, 128.04MB/sindexed 42.60MB in  0s, 128.06MB/sindexed 42.73MB in  0s, 128.16MB/sindexed 42.86MB in  0s, 128.20MB/sindexed 42.99MB in  0s, 128.25MB/sindexed 43.12MB in  0s, 122.38MB/sindexed 43.25MB in  0s, 122.37MB/sindexed 43.38MB in  0s, 122.39MB/sindexed 43.52MB in  0s, 122.44MB/sindexed 43.65MB in  0s, 122.50MB/sindexed 43.78MB in  0s, 122.54MB/sindexed 43.91MB in  0s, 122.55MB/sindexed 44.04MB in  0s, 122.52MB/sindexed 44.17MB in  0s, 122.58MB/sindexed 44.30MB in  0s, 122.62MB/sindexed 44.43MB in  0s, 122.68MB/sindexed 44.56MB in  0s, 122.71MB/sindexed 44.70MB in  0s, 122.81MB/sindexed 44.83MB in  0s, 122.85MB/sindexed 44.96MB in  0s, 122.92MB/sindexed 45.09MB in  0s, 122.90MB/sindexed 45.22MB in  0s, 122.91MB/sindexed 45.35MB in  0s, 122.93MB/sindexed 45.48MB in  0s, 122.98MB/sindexed 45.61MB in  0s, 123.00MB/sindexed 45.74MB in  0s, 123.06MB/sindexed 45.87MB in  0s, 123.06MB/sindexed 46.01MB in  0s, 123.12MB/sindexed 46.14MB in  0s, 122.99MB/sindexed 46.27MB in  0s, 122.93MB/sindexed 46.40MB in  0s, 122.94MB/sindexed 46.53MB in  0s, 122.96MB/sindexed 46.66MB in  0s, 122.99MB/sindexed 46.79MB in  0s, 123.04MB/sindexed 46.92MB in  0s, 123.04MB/sindexed 47.05MB in  0s, 123.07MB/sindexed 47.19MB in  0s, 123.06MB/sindexed 47.32MB in  0s, 123.09MB/sindexed 47.45MB in  0s, 123.19MB/sindexed 47.58MB in  0s, 123.21MB/sindexed 47.71MB in  0s, 123.26MB/sindexed 47.84MB in  0s, 123.30MB/sindexed 47.97MB in  0s, 123.37MB/sindexed 48.10MB in  0s, 123.44MB/sindexed 48.23MB in  0s, 123.54MB/sindexed 48.37MB in  0s, 123.52MB/sindexed 48.50MB in  0s, 123.45MB/sindexed 48.63MB in  0s, 123.44MB/sindexed 48.76MB in  0s, 123.47MB/sindexed 48.89MB in  0s, 123.49MB/sindexed 49.02MB in  0s, 123.50MB/sindexed 49.15MB in  0s, 123.55MB/sindexed 49.28MB in  0s, 123.56MB/sindexed 49.41MB in  0s, 123.63MB/sindexed 49.54MB in  0s, 123.67MB/sindexed 49.68MB in  0s, 123.70MB/sindexed 49.81MB in  0s, 123.74MB/sindexed 49.94MB in  0s, 123.75MB/sindexed 50.07MB in  0s, 123.79MB/sindexed 50.20MB in  0s, 123.84MB/sindexed 50.33MB in  0s, 123.88MB/sindexed 50.46MB in  0s, 123.99MB/sindexed 50.59MB in  0s, 124.01MB/sindexed 50.72MB in  0s, 124.01MB/sindexed 50.86MB in  0s, 124.05MB/sindexed 50.99MB in  0s, 124.10MB/sindexed 51.12MB in  0s, 124.20MB/sindexed 51.25MB in  0s, 124.30MB/sindexed 51.38MB in  0s, 124.38MB/sindexed 51.51MB in  0s, 124.43MB/sindexed 51.64MB in  0s, 124.53MB/sindexed 51.77MB in  0s, 124.59MB/sindexed 51.90MB in  0s, 124.63MB/sindexed 52.04MB in  0s, 124.72MB/sindexed 52.17MB in  0s, 124.76MB/sindexed 52.30MB in  0s, 124.79MB/sindexed 52.43MB in  0s, 124.90MB/sindexed 52.56MB in  0s, 124.94MB/sindexed 52.69MB in  0s, 124.97MB/sindexed 52.82MB in  0s, 125.00MB/sindexed 52.95MB in  0s, 124.88MB/sindexed 53.08MB in  0s, 124.83MB/sindexed 53.21MB in  0s, 124.83MB/sindexed 53.35MB in  0s, 124.86MB/sindexed 53.48MB in  0s, 124.94MB/sindexed 53.61MB in  0s, 125.04MB/sindexed 53.74MB in  0s, 125.09MB/sindexed 53.87MB in  0s, 125.19MB/sindexed 54.00MB in  0s, 125.26MB/sindexed 54.13MB in  0s, 125.36MB/sindexed 54.26MB in  0s, 125.40MB/sindexed 54.39MB in  0s, 125.51MB/sindexed 54.53MB in  0s, 125.55MB/sindexed 54.66MB in  0s, 125.64MB/sindexed 54.79MB in  0s, 125.72MB/sindexed 54.92MB in  0s, 125.75MB/sindexed 55.05MB in  0s, 125.85MB/sindexed 55.18MB in  0s, 125.95MB/sindexed 55.31MB in  0s, 125.96MB/sindexed 55.44MB in  0s, 125.99MB/sindexed 55.57MB in  0s, 126.00MB/sindexed 55.71MB in  0s, 125.99MB/sindexed 55.84MB in  0s, 125.98MB/sindexed 55.97MB in  0s, 126.00MB/sindexed 56.10MB in  0s, 126.04MB/sindexed 56.23MB in  0s, 126.08MB/sindexed 56.36MB in  0s, 126.13MB/sindexed 56.49MB in  0s, 126.18MB/sindexed 56.62MB in  0s, 126.22MB/sindexed 56.75MB in  0s, 126.26MB/sindexed 56.88MB in  0s, 126.28MB/sindexed 57.02MB in  0s, 126.31MB/sindexed 57.15MB in  0s, 126.40MB/sindexed 57.28MB in  0s, 126.44MB/sindexed 57.41MB in  0s, 126.48MB/sindexed 57.54MB in  0s, 126.54MB/sindexed 57.67MB in  0s, 126.55MB/sindexed 57.80MB in  0s, 126.58MB/sindexed 57.93MB in  0s, 126.58MB/sindexed 58.06MB in  0s, 126.56MB/sindexed 58.20MB in  0s, 126.53MB/sindexed 58.33MB in  0s, 126.55MB/sindexed 58.46MB in  0s, 126.59MB/sindexed 58.59MB in  0s, 126.64MB/sindexed 58.72MB in  0s, 126.65MB/sindexed 58.85MB in  0s, 126.69MB/sindexed 58.98MB in  0s, 126.75MB/sindexed 59.11MB in  0s, 126.78MB/sindexed 59.24MB in  0s, 126.85MB/sindexed 59.38MB in  0s, 126.88MB/sindexed 59.51MB in  0s, 126.90MB/sindexed 59.64MB in  0s, 126.98MB/sindexed 59.77MB in  0s, 126.99MB/sindexed 59.90MB in  0s, 127.00MB/sindexed 60.03MB in  0s, 127.02MB/sindexed 60.16MB in  0s, 127.03MB/sindexed 60.19MB in  0s, 126.86MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
+    ## indexed 0B in  0s, 0B/sindexed 25.43MB in  0s, 126.96MB/sindexed 25.56MB in  0s, 127.03MB/sindexed 25.69MB in  0s, 127.07MB/sindexed 25.82MB in  0s, 126.96MB/sindexed 25.95MB in  0s, 126.87MB/sindexed 26.08MB in  0s, 126.85MB/sindexed 26.21MB in  0s, 126.71MB/sindexed 26.35MB in  0s, 126.59MB/sindexed 26.48MB in  0s, 126.63MB/sindexed 26.61MB in  0s, 126.66MB/sindexed 26.74MB in  0s, 126.72MB/sindexed 26.87MB in  0s, 126.63MB/sindexed 27.00MB in  0s, 126.49MB/sindexed 27.13MB in  0s, 126.36MB/sindexed 27.26MB in  0s, 126.36MB/sindexed 27.39MB in  0s, 126.47MB/sindexed 27.52MB in  0s, 126.46MB/sindexed 27.66MB in  0s, 126.42MB/sindexed 27.79MB in  0s, 126.44MB/sindexed 27.92MB in  0s, 126.37MB/sindexed 28.05MB in  0s, 126.33MB/sindexed 28.18MB in  0s, 126.38MB/sindexed 28.31MB in  0s, 126.40MB/sindexed 28.44MB in  0s, 126.44MB/sindexed 28.57MB in  0s, 126.52MB/sindexed 28.70MB in  0s, 126.53MB/sindexed 28.84MB in  0s, 126.63MB/sindexed 28.97MB in  0s, 126.54MB/sindexed 29.10MB in  0s, 126.53MB/sindexed 29.23MB in  0s, 126.54MB/sindexed 29.36MB in  0s, 126.36MB/sindexed 29.49MB in  0s, 126.35MB/sindexed 29.62MB in  0s, 126.34MB/sindexed 29.75MB in  0s, 126.26MB/sindexed 29.88MB in  0s, 126.23MB/sindexed 30.02MB in  0s, 126.15MB/sindexed 30.15MB in  0s, 126.09MB/sindexed 30.28MB in  0s, 126.01MB/sindexed 30.41MB in  0s, 126.02MB/sindexed 30.54MB in  0s, 126.10MB/sindexed 30.67MB in  0s, 126.08MB/sindexed 30.80MB in  0s, 125.98MB/sindexed 30.93MB in  0s, 125.88MB/sindexed 31.06MB in  0s, 125.81MB/sindexed 31.19MB in  0s, 125.74MB/sindexed 31.33MB in  0s, 125.74MB/sindexed 31.46MB in  0s, 125.24MB/sindexed 31.59MB in  0s, 125.13MB/sindexed 31.72MB in  0s, 125.16MB/sindexed 31.85MB in  0s, 125.09MB/sindexed 31.98MB in  0s, 125.11MB/sindexed 32.11MB in  0s, 125.07MB/sindexed 32.24MB in  0s, 124.97MB/sindexed 32.37MB in  0s, 124.96MB/sindexed 32.51MB in  0s, 124.95MB/sindexed 32.64MB in  0s, 124.98MB/sindexed 32.77MB in  0s, 125.07MB/sindexed 32.90MB in  0s, 125.01MB/sindexed 33.03MB in  0s, 125.01MB/sindexed 33.16MB in  0s, 124.99MB/sindexed 33.29MB in  0s, 125.02MB/sindexed 33.42MB in  0s, 124.96MB/sindexed 33.55MB in  0s, 124.94MB/sindexed 33.69MB in  0s, 124.93MB/sindexed 33.82MB in  0s, 124.93MB/sindexed 33.95MB in  0s, 124.94MB/sindexed 34.08MB in  0s, 124.95MB/sindexed 34.21MB in  0s, 124.96MB/sindexed 34.34MB in  0s, 124.86MB/sindexed 34.47MB in  0s, 124.95MB/sindexed 34.60MB in  0s, 124.95MB/sindexed 34.73MB in  0s, 125.06MB/sindexed 34.86MB in  0s, 125.02MB/sindexed 35.00MB in  0s, 125.03MB/sindexed 35.13MB in  0s, 125.04MB/sindexed 35.26MB in  0s, 125.07MB/sindexed 35.39MB in  0s, 125.11MB/sindexed 35.52MB in  0s, 125.16MB/sindexed 35.65MB in  0s, 125.20MB/sindexed 35.78MB in  0s, 125.25MB/sindexed 35.91MB in  0s, 125.27MB/sindexed 36.04MB in  0s, 125.28MB/sindexed 36.18MB in  0s, 125.31MB/sindexed 36.31MB in  0s, 125.37MB/sindexed 36.44MB in  0s, 125.33MB/sindexed 36.57MB in  0s, 125.31MB/sindexed 36.70MB in  0s, 125.26MB/sindexed 36.83MB in  0s, 125.27MB/sindexed 36.96MB in  0s, 124.64MB/sindexed 37.09MB in  0s, 124.47MB/sindexed 37.22MB in  0s, 124.43MB/sindexed 37.36MB in  0s, 124.45MB/sindexed 37.49MB in  0s, 124.46MB/sindexed 37.62MB in  0s, 124.50MB/sindexed 37.75MB in  0s, 124.41MB/sindexed 37.88MB in  0s, 124.25MB/sindexed 38.01MB in  0s, 124.23MB/sindexed 38.14MB in  0s, 124.16MB/sindexed 38.27MB in  0s, 124.15MB/sindexed 38.40MB in  0s, 124.27MB/sindexed 38.53MB in  0s, 124.32MB/sindexed 38.67MB in  0s, 124.36MB/sindexed 38.80MB in  0s, 124.40MB/sindexed 38.93MB in  0s, 124.42MB/sindexed 39.06MB in  0s, 124.37MB/sindexed 39.19MB in  0s, 124.43MB/sindexed 39.32MB in  0s, 124.36MB/sindexed 39.45MB in  0s, 124.37MB/sindexed 39.58MB in  0s, 124.47MB/sindexed 39.71MB in  0s, 124.59MB/sindexed 39.85MB in  0s, 124.55MB/sindexed 39.98MB in  0s, 124.45MB/sindexed 40.11MB in  0s, 124.45MB/sindexed 40.24MB in  0s, 124.43MB/sindexed 40.37MB in  0s, 124.48MB/sindexed 40.50MB in  0s, 124.57MB/sindexed 40.63MB in  0s, 124.71MB/sindexed 40.76MB in  0s, 124.85MB/sindexed 40.89MB in  0s, 124.95MB/sindexed 41.03MB in  0s, 125.01MB/sindexed 41.16MB in  0s, 124.97MB/sindexed 41.29MB in  0s, 125.06MB/sindexed 41.42MB in  0s, 125.11MB/sindexed 41.55MB in  0s, 125.14MB/sindexed 41.68MB in  0s, 125.22MB/sindexed 41.81MB in  0s, 125.31MB/sindexed 41.94MB in  0s, 125.35MB/sindexed 42.07MB in  0s, 125.37MB/sindexed 42.20MB in  0s, 125.29MB/sindexed 42.34MB in  0s, 125.20MB/sindexed 42.47MB in  0s, 125.19MB/sindexed 42.60MB in  0s, 125.16MB/sindexed 42.73MB in  0s, 125.06MB/sindexed 42.86MB in  0s, 125.07MB/sindexed 42.99MB in  0s, 125.05MB/sindexed 43.12MB in  0s, 119.08MB/sindexed 43.25MB in  0s, 119.00MB/sindexed 43.38MB in  0s, 119.00MB/sindexed 43.52MB in  0s, 118.96MB/sindexed 43.65MB in  0s, 118.98MB/sindexed 43.78MB in  0s, 119.05MB/sindexed 43.91MB in  0s, 119.08MB/sindexed 44.04MB in  0s, 118.87MB/sindexed 44.17MB in  0s, 118.87MB/sindexed 44.30MB in  0s, 118.84MB/sindexed 44.43MB in  0s, 118.82MB/sindexed 44.56MB in  0s, 118.86MB/sindexed 44.70MB in  0s, 118.91MB/sindexed 44.83MB in  0s, 118.89MB/sindexed 44.96MB in  0s, 118.93MB/sindexed 45.09MB in  0s, 118.88MB/sindexed 45.22MB in  0s, 118.77MB/sindexed 45.35MB in  0s, 118.69MB/sindexed 45.48MB in  0s, 118.74MB/sindexed 45.61MB in  0s, 118.73MB/sindexed 45.74MB in  0s, 118.65MB/sindexed 45.87MB in  0s, 118.63MB/sindexed 46.01MB in  0s, 118.67MB/sindexed 46.14MB in  0s, 118.63MB/sindexed 46.27MB in  0s, 118.60MB/sindexed 46.40MB in  0s, 118.67MB/sindexed 46.53MB in  0s, 118.73MB/sindexed 46.66MB in  0s, 118.79MB/sindexed 46.79MB in  0s, 118.88MB/sindexed 46.92MB in  0s, 118.97MB/sindexed 47.05MB in  0s, 119.03MB/sindexed 47.19MB in  0s, 119.10MB/sindexed 47.32MB in  0s, 119.07MB/sindexed 47.45MB in  0s, 119.17MB/sindexed 47.58MB in  0s, 119.18MB/sindexed 47.71MB in  0s, 119.22MB/sindexed 47.84MB in  0s, 119.22MB/sindexed 47.97MB in  0s, 119.28MB/sindexed 48.10MB in  0s, 119.33MB/sindexed 48.23MB in  0s, 119.41MB/sindexed 48.37MB in  0s, 119.45MB/sindexed 48.50MB in  0s, 119.51MB/sindexed 48.63MB in  0s, 119.50MB/sindexed 48.76MB in  0s, 119.54MB/sindexed 48.89MB in  0s, 119.61MB/sindexed 49.02MB in  0s, 119.63MB/sindexed 49.15MB in  0s, 119.72MB/sindexed 49.28MB in  0s, 119.80MB/sindexed 49.41MB in  0s, 119.80MB/sindexed 49.54MB in  0s, 119.87MB/sindexed 49.68MB in  0s, 119.92MB/sindexed 49.81MB in  0s, 119.98MB/sindexed 49.94MB in  0s, 119.97MB/sindexed 50.07MB in  0s, 119.90MB/sindexed 50.20MB in  0s, 119.98MB/sindexed 50.33MB in  0s, 120.01MB/sindexed 50.46MB in  0s, 120.02MB/sindexed 50.59MB in  0s, 120.01MB/sindexed 50.72MB in  0s, 120.00MB/sindexed 50.86MB in  0s, 120.03MB/sindexed 50.99MB in  0s, 120.05MB/sindexed 51.12MB in  0s, 120.05MB/sindexed 51.25MB in  0s, 120.06MB/sindexed 51.38MB in  0s, 120.08MB/sindexed 51.51MB in  0s, 120.13MB/sindexed 51.64MB in  0s, 120.12MB/sindexed 51.77MB in  0s, 120.11MB/sindexed 51.90MB in  0s, 120.14MB/sindexed 52.04MB in  0s, 120.16MB/sindexed 52.17MB in  0s, 120.18MB/sindexed 52.30MB in  0s, 120.22MB/sindexed 52.43MB in  0s, 120.26MB/sindexed 52.56MB in  0s, 120.34MB/sindexed 52.69MB in  0s, 120.33MB/sindexed 52.82MB in  0s, 120.33MB/sindexed 52.95MB in  0s, 120.37MB/sindexed 53.08MB in  0s, 120.40MB/sindexed 53.21MB in  0s, 120.44MB/sindexed 53.35MB in  0s, 120.46MB/sindexed 53.48MB in  0s, 120.49MB/sindexed 53.61MB in  0s, 120.46MB/sindexed 53.74MB in  0s, 120.42MB/sindexed 53.87MB in  0s, 120.38MB/sindexed 54.00MB in  0s, 120.46MB/sindexed 54.13MB in  0s, 120.47MB/sindexed 54.26MB in  0s, 120.49MB/sindexed 54.39MB in  0s, 120.53MB/sindexed 54.53MB in  0s, 120.58MB/sindexed 54.66MB in  0s, 120.58MB/sindexed 54.79MB in  0s, 120.57MB/sindexed 54.92MB in  0s, 120.57MB/sindexed 55.05MB in  0s, 120.58MB/sindexed 55.18MB in  0s, 120.63MB/sindexed 55.31MB in  0s, 120.65MB/sindexed 55.44MB in  0s, 120.74MB/sindexed 55.57MB in  0s, 120.77MB/sindexed 55.71MB in  0s, 120.80MB/sindexed 55.84MB in  0s, 120.74MB/sindexed 55.97MB in  0s, 120.73MB/sindexed 56.10MB in  0s, 120.79MB/sindexed 56.23MB in  0s, 120.81MB/sindexed 56.36MB in  0s, 120.85MB/sindexed 56.49MB in  0s, 120.93MB/sindexed 56.62MB in  0s, 120.97MB/sindexed 56.75MB in  0s, 121.00MB/sindexed 56.88MB in  0s, 120.97MB/sindexed 57.02MB in  0s, 120.98MB/sindexed 57.15MB in  0s, 120.99MB/sindexed 57.28MB in  0s, 121.03MB/sindexed 57.41MB in  0s, 121.04MB/sindexed 57.54MB in  0s, 121.09MB/sindexed 57.67MB in  0s, 121.10MB/sindexed 57.80MB in  0s, 121.14MB/sindexed 57.93MB in  0s, 121.17MB/sindexed 58.06MB in  0s, 121.22MB/sindexed 58.20MB in  0s, 121.21MB/sindexed 58.33MB in  0s, 121.21MB/sindexed 58.46MB in  0s, 121.15MB/sindexed 58.59MB in  0s, 121.19MB/sindexed 58.72MB in  0s, 121.24MB/sindexed 58.85MB in  0s, 121.27MB/sindexed 58.98MB in  0s, 121.25MB/sindexed 59.11MB in  0s, 121.31MB/sindexed 59.24MB in  0s, 121.32MB/sindexed 59.38MB in  0s, 121.34MB/sindexed 59.51MB in  0s, 121.37MB/sindexed 59.64MB in  0s, 121.38MB/sindexed 59.77MB in  0s, 121.36MB/sindexed 59.90MB in  0s, 121.28MB/sindexed 60.03MB in  0s, 121.27MB/sindexed 60.16MB in  0s, 121.30MB/sindexed 60.29MB in  0s, 121.29MB/s                                                                              indexed 2.15GB in  1s, 2.15GB/s                                                                              
 
-    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpSu5BEy/eurostat/0ab3fd1d2fd5cb4fc1310bb7fd617b2f.rds
+    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpeYcd14/eurostat/f939ed30d2103096f8705822425a7007.rds
 
 ``` r
 ESres <- ESres[!geo %in% c("EU27_2020", "EU28", "FX")]
@@ -2933,21 +3128,47 @@ eredmény ugyanaz-e, mintha külön-külön kérdeztük volna le):
 
 ``` r
 temp2 <- rbindlist(lapply(names(ICDGroups$Groups), function(icd)
-  dataInputFun("Groups",
-               "Single", icd, NA,
-               "Single", "HUN", NA,
-               "death",  NA, NA, "None", "count", "Year",
-               c("Year", "CauseGroup", "EurostatCode"), NULL,
-               "Összesen", "Összesen", NULL, FALSE)$rd))
+  dataInputFun(category = "Groups",
+               multipleICD = "Single",
+               ICDSingle = icd,
+               ICDMultiple = NA,
+               multipleCountry = "Single",
+               countrySingle = "HUN",
+               countryMultiple = NA,
+               indicator = "death",
+               yllMethod = NA,
+               yllPyllTarget = NA,
+               strat = "None",
+               metric = "count",
+               ordVar = "Year",
+               byvarAdd = c("Year", "CauseGroup", "EurostatCode"),
+               yearFilter = NA,
+               sexFilter = "Összesen",
+               ageFilter = "Összesen",
+               comp = NA,
+               valid = FALSE)$rd))
 temp2 <- temp2[order(Year, CauseGroup)]
-setkey(temp2, iso3c)
 
-temp <- dataInputFun("Groups",
-                     "MultiIndiv", NA, names(ICDGroups$Groups),
-                     "Single", "HUN", NA,
-                     "death",  NA, NA, "None", "count", "Year",
-                     c("Year", "CauseGroup", "EurostatCode"), NULL,
-                     "Összesen", "Összesen", NULL, FALSE)$rd
+temp <- dataInputFun(category = "Groups",
+                     multipleICD = "MultiIndiv",
+                     ICDSingle = NA,
+                     ICDMultiple = names(ICDGroups$Groups),
+                     multipleCountry = "Single",
+                     countrySingle = "HUN",
+                     countryMultiple = NA,
+                     indicator = "death",
+                     yllMethod = NA,
+                     yllPyllTarget = NA,
+                     strat = "None",
+                     metric = "count",
+                     ordVar = "Year",
+                     byvarAdd = c("Year", "CauseGroup", "EurostatCode"),
+                     yearFilter = NA,
+                     sexFilter = "Összesen",
+                     ageFilter = "Összesen",
+                     comp = NA,
+                     valid = FALSE)$rd
+temp <- temp[order(Year, CauseGroup)]
 
 identical(temp, temp2)
 ```
@@ -2978,25 +3199,53 @@ vizsgáljuk, hanem a többi országot is! Először itt is nézzük meg, hogy
 működik-e a többszörös (ország)lekérdezés:
 
 ``` r
-temp2 <- rbindlist(lapply(intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
-                          function(country)
-                            dataInputFun("Groups",
-                                         "MultiIndiv", NA, names(ICDGroups$Groups),
-                                         "Single", country, NA,
-                                         "death",  NA, NA, "None", "count", "Year",
-                                         c("Year", "CauseGroup", "EurostatCode"), NULL,
-                                         "Összesen", "Összesen", NULL, FALSE)$rd))
+temp2 <- rbindlist(lapply(
+  intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
+  function(country)
+    dataInputFun(category = "Groups",
+                 multipleICD = "MultiIndiv",
+                 ICDSingle = NA,
+                 ICDMultiple = names(ICDGroups$Groups),
+                 multipleCountry = "Single",
+                 countrySingle = country,
+                 countryMultiple = NA,
+                 indicator = "death",
+                 yllMethod = NA,
+                 yllPyllTarget = NA,
+                 strat = "None",
+                 metric = "count",
+                 ordVar = "Year",
+                 byvarAdd = c("Year", "CauseGroup", "EurostatCode"),
+                 yearFilter = NA,
+                 sexFilter = "Összesen",
+                 ageFilter = "Összesen",
+                 comp = NA,
+                 valid = FALSE)$rd))
 temp2 <- temp2[value != 0]
 temp2 <- temp2[order(iso3c, Year, CauseGroup)]
-setkey(temp2, iso3c)
 
-temp <- dataInputFun("Groups",
-                     "MultiIndiv", NA, names(ICDGroups$Groups),
-                     "Multiple", NA, intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
-                     "death",  NA, NA, "None", "count", "Year",
-                     c("Year", "CauseGroup", "EurostatCode"), NULL,
-                     "Összesen", "Összesen", NULL, TRUE)$rd
+temp <- dataInputFun(category = "Groups",
+                     multipleICD = "MultiIndiv",
+                     ICDSingle = NA,
+                     ICDMultiple = names(ICDGroups$Groups),
+                     multipleCountry = "Multiple",
+                     countrySingle = NA,
+                     countryMultiple = intersect(unique(ESres$iso3c),
+                                                 unique(RawData$iso3c)),
+                     indicator = "death",
+                     yllMethod = NA,
+                     yllPyllTarget = NA,
+                     strat = "None",
+                     metric = "count",
+                     ordVar = "Year",
+                     byvarAdd = c("Year", "CauseGroup", "EurostatCode"),
+                     yearFilter = NA,
+                     sexFilter = "Összesen",
+                     ageFilter = "Összesen",
+                     comp = NA,
+                     valid = TRUE)$rd
 temp <- temp[value != 0]
+temp <- temp[order(iso3c, Year, CauseGroup)]
 
 identical(temp, temp2)
 ```
@@ -3006,7 +3255,8 @@ identical(temp, temp2)
 Itt is rendben vagyunk. Nézzük most az eredményeket:
 
 ``` r
-res <- merge(ESres[age == "TOTAL" & sex == "T"], temp, by = c("Year", "EurostatCode", "iso3c"))
+res <- merge(ESres[age == "TOTAL" & sex == "T"], temp,
+             by = c("Year", "EurostatCode", "iso3c"))
 
 plot(values ~ value, data = res)
 abline(0, 1)
@@ -3031,15 +3281,30 @@ pargrid <- CJ(Age = setdiff(c("Összesen", as.character(unique(RawData$Age))),
               Sex = c("Összesen", as.character(unique(RawData$Sex))))
 
 temp <- rbindlist(lapply(1:nrow(pargrid), function(i)
-  cbind(dataInputFun("Groups",
-                     "Multiple", NA, names(ICDGroups$Groups),
-                     "Multiple", NA, intersect(unique(ESres$iso3c), unique(RawData$iso3c)),
-                     "death",  NA, NA, "None", "count", "Year",
-                     c("Year", "CauseGroup", "EurostatCode"), NULL,
-                     pargrid$Sex[i], pargrid$Age[i], NULL, TRUE)$rd,
+  cbind(dataInputFun(category = "Groups",
+                     multipleICD = "Multiple",
+                     ICDSingle = NA,
+                     ICDMultiple = names(ICDGroups$Groups),
+                     multipleCountry = "Multiple",
+                     countrySingle = NA,
+                     countryMultiple = intersect(unique(ESres$iso3c),
+                                                 unique(RawData$iso3c)),
+                     indicator = "death",
+                     yllMethod = NA,
+                     yllPyllTarget = NA,
+                     strat = "None",
+                     metric = "count",
+                     ordVar = "Year",
+                     byvarAdd = c("Year", "CauseGroup", "EurostatCode"),
+                     yearFilter = NA,
+                     sexFilter = pargrid$Sex[i],
+                     ageFilter = pargrid$Age[i],
+                     comp = NA,
+                     valid = TRUE)$rd,
         Age = pargrid$Age[i], Sex = pargrid$Sex[i])))
 
-res <- merge(ESres, temp, by = c("Year", "EurostatCode", "iso3c", "Sex", "Age"))
+res <- merge(ESres, temp,
+             by = c("Year", "EurostatCode", "iso3c", "Sex", "Age"))
 
 plot(values ~ value, data = res)
 abline(0, 1)
@@ -3047,7 +3312,7 @@ abline(0, 1)
 
 ![](README_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
 
-Az eltérést úgy tűnik itt is ugyanazok a tényezők okozzák.
+Az eltérést úgy tűnik itt is csak ugyanazok a tényezők okozzák.
 
 ## A weboldal
 
@@ -3065,6 +3330,5 @@ Az oldal forráskódja letölhető innen:
 
 ## Továbbfejlesztési lehetőségek
 
-- [ ] 103-as (és esetleg egyéb) BNO-kódolási rendszerek bekapcsolása.
-- [ ] Az 1995 előtti korábbi BNO-k bekapcsolása.
+- [ ] További BNO-kódolási rendszerek bekapcsolása.
 - [ ] További validációk.
