@@ -67,6 +67,8 @@ EUCountries <- list(
   "V4" = c("SVK", "CZE", "HUN", "POL")
 )
 
+maplist <- readRDS("./procdata/maplist.rds")
+
 dimredvizData <- readRDS("./procdata/dimredvizData.rds")
 
 desctext <- paste0("Hazai és nemzetközi halálozási adatok, halálokok vizsgálatát,",
@@ -183,7 +185,15 @@ ownpanel <- function(idPrefix, singleICD = FALSE, map = FALSE, indicators = TRUE
                      c("Térkép" = "Map", "Oszlopdiagram" = "Bar")),
         conditionalPanel(paste0("input.", idPrefix, "Type == 'Map'"),
                          shinyWidgets::pickerInput(paste0(idPrefix, "Map"), "Térkép",
-                                                   c("Európa" = "europe", "Világ" = "world"),
+                                                   c("Világ" = "world",
+                                                     "Európa" = "europe",
+                                                     "Észak-Amerika" = "north-america",
+                                                     "Dél-Amerika" = "south-america",
+                                                     "Közép-Amerika" =  "central-america",
+                                                     "Ázsia" = "asia",
+                                                     "Afrika" = "africa",
+                                                     "Közel-Kelet" = "middle-east"),
+                                                   selected = "europe",
                                                    options = pickeroptsWOSearch)),
         shinyWidgets::pickerInput(paste0(idPrefix, "Sex"), "Ábrázolt nem", c("Összesen", "Férfi", "Nő"),
                                   options = pickeroptsWOSearch),
@@ -242,9 +252,6 @@ ui <- navbarPage(
                 content = paste0(urlpre, "OkspecifikusMortalitasiAdatbazis-Pelda.png"))
     ),
     
-    tags$script(src = "https://code.highcharts.com/mapdata/custom/world.js"),
-    tags$script(src = "https://code.highcharts.com/mapdata/custom/europe.js"),
-    
     tags$div(id = "fb-root"),
     tags$script(async = NA, defer = NA, crossorigin = "anonymous",
                 src = "https://connect.facebook.net/hu_HU/sdk.js#xfbml=1&version=v19.0",
@@ -272,7 +279,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.43"),
+                  .noWS = "outside"), ", v0.44"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -605,7 +612,7 @@ server <- function(input, output) {
                            indicator, yllMethod, yllPyllTarget,
                            strat, metric, ordVar, byvarAdd,
                            yearFilter, sexFilter, ageFilter, comp, valid) {
-
+    
     icd <- if(multipleICD == "Single") ICDSingle else ICDMultiple
     if(is.null(icd)) return(NULL)
     icdtable <- rbindlist(ICDGroups[[category]][icd])
@@ -618,7 +625,7 @@ server <- function(input, output) {
     
     yearSel <- if(!any(is.na(yearFilter))) seq(yearFilter[1], yearFilter[2], 1) else min(RawData$Year):max(RawData$Year)
     if(sexFilter == "Összesen") sexFilter <- c("Férfi", "Nő")
-
+    
     if(ageFilter == "Összesen" || metric == "adjrate") {
       rd <- RawData[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
       skeleton <- RawDataAll[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
@@ -628,13 +635,13 @@ server <- function(input, output) {
     }
     
     if(multipleICD == "MultiSum") icdtable[, c("CauseGroup", "EurostatCode") := list("Összeg", NA)]
-
+    
     skeleton <- unique(icdtable[, .(List, EurostatCode, CauseGroup)])[skeleton, on = .(List), nomatch = NULL, allow.cartesian = TRUE]
     
     rd <- icdtable[rd, on = .(List, Cause), nomatch = NULL, allow.cartesian = TRUE][
       skeleton, on = .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode),
       .(value = round(sum(value * Weight, na.rm = TRUE))), by = .EACHI]
-
+    
     rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
     
     if(category == "Avoidable") rd <- rd[AgeNum < yllPyllTarget]
@@ -887,16 +894,21 @@ server <- function(input, output) {
     if(is.null(mortdat)) return(p)
     
     if(input$mapType == "Map") {
-      p <- hcmap(paste0("custom/", input$mapMap), data = mortdat, value = "value",
-                 joinBy = c("iso-a3", "iso3c"), name = mapICDSingle(),
-                 tooltip = list(pointFormat = "{point.CountryName}: {point.value}"))
+      p <- highchart(type = "map") |>
+        hc_add_series(mapData = maplist[[input$mapMap]],
+                      data = list_parse(mortdat),
+                      joinBy = c("iso-a3", "iso3c"),
+                      name = mapICDSingle(),
+                      tooltip = list(pointFormat = "{point.CountryName}: {point.value}")) |>
+        hc_colorAxis(auxpar = NULL)
+      
       # p <- p |> hc_colorAxis(width = "100%")
       # p <- p |> hc_colorAxis(layout = "vertical", reversed = FALSE, margin = 0) |> hc_legend(align = "right", verticalAlign = "middle")
     } else {
       p <- hchart(mortdat[order(if(input$mapBarOrder) value else iso3c)],
                   type = if(input$mapBarHorizontal) "bar" else "column",
-                  hcaes(x = iso3c, y = value), name = mapICDSingle())
-      p <- p |> hc_tooltip(headerFormat = "{point.point.CountryName}<br>")
+                  hcaes(x = iso3c, y = value), name = mapICDSingle()) |>
+        hc_tooltip(headerFormat = "{point.point.CountryName}<br>")
     }
     
     p <- p |>

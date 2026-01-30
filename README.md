@@ -81,263 +81,275 @@ vagy nem jó. A következőkben az idevágó szempontokat tekintjük át.
 
 1.  Elérhetőek betegségek egy széles körére
 
-Szemben a halálozással, a betegségek előfordulására vonatkozó adatok
-általában sokkal szűkebb körben, azaz sokkal kevesebb betegségre
-vonatkozóan érhetőek el. A halálozásokból ugyanis minden egyes esetet
-besorolnak halálok szerint és nyilvánosan jelentenek, addig egy betegség
-puszta fellépésére vonatkozó információ begyűjtése általában komoly
-többlet-energia befektetését igényli, hiszen ilyen adatot – szemben a
-halálozással – rutinszerűen nem gyűjtenek a népegészségügyi rendszerek.
-Alapvetően három megoldási lehetőség jön szóba ha előfordulásra
-vonatkozó adatot szeretnénk gyűjteni; hogy jobban megértsük az ezzel
-kapcsolatos nehézségeket, tekintsük át ezeket röviden:
+    Szemben a halálozással, a betegségek előfordulására vonatkozó adatok
+    általában sokkal szűkebb körben, azaz sokkal kevesebb betegségre
+    vonatkozóan érhetőek el. A halálozásokból ugyanis minden egyes
+    esetet besorolnak halálok szerint és nyilvánosan jelentenek, addig
+    egy betegség puszta fellépésére vonatkozó információ begyűjtése
+    általában komoly többlet-energia befektetését igényli, hiszen ilyen
+    adatot – szemben a halálozással – rutinszerűen nem gyűjtenek a
+    népegészségügyi rendszerek. Alapvetően három megoldási lehetőség jön
+    szóba ha előfordulásra vonatkozó adatot szeretnénk gyűjteni; hogy
+    jobban megértsük az ezzel kapcsolatos nehézségeket, tekintsük át
+    ezeket röviden:
 
-- Az egyik megoldási lehetőség ad hoc vizsgálatok szervezése. (Például
-  egy mintavétellel történő felmérés – jó esetben véletlenszerűen a
-  populációból, rosszabb esetben ún. kényelmi mintaként, például
-  egyetlen, általunk könnyen lekérdezhető kórház adatainak
-  feldolgozásával.) Ez kevesebb erőforrást igényel, de csak egy
-  pillanatfelvételt ad, és semmiképp nem teljeskörű, kényelmi minta
-  esetén pedig erősen kérdéses is az általánosíthatósága.
-- A másik lehetőség az ún. adminisztratív/finanszírozási adatok
-  felhasználása. Az alapötlet, hogy a kórházak amúgy is jelentenek
-  finanszírozási célból adatokat – miért ne használjuk fel ezt
-  epidemiológiai célokra is? Csakugyan, ha valaki egészségügyi
-  ellátásban részesül, akkor keletkezik róla egy adatsor, amit
-  beküldenek a NEAK-ba, benne a személy nemével, életkorával,
-  lakhelyével, betegségével, az elvégzett beavatkozással; ebből tényleg
-  kiolvasható lehet a megbetegedés fellépése. Ez nagyon csábítóan
-  hangzik, hiszen az erőforrás-igénye csekély (amúgy is begyűjtött
-  adatokat dolgozunk fel), de mégis teljeskörű és folyamatosan frissülő
-  az adatbázis, legalábbis a közfinanszírozott ellátásokra vonatkozóan.
-  Bár ez eddig nagyon jól hangzik, a módszernek vannak hátrányai is,
-  egyrészt az adatminőség (ezeket a jelentéseket a kórházak rutinszerűen
-  meghamisítják, hogy „optimalizálják” a finanszírozásukat), másrészt a
-  klinikai adatok hiánya (azt tudjuk, hogy valakit megröntgeneztek, de
-  azt nem tudjuk, hogy mi volt a röngtenképen, azt tudjuk, hogy az alany
-  hány éves, de azt nem tudjuk, hogy dohányzik-e). Ezzel együtt is, ma
-  már egyre több ilyen vizsgálat készül; egy példa tisztán akadémiai
-  célokat szolgáló ilyen kutatásra a
-  [HUNVASCDATA](https://hunvascdata.hu/)-projekt.
-- Végezetül a harmadik lehetőség a betegségregiszterek használata. Ez
-  szó szerint véve „a” megoldás a problémára, hiszen a regiszter
-  definíció szerint azt jelenti, hogy valamely megbetegedés
-  előfordulásáról a teljesség igényével történő gyűjtés. (Tipikusan
-  jogszabály írja el a kötelező jelentést az egészségügyi ellátóknak.)
-  Ez látszólag az ideális megoldás: teljeskörű, folyamatos, validálható
-  adatminőségű, részletgazdag klinikai adatokat is tartalmazhat,
-  egyetlen apró problémája van: az, hogy hatalmas az erőforrásigénye.
-  Nem csak „forintban” értve, hanem az adatszolgáltatói teherre nézve
-  is, hiszen ez azt is jelenti, hogy az észlelő orvosoknak a betegek
-  után egy plusz jelentést is ki kell tölteniük, és feltölteni a
-  regiszterbe.
+    - Az egyik megoldási lehetőség ad hoc vizsgálatok szervezése.
+      (Például egy mintavétellel történő felmérés – jó esetben
+      véletlenszerűen a populációból, rosszabb esetben ún. kényelmi
+      mintaként, például egyetlen, általunk könnyen lekérdezhető kórház
+      adatainak feldolgozásával.) Ez kevesebb erőforrást igényel, de
+      csak egy pillanatfelvételt ad, és semmiképp nem teljeskörű,
+      kényelmi minta esetén pedig erősen kérdéses is az
+      általánosíthatósága.
+    - A másik lehetőség az ún. adminisztratív/finanszírozási adatok
+      felhasználása. Az alapötlet, hogy a kórházak amúgy is jelentenek
+      finanszírozási célból adatokat – miért ne használjuk fel ezt
+      epidemiológiai célokra is? Csakugyan, ha valaki egészségügyi
+      ellátásban részesül, akkor keletkezik róla egy adatsor, amit
+      beküldenek a NEAK-ba, benne a személy nemével, életkorával,
+      lakhelyével, betegségével, az elvégzett beavatkozással; ebből
+      tényleg kiolvasható lehet a megbetegedés fellépése. Ez nagyon
+      csábítóan hangzik, hiszen az erőforrás-igénye csekély (amúgy is
+      begyűjtött adatokat dolgozunk fel), de mégis teljeskörű és
+      folyamatosan frissülő az adatbázis, legalábbis a közfinanszírozott
+      ellátásokra vonatkozóan. Bár ez eddig nagyon jól hangzik, a
+      módszernek vannak hátrányai is, egyrészt az adatminőség (ezeket a
+      jelentéseket a kórházak rutinszerűen meghamisítják, hogy
+      „optimalizálják” a finanszírozásukat), másrészt a klinikai adatok
+      hiánya (azt tudjuk, hogy valakit megröntgeneztek, de azt nem
+      tudjuk, hogy mi volt a röngtenképen, azt tudjuk, hogy az alany
+      hány éves, de azt nem tudjuk, hogy dohányzik-e). Ezzel együtt is,
+      ma már egyre több ilyen vizsgálat készül; egy példa tisztán
+      akadémiai célokat szolgáló ilyen kutatásra a
+      [HUNVASCDATA](https://hunvascdata.hu/)-projekt.
+    - Végezetül a harmadik lehetőség a betegségregiszterek használata.
+      Ez szó szerint véve „a” megoldás a problémára, hiszen a regiszter
+      definíció szerint azt jelenti, hogy valamely megbetegedés
+      előfordulásáról a teljesség igényével történő gyűjtés. (Tipikusan
+      jogszabály írja el a kötelező jelentést az egészségügyi
+      ellátóknak.) Ez látszólag az ideális megoldás: teljeskörű,
+      folyamatos, validálható adatminőségű, részletgazdag klinikai
+      adatokat is tartalmazhat, egyetlen apró problémája van: az, hogy
+      hatalmas az erőforrásigénye. Nem csak „forintban” értve, hanem az
+      adatszolgáltatói teherre nézve is, hiszen ez azt is jelenti, hogy
+      az észlelő orvosoknak a betegek után egy plusz jelentést is ki
+      kell tölteniük, és feltölteni a regiszterbe.
 
-A jogszabály szerint Magyarországon több mint egy tucat regiszter kell,
-hogy [működjön](https://njt.hu/jogszabaly/2018-49-20-5H), ezekből
-gyakorlatilag kettő az aminek értelmezhető, ténylegesen teljeskörű,
-folyamatosan frissülő, kívülről is látható – publikációkban megjelenő,
-weboldalon lekérdezhető – aktivitása van, a [Nemzeti
-Szívinfarktusregiszter](https://nszr.gokvi.hu/ir/fooldal) és a [Nemzeti
-Rákregiszter](https://onkol.hu/nemzeti-rakregiszter-es-biostatisztikai-kozpont/).
-Az összes többi regiszterről még én sem tudom, hogy mit csinálnak, van
-ami elvileg működik, de kívülről nézve aligha betöltve a funkcióját (a
-szívelégtelenség regiszter 2021-ben eredményként [számolt
-be](https://mkardio.hu/hirek.aspx?nid=106368) arról, hogy 2015 óta
-összesen 1600 beteget bevontak – miközben Magyarországon majdnem 10 ezer
-*halál* történik ebből, *évente*), van, aminek a nevére
-[rákeresve](https://www.google.com/search?client=firefox-b-d&q=%22Feln%C5%91tt+Sz%C3%ADvseb%C3%A9szeti+Regiszter%22)
-kizárólag a jogszabály szövegét kapjuk meg találatként…
+    A jogszabály szerint Magyarországon több mint egy tucat regiszter
+    kell, hogy [működjön](https://njt.hu/jogszabaly/2018-49-20-5H),
+    ezekből gyakorlatilag kettő az aminek értelmezhető, ténylegesen
+    teljeskörű, folyamatosan frissülő, kívülről is látható –
+    publikációkban megjelenő, weboldalon lekérdezhető – aktivitása van,
+    a [Nemzeti Szívinfarktusregiszter](https://nszr.gokvi.hu/ir/fooldal)
+    és a [Nemzeti
+    Rákregiszter](https://onkol.hu/nemzeti-rakregiszter-es-biostatisztikai-kozpont/).
+    Az összes többi regiszterről még én sem tudom, hogy mit csinálnak,
+    van ami elvileg működik, de kívülről nézve aligha betöltve a
+    funkcióját (a szívelégtelenség regiszter 2021-ben eredményként
+    [számolt be](https://mkardio.hu/hirek.aspx?nid=106368) arról, hogy
+    2015 óta összesen 1600 beteget bevontak – miközben Magyarországon
+    majdnem 10 ezer *halál* történik ebből, *évente*), van, aminek a
+    nevére
+    [rákeresve](https://www.google.com/search?client=firefox-b-d&q=%22Feln%C5%91tt+Sz%C3%ADvseb%C3%A9szeti+Regiszter%22)
+    kizárólag a jogszabály szövegét kapjuk meg találatként…
 
-Remélem a fentiekkel tudtam érzékeltetni, hogy mi az oka annak, hogy
-előfordulásra vonatkozó adatok csak betegségek egy szűk körére érhetőek
-el, valamint, hogy az sem várható, hogy ez lényegesen megváltozzon a
-közeljövőben.
+    Remélem a fentiekkel tudtam érzékeltetni, hogy mi az oka annak, hogy
+    előfordulásra vonatkozó adatok csak betegségek egy szűk körére
+    érhetőek el, valamint, hogy az sem várható, hogy ez lényegesen
+    megváltozzon a közeljövőben.
 
 2.  Ez különösen igaz, ha időben visszafelé megyünk
 
-Az előbbi állítás végképp igaz, ha szeretnénk múltbeli adatokat is
-vizsgálni; minél messzebb megyünk vissza, annál inkább. A Nemzeti
-Szívinfarktusregiszter 2014 óta működik mint teljeskörű regiszter, a
-Nemzeti Rákregiszter 2000 óta. Nyugati regisztereknél van példa nagyobb
-időtartamra, de összességében véve legjobb esetben is néhány évtizedről
-beszélünk, ami az előfordulás-jellegű adatok elérhetőségét illeti. Ehhez
-képest az angol haláloki adatok 1851-re is
-[elérhetőek](http://doc.ukdataservice.ac.uk/doc/3552/mrdoc/pdf/guide.pdf),
-de a londoniakat már 1603-tól (!) minden évben nyomtatásban
-[közlik](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30725-X/fulltext).
+    Az előbbi állítás végképp igaz, ha szeretnénk múltbeli adatokat is
+    vizsgálni; minél messzebb megyünk vissza, annál inkább. A Nemzeti
+    Szívinfarktusregiszter 2014 óta működik mint teljeskörű regiszter, a
+    Nemzeti Rákregiszter 2000 óta. Nyugati regisztereknél van példa
+    nagyobb időtartamra, de összességében véve legjobb esetben is néhány
+    évtizedről beszélünk, ami az előfordulás-jellegű adatok
+    elérhetőségét illeti. Ehhez képest az angol haláloki adatok 1851-re
+    is
+    [elérhetőek](http://doc.ukdataservice.ac.uk/doc/3552/mrdoc/pdf/guide.pdf),
+    de a londoniakat már 1603-tól (!) minden évben nyomtatásban
+    [közlik](https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(20)30725-X/fulltext).
 
 3.  A halálozás sokszor az egyik legfontosabb mutatója egy betegség
     terhének
 
-Ha nem egyszerűen a betegség előfordulása érdekel minket, hanem a
-betegség jelentette teher, akkor nagyon sok szempont merül fel:
-szenvedés, maradványtünetekkel gyógyulás, munkából kiesés, egészségügyi
-ellátórendszer igénybevétele és így tovább. Ezek közül a halálozás
-azonban kiemelkedik, egyrészt mert egyértelműen definiált és
-egyértelműen mérhető (mi az, hogy „szenvedés” és hogyan lehet
-számszerűen lemérni?), másrészt mert sok esetben ez a legfontosabb,
-legnagyobb relevanciával bíró szempont, a köznapi szóhasználatban és
-népegészségügyi szempontból is.
+    Ha nem egyszerűen a betegség előfordulása érdekel minket, hanem a
+    betegség jelentette teher, akkor nagyon sok szempont merül fel:
+    szenvedés, maradványtünetekkel gyógyulás, munkából kiesés,
+    egészségügyi ellátórendszer igénybevétele és így tovább. Ezek közül
+    a halálozás azonban kiemelkedik, egyrészt mert egyértelműen
+    definiált és egyértelműen mérhető (mi az, hogy „szenvedés” és hogyan
+    lehet számszerűen lemérni?), másrészt mert sok esetben ez a
+    legfontosabb, legnagyobb relevanciával bíró szempont, a köznapi
+    szóhasználatban és népegészségügyi szempontból is.
 
 4.  Ha a halálozási arány állandó, akkor a halálozás az incidenciát is
     jellemzi
 
-A betegségbe belehaló emberek száma egy szorzat: a megbetegedő emberek
-száma szorozva a halálozási aránnyal. Amennyiben feltételezzük, hogy ez
-utóbbi állandó, akkor a halálozás valójában igenis méri az incidenciát
-is! Igen, a konkrét szám nem fog stimmelni (hacsak a halálozási arány
-nem 100%), de a *relatív viszonyok* rendben lesznek: ha kétszer annyi
-halálozás van, akkor tudhatjuk, hogy az előfordulás is kétszeresére
-nőtt. Amennyiben az „állandó” alatt azt értjük, hogy nem változik időben
-egy országban, akkor az adott ország különböző időszaki adatai vethetőek
-egybe ilyen módon, ha pedig különböző országokban is ugyanaz a
-halálozási arány, akkor még a különböző országok adatai is
-összevethetőek (mondhatjuk, hogy ahol kétszer akkorra a halálozás, ott
-kétszer annyi megbetegedés is van).
+    A betegségbe belehaló emberek száma egy szorzat: a megbetegedő
+    emberek száma szorozva a halálozási aránnyal. Amennyiben
+    feltételezzük, hogy ez utóbbi állandó, akkor a halálozás valójában
+    igenis méri az incidenciát is! Igen, a konkrét szám nem fog
+    stimmelni (hacsak a halálozási arány nem 100%), de a *relatív
+    viszonyok* rendben lesznek: ha kétszer annyi halálozás van, akkor
+    tudhatjuk, hogy az előfordulás is kétszeresére nőtt. Amennyiben az
+    „állandó” alatt azt értjük, hogy nem változik időben egy országban,
+    akkor az adott ország különböző időszaki adatai vethetőek egybe
+    ilyen módon, ha pedig különböző országokban is ugyanaz a halálozási
+    arány, akkor még a különböző országok adatai is összevethetőek
+    (mondhatjuk, hogy ahol kétszer akkorra a halálozás, ott kétszer
+    annyi megbetegedés is van).
 
 #### Milyen bajai vannak a halálozási adatoknak?
 
 1.  A haláloki besorolás problémái
 
-Ez a kérdés a koronavírus-járvány alatt hatalmas publicitást kapott. Egy
-ahhoz kapcsolódó
-[írásomban](https://github.com/ferenci-tamas/ExcessMortEUR) részletesen
-[kifejtettem](https://github.com/ferenci-tamas/ExcessMortEUR?tab=readme-ov-file#a-hal%C3%A1loki-statisztik%C3%A1k-probl%C3%A9m%C3%A1i)
-a problémakört, itt szinte szó szerint meg tudom ismételni az akkor
-leírtakat: gond az, hogy a haláloki statisztikákban mindenkit egy, és
-csak egy halálokhoz kell besorolni. (Magán a halottvizsgálati
-bizonyítványon ennél komplexebb haláloki helyzet is feltüntethető, de a
-végső statisztikában ez nem fog látszni, csak egy pontosan definiált,
-ún. előztetési eljárással kiválasztott halálok, amit statisztikai
-közlésre kiválasztott elsődleges haláloknak szoktak nevezni.) A probléma
-az, hogy az embereknek sokszor nem egyetlen halálokuk van: elveszítünk
-egy szívelégtelen, cukorbeteg alanyt stroke-ban; ő akkor most mibe halt
-bele? A szívelégetelenségbe? A cukorbetegségbe? A stroke-ba?
+    Ez a kérdés a koronavírus-járvány alatt hatalmas publicitást kapott.
+    Egy ahhoz kapcsolódó
+    [írásomban](https://github.com/ferenci-tamas/ExcessMortEUR)
+    részletesen
+    [kifejtettem](https://github.com/ferenci-tamas/ExcessMortEUR?tab=readme-ov-file#a-hal%C3%A1loki-statisztik%C3%A1k-probl%C3%A9m%C3%A1i)
+    a problémakört, itt szinte szó szerint meg tudom ismételni az akkor
+    leírtakat: gond az, hogy a haláloki statisztikákban mindenkit egy,
+    és csak egy halálokhoz kell besorolni. (Magán a halottvizsgálati
+    bizonyítványon ennél komplexebb haláloki helyzet is feltüntethető,
+    de a végső statisztikában ez nem fog látszni, csak egy pontosan
+    definiált, ún. előztetési eljárással kiválasztott halálok, amit
+    statisztikai közlésre kiválasztott elsődleges haláloknak szoktak
+    nevezni.) A probléma az, hogy az embereknek sokszor nem egyetlen
+    halálokuk van: elveszítünk egy szívelégtelen, cukorbeteg alanyt
+    stroke-ban; ő akkor most mibe halt bele? A szívelégetelenségbe? A
+    cukorbetegségbe? A stroke-ba?
 
-Ritkák a vegytiszta esetek, mégpedig mindkét irányban ritkák: hogy egy
-egyébként makkegészséges alanyt elvisz egy stroke vagy hogy egy
-stroke-os beteg fejére rádől egy kémény az utcán. Ezek a tiszta esetek,
-amikor 100% vagy 0% a stroke hozzájárulása a halálozáshoz, de a valódi
-történetek többsége nem ilyen, hanem szürke zóna, mint azt az előző
-bekezdés példája is mutatja.
+    Ritkák a vegytiszta esetek, mégpedig mindkét irányban ritkák: hogy
+    egy egyébként makkegészséges alanyt elvisz egy stroke vagy hogy egy
+    stroke-os beteg fejére rádől egy kémény az utcán. Ezek a tiszta
+    esetek, amikor 100% vagy 0% a stroke hozzájárulása a halálozáshoz,
+    de a valódi történetek többsége nem ilyen, hanem szürke zóna, mint
+    azt az előző bekezdés példája is mutatja.
 
-Ráadásul nem arról van szó, hogy ez „bonyolult” probléma (és majd jövőre
-okosabbak leszünk, és megoldjuk), hanem arról, hogy ez *megoldhatatlan*
-probléma. Valamennyi ok *hozzájárult* a halálához, nyilván nem tett jót,
-hogy szívelégtelen, nem tett jót, hogy cukorbeteg, tehát, ha szigorúan
-vesszük, valami olyasmit kellene mondani, hogy 33 százalékban a
-szívelégtelenségbe halt bele, 19 százalékban a cukorbetegségbe és 48
-százalékban a stroke-ba. (Természetesen ezek a számok teljesen
-hasraütésszerűek.) Hiába is lenne *elvileg* ez a helyes, az orvosi
-realitásnak megfelelő kép, ilyet nem csinálunk – annyiban érthető módon
-is, hogy ember legyen a talpán, aki ezeket a százalékokat megmondja.
+    Ráadásul nem arról van szó, hogy ez „bonyolult” probléma (és majd
+    jövőre okosabbak leszünk, és megoldjuk), hanem arról, hogy ez
+    *megoldhatatlan* probléma. Valamennyi ok *hozzájárult* a halálához,
+    nyilván nem tett jót, hogy szívelégtelen, nem tett jót, hogy
+    cukorbeteg, tehát, ha szigorúan vesszük, valami olyasmit kellene
+    mondani, hogy 33 százalékban a szívelégtelenségbe halt bele, 19
+    százalékban a cukorbetegségbe és 48 százalékban a stroke-ba.
+    (Természetesen ezek a számok teljesen hasraütésszerűek.) Hiába is
+    lenne *elvileg* ez a helyes, az orvosi realitásnak megfelelő kép,
+    ilyet nem csinálunk – annyiban érthető módon is, hogy ember legyen a
+    talpán, aki ezeket a százalékokat megmondja.
 
-Ez tehát a probléma; annyit azért fontos hangsúlyozni, hogy a dolog egy
-részletekbe menően szabályozott, egységes algoritmus alapján zajlik (ez
-nyilvánosan elolvasható, mind a
-[KSH-nál](https://www.ksh.hu/docs/hun/info/02osap/torveny/d159006_2.doc),
-mind a
-[WHO-nál](https://icd.who.int/browse10/Content/statichtml/ICD10Volume2_en_2019.pdf)),
-tehát bár a problémára nincs varázsütésszerű megoldás, de legalább az
-elmondható, hogy a pontos besorolási döntés, még ha nem is vitathatlan,
-de jó esetben legalább egységes országok között is, és időben is.
+    Ez tehát a probléma; annyit azért fontos hangsúlyozni, hogy a dolog
+    egy részletekbe menően szabályozott, egységes algoritmus alapján
+    zajlik (ez nyilvánosan elolvasható, mind a
+    [KSH-nál](https://www.ksh.hu/docs/hun/info/02osap/torveny/d159006_2.doc),
+    mind a
+    [WHO-nál](https://icd.who.int/browse10/Content/statichtml/ICD10Volume2_en_2019.pdf)),
+    tehát bár a problémára nincs varázsütésszerű megoldás, de legalább
+    az elmondható, hogy a pontos besorolási döntés, még ha nem is
+    vitathatlan, de jó esetben legalább egységes országok között is, és
+    időben is.
 
 2.  Az adatminőség kérdése
 
-Úgy tűnhet, hogy ilyen szempontból nincs nagy gond, sőt, valójában még
-jobb is a helyzet, mint az incidencia-jellegű adatoknál, hiszen míg egy
-diagnózist el lehet nézni, azért legkésőbb a halálnál, felboncolva az
-alanyt, csak kiderül egész bizonyosan, hogy mi baja volt. Valójában
-azért ez ennyire biztosan nem igaz (kezdve azzal, hogy egyáltalán nincs
-minden elhunyt felboncolva; Magyarországon 2021-ben 23% volt a
-[boncolási
-arány](https://gateway.euro.who.int/en/indicators/hfa_545-6410-autopsy-rate-for-all-deaths)
-és ez még egy kiugróan magas szám, a legtöbb nyugati országban ez a
-10%-ot sem éri el, ami [nagyon is
-befolyásolhatja](https://www.frontiersin.org/journals/oncology/articles/10.3389/fonc.2022.1032366/full)
-az országok közötti összehasonlítást), ráadásul további problémák is
-vannak.
+    Úgy tűnhet, hogy ilyen szempontból nincs nagy gond, sőt, valójában
+    még jobb is a helyzet, mint az incidencia-jellegű adatoknál, hiszen
+    míg egy diagnózist el lehet nézni, azért legkésőbb a halálnál,
+    felboncolva az alanyt, csak kiderül egész bizonyosan, hogy mi baja
+    volt. Valójában azért ez ennyire biztosan nem igaz (kezdve azzal,
+    hogy egyáltalán nincs minden elhunyt felboncolva; Magyarországon
+    2021-ben 23% volt a [boncolási
+    arány](https://gateway.euro.who.int/en/indicators/hfa_545-6410-autopsy-rate-for-all-deaths)
+    és ez még egy kiugróan magas szám, a legtöbb nyugati országban ez a
+    10%-ot sem éri el, ami [nagyon is
+    befolyásolhatja](https://www.frontiersin.org/journals/oncology/articles/10.3389/fonc.2022.1032366/full)
+    az országok közötti összehasonlítást), ráadásul további problémák is
+    vannak.
 
-Az első kérdés a használt osztályozási rendszer, a Betegségek Nemzetközi
-Osztályozása (röviden BNO) ami meghatározza, hogy milyen halálokok
-léteznek és hogy azokba milyen algoritmus szerint kell besorolni az
-elhunytakat. A gond az, hogy az orvosi tudás bővülésével ez folyamatosan
-változik, tipikusan bővül, mégpedig elég drámaian: a BNO 1900-ban
-bevezetett első változata 191 kódot tartalmazott, a 2022-ben elindított
-11. revízió pedig 17 ezret… Közben bizonyos kódokat törölnek is, vagy
-egybevonnak másokkal, a bővülés sem feltétlenül új betegségek
-megjelenését jelenti, hanem meglevőek részletesebb szétbontását és így
-tovább. Az [külön
-tudomány](https://www.tandfonline.com/doi/abs/10.1080/01615440.1996.10112731),
-hogy az eltérő verziókat hogyan kell összekapcsolni, de látszik, hogy ez
-tökéletesen soha nem tehető meg. Ez eleve korlátozza az egységességet,
-ha különböző időpontokról beszélünk.
+    Az első kérdés a használt osztályozási rendszer, a Betegségek
+    Nemzetközi Osztályozása (röviden BNO) ami meghatározza, hogy milyen
+    halálokok léteznek és hogy azokba milyen algoritmus szerint kell
+    besorolni az elhunytakat. A gond az, hogy az orvosi tudás
+    bővülésével ez folyamatosan változik, tipikusan bővül, mégpedig elég
+    drámaian: a BNO 1900-ban bevezetett első változata 191 kódot
+    tartalmazott, a 2022-ben elindított 11. revízió pedig 17 ezret…
+    Közben bizonyos kódokat törölnek is, vagy egybevonnak másokkal, a
+    bővülés sem feltétlenül új betegségek megjelenését jelenti, hanem
+    meglevőek részletesebb szétbontását és így tovább. Az [külön
+    tudomány](https://www.tandfonline.com/doi/abs/10.1080/01615440.1996.10112731),
+    hogy az eltérő verziókat hogyan kell összekapcsolni, de látszik,
+    hogy ez tökéletesen soha nem tehető meg. Ez eleve korlátozza az
+    egységességet, ha különböző időpontokról beszélünk.
 
-Valójában ennél kicsit rosszabb a helyzet, mert egy revízió érvényességi
-időtartamán belül is lehetnek változások. Ezt azért említem külön, mert
-a magyar adatokat érinti: 1995-től 2022-ig a 10. revízió volt érvényben,
-mégis, 2005-től érzékelhetően megváltoztak a számok. (Az össz-halálozás
-természetesen adott, így ez lényegében a különböző kategóriák közötti
-átrendeződést jelenti.) Ennek az oka egyrészt, hogy ekkor [tértek
-át](https://www.ksh.hu/docs/hun/modsz/nep_modsz.html) a KSH-nál az
-automatikus, gépi haláloki besorolási rendszerre a korábbi kézi
-besorolás helyett, egy új halottvizsgálati bizonyítvány formátum,
-valamint szigorúbb orvos-szakmai ellenőrzés elindításával együtt,
-másrészt ekkor [vezették
-át](http://diploma.uni-sopron.hu/1890/1/kplhi1604.pdf) egyben az 1995
-óta a WHO által kiadott apróbb, revízión belüli változásokat. Ezek miatt
-a 2005 előtti és utáni magyar adatok összehasonlítása esetén óvatosan,
-erre tekintettel kell eljárni.
+    Valójában ennél kicsit rosszabb a helyzet, mert egy revízió
+    érvényességi időtartamán belül is lehetnek változások. Ezt azért
+    említem külön, mert a magyar adatokat érinti: 1995-től 2022-ig a 10.
+    revízió volt érvényben, mégis, 2005-től érzékelhetően megváltoztak a
+    számok. (Az össz-halálozás természetesen adott, így ez lényegében a
+    különböző kategóriák közötti átrendeződést jelenti.) Ennek az oka
+    egyrészt, hogy ekkor [tértek
+    át](https://www.ksh.hu/docs/hun/modsz/nep_modsz.html) a KSH-nál az
+    automatikus, gépi haláloki besorolási rendszerre a korábbi kézi
+    besorolás helyett, egy új halottvizsgálati bizonyítvány formátum,
+    valamint szigorúbb orvos-szakmai ellenőrzés elindításával együtt,
+    másrészt ekkor [vezették
+    át](http://diploma.uni-sopron.hu/1890/1/kplhi1604.pdf) egyben az
+    1995 óta a WHO által kiadott apróbb, revízión belüli változásokat.
+    Ezek miatt a 2005 előtti és utáni magyar adatok összehasonlítása
+    esetén óvatosan, erre tekintettel kell eljárni.
 
-Természetesen a kódolás minősége is kérdés lehet, történhetnek
-adminisztratív hibák, hiányos vagy téves kódolások, nem biztos, hogy
-tökéletes a jelentési fegyelem stb., ez különösen igaz, ha a fejlett
-világon túli [országokat
-is](https://iris.who.int/bitstream/handle/10665/269355/PMC2624200.pdf)
-be akarjuk vonni a vizsgálatokba. Több nemzetközi tanulmány vizsgálta a
-kódolási minőséget (például az
-[autóbalesetekre](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10523810/)
-vagy épp az
-[esésekre](https://bmcgeriatr.biomedcentral.com/articles/10.1186/s12877-021-02744-3)
-vonatkozóan); de talán még érdekesebbek azok a nagyon izgalmas hazai
-vizsgálatok, melyek azt [vetették
-egybe](https://akjournals.com/view/journals/650/163/37/article-p1481.xml),
-hogy a Nemzeti Rákregiszterben szereplő adatok hogyan viszonyulnak a –
-KSH-s – haláloki besoroláshoz: egy eredményt kiemelve, 2018-ban 32 586
-halálozás volt rosszindulatú dagantként besorolva, ebből 29 970-et
-„sikerült megtalálni” a Rákregiszterben.
+    Természetesen a kódolás minősége is kérdés lehet, történhetnek
+    adminisztratív hibák, hiányos vagy téves kódolások, nem biztos, hogy
+    tökéletes a jelentési fegyelem stb., ez különösen igaz, ha a fejlett
+    világon túli [országokat
+    is](https://iris.who.int/bitstream/handle/10665/269355/PMC2624200.pdf)
+    be akarjuk vonni a vizsgálatokba. Több nemzetközi tanulmány
+    vizsgálta a kódolási minőséget (például az
+    [autóbalesetekre](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10523810/)
+    vagy épp az
+    [esésekre](https://bmcgeriatr.biomedcentral.com/articles/10.1186/s12877-021-02744-3)
+    vonatkozóan); de talán még érdekesebbek azok a nagyon izgalmas hazai
+    vizsgálatok, melyek azt [vetették
+    egybe](https://akjournals.com/view/journals/650/163/37/article-p1481.xml),
+    hogy a Nemzeti Rákregiszterben szereplő adatok hogyan viszonyulnak a
+    – KSH-s – haláloki besoroláshoz: egy eredményt kiemelve, 2018-ban 32
+    586 halálozás volt rosszindulatú dagantként besorolva, ebből 29
+    970-et „sikerült megtalálni” a Rákregiszterben.
 
-Mindezek a problémák hatványozottan igazak az emlegetett régi adatokra:
-szép-szép, hogy megvan már 1603-ból is London haláloki adatbázisa, de
-vajon mire megyünk azzal, hogy hányan [haltak
-meg](https://worldhistorycommons.org/londons-bill-mortality)
-fényemelkedésben vagy ijedtségben? (Ennél azért jobb a helyzet,
-valójában sok betegség beazonosítható, bár az adatminőség nyilván ott is
-hihetetlenül rossz mai szemmel nézve. De azért ne becsüljük le: például
-a pestis-járványok lefolyása [kiválóan
-rekonstruálható](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0008401)
-ilyen adatokból is.)
+    Mindezek a problémák hatványozottan igazak az emlegetett régi
+    adatokra: szép-szép, hogy megvan már 1603-ból is London haláloki
+    adatbázisa, de vajon mire megyünk azzal, hogy hányan [haltak
+    meg](https://worldhistorycommons.org/londons-bill-mortality)
+    fényemelkedésben vagy ijedtségben? (Ennél azért jobb a helyzet,
+    valójában sok betegség beazonosítható, bár az adatminőség nyilván
+    ott is hihetetlenül rossz mai szemmel nézve. De azért ne becsüljük
+    le: például a pestis-járványok lefolyása [kiválóan
+    rekonstruálható](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0008401)
+    ilyen adatokból is.)
 
 3.  Csak olyan betegségeknél jó, aminél van egyáltalán releváns
     halálozás
 
-Ha valaki a megfázással szeretne foglalkozni, akkor nem sokra megy a
-halálozási adatokkal.
+    Ha valaki a megfázással szeretne foglalkozni, akkor nem sokra megy a
+    halálozási adatokkal.
 
 4.  A halálozás egybeméri az incidenciát és a gyógyítás hatásfokát
 
-Az előnyök között említettük azt az értelmezést, ami úgy kezdődik, hogy
-„ha a halálozási arány állandó” – de mi van ha nem? Ha változik időben
-(például mert fejlődik az orvostudomány), akkor sajnos mégsem működik az
-előnyöknél elmondott logika, és nem tudunk következtetni a halálozásból
-az előfordulásnak még a relatív viszonyaira sem: ha csökken a halálozás,
-akkor nem biztos, hogy csökken az előfordulás, lehet, hogy egyszerűen
-csak hatékonyabbá vált a gyógyítás. Ha eltér a halálozási arány országok
-között (például mert valahol jobb kezelési lehetőségek érhetőek el),
-akkor nem vethetőek össze ezzel a logikával a különböző országok: nem
-biztos, hogy ahol kevesebb halál van, ott kevesebb – pláne pontosan
-arányban kevesebb – a megbetegedés, lehet, hogy csak hatékonyabban
-gyógyítanak.
+    Az előnyök között említettük azt az értelmezést, ami úgy kezdődik,
+    hogy „ha a halálozási arány állandó” – de mi van ha nem? Ha változik
+    időben (például mert fejlődik az orvostudomány), akkor sajnos mégsem
+    működik az előnyöknél elmondott logika, és nem tudunk következtetni
+    a halálozásból az előfordulásnak még a relatív viszonyaira sem: ha
+    csökken a halálozás, akkor nem biztos, hogy csökken az előfordulás,
+    lehet, hogy egyszerűen csak hatékonyabbá vált a gyógyítás. Ha eltér
+    a halálozási arány országok között (például mert valahol jobb
+    kezelési lehetőségek érhetőek el), akkor nem vethetőek össze ezzel a
+    logikával a különböző országok: nem biztos, hogy ahol kevesebb halál
+    van, ott kevesebb – pláne pontosan arányban kevesebb – a
+    megbetegedés, lehet, hogy csak hatékonyabban gyógyítanak.
 
 ### Az adatok lebontása
 
@@ -1471,6 +1483,19 @@ EUCountries <- list(
 )
 ```
 
+A térképen kirajzoláshoz mentsük le a később használandó térképeket is
+megfelelő formátumban:
+
+``` r
+mapcountrylist <- c("world", "europe", "north-america", "south-america",
+                    "central-america", "asia", "africa", "middle-east")
+maplist <- lapply(mapcountrylist, function(x)
+  highcharter::download_map_data(paste0("custom/", x), quiet = TRUE))
+maplist <- setNames(maplist, mapcountrylist)
+
+saveRDS(maplist, "./procdata/maplist.rds")
+```
+
 ### A BNO adatok előkészítése
 
 A BNO-k tulajdonképpen jelen állapotukban is használhatóak lennének,
@@ -2325,7 +2350,7 @@ plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ Year
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
 
 ``` r
 plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
@@ -2333,7 +2358,7 @@ plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Y
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-40-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-41-2.png)<!-- -->
 
 ``` r
 dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
@@ -2865,19 +2890,19 @@ temp <- Reduce(function(...) merge(..., by = c("iso3c", "Year", "Age", "Sex"), a
 plot(PopHMD ~ PopES, data = temp[!is.na(PopHMD) & !is.na(PopES)])
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-43-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
 
 ``` r
 plot(PopHMD ~ PopUN, data = temp[!is.na(PopHMD) & !is.na(PopUN)])
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-43-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-44-2.png)<!-- -->
 
 ``` r
 plot(PopUN ~ PopES, data = temp[!is.na(PopUN) & !is.na(PopES)])
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-43-3.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-44-3.png)<!-- -->
 
 Megnézhetünk konkrét kategóriákat is, mondjuk a magyar 0-1 évesek
 alakulása:
@@ -2892,7 +2917,7 @@ ggplot2::ggplot(temp[iso3c == "HUN" & Age == 0 & !is.na(value)],
   ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
 Érdekes módon az Eurostat adat eltér a másik kettőtől, de a még
 érdekesebb, hogy ez az eltérés az 1-2 éves kategóriában eltűnik:
@@ -2904,7 +2929,7 @@ ggplot2::ggplot(temp[iso3c == "HUN" & Age == 1 & !is.na(value)],
   ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 Megnézhetünk több életkort is egyben, ennek inkább csak az ábra
 zsúfoltsága szab határt:
@@ -2916,7 +2941,7 @@ ggplot2::ggplot(temp[iso3c == "HUN" & Age <= 5 & !is.na(value)],
   ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
 
 Egy másik összevetési lehetőség az, ha az ország teljes lélekszámának a
 változását nézzük a különböző adatbázisok szerint:
@@ -2929,7 +2954,7 @@ ggplot2::ggplot(temp[iso3c == "HUN", .(sum(value)),
   ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 #### Végleges adatbázis konvertálása, kimentése
 
@@ -3101,9 +3126,9 @@ oszlopokat, hogy a saját adatformátumunkkal összekapcsolható legyen:
 ESres <- as.data.table(eurostat::get_eurostat("hlth_cd_aro"))
 ```
 
-    ## indexed 0B in  0s, 0B/sindexed 25.43MB in  0s, 126.96MB/sindexed 25.56MB in  0s, 127.03MB/sindexed 25.69MB in  0s, 127.07MB/sindexed 25.82MB in  0s, 126.96MB/sindexed 25.95MB in  0s, 126.87MB/sindexed 26.08MB in  0s, 126.85MB/sindexed 26.21MB in  0s, 126.71MB/sindexed 26.35MB in  0s, 126.59MB/sindexed 26.48MB in  0s, 126.63MB/sindexed 26.61MB in  0s, 126.66MB/sindexed 26.74MB in  0s, 126.72MB/sindexed 26.87MB in  0s, 126.63MB/sindexed 27.00MB in  0s, 126.49MB/sindexed 27.13MB in  0s, 126.36MB/sindexed 27.26MB in  0s, 126.36MB/sindexed 27.39MB in  0s, 126.47MB/sindexed 27.52MB in  0s, 126.46MB/sindexed 27.66MB in  0s, 126.42MB/sindexed 27.79MB in  0s, 126.44MB/sindexed 27.92MB in  0s, 126.37MB/sindexed 28.05MB in  0s, 126.33MB/sindexed 28.18MB in  0s, 126.38MB/sindexed 28.31MB in  0s, 126.40MB/sindexed 28.44MB in  0s, 126.44MB/sindexed 28.57MB in  0s, 126.52MB/sindexed 28.70MB in  0s, 126.53MB/sindexed 28.84MB in  0s, 126.63MB/sindexed 28.97MB in  0s, 126.54MB/sindexed 29.10MB in  0s, 126.53MB/sindexed 29.23MB in  0s, 126.54MB/sindexed 29.36MB in  0s, 126.36MB/sindexed 29.49MB in  0s, 126.35MB/sindexed 29.62MB in  0s, 126.34MB/sindexed 29.75MB in  0s, 126.26MB/sindexed 29.88MB in  0s, 126.23MB/sindexed 30.02MB in  0s, 126.15MB/sindexed 30.15MB in  0s, 126.09MB/sindexed 30.28MB in  0s, 126.01MB/sindexed 30.41MB in  0s, 126.02MB/sindexed 30.54MB in  0s, 126.10MB/sindexed 30.67MB in  0s, 126.08MB/sindexed 30.80MB in  0s, 125.98MB/sindexed 30.93MB in  0s, 125.88MB/sindexed 31.06MB in  0s, 125.81MB/sindexed 31.19MB in  0s, 125.74MB/sindexed 31.33MB in  0s, 125.74MB/sindexed 31.46MB in  0s, 125.24MB/sindexed 31.59MB in  0s, 125.13MB/sindexed 31.72MB in  0s, 125.16MB/sindexed 31.85MB in  0s, 125.09MB/sindexed 31.98MB in  0s, 125.11MB/sindexed 32.11MB in  0s, 125.07MB/sindexed 32.24MB in  0s, 124.97MB/sindexed 32.37MB in  0s, 124.96MB/sindexed 32.51MB in  0s, 124.95MB/sindexed 32.64MB in  0s, 124.98MB/sindexed 32.77MB in  0s, 125.07MB/sindexed 32.90MB in  0s, 125.01MB/sindexed 33.03MB in  0s, 125.01MB/sindexed 33.16MB in  0s, 124.99MB/sindexed 33.29MB in  0s, 125.02MB/sindexed 33.42MB in  0s, 124.96MB/sindexed 33.55MB in  0s, 124.94MB/sindexed 33.69MB in  0s, 124.93MB/sindexed 33.82MB in  0s, 124.93MB/sindexed 33.95MB in  0s, 124.94MB/sindexed 34.08MB in  0s, 124.95MB/sindexed 34.21MB in  0s, 124.96MB/sindexed 34.34MB in  0s, 124.86MB/sindexed 34.47MB in  0s, 124.95MB/sindexed 34.60MB in  0s, 124.95MB/sindexed 34.73MB in  0s, 125.06MB/sindexed 34.86MB in  0s, 125.02MB/sindexed 35.00MB in  0s, 125.03MB/sindexed 35.13MB in  0s, 125.04MB/sindexed 35.26MB in  0s, 125.07MB/sindexed 35.39MB in  0s, 125.11MB/sindexed 35.52MB in  0s, 125.16MB/sindexed 35.65MB in  0s, 125.20MB/sindexed 35.78MB in  0s, 125.25MB/sindexed 35.91MB in  0s, 125.27MB/sindexed 36.04MB in  0s, 125.28MB/sindexed 36.18MB in  0s, 125.31MB/sindexed 36.31MB in  0s, 125.37MB/sindexed 36.44MB in  0s, 125.33MB/sindexed 36.57MB in  0s, 125.31MB/sindexed 36.70MB in  0s, 125.26MB/sindexed 36.83MB in  0s, 125.27MB/sindexed 36.96MB in  0s, 124.64MB/sindexed 37.09MB in  0s, 124.47MB/sindexed 37.22MB in  0s, 124.43MB/sindexed 37.36MB in  0s, 124.45MB/sindexed 37.49MB in  0s, 124.46MB/sindexed 37.62MB in  0s, 124.50MB/sindexed 37.75MB in  0s, 124.41MB/sindexed 37.88MB in  0s, 124.25MB/sindexed 38.01MB in  0s, 124.23MB/sindexed 38.14MB in  0s, 124.16MB/sindexed 38.27MB in  0s, 124.15MB/sindexed 38.40MB in  0s, 124.27MB/sindexed 38.53MB in  0s, 124.32MB/sindexed 38.67MB in  0s, 124.36MB/sindexed 38.80MB in  0s, 124.40MB/sindexed 38.93MB in  0s, 124.42MB/sindexed 39.06MB in  0s, 124.37MB/sindexed 39.19MB in  0s, 124.43MB/sindexed 39.32MB in  0s, 124.36MB/sindexed 39.45MB in  0s, 124.37MB/sindexed 39.58MB in  0s, 124.47MB/sindexed 39.71MB in  0s, 124.59MB/sindexed 39.85MB in  0s, 124.55MB/sindexed 39.98MB in  0s, 124.45MB/sindexed 40.11MB in  0s, 124.45MB/sindexed 40.24MB in  0s, 124.43MB/sindexed 40.37MB in  0s, 124.48MB/sindexed 40.50MB in  0s, 124.57MB/sindexed 40.63MB in  0s, 124.71MB/sindexed 40.76MB in  0s, 124.85MB/sindexed 40.89MB in  0s, 124.95MB/sindexed 41.03MB in  0s, 125.01MB/sindexed 41.16MB in  0s, 124.97MB/sindexed 41.29MB in  0s, 125.06MB/sindexed 41.42MB in  0s, 125.11MB/sindexed 41.55MB in  0s, 125.14MB/sindexed 41.68MB in  0s, 125.22MB/sindexed 41.81MB in  0s, 125.31MB/sindexed 41.94MB in  0s, 125.35MB/sindexed 42.07MB in  0s, 125.37MB/sindexed 42.20MB in  0s, 125.29MB/sindexed 42.34MB in  0s, 125.20MB/sindexed 42.47MB in  0s, 125.19MB/sindexed 42.60MB in  0s, 125.16MB/sindexed 42.73MB in  0s, 125.06MB/sindexed 42.86MB in  0s, 125.07MB/sindexed 42.99MB in  0s, 125.05MB/sindexed 43.12MB in  0s, 119.08MB/sindexed 43.25MB in  0s, 119.00MB/sindexed 43.38MB in  0s, 119.00MB/sindexed 43.52MB in  0s, 118.96MB/sindexed 43.65MB in  0s, 118.98MB/sindexed 43.78MB in  0s, 119.05MB/sindexed 43.91MB in  0s, 119.08MB/sindexed 44.04MB in  0s, 118.87MB/sindexed 44.17MB in  0s, 118.87MB/sindexed 44.30MB in  0s, 118.84MB/sindexed 44.43MB in  0s, 118.82MB/sindexed 44.56MB in  0s, 118.86MB/sindexed 44.70MB in  0s, 118.91MB/sindexed 44.83MB in  0s, 118.89MB/sindexed 44.96MB in  0s, 118.93MB/sindexed 45.09MB in  0s, 118.88MB/sindexed 45.22MB in  0s, 118.77MB/sindexed 45.35MB in  0s, 118.69MB/sindexed 45.48MB in  0s, 118.74MB/sindexed 45.61MB in  0s, 118.73MB/sindexed 45.74MB in  0s, 118.65MB/sindexed 45.87MB in  0s, 118.63MB/sindexed 46.01MB in  0s, 118.67MB/sindexed 46.14MB in  0s, 118.63MB/sindexed 46.27MB in  0s, 118.60MB/sindexed 46.40MB in  0s, 118.67MB/sindexed 46.53MB in  0s, 118.73MB/sindexed 46.66MB in  0s, 118.79MB/sindexed 46.79MB in  0s, 118.88MB/sindexed 46.92MB in  0s, 118.97MB/sindexed 47.05MB in  0s, 119.03MB/sindexed 47.19MB in  0s, 119.10MB/sindexed 47.32MB in  0s, 119.07MB/sindexed 47.45MB in  0s, 119.17MB/sindexed 47.58MB in  0s, 119.18MB/sindexed 47.71MB in  0s, 119.22MB/sindexed 47.84MB in  0s, 119.22MB/sindexed 47.97MB in  0s, 119.28MB/sindexed 48.10MB in  0s, 119.33MB/sindexed 48.23MB in  0s, 119.41MB/sindexed 48.37MB in  0s, 119.45MB/sindexed 48.50MB in  0s, 119.51MB/sindexed 48.63MB in  0s, 119.50MB/sindexed 48.76MB in  0s, 119.54MB/sindexed 48.89MB in  0s, 119.61MB/sindexed 49.02MB in  0s, 119.63MB/sindexed 49.15MB in  0s, 119.72MB/sindexed 49.28MB in  0s, 119.80MB/sindexed 49.41MB in  0s, 119.80MB/sindexed 49.54MB in  0s, 119.87MB/sindexed 49.68MB in  0s, 119.92MB/sindexed 49.81MB in  0s, 119.98MB/sindexed 49.94MB in  0s, 119.97MB/sindexed 50.07MB in  0s, 119.90MB/sindexed 50.20MB in  0s, 119.98MB/sindexed 50.33MB in  0s, 120.01MB/sindexed 50.46MB in  0s, 120.02MB/sindexed 50.59MB in  0s, 120.01MB/sindexed 50.72MB in  0s, 120.00MB/sindexed 50.86MB in  0s, 120.03MB/sindexed 50.99MB in  0s, 120.05MB/sindexed 51.12MB in  0s, 120.05MB/sindexed 51.25MB in  0s, 120.06MB/sindexed 51.38MB in  0s, 120.08MB/sindexed 51.51MB in  0s, 120.13MB/sindexed 51.64MB in  0s, 120.12MB/sindexed 51.77MB in  0s, 120.11MB/sindexed 51.90MB in  0s, 120.14MB/sindexed 52.04MB in  0s, 120.16MB/sindexed 52.17MB in  0s, 120.18MB/sindexed 52.30MB in  0s, 120.22MB/sindexed 52.43MB in  0s, 120.26MB/sindexed 52.56MB in  0s, 120.34MB/sindexed 52.69MB in  0s, 120.33MB/sindexed 52.82MB in  0s, 120.33MB/sindexed 52.95MB in  0s, 120.37MB/sindexed 53.08MB in  0s, 120.40MB/sindexed 53.21MB in  0s, 120.44MB/sindexed 53.35MB in  0s, 120.46MB/sindexed 53.48MB in  0s, 120.49MB/sindexed 53.61MB in  0s, 120.46MB/sindexed 53.74MB in  0s, 120.42MB/sindexed 53.87MB in  0s, 120.38MB/sindexed 54.00MB in  0s, 120.46MB/sindexed 54.13MB in  0s, 120.47MB/sindexed 54.26MB in  0s, 120.49MB/sindexed 54.39MB in  0s, 120.53MB/sindexed 54.53MB in  0s, 120.58MB/sindexed 54.66MB in  0s, 120.58MB/sindexed 54.79MB in  0s, 120.57MB/sindexed 54.92MB in  0s, 120.57MB/sindexed 55.05MB in  0s, 120.58MB/sindexed 55.18MB in  0s, 120.63MB/sindexed 55.31MB in  0s, 120.65MB/sindexed 55.44MB in  0s, 120.74MB/sindexed 55.57MB in  0s, 120.77MB/sindexed 55.71MB in  0s, 120.80MB/sindexed 55.84MB in  0s, 120.74MB/sindexed 55.97MB in  0s, 120.73MB/sindexed 56.10MB in  0s, 120.79MB/sindexed 56.23MB in  0s, 120.81MB/sindexed 56.36MB in  0s, 120.85MB/sindexed 56.49MB in  0s, 120.93MB/sindexed 56.62MB in  0s, 120.97MB/sindexed 56.75MB in  0s, 121.00MB/sindexed 56.88MB in  0s, 120.97MB/sindexed 57.02MB in  0s, 120.98MB/sindexed 57.15MB in  0s, 120.99MB/sindexed 57.28MB in  0s, 121.03MB/sindexed 57.41MB in  0s, 121.04MB/sindexed 57.54MB in  0s, 121.09MB/sindexed 57.67MB in  0s, 121.10MB/sindexed 57.80MB in  0s, 121.14MB/sindexed 57.93MB in  0s, 121.17MB/sindexed 58.06MB in  0s, 121.22MB/sindexed 58.20MB in  0s, 121.21MB/sindexed 58.33MB in  0s, 121.21MB/sindexed 58.46MB in  0s, 121.15MB/sindexed 58.59MB in  0s, 121.19MB/sindexed 58.72MB in  0s, 121.24MB/sindexed 58.85MB in  0s, 121.27MB/sindexed 58.98MB in  0s, 121.25MB/sindexed 59.11MB in  0s, 121.31MB/sindexed 59.24MB in  0s, 121.32MB/sindexed 59.38MB in  0s, 121.34MB/sindexed 59.51MB in  0s, 121.37MB/sindexed 59.64MB in  0s, 121.38MB/sindexed 59.77MB in  0s, 121.36MB/sindexed 59.90MB in  0s, 121.28MB/sindexed 60.03MB in  0s, 121.27MB/sindexed 60.16MB in  0s, 121.30MB/sindexed 60.29MB in  0s, 121.29MB/s                                                                              indexed 2.15GB in  1s, 2.15GB/s                                                                              
+    ## indexed 0B in  0s, 0B/sindexed 10.62MB in  0s, 51.84MB/sindexed 10.75MB in  0s, 50.41MB/sindexed 10.88MB in  0s, 50.85MB/sindexed 11.01MB in  0s, 51.24MB/sindexed 11.14MB in  0s, 51.61MB/sindexed 11.27MB in  0s, 51.99MB/sindexed 11.40MB in  0s, 52.39MB/sindexed 11.53MB in  0s, 52.73MB/sindexed 11.67MB in  0s, 53.13MB/sindexed 11.80MB in  0s, 53.38MB/sindexed 11.93MB in  0s, 53.74MB/sindexed 12.06MB in  0s, 54.10MB/sindexed 12.19MB in  0s, 54.48MB/sindexed 12.32MB in  0s, 54.86MB/sindexed 12.45MB in  0s, 55.22MB/sindexed 12.58MB in  0s, 55.50MB/sindexed 12.71MB in  0s, 55.67MB/sindexed 12.84MB in  0s, 55.88MB/sindexed 12.98MB in  0s, 56.07MB/sindexed 13.11MB in  0s, 56.36MB/sindexed 13.24MB in  0s, 56.67MB/sindexed 13.37MB in  0s, 56.96MB/sindexed 13.50MB in  0s, 57.24MB/sindexed 13.63MB in  0s, 57.45MB/sindexed 13.76MB in  0s, 57.64MB/sindexed 13.89MB in  0s, 57.87MB/sindexed 14.02MB in  0s, 58.16MB/sindexed 14.16MB in  0s, 58.44MB/sindexed 14.29MB in  0s, 58.63MB/sindexed 14.42MB in  0s, 58.87MB/sindexed 14.55MB in  0s, 59.08MB/sindexed 14.68MB in  0s, 59.37MB/sindexed 14.81MB in  0s, 59.66MB/sindexed 14.94MB in  0s, 59.94MB/sindexed 15.07MB in  0s, 60.23MB/sindexed 15.20MB in  0s, 60.48MB/sindexed 15.34MB in  0s, 60.75MB/sindexed 15.47MB in  0s, 60.98MB/sindexed 15.60MB in  0s, 61.17MB/sindexed 15.73MB in  0s, 61.43MB/sindexed 15.86MB in  0s, 61.69MB/sindexed 15.99MB in  0s, 61.95MB/sindexed 16.12MB in  0s, 62.17MB/sindexed 16.25MB in  0s, 62.39MB/sindexed 16.38MB in  0s, 62.61MB/sindexed 16.51MB in  0s, 62.78MB/sindexed 16.65MB in  0s, 63.04MB/sindexed 16.78MB in  0s, 63.30MB/sindexed 16.91MB in  0s, 63.54MB/sindexed 17.04MB in  0s, 63.76MB/sindexed 17.17MB in  0s, 63.99MB/sindexed 17.30MB in  0s, 64.20MB/sindexed 17.43MB in  0s, 64.28MB/sindexed 17.56MB in  0s, 64.50MB/sindexed 17.69MB in  0s, 64.75MB/sindexed 17.83MB in  0s, 64.96MB/sindexed 17.96MB in  0s, 65.13MB/sindexed 18.09MB in  0s, 65.27MB/sindexed 18.22MB in  0s, 65.46MB/sindexed 18.35MB in  0s, 65.57MB/sindexed 18.48MB in  0s, 65.77MB/sindexed 18.61MB in  0s, 65.97MB/sindexed 18.74MB in  0s, 66.17MB/sindexed 18.87MB in  0s, 66.22MB/sindexed 19.01MB in  0s, 66.36MB/sindexed 19.14MB in  0s, 66.40MB/sindexed 19.27MB in  0s, 66.52MB/sindexed 19.40MB in  0s, 66.66MB/sindexed 19.53MB in  0s, 66.79MB/sindexed 19.66MB in  0s, 66.93MB/sindexed 19.79MB in  0s, 67.06MB/sindexed 19.92MB in  0s, 67.19MB/sindexed 20.05MB in  0s, 67.33MB/sindexed 20.18MB in  0s, 67.48MB/sindexed 20.32MB in  0s, 67.59MB/sindexed 20.45MB in  0s, 67.72MB/sindexed 20.58MB in  0s, 67.86MB/sindexed 20.71MB in  0s, 67.98MB/sindexed 20.84MB in  0s, 68.08MB/sindexed 20.97MB in  0s, 68.19MB/sindexed 21.10MB in  0s, 68.28MB/sindexed 21.23MB in  0s, 68.39MB/sindexed 21.36MB in  0s, 68.49MB/sindexed 21.50MB in  0s, 68.59MB/sindexed 21.63MB in  0s, 65.19MB/sindexed 21.76MB in  0s, 65.29MB/sindexed 21.89MB in  0s, 65.41MB/sindexed 22.02MB in  0s, 65.52MB/sindexed 22.15MB in  0s, 65.57MB/sindexed 22.28MB in  0s, 65.67MB/sindexed 22.41MB in  0s, 65.77MB/sindexed 22.54MB in  0s, 65.87MB/sindexed 22.68MB in  0s, 65.97MB/sindexed 22.81MB in  0s, 66.06MB/sindexed 22.94MB in  0s, 66.16MB/sindexed 23.07MB in  0s, 66.25MB/sindexed 23.20MB in  0s, 66.36MB/sindexed 23.33MB in  0s, 66.46MB/sindexed 23.46MB in  0s, 66.55MB/sindexed 23.59MB in  0s, 66.66MB/sindexed 23.72MB in  0s, 66.76MB/sindexed 23.85MB in  0s, 66.71MB/sindexed 23.99MB in  0s, 66.81MB/sindexed 24.12MB in  0s, 66.91MB/sindexed 24.25MB in  0s, 67.00MB/sindexed 24.38MB in  0s, 67.09MB/sindexed 24.51MB in  0s, 67.18MB/sindexed 24.64MB in  0s, 67.27MB/sindexed 24.77MB in  0s, 67.36MB/sindexed 24.90MB in  0s, 67.45MB/sindexed 25.03MB in  0s, 67.54MB/sindexed 25.17MB in  0s, 67.63MB/sindexed 25.30MB in  0s, 67.72MB/sindexed 25.43MB in  0s, 67.81MB/sindexed 25.56MB in  0s, 67.90MB/sindexed 25.69MB in  0s, 67.99MB/sindexed 25.82MB in  0s, 68.08MB/sindexed 25.95MB in  0s, 68.16MB/sindexed 26.08MB in  0s, 68.25MB/sindexed 26.21MB in  0s, 68.33MB/sindexed 26.35MB in  0s, 68.42MB/sindexed 26.48MB in  0s, 68.51MB/sindexed 26.61MB in  0s, 68.54MB/sindexed 26.74MB in  0s, 68.58MB/sindexed 26.87MB in  0s, 68.67MB/sindexed 27.00MB in  0s, 68.76MB/sindexed 27.13MB in  0s, 68.84MB/sindexed 27.26MB in  0s, 68.91MB/sindexed 27.39MB in  0s, 68.97MB/sindexed 27.52MB in  0s, 69.05MB/sindexed 27.66MB in  0s, 69.14MB/sindexed 27.79MB in  0s, 69.23MB/sindexed 27.92MB in  0s, 69.33MB/sindexed 28.05MB in  0s, 69.37MB/sindexed 28.18MB in  0s, 69.43MB/sindexed 28.31MB in  0s, 69.51MB/sindexed 28.44MB in  0s, 69.58MB/sindexed 28.57MB in  0s, 69.65MB/sindexed 28.70MB in  0s, 69.72MB/sindexed 28.84MB in  0s, 69.80MB/sindexed 28.97MB in  0s, 69.87MB/sindexed 29.10MB in  0s, 69.95MB/sindexed 29.23MB in  0s, 70.03MB/sindexed 29.36MB in  0s, 70.10MB/sindexed 29.49MB in  0s, 70.18MB/sindexed 29.62MB in  0s, 70.23MB/sindexed 29.75MB in  0s, 70.31MB/sindexed 29.88MB in  0s, 70.38MB/sindexed 30.02MB in  0s, 70.45MB/sindexed 30.15MB in  0s, 70.53MB/sindexed 30.28MB in  0s, 70.60MB/sindexed 30.41MB in  0s, 70.68MB/sindexed 30.54MB in  0s, 70.74MB/sindexed 30.67MB in  0s, 70.81MB/sindexed 30.80MB in  0s, 70.88MB/sindexed 30.93MB in  0s, 70.95MB/sindexed 31.06MB in  0s, 71.00MB/sindexed 31.19MB in  0s, 71.05MB/sindexed 31.33MB in  0s, 71.11MB/sindexed 31.46MB in  0s, 71.18MB/sindexed 31.59MB in  0s, 71.26MB/sindexed 31.72MB in  0s, 71.35MB/sindexed 31.85MB in  0s, 71.38MB/sindexed 31.98MB in  0s, 71.45MB/sindexed 32.11MB in  0s, 71.53MB/sindexed 32.24MB in  0s, 71.61MB/sindexed 32.37MB in  0s, 71.68MB/sindexed 32.51MB in  0s, 71.75MB/sindexed 32.64MB in  0s, 71.78MB/sindexed 32.77MB in  0s, 71.79MB/sindexed 32.90MB in  0s, 71.85MB/sindexed 33.03MB in  0s, 71.91MB/sindexed 33.16MB in  0s, 71.98MB/sindexed 33.29MB in  0s, 72.05MB/sindexed 33.42MB in  0s, 72.10MB/sindexed 33.55MB in  0s, 72.16MB/sindexed 33.69MB in  0s, 72.23MB/sindexed 33.82MB in  0s, 72.28MB/sindexed 33.95MB in  0s, 72.35MB/sindexed 34.08MB in  0s, 72.40MB/sindexed 34.21MB in  0s, 72.45MB/sindexed 34.34MB in  0s, 72.51MB/sindexed 34.47MB in  0s, 72.57MB/sindexed 34.60MB in  0s, 72.64MB/sindexed 34.73MB in  0s, 72.70MB/sindexed 34.86MB in  0s, 72.77MB/sindexed 35.00MB in  0s, 72.83MB/sindexed 35.13MB in  0s, 72.89MB/sindexed 35.26MB in  0s, 72.95MB/sindexed 35.39MB in  0s, 73.01MB/sindexed 35.52MB in  0s, 73.08MB/sindexed 35.65MB in  0s, 73.13MB/sindexed 35.78MB in  0s, 73.18MB/sindexed 35.91MB in  0s, 73.26MB/sindexed 36.04MB in  0s, 73.33MB/sindexed 36.18MB in  0s, 73.41MB/sindexed 36.31MB in  0s, 73.47MB/sindexed 36.44MB in  0s, 73.53MB/sindexed 36.57MB in  0s, 73.44MB/sindexed 36.70MB in  1s, 72.57MB/sindexed 36.83MB in  1s, 72.61MB/sindexed 36.96MB in  1s, 72.67MB/sindexed 37.09MB in  1s, 72.58MB/sindexed 37.22MB in  1s, 72.59MB/sindexed 37.36MB in  1s, 72.58MB/sindexed 37.49MB in  1s, 72.64MB/sindexed 37.62MB in  1s, 72.68MB/sindexed 37.75MB in  1s, 72.76MB/sindexed 37.88MB in  1s, 72.80MB/sindexed 38.01MB in  1s, 72.76MB/sindexed 38.14MB in  1s, 72.81MB/sindexed 38.27MB in  1s, 72.89MB/sindexed 38.40MB in  1s, 72.96MB/sindexed 38.53MB in  1s, 73.06MB/sindexed 38.67MB in  1s, 73.08MB/sindexed 38.80MB in  1s, 73.16MB/sindexed 38.93MB in  1s, 73.25MB/sindexed 39.06MB in  1s, 73.34MB/sindexed 39.19MB in  1s, 73.38MB/sindexed 39.32MB in  1s, 73.46MB/sindexed 39.45MB in  1s, 73.56MB/sindexed 39.58MB in  1s, 73.55MB/sindexed 39.71MB in  1s, 73.60MB/sindexed 39.85MB in  1s, 73.68MB/sindexed 39.98MB in  1s, 73.74MB/sindexed 40.11MB in  1s, 73.80MB/sindexed 40.24MB in  1s, 73.89MB/sindexed 40.37MB in  1s, 73.91MB/sindexed 40.50MB in  1s, 73.91MB/sindexed 40.63MB in  1s, 73.98MB/sindexed 40.76MB in  1s, 74.06MB/sindexed 40.89MB in  1s, 74.12MB/sindexed 41.03MB in  1s, 74.19MB/sindexed 41.16MB in  1s, 74.24MB/sindexed 41.29MB in  1s, 74.31MB/sindexed 41.42MB in  1s, 74.37MB/sindexed 41.55MB in  1s, 74.44MB/sindexed 41.68MB in  1s, 74.51MB/sindexed 41.81MB in  1s, 74.58MB/sindexed 41.94MB in  1s, 74.63MB/sindexed 42.07MB in  1s, 74.70MB/sindexed 42.20MB in  1s, 74.76MB/sindexed 42.34MB in  1s, 74.82MB/sindexed 42.47MB in  1s, 74.89MB/sindexed 42.60MB in  1s, 74.95MB/sindexed 42.73MB in  1s, 75.01MB/sindexed 42.86MB in  1s, 75.04MB/sindexed 42.99MB in  1s, 75.07MB/sindexed 43.12MB in  1s, 71.49MB/sindexed 43.25MB in  1s, 71.50MB/sindexed 43.38MB in  1s, 71.57MB/sindexed 43.52MB in  1s, 71.64MB/sindexed 43.65MB in  1s, 71.71MB/sindexed 43.78MB in  1s, 71.77MB/sindexed 43.91MB in  1s, 71.84MB/sindexed 44.04MB in  1s, 71.90MB/sindexed 44.17MB in  1s, 71.95MB/sindexed 44.30MB in  1s, 72.01MB/sindexed 44.43MB in  1s, 72.07MB/sindexed 44.56MB in  1s, 72.13MB/sindexed 44.70MB in  1s, 72.20MB/sindexed 44.83MB in  1s, 72.23MB/sindexed 44.96MB in  1s, 72.30MB/sindexed 45.09MB in  1s, 72.36MB/sindexed 45.22MB in  1s, 72.43MB/sindexed 45.35MB in  1s, 72.44MB/sindexed 45.48MB in  1s, 72.37MB/sindexed 45.61MB in  1s, 72.43MB/sindexed 45.74MB in  1s, 72.49MB/sindexed 45.87MB in  1s, 72.55MB/sindexed 46.01MB in  1s, 72.61MB/sindexed 46.14MB in  1s, 72.66MB/sindexed 46.27MB in  1s, 72.70MB/sindexed 46.40MB in  1s, 72.66MB/sindexed 46.53MB in  1s, 72.70MB/sindexed 46.66MB in  1s, 72.68MB/sindexed 46.79MB in  1s, 72.70MB/sindexed 46.92MB in  1s, 71.94MB/sindexed 47.05MB in  1s, 72.06MB/sindexed 47.19MB in  1s, 72.10MB/sindexed 47.32MB in  1s, 72.14MB/sindexed 47.45MB in  1s, 72.19MB/sindexed 47.58MB in  1s, 72.24MB/sindexed 47.71MB in  1s, 72.32MB/sindexed 47.84MB in  1s, 72.38MB/sindexed 47.97MB in  1s, 72.36MB/sindexed 48.10MB in  1s, 72.42MB/sindexed 48.23MB in  1s, 72.44MB/sindexed 48.37MB in  1s, 72.50MB/sindexed 48.50MB in  1s, 72.51MB/sindexed 48.63MB in  1s, 72.50MB/sindexed 48.76MB in  1s, 72.52MB/sindexed 48.89MB in  1s, 72.56MB/sindexed 49.02MB in  1s, 72.62MB/sindexed 49.15MB in  1s, 72.70MB/sindexed 49.28MB in  1s, 72.78MB/sindexed 49.41MB in  1s, 72.81MB/sindexed 49.54MB in  1s, 72.85MB/sindexed 49.68MB in  1s, 72.90MB/sindexed 49.81MB in  1s, 72.96MB/sindexed 49.94MB in  1s, 73.02MB/sindexed 50.07MB in  1s, 73.09MB/sindexed 50.20MB in  1s, 73.16MB/sindexed 50.33MB in  1s, 73.18MB/sindexed 50.46MB in  1s, 73.26MB/sindexed 50.59MB in  1s, 73.32MB/sindexed 50.72MB in  1s, 73.40MB/sindexed 50.86MB in  1s, 73.46MB/sindexed 50.99MB in  1s, 73.53MB/sindexed 51.12MB in  1s, 73.56MB/sindexed 51.25MB in  1s, 73.60MB/sindexed 51.38MB in  1s, 73.68MB/sindexed 51.51MB in  1s, 73.76MB/sindexed 51.64MB in  1s, 73.85MB/sindexed 51.77MB in  1s, 73.91MB/sindexed 51.90MB in  1s, 74.00MB/sindexed 52.04MB in  1s, 74.06MB/sindexed 52.17MB in  1s, 74.09MB/sindexed 52.30MB in  1s, 74.16MB/sindexed 52.43MB in  1s, 74.22MB/sindexed 52.56MB in  1s, 74.30MB/sindexed 52.69MB in  1s, 74.34MB/sindexed 52.82MB in  1s, 74.41MB/sindexed 52.95MB in  1s, 74.47MB/sindexed 53.08MB in  1s, 74.52MB/sindexed 53.21MB in  1s, 74.58MB/sindexed 53.35MB in  1s, 74.65MB/sindexed 53.48MB in  1s, 74.73MB/sindexed 53.61MB in  1s, 74.81MB/sindexed 53.74MB in  1s, 74.89MB/sindexed 53.87MB in  1s, 74.97MB/sindexed 54.00MB in  1s, 75.05MB/sindexed 54.13MB in  1s, 75.09MB/sindexed 54.26MB in  1s, 75.17MB/sindexed 54.39MB in  1s, 75.24MB/sindexed 54.53MB in  1s, 75.33MB/sindexed 54.66MB in  1s, 75.40MB/sindexed 54.79MB in  1s, 75.47MB/sindexed 54.92MB in  1s, 75.55MB/sindexed 55.05MB in  1s, 75.60MB/sindexed 55.18MB in  1s, 75.65MB/sindexed 55.31MB in  1s, 75.72MB/sindexed 55.44MB in  1s, 75.79MB/sindexed 55.57MB in  1s, 75.86MB/sindexed 55.71MB in  1s, 75.93MB/sindexed 55.84MB in  1s, 76.00MB/sindexed 55.97MB in  1s, 76.07MB/sindexed 56.10MB in  1s, 76.13MB/sindexed 56.23MB in  1s, 76.20MB/sindexed 56.36MB in  1s, 76.28MB/sindexed 56.49MB in  1s, 76.36MB/sindexed 56.62MB in  1s, 76.43MB/sindexed 56.75MB in  1s, 76.51MB/sindexed 56.88MB in  1s, 76.58MB/sindexed 57.02MB in  1s, 76.65MB/sindexed 57.15MB in  1s, 76.72MB/sindexed 57.28MB in  1s, 76.76MB/sindexed 57.41MB in  1s, 76.82MB/sindexed 57.54MB in  1s, 76.90MB/sindexed 57.67MB in  1s, 76.96MB/sindexed 57.80MB in  1s, 77.02MB/sindexed 57.93MB in  1s, 77.09MB/sindexed 58.06MB in  1s, 77.10MB/sindexed 58.20MB in  1s, 77.04MB/sindexed 58.33MB in  1s, 77.09MB/sindexed 58.46MB in  1s, 77.14MB/sindexed 58.59MB in  1s, 77.19MB/sindexed 58.72MB in  1s, 77.24MB/sindexed 58.85MB in  1s, 77.29MB/sindexed 58.98MB in  1s, 77.32MB/sindexed 59.11MB in  1s, 77.37MB/sindexed 59.24MB in  1s, 77.42MB/sindexed 59.38MB in  1s, 77.46MB/sindexed 59.51MB in  1s, 77.51MB/sindexed 59.64MB in  1s, 77.56MB/sindexed 59.77MB in  1s, 77.62MB/sindexed 59.90MB in  1s, 77.67MB/sindexed 60.03MB in  1s, 77.73MB/sindexed 60.16MB in  1s, 77.80MB/sindexed 60.29MB in  1s, 77.85MB/s                                                                              indexed 2.15GB in  1s, 2.15GB/s                                                                              
 
-    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpeYcd14/eurostat/f939ed30d2103096f8705822425a7007.rds
+    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\Rtmp8cscG8/eurostat/f939ed30d2103096f8705822425a7007.rds
 
 ``` r
 ESres <- ESres[!geo %in% c("EU27_2020", "EU28", "FX")]
@@ -3188,7 +3213,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-55-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
 
 Szinte tökéletes az egyezés, minden kategóriánál jól egyezik a saját
 számunk az Eurostat-éval! (Teljesen egzakt egyezés valószínűleg nem
@@ -3262,7 +3287,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
 
 Továbbra is jó az egyezés! A kevés eltérést olyan adatok adják, ahol
 egyértelmű, hogy az Eurostat adatbázisban van hiba (a K72_75 és a
@@ -3310,7 +3335,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-59-1.png)<!-- -->
 
 Az eltérést úgy tűnik itt is csak ugyanazok a tényezők okozzák.
 
@@ -3324,6 +3349,12 @@ azt megfelelően megjeleníti az oldalon. Ezzel lényegében hozzáférhetővé
 teszi az R erejét bárki számára, minden R ismeret nélkül is, egy jól
 kezelhető és az előbbiekből adódóan interaktív formában. (Ráadásul a
 weboldal maga is megírható R alatt minden webes tudás nélkül.)
+
+A vizualizációhoz a [highcharts](https://www.highcharts.com/) könyvtárat
+használtam, melyet a [highcharter](https://jkunst.com/highcharter/)
+csomag segítségével R alól is el lehet érni (azaz pusztán R-beli, és
+némileg ráadásul a ggplot2-re emlékeztető hívásokkal leírhatjuk a
+highcharts-os ábrát).
 
 Az oldal forráskódja letölhető innen:
 [app.R](https://github.com/ferenci-tamas/OkspecifikusMortalitasiAdatbazis/blob/main/app.R).
