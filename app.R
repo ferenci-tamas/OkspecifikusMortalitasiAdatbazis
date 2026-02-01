@@ -279,7 +279,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.45"),
+                  .noWS = "outside"), ", v0.46"),
     
     tags$script(HTML("
       var sc_project=11601191; 
