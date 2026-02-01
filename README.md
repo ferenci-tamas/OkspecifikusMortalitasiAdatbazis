@@ -992,7 +992,12 @@ akkor lehet tudni, hogy az az összevont lista 22-es kódja, nem a sima
 lista 22-ese. Ráadásul, ha szeretnénk többféle szintű, kisebb és nagyobb
 összevonást, akkor azt is kézzel kell megoldani, de itt már legalább
 igyekeztek hierarchiát tartani: B220 jelenti a különböző meningitiseket
-(a kódok 320-tól 329-ig).
+(a kódok 320-tól 329-ig). Ez azonban csak a BNO-9-re igaz: a 8-nál
+szintén csak összevont lista van, de ilyen hierarchizált csoportosítások
+nélkül. Egyébként az előbbi megjegyzésem, hogy magából a kódból sajnos
+nem látszik, hogy milyen osztályozásról beszélünk, a különböző BNO
+revíziók között is igaz a WHO adatbázisában: a „B032” a tüdőgyulladás a
+BNO-8 egyik összevont listájában, de lepra a BNO-9 egyikében.
 
 Azt, hogy ki melyik BNO verziót, és azon belül milyen felbontást
 használt adott évben, a `List` nevű, három karakterből álló mező adja
@@ -1009,7 +1014,8 @@ amit én az imént leírtam (azzal az egészen minimális eltéréssel, hogy az
 B-ben hiányzik egy speciális, egyetlen ország egyetlen évében használt
 kód, de cserében szerepel benne két kód a HIV-re), a 09C és 09N pedig
 még jobban összevont, nem-standard listák, előbbit Kína, az utóbbiakat a
-szovjet utódállamok használták egy ideig.
+szovjet utódállamok használták egy ideig. A 8-as revízióban két lista
+van, a kevésbé összevont 08A, és a jóval összevontabb 09B.
 
 Ha valakit csak az utóbbi nagyjából 30 év adatai érdekelnek, akkor
 nincsen probléma, mert ez egységesen a BNO-10 érája, tehát minden adat
@@ -1164,6 +1170,8 @@ unzip("./inputdata/morticd10_part6.zip", exdir = td)
 
 unzip("./inputdata/morticd09.zip", exdir = td)
 
+unzip("./inputdata/morticd08.zip", exdir = td)
+
 RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd*",
                                        full.names = TRUE), fread))
 ```
@@ -1230,7 +1238,7 @@ formátumkódú országokat/éveket tartjuk meg):
 RawData <- RawData[Frmat %in% c(0, 1, 2)]
 ```
 
-Van összesen 3668443 életkorhoz nem rendelt halálozás, de ezek aránya
+Van összesen 4338855 életkorhoz nem rendelt halálozás, de ezek aránya
 nagyon egyenetlenül oszlik ezl az országok között. Most kidobjuk azokat
 az országokat, ahol a halálesetek több mint 5 ezreléke nincs életkorhoz
 rendelve:
@@ -1244,7 +1252,7 @@ RawData <- RawData[!iso3c %in% RawData[
 A maradéknál az életkorhoz nem rendelt halálozásokat automatikusan el
 fogjuk majd hagyni (később, amikor majd long formátumra váltunk).
 
-Van 84604 nemhez nem rendelt halálozás, ezeknek pláne kicsi a száma
+Van 83343 nemhez nem rendelt halálozás, ezeknek pláne kicsi a száma
 (egyik országnál sincs 5 ezrelék felett), úgyhogy egyszerűen elhagyjuk:
 
 ``` r
@@ -1450,7 +1458,7 @@ kivételeket mentsük el kézzel külön:
 CountryCodes <- CountryCodes[
   ISO %in% unique(RawData$iso3c) &
     !ISO%in%c("X10", "X11", "X12", "XOD", "ANT", "SCG", "X13", "XX5",
-              "XX6", "XX7", "XX9")]
+              "XX6", "XX7", "XX9", "XX4", "XX8")]
 CountryCodes <- CountryCodes[
   , .(iso3c = ISO,
       Country = countries::country_name(DisplayString, to = "name_hu"))]
@@ -1458,11 +1466,12 @@ CountryCodes <- rbind(
   CountryCodes,
   data.table(
     iso3c = c("X10", "X11", "X12", "XOD", "ANT", "SCG", "X13", "XX5", "XX6",
-              "XX7", "XX9"),
+              "XX7", "XX9", "XX4", "XX8"),
     Country = c("Anglia és Wales", "Észak-Írország", "Skócia", "Rodrigues",
                 "Holland Antillák", "Szerbia és Montenegró", "Jugoszlávia",
                 "Csehszlovákia", "Német Demokratikus Köztársaság",
-                "Német Szövetségi Köztársaság", "Szovjetunió")))
+                "Német Szövetségi Köztársaság", "Szovjetunió",
+                "Rjúkjú-szigetek", "Németország, Nyugat-Berlin")))
 ```
 
 Ezután kimenthetjük az adatokat:
@@ -1751,14 +1760,19 @@ használtam:
 ICDGroups <- list(
   Groups =
     list(
-      ###### A, B ######
+      ###### Összes ######
       data.table(rbind(data.table(Cause = ICDData[Kod1!="Z"&(Kod1!="Y"|Kod23<=89)]$KOD10, List = "104"),
+                       data.table(Cause = "A000", List = "08A"),
+                       data.table(Cause = "B000", List = "08B"),
                        data.table(Cause = "B00", List = "09A"),
                        data.table(Cause = "B00", List = "09B"),
                        data.table(Cause = "C001", List = "09C"),
                        data.table(Cause = "B00", List = "09N")),
                  EurostatCode = "A-R_V-Y", CauseGroup = "Összes halálok (A00-Y89)"),
+      ###### A, B ######
       data.table(rbind(data.table(Cause = ICDData[Kod1%in%c("A", "B")]$KOD10, List = "104"),
+                       data.table(Cause = paste0("A", sprintf("%03d", 1:44)), List = "08A"),
+                       data.table(Cause = paste0("B", sprintf("%03d", 1:18)), List = "08B"),
                        data.table(Cause = c("B01", "B02", "B03", "B04", "B05", "B06", "B07"), List = "09A"),
                        data.table(Cause = c("B01", "B02", "B03", "B04", "B05", "B06", "B07"), List = "09B"),
                        data.table(Cause = "C002", List = "09C"),
@@ -1766,6 +1780,8 @@ ICDGroups <- list(
                  EurostatCode = "A_B", CauseGroup = "Fertőző és parazitás betegségek (A00-B99)"),
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="A"&Kod23>=15&Kod23<=19)|(Kod1=="B"&Kod23==90)]$KOD10,
                                   List = "104"),
+                       data.table(Cause = c("A006", "A007", "A008", "A009", "A010"), List = "08A"),
+                       data.table(Cause = c("B005", "B006"), List = "08B"),
                        data.table(Cause = c("B02", "B077"), List = "09A"),
                        data.table(Cause = c("B02", "B077"), List = "09B")),
                  EurostatCode = "A15-A19_B90", CauseGroup = "Gümőkór (A15-A19, B90)"),
@@ -1777,6 +1793,7 @@ ICDGroups <- list(
                  EurostatCode = "B20-B24",
                  CauseGroup = "Humán immunodeficiencia vírus (HIV) betegség (B20-B24)"),
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="B"&Kod23>=15&Kod23<=19)|KOD10=="B9420"]$KOD10, List = "104"),
+                       data.table(Cause = "A028", List = "08A"),
                        data.table(Cause = "B046", List = "09A"),
                        data.table(Cause = "B046", List = "09B"),
                        data.table(Cause = "C016", List = "09C")),
@@ -1794,6 +1811,8 @@ ICDGroups <- list(
                                      "B91-B94.1, B94.8-B99)")),
       ###### C, D ######
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"|(Kod1=="D"&Kod23<=48)]$KOD10, List = "104"),
+                       data.table(Cause = paste0("A", sprintf("%03d", 45:61)), List = "08A"),
+                       data.table(Cause = c("B019", "B020"), List = "08B"),
                        data.table(Cause = c("B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17"),
                                   List = "09A"),
                        data.table(Cause = c("B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17"),
@@ -1802,66 +1821,80 @@ ICDGroups <- list(
                        data.table(Cause = "CH02", List = "09N")),
                  EurostatCode = "C00-D48", CauseGroup = "Daganatok (C00-D48)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"]$KOD10, List = "104"),
+                       data.table(Cause = paste0("A", sprintf("%03d", 45:60)), List = "08A"),
+                       data.table(Cause = "B019", List = "08B"),
                        data.table(Cause = c("B08", "B09", "B10", "B11", "B12", "B13", "B14"), List = "09A"),
                        data.table(Cause = c("B08", "B09", "B10", "B11", "B12", "B13", "B14"), List = "09B"),
                        data.table(Cause = "S08", List = "09N")),
                  EurostatCode = "C", CauseGroup = "Rosszindulatú daganatok (C00-C97)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&(Kod23>=0&Kod23<=14)]$KOD10, List = "104"),
+                       data.table(Cause = "A045", List = "08A"),
                        data.table(Cause = "B08", List = "09A"),
                        data.table(Cause = "B08", List = "09B"),
                        data.table(Cause = "B08", List = "09N")),
                  EurostatCode = "C00-C14",
                  CauseGroup = "Az ajak, a szájüreg és garat rosszindulatú daganatai (C00-C14)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==15]$KOD10, List = "104"),
+                       data.table(Cause = "A046", List = "08A"),
                        data.table(Cause = "B090", List = "09A"),
                        data.table(Cause = "B090", List = "09B"),
                        data.table(Cause = "B090", List = "09N")),
                  EurostatCode = "C15", CauseGroup = "A nyelőcső rosszindulatú daganata (C15)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==16]$KOD10, List = "104"),
+                       data.table(Cause = "A047", List = "08A"),
                        data.table(Cause = "B091", List = "09A"),
                        data.table(Cause = "B091", List = "09B"),
                        data.table(Cause = "B091", List = "09N")),
                  EurostatCode = "C16", CauseGroup = "A gyomor rosszindulatú daganata (C16)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=18&Kod23<=21]$KOD10, List = "104"),
+                       data.table(Cause = c("153", "A049"), List = "08A"),
                        data.table(Cause = c("B093", "B094"), List = "09A"),
                        data.table(Cause = c("B093", "B094"), List = "09B"),
                        data.table(Cause = c("B093", "B094"), List = "09N")),
                  EurostatCode = "C18-C21",
                  CauseGroup = "A vastagbél, végbél és a végbélnyílás rosszindulatú daganatai (C18-C21)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==22]$KOD10, List = "104"),
+                       data.table(Cause = c("155", "1978"), List = "08A"),
                        data.table(Cause = c("B095", "1551", "1552"), List = "09A"),
                        data.table(Cause = c("B095", "1551", "1552"), List = "09B")),
                  EurostatCode = "C22",
                  CauseGroup = "A máj és intrahepaticus epeutak rosszindulatú daganata (C22)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==25]$KOD10, List = "104"),
+                       data.table(Cause = "157", List = "08A"),
                        data.table(Cause = "B096", List = "09A"),
                        data.table(Cause = "B096", List = "09B")),
                  EurostatCode = "C25", CauseGroup = "A hasnyálmirigy rosszindulatú daganata (C25)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==32]$KOD10, List = "104"),
+                       data.table(Cause = "A050", List = "08A"),
                        data.table(Cause = "B100", List = "09A"),
                        data.table(Cause = "B100", List = "09B"),
                        data.table(Cause = "B100", List = "09N")),
                  EurostatCode = "C32", CauseGroup = "A gége rosszindulatú daganata (C32)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=33&Kod23<=34]$KOD10, List = "104"),
+                       data.table(Cause = "A051", List = "08A"),
                        data.table(Cause = "B101", List = "09A"),
                        data.table(Cause = "B101", List = "09B"),
                        data.table(Cause = "B101", List = "09N")),
                  EurostatCode = "C33_C34",
                  CauseGroup = "A légcső, a hörgő és a tüdő rosszindulatú daganatai (C33-C34)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==43]$KOD10, List = "104"),
+                       data.table(Cause = "172", List = "08A"),
                        data.table(Cause = "B111", List = "09A"),
                        data.table(Cause = "B111", List = "09B")),
                  EurostatCode = "C43", CauseGroup = "A bőr rosszindulatú melanomája (C43)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==50]$KOD10, List = "104"),
+                       data.table(Cause = "A054", List = "08A"),
                        data.table(Cause = c("B113", "175"), List = "09A"),
                        data.table(Cause = c("B113", "175"), List = "09B")),
                  EurostatCode = "C50", CauseGroup = "Az emlő rosszindulatú daganata (C50)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==53]$KOD10, List = "104"),
+                       data.table(Cause = "A055", List = "08A"),
                        data.table(Cause = "B120", List = "09A"),
                        data.table(Cause = "B120", List = "09B"),
                        data.table(Cause = "B120", List = "09N")),
                  EurostatCode = "C53", CauseGroup = "A méhnyak rosszindulatú daganata (C53)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=54&Kod23<=55]$KOD10, List = "104"),
+                       data.table(Cause = "182", List = "08A"),
                        data.table(Cause = "B122", List = "09A"),
                        data.table(Cause = "B122", List = "09B"),
                        data.table(Cause = "B122", List = "09N")),
@@ -1873,40 +1906,48 @@ ICDGroups <- list(
                        data.table(Cause = "1830", List = "09B")),
                  EurostatCode = "C56", CauseGroup = "A petefészek rosszindulatú daganata (C56)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==61]$KOD10, List = "104"),
+                       data.table(Cause = "A057", List = "08A"),
                        data.table(Cause = "B124", List = "09A"),
                        data.table(Cause = "B124", List = "09B"),
                        data.table(Cause = "B124", List = "09N")),
                  EurostatCode = "C61", CauseGroup = "A prostata rosszindulatú daganata (C61)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==64]$KOD10, List = "104"),
+                       data.table(Cause = "1890", List = "08A"),
                        data.table(Cause = "1890", List = "09A"),
                        data.table(Cause = "1890", List = "09B")),
                  EurostatCode = "C64",
                  CauseGroup = "A vese rosszindulatú daganata, kivéve a vesemedencét (C64)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==67]$KOD10, List = "104"),
+                       data.table(Cause = "188", List = "08A"),
                        data.table(Cause = "B126", List = "09A"),
                        data.table(Cause = "B126", List = "09B")),
                  EurostatCode = "C67", CauseGroup = "A húgyhólyag rosszindulatú daganata (C67)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=70&Kod23<=72]$KOD10, List = "104"),
+                       data.table(Cause = c("191", "192"), List = "08A"),
                        data.table(Cause = c("B130", "192"), List = "09A"),
                        data.table(Cause = c("B130", "192"), List = "09B")),
                  EurostatCode = "C70-C72",
                  CauseGroup = paste0("Az agyburkok, az agy, a gerincvelő, az agyidegek és a központi ",
                                      "idegrendszer egyéb részeinek rosszindulatú daganatai (C70-C72)")),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==73]$KOD10, List = "104"),
+                       data.table(Cause = "193", List = "08A"),
                        data.table(Cause = "193", List = "09A"),
                        data.table(Cause = "193", List = "09B")),
                  EurostatCode = "C73", CauseGroup = "A pajzsmirigy rosszindulatú daganata (C73)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=81&Kod23<=86]$KOD10, List = "104"),
+                       data.table(Cause = c("200", "201"), List = "08A"),
                        data.table(Cause = c("200", "B140"), List = "09A"),
                        data.table(Cause = c("200", "B140"), List = "09B")),
                  EurostatCode = "C81-C86", CauseGroup = "Hodgkin kór és lymphomák (C81-C86)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=91&Kod23<=95]$KOD10, List = "104"),
+                       data.table(Cause = c("A059", "208"), List = "08A"),
                        data.table(Cause = "B141", List = "09A"),
                        data.table(Cause = "B141", List = "09B"),
                        data.table(Cause = "B141", List = "09N"),
                        data.table(Cause = "C032", List = "09C")),
                  EurostatCode = "C91-C95", CauseGroup = "Leukémia (C91-C95)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&(Kod23==88|Kod23==90|Kod23==96)]$KOD10, List = "104"),
+                       data.table(Cause = c("202", "203"), List = "08A"),
                        data.table(Cause = c("202", "203"), List = "09A"),
                        data.table(Cause = c("202", "203"), List = "09B")),
                  EurostatCode = "C88_C90_C96",
@@ -1924,12 +1965,15 @@ ICDGroups <- list(
                                      "C44-C49, C51-C52, C57-C60, C62-C63, C65-C66, C68-C69, C74-C80, ",
                                      "C97)")),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="D"&Kod23>=0&Kod23<=48]$KOD10, List = "104"),
+                       data.table(Cause = "A061", List = "08A"),
+                       data.table(Cause = "B020", List = "08B"),
                        data.table(Cause = c("B15", "B16", "B17"), List = "09A"),
                        data.table(Cause = c("B15", "B16", "B17"), List = "09B")),
                  EurostatCode = "D00-D48",
                  CauseGroup = paste0("In situ, jóindulatú, vagy bizonytalan vagy ismeretlen viselkedésű ",
                                      "daganatok (D00-D48)")),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="D"&Kod23>=50&Kod23<=89]$KOD10, List = "104"),
+                       data.table(Cause = c("A067", "A068"), List = "08A"),
                        data.table(Cause = "B20", List = "09A"),
                        data.table(Cause = "B20", List = "09B"),
                        data.table(Cause = "B20", List = "09N"),
@@ -1939,6 +1983,7 @@ ICDGroups <- list(
                                      "egyéb rendellenességek (D50-D89)")),
       ##### E #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="E"&Kod23>=0&Kod23<=89]$KOD10, List = "104"),
+                       data.table(Cause = c("A062", "A063", "A064", "A065", "A066"), List = "08A"),
                        data.table(Cause = c("B18", "B19"), List = "09A"),
                        data.table(Cause = c("B18", "B19"), List = "09B"),
                        data.table(Cause = "CH03", List = "09N"),
@@ -1946,6 +1991,8 @@ ICDGroups <- list(
                  EurostatCode = "E",
                  CauseGroup = "Endokrin, táplálkozási és anyagcsere betegségek (E00-E89)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="E"&Kod23>=10&Kod23<=14]$KOD10, List = "104"),
+                       data.table(Cause = "A064", List = "08A"),
+                       data.table(Cause = "B021", List = "08B"),
                        data.table(Cause = "B181", List = "09A"),
                        data.table(Cause = "B181", List = "09B"),
                        data.table(Cause = "B181", List = "09N"),
@@ -1957,6 +2004,7 @@ ICDGroups <- list(
                  CauseGroup = "Egyéb endokrin, táplálkozási és anyagcsere betegségek (E00-E07, E15-E89)"),
       ##### F #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="F"&Kod23>=1&Kod23<=99]$KOD10, List = "104"),
+                       data.table(Cause = c("A069", "A070", "A071"), List = "08A"),
                        data.table(Cause = "B21", List = "09A"),
                        data.table(Cause = "B21", List = "09B"),
                        data.table(Cause = "B21", List = "09N"),
@@ -1979,6 +2027,7 @@ ICDGroups <- list(
                  CauseGroup = "Egyéb mentális- és viselkedészavarok (F04-F09, F17, F20-F99)"),
       ##### G, H #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="G"|Kod1=="H"]$KOD10, List = "104"),
+                       data.table(Cause = c("A072", "A073", "A074", "A075", "A076", "A077", "A078", "A079"), List = "08A"),
                        data.table(Cause = c("B22", "B23", "B24"), List = "09A"),
                        data.table(Cause = c("B22", "B23", "B24"), List = "09B"),
                        data.table(Cause = "CH06", List = "09N")),
@@ -1994,13 +2043,16 @@ ICDGroups <- list(
                  CauseGroup = paste0("Az idegrendszer és az érzékszervek egyéb betegségei (G00-G12, G14, ",
                                      "G21-G25, G31-H95)")),
       ##### I #####
-      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=0&Kod23<=99]$KOD10, List = "104"),
+      data.table(rbind(data.table(Cause = ICDData[Kod1=="I"]$KOD10, List = "104"),
+                       data.table(Cause = c("A080", "A081", "A082", "A083", "A084", "A085", "A086", "A087", "A088"), List = "08A"),
                        data.table(Cause = c("B25", "B26", "B27", "B28", "B29", "B30"), List = "09A"),
                        data.table(Cause = c("B25", "B26", "B27", "B28", "B29", "B30"), List = "09B"),
                        data.table(Cause = c("B25", "B26", "B27", "B28", "B29", "B30"), List = "09N"),
                        data.table(Cause = "C041", List = "09C")),
                  EurostatCode = "I", CauseGroup = "A keringési rendszer betegségei (I00-I99)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=20&Kod23<=25]$KOD10, List = "104"),
+                       data.table(Cause = "A083", List = "08A"),
+                       data.table(Cause = "B028", List = "08B"),
                        data.table(Cause = "B27", List = "09A"),
                        data.table(Cause = "B27", List = "09B"),
                        data.table(Cause = "B27", List = "09N"),
@@ -2013,33 +2065,43 @@ ICDGroups <- list(
                  EurostatCode = "I20_I23-I25",
                  CauseGroup = "Egyéb ischaemiás szívbetegségek (I20, I23-I25)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=30&Kod23<=51]$KOD10, List = "104"),
+                       data.table(Cause = "A084", List = "08A"),
+                       data.table(Cause = "B029", List = "08B"),
                        data.table(Cause = c("420+", "B281"), List = "09A"),
                        data.table(Cause = c("420+", "B281"), List = "09B"),
                        data.table(Cause = "C049", List = "09C")),
                  EurostatCode = "I30-I51", CauseGroup = "A szívbetegség egyéb formái (I30-I51)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&Kod23>=60&Kod23<=69]$KOD10, List = "104"),
+                       data.table(Cause = "A085", List = "08A"),
+                       data.table(Cause = "B030", List = "08B"),
                        data.table(Cause = "B29", List = "09A"),
                        data.table(Cause = "B29", List = "09B"),
                        data.table(Cause = "B29", List = "09N"),
                        data.table(Cause = "C051", List = "09C")),
                  EurostatCode = "I60-I69", CauseGroup = "Cerebrovaszkuláris betegségek (I60-I69)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="I"&((Kod23>=0&Kod23<=15)|(Kod23>=26&Kod23<=28)|
-                                                               (Kod23>=70&Kod23<=99))]$KOD10, List = "104")),
+                                                               (Kod23>=70&Kod23<=99))]$KOD10, List = "104"),
+                       data.table(Cause = c("A080", "A081", "A082", "A086", "A087", "A088"), List = "08A")),
                  EurostatCode = "I_OTH",
                  CauseGroup = "A keringési rendszer egyéb betegségei (I00-I15, I26-I28, I70-I99)"),
       ##### J #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=0&Kod23<=99]$KOD10, List = "104"),
+                       data.table(Cause = c("A089", "A090", "A091", "A092", "A093", "A094", "A095", "A096"), List = "08A"),
                        data.table(Cause = c("B31", "B32"), List = "09A"),
                        data.table(Cause = c("B31", "B32"), List = "09B"),
                        data.table(Cause = "CH08", List = "09N"),
                        data.table(Cause = "C052", List = "09C")),
                  EurostatCode = "J", CauseGroup = "A légzőrendszer betegségei (J00-J99)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=9&Kod23<=11]$KOD10, List = "104"),
+                       data.table(Cause = "A090", List = "08A"),
+                       data.table(Cause = "B031", List = "08B"),
                        data.table(Cause = "B322", List = "09A"),
                        data.table(Cause = "B322", List = "09B"),
                        data.table(Cause = "B322", List = "09N")),
                  EurostatCode = "J09-J11", CauseGroup = "Influenza (J09-J11)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=12&Kod23<=18]$KOD10, List = "104"),
+                       data.table(Cause = c("A091", "A092"), List = "08A"),
+                       data.table(Cause = "B032", List = "08B"),
                        data.table(Cause = "B321", List = "09A"),
                        data.table(Cause = "B321", List = "09B"),
                        data.table(Cause = "B321", List = "09N"),
@@ -2058,6 +2120,7 @@ ICDGroups <- list(
                  CauseGroup = "A légzőrendszer egyéb betegségei (J00-J06, J20-J39, J60-J99)"),
       ##### K #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&Kod23>=0&Kod23<=92]$KOD10, List = "104"),
+                       data.table(Cause = c("A097", "A098", "A099", "A100", "A101", "A102", "A103", "A104"), List = "08A"),
                        data.table(Cause = c("B33", "B34"), List = "09A"),
                        data.table(Cause = c("B33", "B34"), List = "09B"),
                        data.table(Cause = "CH09", List = "09N"),
@@ -2067,6 +2130,8 @@ ICDGroups <- list(
                  EurostatCode = "K25-K28",
                  CauseGroup = "Gyomor-, nyombél-, pepticus- és gastrojejunalis fekély (K25-K28)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&((Kod23==70)|(Kod23>=73&Kod23<=74))]$KOD10, List = "104"),
+                       data.table(Cause = "A102", List = "08A"),
+                       data.table(Cause = "B037", List = "08B"),
                        data.table(Cause = "B347", List = "09A"),
                        data.table(Cause = "B347", List = "09B"),
                        data.table(Cause = "C060", List = "09N")),
@@ -2084,12 +2149,14 @@ ICDGroups <- list(
                  CauseGroup = "Az emésztőrendszer egyéb betegségei (K00-K22, K29-K66, K71-K72, K75-K92)"),
       ##### L #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="L"]$KOD10, List = "104"),
+                       data.table(Cause = c("A119", "A120"), List = "08A"),
                        data.table(Cause = "B42", List = "09A"),
                        data.table(Cause = "B42", List = "09B"),
                        data.table(Cause = "B42", List = "09N")),
                  EurostatCode = "L", CauseGroup = "A bőr és a bőralatti szövet betegségei (L00-L99)"),
       ##### M #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="M"]$KOD10, List = "104"),
+                       data.table(Cause = c("A121", "A122", "A123", "A124", "A125"), List = "08A"),
                        data.table(Cause = "B43", List = "09A"),
                        data.table(Cause = "B43", List = "09B"),
                        data.table(Cause = "B43", List = "09N"),
@@ -2107,6 +2174,7 @@ ICDGroups <- list(
                                      "M08-M13, M20-M99)")),
       ##### N #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="N"]$KOD10, List = "104"),
+                       data.table(Cause = c("A105", "A106", "A107", "A108", "A109", "A110", "A111"), List = "08A"),
                        data.table(Cause = c("B35", "B36", "B37"), List = "09A"),
                        data.table(Cause = c("B35", "B36", "B37"), List = "09B"),
                        data.table(Cause = "CH10", List = "09N"),
@@ -2119,6 +2187,8 @@ ICDGroups <- list(
                  CauseGroup = "Az urogenitális rendszer egyéb betegségei (N30-N99)"),
       ##### O #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="O"]$KOD10, List = "104"),
+                       data.table(Cause = c("A112", "A113", "A114", "A115", "A116", "A117"), List = "08A"),
+                       data.table(Cause = c("B040", "B041"), List = "08B"),
                        data.table(Cause = c("B38", "B39", "B40", "B41"), List = "09A"),
                        data.table(Cause = c("B38", "B39", "B40", "B41"), List = "09B"),
                        data.table(Cause = "CH11", List = "09N"),
@@ -2127,6 +2197,8 @@ ICDGroups <- list(
                  CauseGroup = "A terhesség, a szülés és a gyermekágy komplikációi (O00-O99)"),
       ##### P #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="P"&Kod23>=0&Kod23<=96]$KOD10, List = "104"),
+                       data.table(Cause = c("A131", "A132", "A133", "A134", "A135"), List = "08A"),
+                       data.table(Cause = c("B043", "B044"), List = "08B"),
                        data.table(Cause = "B45", List = "09A"),
                        data.table(Cause = "B45", List = "09B"),
                        data.table(Cause = "B45", List = "09N"),
@@ -2135,6 +2207,8 @@ ICDGroups <- list(
                  CauseGroup = "A perinatális szakban keletkező bizonyos állapotok (P00-P96)"),
       ##### Q #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="Q"&Kod23>=0&Kod23<=99]$KOD10, List = "104"),
+                       data.table(Cause = c("A126", "A127", "A128", "A129", "A130"), List = "08A"),
+                       data.table(Cause = "B042", List = "08B"),
                        data.table(Cause = "B44", List = "09A"),
                        data.table(Cause = "B44", List = "09B"),
                        data.table(Cause = "B44", List = "09N"),
@@ -2144,6 +2218,8 @@ ICDGroups <- list(
                                      "kromoszómaabnormitások (Q00-Q99)")),
       ##### R #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="R"]$KOD10, List = "104"),
+                       data.table(Cause = c("A136", "A137"), List = "08A"),
+                       data.table(Cause = "B045", List = "08B"),
                        data.table(Cause = "B46", List = "09A"),
                        data.table(Cause = "B46", List = "09B"),
                        data.table(Cause = "B46", List = "09N")),
@@ -2175,6 +2251,8 @@ ICDGroups <- list(
       ##### V, W, X, Y #####
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="V")|(Kod1=="W")|(Kod1=="X")|(Kod1=="Y"&Kod23>=0&Kod23<=89)]$KOD10,
                                   List = "104"),
+                       data.table(Cause = c(paste0("A", sprintf("%03d", 138:150)), "CH17"), List = "08A"),
+                       data.table(Cause = c("B047", "B048", "B049", "B050"), List = "08B"),
                        data.table(Cause = c("B47", "B48", "B49", "B50", "B51", "B52", "B53", "B54", "B55", "B56", "CH17"), List = "09A"),
                        data.table(Cause = c("B47", "B48", "B49", "B50", "B51", "B52", "B53", "B54", "B55", "B56", "CH17"), List = "09B"),
                        data.table(Cause = "CH17", List = "09N"),
@@ -2188,12 +2266,14 @@ ICDGroups <- list(
       data.table(rbind(data.table(Cause = ICDData[Kod1=="V"|(Kod1=="Y"&Kod23==85)]$KOD10, List = "104")),
                  EurostatCode = "V_Y85", CauseGroup = "Közlekedési balesetek (V01-V99, Y85)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="W"&Kod23>=0&Kod23<=19]$KOD10, List = "104"),
+                       data.table(Cause = "A141", List = "08A"),
                        data.table(Cause = "B50", List = "09A"),
                        data.table(Cause = "B50", List = "09B"),
                        data.table(Cause = "B50", List = "09N"),
                        data.table(Cause = "C093", List = "09C")),
                  EurostatCode = "W00-W19", CauseGroup = "Esések (W00-W19)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="W"&Kod23>=65&Kod23<=74]$KOD10, List = "104"),
+                       data.table(Cause = "A143", List = "08A"),
                        data.table(Cause = "B521", List = "09A"),
                        data.table(Cause = "B521", List = "09B"),
                        data.table(Cause = "B521", List = "09N"),
@@ -2201,6 +2281,7 @@ ICDGroups <- list(
                  EurostatCode = "W65-W74",
                  CauseGroup = "Balesetszerű vízbefulladás vagy elmerülés (W65-W74)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="X"&Kod23>=40&Kod23<=49]$KOD10, List = "104"),
+                       data.table(Cause = "A140", List = "08A"),
                        data.table(Cause = "B48", List = "09A"),
                        data.table(Cause = "B48", List = "09B"),
                        data.table(Cause = "B48", List = "09N"),
@@ -2213,6 +2294,8 @@ ICDGroups <- list(
                  EurostatCode = "ACC_OTH",
                  CauseGroup = "Egyéb balesetek (W20-W64, W75-X39, X50-X59, Y86)"),
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="X"&Kod23>=60&Kod23<=84)|(KOD10=="Y8700")]$KOD10, List = "104"),
+                       data.table(Cause = "A147", List = "08A"),
+                       data.table(Cause = "B049", List = "08A"),
                        data.table(Cause = "B54", List = "09A"),
                        data.table(Cause = "B54", List = "09B"),
                        data.table(Cause = "B54", List = "09N"),
@@ -2226,6 +2309,7 @@ ICDGroups <- list(
                        data.table(Cause = "C103", List = "09C")),
                  EurostatCode = "X85-Y09_Y871", CauseGroup = "Testi sértés (X85-Y09, Y87.1)"),
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="Y"&Kod23>=10&Kod23<=34)|(KOD10=="Y8720")]$KOD10, List = "104"),
+                       data.table(Cause = "A149", List = "08A"),
                        data.table(Cause = "B560", List = "09A"),
                        data.table(Cause = "B560", List = "09B")),
                  EurostatCode = "Y10-Y34_Y872",
@@ -2554,12 +2638,14 @@ unique(PopDataHMD[YearSign != "", .(Year, iso3c)])
     ##  2:  2011    BEL
     ##  3:  2016    XX6
     ##  4:  2016    XX7
-    ##  5:  1981    ITA
-    ##  6:  1991    NZL
-    ##  7:  2001    POL
-    ##  8:  1993    RUS
-    ##  9:  1995    RUS
-    ## 10:  2003    RUS
+    ##  5:  1975    ESP
+    ##  6:  1981    ITA
+    ##  7:  1973    JPN
+    ##  8:  1991    NZL
+    ##  9:  2001    POL
+    ## 10:  1993    RUS
+    ## 11:  1995    RUS
+    ## 12:  2003    RUS
 
 ``` r
 plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
@@ -2590,11 +2676,11 @@ dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Tota
     ##    4:    ITA    103  1981     63.00     68.47 0.9201110
     ##    5:    RUS    101  1993   1550.09   1682.40 0.9213564
     ##   ---                                                  
-    ## 1106:    XX6     22  2016 124376.00  99130.00 1.2546757
-    ## 1107:    XX6     23  2016 134165.00 106742.00 1.2569092
-    ## 1108:    ITA    108  1981      0.00      0.00       NaN
-    ## 1109:    ITA   110+  1981      0.00      0.00       NaN
-    ## 1110:    NZL   110+  1991      0.00      0.00       NaN
+    ## 1328:    XX6     23  2016 134165.00 106742.00 1.2569092
+    ## 1329:    ITA    108  1981      0.00      0.00       NaN
+    ## 1330:    ITA   110+  1981      0.00      0.00       NaN
+    ## 1331:    JPN    109  1973      0.00      0.00       NaN
+    ## 1332:    NZL   110+  1991      0.00      0.00       NaN
 
 ``` r
 dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
@@ -2609,11 +2695,11 @@ dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Tota
     ##    4:    XX7     51  2016 1148308 1184340.1 -36032.15
     ##    5:    XX7     28  2016  851057  886914.3 -35857.26
     ##   ---                                                
-    ## 1106:    XX6     52  2016  283638  248299.0  35339.00
-    ## 1107:    XX6     29  2016  219441  184022.0  35419.00
-    ## 1108:    XX6     28  2016  226394  190537.0  35857.00
-    ## 1109:    XX6     51  2016  277909  241877.0  36032.00
-    ## 1110:    XX6     27  2016  224442  187873.0  36569.00
+    ## 1328:    XX6     52  2016  283638  248299.0  35339.00
+    ## 1329:    XX6     29  2016  219441  184022.0  35419.00
+    ## 1330:    XX6     28  2016  226394  190537.0  35857.00
+    ## 1331:    XX6     51  2016  277909  241877.0  36032.00
+    ## 1332:    XX6     27  2016  224442  187873.0  36569.00
 
 ``` r
 # marginális különbség, a mínuszt használjuk
@@ -2675,7 +2761,7 @@ PopDataES <- PopDataES[age != "TOTAL" & sex != "T"]
 sum(PopDataES[age == "UNK"]$values) 
 ```
 
-    ## [1] 140198
+    ## [1] 152348
 
 ``` r
 PopDataES[,.(values[age=="UNK"]/sum(values)*100) , .(iso3c, Year, sex)][V1!=0][order(V1)]
@@ -2689,11 +2775,11 @@ PopDataES[,.(values[age=="UNK"]/sum(values)*100) , .(iso3c, Year, sex)][V1!=0][o
     ##   4:    HRV  2009      F 2.239111e-04
     ##   5:    HRV  2008      F 3.132020e-04
     ##  ---                                 
-    ## 113:    MLT  1991      F 2.442405e+00
-    ## 114:    MLT  1995      F 2.477607e+00
-    ## 115:    MLT  1992      F 2.560900e+00
-    ## 116:    MLT  1993      F 2.636535e+00
-    ## 117:    MLT  1994      F 2.744405e+00
+    ## 139:    MLT  1991      F 2.442405e+00
+    ## 140:    MLT  1995      F 2.477607e+00
+    ## 141:    MLT  1992      F 2.560900e+00
+    ## 142:    MLT  1993      F 2.636535e+00
+    ## 143:    MLT  1994      F 2.744405e+00
 
 ``` r
 PopDataES <- PopDataES[!(iso3c == "MLT" & Year >= 1991 & Year <= 2000)]
@@ -2739,36 +2825,36 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
 
     ##     
     ##      [0,1) [1,2) [2,3) [3,4) [4,5) [5,10) [10,15) [15,20) [20,25) [25,30)
-    ##   0   2622     0     0     0     0      0       0       0       0       0
-    ##   1      0  2622     0     0     0      0       0       0       0       0
-    ##   2      0     0  2622     0     0      0       0       0       0       0
-    ##   3      0     0     0  2622     0      0       0       0       0       0
-    ##   4      0     0     0     0  2622      0       0       0       0       0
-    ##   5      0     0     0     0     0   2622       0       0       0       0
-    ##   6      0     0     0     0     0   2622       0       0       0       0
-    ##   7      0     0     0     0     0   2622       0       0       0       0
-    ##   8      0     0     0     0     0   2622       0       0       0       0
-    ##   9      0     0     0     0     0   2622       0       0       0       0
-    ##   10     0     0     0     0     0      0    2622       0       0       0
-    ##   11     0     0     0     0     0      0    2622       0       0       0
-    ##   12     0     0     0     0     0      0    2622       0       0       0
-    ##   13     0     0     0     0     0      0    2622       0       0       0
-    ##   14     0     0     0     0     0      0    2622       0       0       0
-    ##   15     0     0     0     0     0      0       0    2622       0       0
-    ##   16     0     0     0     0     0      0       0    2622       0       0
-    ##   17     0     0     0     0     0      0       0    2622       0       0
-    ##   18     0     0     0     0     0      0       0    2622       0       0
-    ##   19     0     0     0     0     0      0       0    2622       0       0
-    ##   20     0     0     0     0     0      0       0       0    2622       0
-    ##   21     0     0     0     0     0      0       0       0    2622       0
-    ##   22     0     0     0     0     0      0       0       0    2622       0
-    ##   23     0     0     0     0     0      0       0       0    2622       0
-    ##   24     0     0     0     0     0      0       0       0    2622       0
-    ##   25     0     0     0     0     0      0       0       0       0    2622
-    ##   26     0     0     0     0     0      0       0       0       0    2622
-    ##   27     0     0     0     0     0      0       0       0       0    2622
-    ##   28     0     0     0     0     0      0       0       0       0    2622
-    ##   29     0     0     0     0     0      0       0       0       0    2622
+    ##   0   2939     0     0     0     0      0       0       0       0       0
+    ##   1      0  2939     0     0     0      0       0       0       0       0
+    ##   2      0     0  2939     0     0      0       0       0       0       0
+    ##   3      0     0     0  2939     0      0       0       0       0       0
+    ##   4      0     0     0     0  2939      0       0       0       0       0
+    ##   5      0     0     0     0     0   2939       0       0       0       0
+    ##   6      0     0     0     0     0   2939       0       0       0       0
+    ##   7      0     0     0     0     0   2939       0       0       0       0
+    ##   8      0     0     0     0     0   2939       0       0       0       0
+    ##   9      0     0     0     0     0   2939       0       0       0       0
+    ##   10     0     0     0     0     0      0    2939       0       0       0
+    ##   11     0     0     0     0     0      0    2939       0       0       0
+    ##   12     0     0     0     0     0      0    2939       0       0       0
+    ##   13     0     0     0     0     0      0    2939       0       0       0
+    ##   14     0     0     0     0     0      0    2939       0       0       0
+    ##   15     0     0     0     0     0      0       0    2939       0       0
+    ##   16     0     0     0     0     0      0       0    2939       0       0
+    ##   17     0     0     0     0     0      0       0    2939       0       0
+    ##   18     0     0     0     0     0      0       0    2939       0       0
+    ##   19     0     0     0     0     0      0       0    2939       0       0
+    ##   20     0     0     0     0     0      0       0       0    2939       0
+    ##   21     0     0     0     0     0      0       0       0    2939       0
+    ##   22     0     0     0     0     0      0       0       0    2939       0
+    ##   23     0     0     0     0     0      0       0       0    2939       0
+    ##   24     0     0     0     0     0      0       0       0    2939       0
+    ##   25     0     0     0     0     0      0       0       0       0    2939
+    ##   26     0     0     0     0     0      0       0       0       0    2939
+    ##   27     0     0     0     0     0      0       0       0       0    2939
+    ##   28     0     0     0     0     0      0       0       0       0    2939
+    ##   29     0     0     0     0     0      0       0       0       0    2939
     ##   30     0     0     0     0     0      0       0       0       0       0
     ##   31     0     0     0     0     0      0       0       0       0       0
     ##   32     0     0     0     0     0      0       0       0       0       0
@@ -2867,51 +2953,51 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
     ##   27       0       0       0       0       0       0       0       0       0
     ##   28       0       0       0       0       0       0       0       0       0
     ##   29       0       0       0       0       0       0       0       0       0
-    ##   30    2622       0       0       0       0       0       0       0       0
-    ##   31    2622       0       0       0       0       0       0       0       0
-    ##   32    2622       0       0       0       0       0       0       0       0
-    ##   33    2622       0       0       0       0       0       0       0       0
-    ##   34    2622       0       0       0       0       0       0       0       0
-    ##   35       0    2622       0       0       0       0       0       0       0
-    ##   36       0    2622       0       0       0       0       0       0       0
-    ##   37       0    2622       0       0       0       0       0       0       0
-    ##   38       0    2622       0       0       0       0       0       0       0
-    ##   39       0    2622       0       0       0       0       0       0       0
-    ##   40       0       0    2622       0       0       0       0       0       0
-    ##   41       0       0    2622       0       0       0       0       0       0
-    ##   42       0       0    2622       0       0       0       0       0       0
-    ##   43       0       0    2622       0       0       0       0       0       0
-    ##   44       0       0    2622       0       0       0       0       0       0
-    ##   45       0       0       0    2622       0       0       0       0       0
-    ##   46       0       0       0    2622       0       0       0       0       0
-    ##   47       0       0       0    2622       0       0       0       0       0
-    ##   48       0       0       0    2622       0       0       0       0       0
-    ##   49       0       0       0    2622       0       0       0       0       0
-    ##   50       0       0       0       0    2622       0       0       0       0
-    ##   51       0       0       0       0    2622       0       0       0       0
-    ##   52       0       0       0       0    2622       0       0       0       0
-    ##   53       0       0       0       0    2622       0       0       0       0
-    ##   54       0       0       0       0    2622       0       0       0       0
-    ##   55       0       0       0       0       0    2622       0       0       0
-    ##   56       0       0       0       0       0    2622       0       0       0
-    ##   57       0       0       0       0       0    2622       0       0       0
-    ##   58       0       0       0       0       0    2622       0       0       0
-    ##   59       0       0       0       0       0    2622       0       0       0
-    ##   60       0       0       0       0       0       0    2622       0       0
-    ##   61       0       0       0       0       0       0    2622       0       0
-    ##   62       0       0       0       0       0       0    2622       0       0
-    ##   63       0       0       0       0       0       0    2622       0       0
-    ##   64       0       0       0       0       0       0    2622       0       0
-    ##   65       0       0       0       0       0       0       0    2622       0
-    ##   66       0       0       0       0       0       0       0    2622       0
-    ##   67       0       0       0       0       0       0       0    2622       0
-    ##   68       0       0       0       0       0       0       0    2622       0
-    ##   69       0       0       0       0       0       0       0    2622       0
-    ##   70       0       0       0       0       0       0       0       0    2622
-    ##   71       0       0       0       0       0       0       0       0    2622
-    ##   72       0       0       0       0       0       0       0       0    2622
-    ##   73       0       0       0       0       0       0       0       0    2622
-    ##   74       0       0       0       0       0       0       0       0    2622
+    ##   30    2939       0       0       0       0       0       0       0       0
+    ##   31    2939       0       0       0       0       0       0       0       0
+    ##   32    2939       0       0       0       0       0       0       0       0
+    ##   33    2939       0       0       0       0       0       0       0       0
+    ##   34    2939       0       0       0       0       0       0       0       0
+    ##   35       0    2939       0       0       0       0       0       0       0
+    ##   36       0    2939       0       0       0       0       0       0       0
+    ##   37       0    2939       0       0       0       0       0       0       0
+    ##   38       0    2939       0       0       0       0       0       0       0
+    ##   39       0    2939       0       0       0       0       0       0       0
+    ##   40       0       0    2939       0       0       0       0       0       0
+    ##   41       0       0    2939       0       0       0       0       0       0
+    ##   42       0       0    2939       0       0       0       0       0       0
+    ##   43       0       0    2939       0       0       0       0       0       0
+    ##   44       0       0    2939       0       0       0       0       0       0
+    ##   45       0       0       0    2939       0       0       0       0       0
+    ##   46       0       0       0    2939       0       0       0       0       0
+    ##   47       0       0       0    2939       0       0       0       0       0
+    ##   48       0       0       0    2939       0       0       0       0       0
+    ##   49       0       0       0    2939       0       0       0       0       0
+    ##   50       0       0       0       0    2939       0       0       0       0
+    ##   51       0       0       0       0    2939       0       0       0       0
+    ##   52       0       0       0       0    2939       0       0       0       0
+    ##   53       0       0       0       0    2939       0       0       0       0
+    ##   54       0       0       0       0    2939       0       0       0       0
+    ##   55       0       0       0       0       0    2939       0       0       0
+    ##   56       0       0       0       0       0    2939       0       0       0
+    ##   57       0       0       0       0       0    2939       0       0       0
+    ##   58       0       0       0       0       0    2939       0       0       0
+    ##   59       0       0       0       0       0    2939       0       0       0
+    ##   60       0       0       0       0       0       0    2939       0       0
+    ##   61       0       0       0       0       0       0    2939       0       0
+    ##   62       0       0       0       0       0       0    2939       0       0
+    ##   63       0       0       0       0       0       0    2939       0       0
+    ##   64       0       0       0       0       0       0    2939       0       0
+    ##   65       0       0       0       0       0       0       0    2939       0
+    ##   66       0       0       0       0       0       0       0    2939       0
+    ##   67       0       0       0       0       0       0       0    2939       0
+    ##   68       0       0       0       0       0       0       0    2939       0
+    ##   69       0       0       0       0       0       0       0    2939       0
+    ##   70       0       0       0       0       0       0       0       0    2939
+    ##   71       0       0       0       0       0       0       0       0    2939
+    ##   72       0       0       0       0       0       0       0       0    2939
+    ##   73       0       0       0       0       0       0       0       0    2939
+    ##   74       0       0       0       0       0       0       0       0    2939
     ##   75       0       0       0       0       0       0       0       0       0
     ##   76       0       0       0       0       0       0       0       0       0
     ##   77       0       0       0       0       0       0       0       0       0
@@ -3010,27 +3096,27 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
     ##   72       0       0       0       0        0
     ##   73       0       0       0       0        0
     ##   74       0       0       0       0        0
-    ##   75    2622       0       0       0        0
-    ##   76    2622       0       0       0        0
-    ##   77    2622       0       0       0        0
-    ##   78    2622       0       0       0        0
-    ##   79    2622       0       0       0        0
-    ##   80       0    2622       0       0        0
-    ##   81       0    2622       0       0        0
-    ##   82       0    2622       0       0        0
-    ##   83       0    2622       0       0        0
-    ##   84       0    2622       0       0        0
-    ##   85       0       0    2622       0        0
-    ##   86       0       0    2622       0        0
-    ##   87       0       0    2622       0        0
-    ##   88       0       0    2622       0        0
-    ##   89       0       0    2622       0        0
-    ##   90       0       0       0    2622        0
-    ##   91       0       0       0    2622        0
-    ##   92       0       0       0    2622        0
-    ##   93       0       0       0    2622        0
-    ##   94       0       0       0    2622        0
-    ##   95       0       0       0       0     2622
+    ##   75    2939       0       0       0        0
+    ##   76    2939       0       0       0        0
+    ##   77    2939       0       0       0        0
+    ##   78    2939       0       0       0        0
+    ##   79    2939       0       0       0        0
+    ##   80       0    2939       0       0        0
+    ##   81       0    2939       0       0        0
+    ##   82       0    2939       0       0        0
+    ##   83       0    2939       0       0        0
+    ##   84       0    2939       0       0        0
+    ##   85       0       0    2939       0        0
+    ##   86       0       0    2939       0        0
+    ##   87       0       0    2939       0        0
+    ##   88       0       0    2939       0        0
+    ##   89       0       0    2939       0        0
+    ##   90       0       0       0    2939        0
+    ##   91       0       0       0    2939        0
+    ##   92       0       0       0    2939        0
+    ##   93       0       0       0    2939        0
+    ##   94       0       0       0    2939        0
+    ##   95       0       0       0       0     2939
 
 ``` r
 PopDataES <- PopDataES[, .(iso3c, Year, Sex = sex, Age = age, PopES = values)]
@@ -3343,9 +3429,9 @@ oszlopokat, hogy a saját adatformátumunkkal összekapcsolható legyen:
 ESres <- as.data.table(eurostat::get_eurostat("hlth_cd_aro"))
 ```
 
-    ## indexed 0B in  0s, 0B/sindexed 26.74MB in  0s, 133.60MB/sindexed 26.87MB in  0s, 133.35MB/sindexed 27.00MB in  0s, 133.30MB/sindexed 27.13MB in  0s, 133.21MB/sindexed 27.26MB in  0s, 133.24MB/sindexed 27.39MB in  0s, 133.31MB/sindexed 27.52MB in  0s, 133.32MB/sindexed 27.66MB in  0s, 133.37MB/sindexed 27.79MB in  0s, 133.42MB/sindexed 27.92MB in  0s, 133.47MB/sindexed 28.05MB in  0s, 133.55MB/sindexed 28.18MB in  0s, 133.67MB/sindexed 28.31MB in  0s, 133.75MB/sindexed 28.44MB in  0s, 133.81MB/sindexed 28.57MB in  0s, 133.89MB/sindexed 28.70MB in  0s, 133.93MB/sindexed 28.84MB in  0s, 133.97MB/sindexed 28.97MB in  0s, 129.68MB/sindexed 29.10MB in  0s, 129.73MB/sindexed 29.23MB in  0s, 129.81MB/sindexed 29.36MB in  0s, 129.85MB/sindexed 29.49MB in  0s, 129.92MB/sindexed 29.62MB in  0s, 129.97MB/sindexed 29.75MB in  0s, 130.05MB/sindexed 29.88MB in  0s, 130.10MB/sindexed 30.02MB in  0s, 130.16MB/sindexed 30.15MB in  0s, 130.23MB/sindexed 30.28MB in  0s, 130.38MB/sindexed 30.41MB in  0s, 130.38MB/sindexed 30.54MB in  0s, 130.36MB/sindexed 30.67MB in  0s, 130.38MB/sindexed 30.80MB in  0s, 130.43MB/sindexed 30.93MB in  0s, 130.47MB/sindexed 31.06MB in  0s, 130.63MB/sindexed 31.19MB in  0s, 130.68MB/sindexed 31.33MB in  0s, 130.75MB/sindexed 31.46MB in  0s, 130.80MB/sindexed 31.59MB in  0s, 130.86MB/sindexed 31.72MB in  0s, 131.01MB/sindexed 31.85MB in  0s, 131.15MB/sindexed 31.98MB in  0s, 131.21MB/sindexed 32.11MB in  0s, 131.39MB/sindexed 32.24MB in  0s, 131.48MB/sindexed 32.37MB in  0s, 131.57MB/sindexed 32.51MB in  0s, 131.61MB/sindexed 32.64MB in  0s, 131.67MB/sindexed 32.77MB in  0s, 131.53MB/sindexed 32.90MB in  0s, 131.50MB/sindexed 33.03MB in  0s, 131.50MB/sindexed 33.16MB in  0s, 131.61MB/sindexed 33.29MB in  0s, 131.68MB/sindexed 33.42MB in  0s, 131.82MB/sindexed 33.55MB in  0s, 131.89MB/sindexed 33.69MB in  0s, 131.96MB/sindexed 33.82MB in  0s, 132.00MB/sindexed 33.95MB in  0s, 132.08MB/sindexed 34.08MB in  0s, 132.13MB/sindexed 34.21MB in  0s, 132.20MB/sindexed 34.34MB in  0s, 132.27MB/sindexed 34.47MB in  0s, 132.32MB/sindexed 34.60MB in  0s, 132.38MB/sindexed 34.73MB in  0s, 132.43MB/sindexed 34.86MB in  0s, 132.50MB/sindexed 35.00MB in  0s, 132.55MB/sindexed 35.13MB in  0s, 132.61MB/sindexed 35.26MB in  0s, 132.75MB/sindexed 35.39MB in  0s, 132.79MB/sindexed 35.52MB in  0s, 132.68MB/sindexed 35.65MB in  0s, 132.59MB/sindexed 35.78MB in  0s, 132.70MB/sindexed 35.91MB in  0s, 132.87MB/sindexed 36.04MB in  0s, 132.97MB/sindexed 36.18MB in  0s, 133.03MB/sindexed 36.31MB in  0s, 133.09MB/sindexed 36.44MB in  0s, 133.20MB/sindexed 36.57MB in  0s, 133.34MB/sindexed 36.70MB in  0s, 133.37MB/sindexed 36.83MB in  0s, 133.44MB/sindexed 36.96MB in  0s, 133.55MB/sindexed 37.09MB in  0s, 133.61MB/sindexed 37.22MB in  0s, 133.64MB/sindexed 37.36MB in  0s, 133.76MB/sindexed 37.49MB in  0s, 133.81MB/sindexed 37.62MB in  0s, 133.87MB/sindexed 37.75MB in  0s, 133.94MB/sindexed 37.88MB in  0s, 133.99MB/sindexed 38.01MB in  0s, 133.92MB/sindexed 38.14MB in  0s, 133.84MB/sindexed 38.27MB in  0s, 133.90MB/sindexed 38.40MB in  0s, 133.93MB/sindexed 38.53MB in  0s, 133.97MB/sindexed 38.67MB in  0s, 134.00MB/sindexed 38.80MB in  0s, 134.06MB/sindexed 38.93MB in  0s, 134.15MB/sindexed 39.06MB in  0s, 134.18MB/sindexed 39.19MB in  0s, 134.20MB/sindexed 39.32MB in  0s, 134.22MB/sindexed 39.45MB in  0s, 134.27MB/sindexed 39.58MB in  0s, 134.36MB/sindexed 39.71MB in  0s, 134.48MB/sindexed 39.85MB in  0s, 134.51MB/sindexed 39.98MB in  0s, 134.53MB/sindexed 40.11MB in  0s, 134.57MB/sindexed 40.24MB in  0s, 134.54MB/sindexed 40.37MB in  0s, 134.62MB/sindexed 40.50MB in  0s, 134.54MB/sindexed 40.63MB in  0s, 134.56MB/sindexed 40.76MB in  0s, 134.66MB/sindexed 40.89MB in  0s, 134.71MB/sindexed 41.03MB in  0s, 134.75MB/sindexed 41.16MB in  0s, 134.85MB/sindexed 41.29MB in  0s, 134.91MB/sindexed 41.42MB in  0s, 134.95MB/sindexed 41.55MB in  0s, 135.01MB/sindexed 41.68MB in  0s, 135.06MB/sindexed 41.81MB in  0s, 135.10MB/sindexed 41.94MB in  0s, 135.15MB/sindexed 42.07MB in  0s, 135.19MB/sindexed 42.20MB in  0s, 135.23MB/sindexed 42.34MB in  0s, 135.26MB/sindexed 42.47MB in  0s, 135.31MB/sindexed 42.60MB in  0s, 135.30MB/sindexed 42.73MB in  0s, 135.38MB/sindexed 42.86MB in  0s, 135.38MB/sindexed 42.99MB in  0s, 135.41MB/sindexed 43.12MB in  0s, 130.36MB/sindexed 43.25MB in  0s, 130.38MB/sindexed 43.38MB in  0s, 130.43MB/sindexed 43.52MB in  0s, 130.49MB/sindexed 43.65MB in  0s, 130.52MB/sindexed 43.78MB in  0s, 130.51MB/sindexed 43.91MB in  0s, 130.54MB/sindexed 44.04MB in  0s, 130.57MB/sindexed 44.17MB in  0s, 130.63MB/sindexed 44.30MB in  0s, 130.67MB/sindexed 44.43MB in  0s, 130.71MB/sindexed 44.56MB in  0s, 130.74MB/sindexed 44.70MB in  0s, 130.79MB/sindexed 44.83MB in  0s, 130.83MB/sindexed 44.96MB in  0s, 130.87MB/sindexed 45.09MB in  0s, 130.90MB/sindexed 45.22MB in  0s, 130.94MB/sindexed 45.35MB in  0s, 130.98MB/sindexed 45.48MB in  0s, 131.09MB/sindexed 45.61MB in  0s, 131.12MB/sindexed 45.74MB in  0s, 131.14MB/sindexed 45.87MB in  0s, 131.18MB/sindexed 46.01MB in  0s, 131.21MB/sindexed 46.14MB in  0s, 131.08MB/sindexed 46.27MB in  0s, 130.99MB/sindexed 46.40MB in  0s, 130.96MB/sindexed 46.53MB in  0s, 130.94MB/sindexed 46.66MB in  0s, 130.96MB/sindexed 46.79MB in  0s, 130.97MB/sindexed 46.92MB in  0s, 130.99MB/sindexed 47.05MB in  0s, 131.03MB/sindexed 47.19MB in  0s, 131.07MB/sindexed 47.32MB in  0s, 131.10MB/sindexed 47.45MB in  0s, 131.18MB/sindexed 47.58MB in  0s, 131.28MB/sindexed 47.71MB in  0s, 131.30MB/sindexed 47.84MB in  0s, 131.34MB/sindexed 47.97MB in  0s, 131.38MB/sindexed 48.10MB in  0s, 131.43MB/sindexed 48.23MB in  0s, 131.50MB/sindexed 48.37MB in  0s, 131.33MB/sindexed 48.50MB in  0s, 131.39MB/sindexed 48.63MB in  0s, 131.41MB/sindexed 48.76MB in  0s, 131.47MB/sindexed 48.89MB in  0s, 131.45MB/sindexed 49.02MB in  0s, 131.48MB/sindexed 49.15MB in  0s, 131.50MB/sindexed 49.28MB in  0s, 131.52MB/sindexed 49.41MB in  0s, 131.60MB/sindexed 49.54MB in  0s, 131.62MB/sindexed 49.68MB in  0s, 131.67MB/sindexed 49.81MB in  0s, 131.67MB/sindexed 49.94MB in  0s, 131.71MB/sindexed 50.07MB in  0s, 131.80MB/sindexed 50.20MB in  0s, 131.82MB/sindexed 50.33MB in  0s, 131.84MB/sindexed 50.46MB in  0s, 131.84MB/sindexed 50.59MB in  0s, 131.83MB/sindexed 50.72MB in  0s, 131.83MB/sindexed 50.86MB in  0s, 131.83MB/sindexed 50.99MB in  0s, 131.86MB/sindexed 51.12MB in  0s, 131.87MB/sindexed 51.25MB in  0s, 131.91MB/sindexed 51.38MB in  0s, 131.97MB/sindexed 51.51MB in  0s, 131.97MB/sindexed 51.64MB in  0s, 131.99MB/sindexed 51.77MB in  0s, 132.02MB/sindexed 51.90MB in  0s, 132.04MB/sindexed 52.04MB in  0s, 132.04MB/sindexed 52.17MB in  0s, 132.05MB/sindexed 52.30MB in  0s, 132.13MB/sindexed 52.43MB in  0s, 132.12MB/sindexed 52.56MB in  0s, 132.20MB/sindexed 52.69MB in  0s, 132.16MB/sindexed 52.82MB in  0s, 132.24MB/sindexed 52.95MB in  0s, 132.22MB/sindexed 53.08MB in  0s, 132.19MB/sindexed 53.21MB in  0s, 132.20MB/sindexed 53.35MB in  0s, 132.29MB/sindexed 53.48MB in  0s, 132.30MB/sindexed 53.61MB in  0s, 132.32MB/sindexed 53.74MB in  0s, 132.35MB/sindexed 53.87MB in  0s, 132.37MB/sindexed 54.00MB in  0s, 132.45MB/sindexed 54.13MB in  0s, 132.55MB/sindexed 54.26MB in  0s, 132.55MB/sindexed 54.39MB in  0s, 132.64MB/sindexed 54.53MB in  0s, 132.72MB/sindexed 54.66MB in  0s, 132.74MB/sindexed 54.79MB in  0s, 132.75MB/sindexed 54.92MB in  0s, 132.82MB/sindexed 55.05MB in  0s, 132.90MB/sindexed 55.18MB in  0s, 132.93MB/sindexed 55.31MB in  0s, 133.01MB/sindexed 55.44MB in  0s, 133.02MB/sindexed 55.57MB in  0s, 132.84MB/sindexed 55.71MB in  0s, 132.80MB/sindexed 55.84MB in  0s, 132.89MB/sindexed 55.97MB in  0s, 132.90MB/sindexed 56.10MB in  0s, 132.92MB/sindexed 56.23MB in  0s, 132.95MB/sindexed 56.36MB in  0s, 132.97MB/sindexed 56.49MB in  0s, 133.06MB/sindexed 56.62MB in  0s, 133.07MB/sindexed 56.75MB in  0s, 133.10MB/sindexed 56.88MB in  0s, 133.16MB/sindexed 57.02MB in  0s, 133.23MB/sindexed 57.15MB in  0s, 133.26MB/sindexed 57.28MB in  0s, 133.29MB/sindexed 57.41MB in  0s, 133.30MB/sindexed 57.54MB in  0s, 133.32MB/sindexed 57.67MB in  0s, 133.33MB/sindexed 57.80MB in  0s, 133.33MB/sindexed 57.93MB in  0s, 133.17MB/sindexed 58.06MB in  0s, 133.03MB/sindexed 58.20MB in  0s, 133.00MB/sindexed 58.33MB in  0s, 133.01MB/sindexed 58.46MB in  0s, 133.07MB/sindexed 58.59MB in  0s, 133.06MB/sindexed 58.72MB in  0s, 133.08MB/sindexed 58.85MB in  0s, 133.10MB/sindexed 58.98MB in  0s, 133.11MB/sindexed 59.11MB in  0s, 133.14MB/sindexed 59.24MB in  0s, 133.18MB/sindexed 59.38MB in  0s, 133.20MB/sindexed 59.51MB in  0s, 133.22MB/sindexed 59.64MB in  0s, 133.23MB/sindexed 59.77MB in  0s, 133.23MB/sindexed 59.90MB in  0s, 133.07MB/sindexed 60.03MB in  0s, 133.04MB/sindexed 60.16MB in  0s, 133.12MB/sindexed 60.29MB in  0s, 133.11MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
+    ## indexed 0B in  0s, 0B/sindexed 28.18MB in  0s, 140.73MB/sindexed 28.31MB in  0s, 140.80MB/sindexed 28.44MB in  0s, 140.57MB/sindexed 28.57MB in  0s, 140.62MB/sindexed 28.70MB in  0s, 140.49MB/sindexed 28.84MB in  0s, 140.49MB/sindexed 28.97MB in  0s, 140.54MB/sindexed 29.10MB in  0s, 140.67MB/sindexed 29.23MB in  0s, 140.65MB/sindexed 29.36MB in  0s, 140.60MB/sindexed 29.49MB in  0s, 140.72MB/sindexed 29.62MB in  0s, 140.67MB/sindexed 29.75MB in  0s, 140.61MB/sindexed 29.88MB in  0s, 140.61MB/sindexed 30.02MB in  0s, 140.59MB/sindexed 30.15MB in  0s, 140.58MB/sindexed 30.28MB in  0s, 140.56MB/sindexed 30.41MB in  0s, 140.51MB/sindexed 30.54MB in  0s, 140.61MB/sindexed 30.67MB in  0s, 140.50MB/sindexed 30.80MB in  0s, 140.57MB/sindexed 30.93MB in  0s, 140.56MB/sindexed 31.06MB in  0s, 140.39MB/sindexed 31.19MB in  0s, 140.41MB/sindexed 31.33MB in  0s, 140.45MB/sindexed 31.46MB in  0s, 140.53MB/sindexed 31.59MB in  0s, 140.49MB/sindexed 31.72MB in  0s, 140.50MB/sindexed 31.85MB in  0s, 140.52MB/sindexed 31.98MB in  0s, 140.53MB/sindexed 32.11MB in  0s, 140.51MB/sindexed 32.24MB in  0s, 140.52MB/sindexed 32.37MB in  0s, 140.55MB/sindexed 32.51MB in  0s, 140.53MB/sindexed 32.64MB in  0s, 140.55MB/sindexed 32.77MB in  0s, 140.53MB/sindexed 32.90MB in  0s, 140.66MB/sindexed 33.03MB in  0s, 140.71MB/sindexed 33.16MB in  0s, 140.82MB/sindexed 33.29MB in  0s, 140.83MB/sindexed 33.42MB in  0s, 140.69MB/sindexed 33.55MB in  0s, 140.61MB/sindexed 33.69MB in  0s, 140.62MB/sindexed 33.82MB in  0s, 140.64MB/sindexed 33.95MB in  0s, 140.77MB/sindexed 34.08MB in  0s, 140.76MB/sindexed 34.21MB in  0s, 140.80MB/sindexed 34.34MB in  0s, 140.82MB/sindexed 34.47MB in  0s, 140.82MB/sindexed 34.60MB in  0s, 140.96MB/sindexed 34.73MB in  0s, 140.95MB/sindexed 34.86MB in  0s, 141.09MB/sindexed 35.00MB in  0s, 141.10MB/sindexed 35.13MB in  0s, 141.12MB/sindexed 35.26MB in  0s, 141.10MB/sindexed 35.39MB in  0s, 141.12MB/sindexed 35.52MB in  0s, 141.15MB/sindexed 35.65MB in  0s, 141.21MB/sindexed 35.78MB in  0s, 141.21MB/sindexed 35.91MB in  0s, 141.13MB/sindexed 36.04MB in  0s, 141.13MB/sindexed 36.18MB in  0s, 141.23MB/sindexed 36.31MB in  0s, 141.24MB/sindexed 36.44MB in  0s, 141.26MB/sindexed 36.57MB in  0s, 141.26MB/sindexed 36.70MB in  0s, 141.27MB/sindexed 36.83MB in  0s, 141.43MB/sindexed 36.96MB in  0s, 141.49MB/sindexed 37.09MB in  0s, 141.54MB/sindexed 37.22MB in  0s, 141.54MB/sindexed 37.36MB in  0s, 141.53MB/sindexed 37.49MB in  0s, 141.57MB/sindexed 37.62MB in  0s, 141.61MB/sindexed 37.75MB in  0s, 141.61MB/sindexed 37.88MB in  0s, 141.72MB/sindexed 38.01MB in  0s, 141.73MB/sindexed 38.14MB in  0s, 141.72MB/sindexed 38.27MB in  0s, 141.39MB/sindexed 38.40MB in  0s, 141.31MB/sindexed 38.53MB in  0s, 141.27MB/sindexed 38.67MB in  0s, 141.27MB/sindexed 38.80MB in  0s, 141.30MB/sindexed 38.93MB in  0s, 141.31MB/sindexed 39.06MB in  0s, 141.33MB/sindexed 39.19MB in  0s, 141.36MB/sindexed 39.32MB in  0s, 141.32MB/sindexed 39.45MB in  0s, 141.34MB/sindexed 39.58MB in  0s, 141.31MB/sindexed 39.71MB in  0s, 141.43MB/sindexed 39.85MB in  0s, 141.43MB/sindexed 39.98MB in  0s, 141.49MB/sindexed 40.11MB in  0s, 141.51MB/sindexed 40.24MB in  0s, 141.61MB/sindexed 40.37MB in  0s, 141.53MB/sindexed 40.50MB in  0s, 141.64MB/sindexed 40.63MB in  0s, 141.47MB/sindexed 40.76MB in  0s, 141.49MB/sindexed 40.89MB in  0s, 141.44MB/sindexed 41.03MB in  0s, 141.42MB/sindexed 41.16MB in  0s, 141.25MB/sindexed 41.29MB in  0s, 141.28MB/sindexed 41.42MB in  0s, 141.27MB/sindexed 41.55MB in  0s, 141.31MB/sindexed 41.68MB in  0s, 141.35MB/sindexed 41.81MB in  0s, 141.37MB/sindexed 41.94MB in  0s, 141.36MB/sindexed 42.07MB in  0s, 141.40MB/sindexed 42.20MB in  0s, 141.42MB/sindexed 42.34MB in  0s, 141.41MB/sindexed 42.47MB in  0s, 141.46MB/sindexed 42.60MB in  0s, 141.46MB/sindexed 42.73MB in  0s, 141.46MB/sindexed 42.86MB in  0s, 141.47MB/sindexed 42.99MB in  0s, 141.42MB/sindexed 43.12MB in  0s, 135.35MB/sindexed 43.25MB in  0s, 135.31MB/sindexed 43.38MB in  0s, 135.34MB/sindexed 43.52MB in  0s, 135.31MB/sindexed 43.65MB in  0s, 135.42MB/sindexed 43.78MB in  0s, 135.43MB/sindexed 43.91MB in  0s, 135.46MB/sindexed 44.04MB in  0s, 135.47MB/sindexed 44.17MB in  0s, 135.52MB/sindexed 44.30MB in  0s, 135.55MB/sindexed 44.43MB in  0s, 135.57MB/sindexed 44.56MB in  0s, 135.60MB/sindexed 44.70MB in  0s, 135.63MB/sindexed 44.83MB in  0s, 135.73MB/sindexed 44.96MB in  0s, 135.75MB/sindexed 45.09MB in  0s, 135.78MB/sindexed 45.22MB in  0s, 135.86MB/sindexed 45.35MB in  0s, 135.89MB/sindexed 45.48MB in  0s, 135.91MB/sindexed 45.61MB in  0s, 135.91MB/sindexed 45.74MB in  0s, 135.97MB/sindexed 45.87MB in  0s, 136.01MB/sindexed 46.01MB in  0s, 135.96MB/sindexed 46.14MB in  0s, 136.04MB/sindexed 46.27MB in  0s, 136.07MB/sindexed 46.40MB in  0s, 136.09MB/sindexed 46.53MB in  0s, 136.11MB/sindexed 46.66MB in  0s, 136.13MB/sindexed 46.79MB in  0s, 136.15MB/sindexed 46.92MB in  0s, 136.17MB/sindexed 47.05MB in  0s, 136.19MB/sindexed 47.19MB in  0s, 136.21MB/sindexed 47.32MB in  0s, 136.23MB/sindexed 47.45MB in  0s, 136.27MB/sindexed 47.58MB in  0s, 136.29MB/sindexed 47.71MB in  0s, 136.29MB/sindexed 47.84MB in  0s, 136.31MB/sindexed 47.97MB in  0s, 136.32MB/sindexed 48.10MB in  0s, 136.34MB/sindexed 48.23MB in  0s, 136.35MB/sindexed 48.37MB in  0s, 136.21MB/sindexed 48.50MB in  0s, 136.16MB/sindexed 48.63MB in  0s, 136.17MB/sindexed 48.76MB in  0s, 136.17MB/sindexed 48.89MB in  0s, 136.18MB/sindexed 49.02MB in  0s, 136.21MB/sindexed 49.15MB in  0s, 136.23MB/sindexed 49.28MB in  0s, 136.26MB/sindexed 49.41MB in  0s, 136.28MB/sindexed 49.54MB in  0s, 136.30MB/sindexed 49.68MB in  0s, 136.33MB/sindexed 49.81MB in  0s, 136.34MB/sindexed 49.94MB in  0s, 136.39MB/sindexed 50.07MB in  0s, 136.40MB/sindexed 50.20MB in  0s, 136.42MB/sindexed 50.33MB in  0s, 136.45MB/sindexed 50.46MB in  0s, 136.48MB/sindexed 50.59MB in  0s, 136.41MB/sindexed 50.72MB in  0s, 136.46MB/sindexed 50.86MB in  0s, 136.35MB/sindexed 50.99MB in  0s, 136.39MB/sindexed 51.12MB in  0s, 136.42MB/sindexed 51.25MB in  0s, 136.43MB/sindexed 51.38MB in  0s, 136.46MB/sindexed 51.51MB in  0s, 136.57MB/sindexed 51.64MB in  0s, 136.58MB/sindexed 51.77MB in  0s, 136.60MB/sindexed 51.90MB in  0s, 136.64MB/sindexed 52.04MB in  0s, 136.65MB/sindexed 52.17MB in  0s, 136.68MB/sindexed 52.30MB in  0s, 136.69MB/sindexed 52.43MB in  0s, 136.70MB/sindexed 52.56MB in  0s, 136.73MB/sindexed 52.69MB in  0s, 136.75MB/sindexed 52.82MB in  0s, 136.78MB/sindexed 52.95MB in  0s, 136.74MB/sindexed 53.08MB in  0s, 136.75MB/sindexed 53.21MB in  0s, 136.78MB/sindexed 53.35MB in  0s, 136.84MB/sindexed 53.48MB in  0s, 136.86MB/sindexed 53.61MB in  0s, 136.88MB/sindexed 53.74MB in  0s, 136.91MB/sindexed 53.87MB in  0s, 136.95MB/sindexed 54.00MB in  0s, 136.96MB/sindexed 54.13MB in  0s, 137.03MB/sindexed 54.26MB in  0s, 137.06MB/sindexed 54.39MB in  0s, 137.05MB/sindexed 54.53MB in  0s, 137.08MB/sindexed 54.66MB in  0s, 137.17MB/sindexed 54.79MB in  0s, 137.19MB/sindexed 54.92MB in  0s, 137.21MB/sindexed 55.05MB in  0s, 137.23MB/sindexed 55.18MB in  0s, 137.25MB/sindexed 55.31MB in  0s, 137.30MB/sindexed 55.44MB in  0s, 137.25MB/sindexed 55.57MB in  0s, 137.28MB/sindexed 55.71MB in  0s, 137.29MB/sindexed 55.84MB in  0s, 137.33MB/sindexed 55.97MB in  0s, 137.37MB/sindexed 56.10MB in  0s, 137.39MB/sindexed 56.23MB in  0s, 137.42MB/sindexed 56.36MB in  0s, 137.44MB/sindexed 56.49MB in  0s, 137.55MB/sindexed 56.62MB in  0s, 137.58MB/sindexed 56.75MB in  0s, 137.62MB/sindexed 56.88MB in  0s, 137.64MB/sindexed 57.02MB in  0s, 137.66MB/sindexed 57.15MB in  0s, 137.70MB/sindexed 57.28MB in  0s, 137.75MB/sindexed 57.41MB in  0s, 137.79MB/sindexed 57.54MB in  0s, 137.80MB/sindexed 57.67MB in  0s, 137.81MB/sindexed 57.80MB in  0s, 137.82MB/sindexed 57.93MB in  0s, 137.82MB/sindexed 58.06MB in  0s, 137.85MB/sindexed 58.20MB in  0s, 137.87MB/sindexed 58.33MB in  0s, 137.89MB/sindexed 58.46MB in  0s, 137.90MB/sindexed 58.59MB in  0s, 137.95MB/sindexed 58.72MB in  0s, 137.98MB/sindexed 58.85MB in  0s, 138.02MB/sindexed 58.98MB in  0s, 138.04MB/sindexed 59.11MB in  0s, 138.05MB/sindexed 59.24MB in  0s, 138.09MB/sindexed 59.38MB in  0s, 138.12MB/sindexed 59.51MB in  0s, 138.13MB/sindexed 59.64MB in  0s, 138.14MB/sindexed 59.77MB in  0s, 138.16MB/sindexed 59.90MB in  0s, 138.18MB/sindexed 60.03MB in  0s, 138.24MB/sindexed 60.16MB in  0s, 138.14MB/sindexed 60.29MB in  0s, 138.06MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
 
-    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpOCtBJa/eurostat/6092241d51594477512dfc081a0333fd.rds
+    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpUZjQtj/eurostat/6092241d51594477512dfc081a0333fd.rds
 
 ``` r
 ESres <- ESres[!geo %in% c("EU27_2020", "EU28", "FX")]
