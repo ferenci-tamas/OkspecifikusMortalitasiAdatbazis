@@ -529,7 +529,7 @@ server <- function(input, output) {
     showModal(modalDialog(
       h1("Okspecifikus Mortalitási Adatbázis"),
       p(paste0("Ez a weboldal a magyar halálozási adatokat tartalmazza halálok, nem és ",
-               "életkor szerinti lebontásban, évente, 1979-ig visszamenően, valamint lehetővé ",
+               "életkor szerinti lebontásban, évente, 1969-ig visszamenően, valamint lehetővé ",
                "teszi ezek számos vetületben történő elemzését, vizualizálását és nemzetközi ",
                "összehasonlítását.")),
       p(paste0("Az adatok értelmezése, az adatminőség, a különféle összehasonlítások nem ",
