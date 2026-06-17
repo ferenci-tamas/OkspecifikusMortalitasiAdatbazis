@@ -368,6 +368,12 @@ unzip("./inputdata/morticd09.zip", exdir = td)
 
 unzip("./inputdata/morticd08.zip", exdir = td)
 
+unzip("./inputdata/morticd07.zip", exdir = td)
+# A WHO a 7. revíziót "MortIcd7" néven adja (nagy I betűvel!), míg az összes többi
+# fájl "Morticd..." (kis i); a lenti list.files() mintázat (kis i) csak az utóbbit
+# fogja meg, ezért a beolvasás előtt egységes névre kereszteljük.
+file.rename(file.path(td, "MortIcd7"), file.path(td, "Morticd7"))
+
 RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd*",
                                        full.names = TRUE), fread))
 ```
@@ -1297,6 +1303,118 @@ ICDGroups <- list(
 ICDGroups$Groups <- setNames(ICDGroups$Groups, sapply(ICDGroups$Groups, function(gr) gr$CauseGroup[1]))
 ICDGroups$Individual <- setNames(ICDGroups$Individual, sapply(ICDGroups$Individual, function(gr) gr$CauseGroup[1]))
 
+# --- BNO-7 (ICD-7, "A" lista, List == "07A") modul ----------------------------
+# A régebbi revíziók visszafelé illesztése egyetlen, önálló blokkban: a kulcs az
+# EurostatCode, így a fenti haláloki csoportok definícióját nem kell módosítani
+# (új revízió hozzáadása is itt, egy helyen történik). A kódok a WHO MDB
+# dokumentáció 1. táblájából (ICD7 A-List) valók -- FONTOS, hogy ezek NEM azonosak
+# a 08A (BNO-8) "A0xx" kódjaival (pl. gyomor: 07A A046 vs. 08A A047)! Ahol a durva
+# A-lista egy finomabb csoportot nem tud kitölteni, oda nem kerül sor: az a csoport
+# az ICD-7 éveknél (Magyarországon 1955-1968) egyszerűen üresen marad (fokozatos
+# degradáció), a downstream feldolgozás (app.R) változatlanul működik.
+bno07a <- list(
+  ## Összes
+  "A-R_V-Y"      = "A000",                                # Összes halálok
+  ## Fertőző és parazitás betegségek (A00-B99)
+  "A_B"          = sprintf("A%03d", 1:43),               # Fertőző és parazitás betegségek
+  "A15-A19_B90"  = sprintf("A%03d", 1:5),                # Gümőkór (TBC)
+  "B15-B19_B942" = "A034",                               # Vírusos májgyulladás (fertőző hepatitis)
+  "A_B_OTH"      = sprintf("A%03d", c(6:33, 35:43)),     # Egyéb fertőző (TBC és hepatitis nélkül)
+  ## Daganatok (C00-D48). A finom lokalizációk (máj, hasnyálmirigy, petefészek,
+  ## vese, hólyag, agy, pajzsmirigy) a 07A-ban az A057 "egyéb"-be vannak vonva,
+  ## így külön nem bonthatók -- azok a csoportok 1955-68-ra üresek (degradáció).
+  "C00-D48"      = sprintf("A%03d", 44:60),              # Daganatok (összes)
+  "C"            = sprintf("A%03d", 44:59),              # Rosszindulatú daganatok
+  "C00-C14"      = "A044",                               # Ajak, szájüreg, garat
+  "C15"          = "A045",                               # Nyelőcső
+  "C16"          = "A046",                               # Gyomor
+  "C18-C21"      = c("A047", "A048"),                    # Vastagbél és végbél
+  "C32"          = "A049",                               # Gége
+  "C33_C34"      = "A050",                               # Légcső, hörgő, tüdő
+  "C50"          = "A051",                               # Emlő
+  "C53"          = "A052",                               # Méhnyak
+  "C54_C55"      = "A053",                               # Méhtest és méh k.m.n.
+  "C61"          = "A054",                               # Prostata
+  "C81-C86"      = "A059",                               # Hodgkin-kór és lymphomák
+  "C91-C95"      = "A058",                               # Leukémia
+  "D00-D48"      = "A060",                               # Jó-/bizonytalan indulatú daganatok
+  "D50-D89"      = "A065",                               # Vér betegségei (vérszegénységek)
+  ## Endokrin, táplálkozási és anyagcsere (E00-E89)
+  "E"            = sprintf("A%03d", c(61:64, 66)),       # Endokrin (vérképzőszervi A065 nélkül)
+  "E10-E14"      = "A063",                               # Cukorbetegség
+  "E_OTH"        = sprintf("A%03d", c(61, 62, 64, 66)),  # Egyéb endokrin (cukorbetegség nélkül)
+  ## Mentális (F01-F99). Demencia/alkohol/drog 07A-ban nincs külön -> üres.
+  "F"            = sprintf("A%03d", 67:69),              # Mentális- és viselkedészavarok
+  "F_OTH"        = sprintf("A%03d", 67:69),              # Egyéb mentális (a kiemeltek 07A-ban nincsenek)
+  ## Idegrendszer és érzékszervek (G00-H95). A070 = agyér -> a keringéshez!
+  "G_H"          = sprintf("A%03d", 71:78),              # Idegrendszer és érzékszervek
+  "G_H_OTH"      = sprintf("A%03d", 71:78),              # Egyéb (Parkinson/Alzheimer 07A-ban nincs)
+  ## Keringési rendszer (I00-I99). Teljes felbontás A070, A079-A086.
+  "I"            = c("A070", sprintf("A%03d", 79:86)),   # Keringési rendszer
+  "I20-I25"      = "A081",                               # Ischaemiás szívbetegség (arterioscl. szív)
+  "I30-I51"      = "A082",                               # A szívbetegség egyéb formái
+  "I60-I69"      = "A070",                               # Cerebrovaszkuláris betegségek
+  "I_OTH"        = sprintf("A%03d", c(79, 80, 83:86)),   # Egyéb keringési (reuma, hypertonia, artériák)
+  ## Légzőrendszer (J00-J99). Teljes felbontás A087-A097.
+  "J"            = sprintf("A%03d", 87:97),              # Légzőrendszer
+  "J09-J11"      = "A088",                               # Influenza
+  "J12-J18"      = sprintf("A%03d", 89:91),              # Tüdőgyulladás
+  "J40-J47"      = "A093",                               # Idült alsó légúti (idült hörghurut)
+  "J40-J44_J47"  = "A093",                               # Egyéb idült alsó légúti
+  "J_OTH"        = sprintf("A%03d", c(87, 92, 94:97)),   # Egyéb légzőrendszeri
+  ## Emésztőrendszer (K00-K92). Teljes felbontás A098-A107.
+  "K"            = sprintf("A%03d", 98:107),             # Emésztőrendszer
+  "K25-K28"      = c("A099", "A100"),                    # Gyomor- és nyombélfekély
+  "K70_K73_K74"  = "A105",                               # Idült májbetegség / májzsugor
+  "K_OTH"        = sprintf("A%03d", c(98, 101:104, 106, 107)), # Egyéb emésztőrendszeri
+  ## Bőr (csak a bőrfertőzések; az "egyéb bőr" 07A-ban a csont-izommal közös)
+  "L"            = "A121",                               # Bőr és bőralatti szövet
+  ## Csont-izomrendszer (M00-M99). 07A: A122-A125 (A121 itt a BŐR!).
+  "M"            = sprintf("A%03d", 122:125),            # Csont-izomrendszer
+  "RHEUM_ARTHRO" = "A122",                               # Rheumatoid arthritis és arthrosis
+  "M_OTH"        = sprintf("A%03d", 123:125),            # Egyéb csont-izom
+  ## Urogenitális (N00-N99). Teljes felbontás A108-A114.
+  "N"            = sprintf("A%03d", 108:114),            # Urogenitális rendszer
+  "N00-N29"      = sprintf("A%03d", 108:111),            # Vese és ureter
+  "N_OTH"        = sprintf("A%03d", 112:114),            # Egyéb urogenitális
+  ## Terhesség, szülés, gyermekágy (O00-O99). 07A: A115-A120.
+  "O"            = sprintf("A%03d", 115:120),            # Terhesség, szülés, gyermekágy
+  ## Perinatális állapotok (P00-P96). 07A: A130-A135.
+  "P"            = sprintf("A%03d", 130:135),            # Perinatális állapotok
+  ## Veleszületett rendellenességek (Q00-Q99). 07A: A127-A129.
+  "Q"            = sprintf("A%03d", 127:129),            # Veleszületett rendellenességek
+  ## Tünetek, kórosan meghatározott (R00-R99). 07A: A136 (aggkor), A137 (k.m.n.).
+  "R"            = c("A136", "A137"),                    # Tünetek és kóros leletek
+  "R_OTH"        = c("A136", "A137"),                    # (R95 SIDS és R96-99 07A-ban nincs)
+  ## Külső okok (V00-Y89). Teljes felbontás A138-A150.
+  "V01-Y89"      = sprintf("A%03d", 138:150),            # Külső okok (összes)
+  "ACC"          = sprintf("A%03d", 138:147),            # Balesetek
+  "V_Y85"        = c("A138", "A139"),                    # Közlekedési balesetek
+  "W00-W19"      = "A141",                               # Esések
+  "W65-W74"      = "A146",                               # Vízbefulladás
+  "X40-X49"      = "A140",                               # Balesetszerű mérgezés
+  "ACC_OTH"      = sprintf("A%03d", c(142:145, 147)),    # Egyéb balesetek
+  "X60-X84_Y870" = "A148",                               # Szándékos önártalom (öngyilkosság)
+  "X85-Y09_Y871" = "A149"                                # Testi sértés (emberölés)
+)
+# Szándékosan kihagyva (07A-ban nincs megfelelő, vagy csak durvább kategória):
+# HIV (B20-B24), idült vírusos hepatitis (B180-B182), a finom daganat-lokalizációk
+# (C22, C25, C43, C56, C64, C67, C70-C72, C73, C88_C90_C96, C_OTH), demencia
+# (F01_F03), alkohol/drog (F10, TOXICO), Parkinson (G20), Alzheimer (G30),
+# asztma (J45_J46), egyes máj- és vesecsoportok (K72-K75), SIDS (R95), R96-R99,
+# COVID (U...), bizonytalan szándék (Y10-Y34). Ezek 1955-1968-ra üresen maradnak.
+
+for (ec in names(bno07a)) {
+  idx <- which(sapply(ICDGroups$Groups, function(gr) gr$EurostatCode[1] == ec))
+  if (length(idx) == 1) {
+    gr <- ICDGroups$Groups[[idx]]
+    ICDGroups$Groups[[idx]] <- rbind(gr, data.table(
+      Cause = bno07a[[ec]], List = "07A",
+      EurostatCode = ec, CauseGroup = gr$CauseGroup[1]))
+  }
+}
+# --- BNO-7 modul vége ---------------------------------------------------------
+
 ICDGroups$Individual <- lapply(ICDGroups$Individual, function(l) cbind(l, List = "104"))
 ICDGroups$Avoidable <- lapply(ICDGroups$Avoidable, function(l) cbind(l, List = "104"))
 
@@ -1330,6 +1448,15 @@ Ezután az adatok kimenthetőek:
 ```{r}
 saveRDS(ICDGroups, "./procdata/ICDGroups.rds")
 ```
+
+#### A BNO-7 (7. revízió) visszamenőleges beillesztése
+
+A fenti `bno07a` blokk a 7. revíziót (a WHO-nál `07A` `List`-kóddal jelölt, ún. A-lista) illeszti a meglévő haláloki csoportokhoz, így a magyar idősor 1969 helyett **1955-ig** nyúlik vissza. (Ennél régebbre a WHO mortalitási adatbázisa nem ad lehetőséget: a legkorábbi adat 1950-es, a legrégebbi szereplő revízió pedig a 7. -- a valódi 1940-es évekbeli adatok már nincsenek benne, azok csak nemzeti, KSH-s forrásokból, még régebbi osztályozással lennének elérhetőek.) A leképezés szándékosan moduláris: a kulcs az `EurostatCode`, így egy újabb revízió is egyetlen helyen, a fenti listához adva illeszthető be. A 93 főcsoportból 64-et tudtam értelmesen leképezni; a többi -- például a HIV, a demencia, az asztma, vagy a finomabb daganat-lokalizációk, amelyeket a tömör A-lista az „egyéb” (A057) kategóriába von össze -- a 7. revízió éveinél egyszerűen üresen marad. Ez tudatos, fokozatos degradáció: a downstream feldolgozás (a weboldal) változatlanul, hibátlanul működik, az érintett csoportok idősora pedig egyszerűen csak később, 1969-nél kezdődik.
+
+Két fontos megszorítást azonban hangsúlyozni kell az így nyert, 1970 előtti adatok értelmezésénél:
+
+- **Eltérő népességi és területi alap.** A Human Mortality Database nem véletlenül kezdi Magyarországot csak 1950-nel: a trianoni (1920) és a második világháború utáni határváltozások, valamint az, hogy a hazai népességstatisztika 1970 előtt a *jelenlévő* (de facto) és nem a *lakó* népességet vette alapul, együtt azt eredményezik, hogy az 1955 és 1969 közötti pontok nem teljesen ugyanazon az alapon állnak, mint a mai idősor. Ezeket tehát érdemes óvatosan, nem tökéletesen folytonos adatként kezelni.
+- **A revíziók közötti összehasonlíthatóság korlátai.** A revízióváltások a kódolási logikát is megváltoztatták, ezért néhány csoportnál a 7-es és 8-as revízió határán (1968/1969) törés látszik. A legszembetűnőbb az ischaemiás szívbetegségé (I20-I25): a 7. revízió „érelmeszesedéses és elfajulásos szívbetegség” (A081) kategóriája tágabb a mai értelemben vett ischaemiás szívbetegségnél, így 1969-nél ugrás mutatkozik. Ez minden ilyen visszavezetésnek ismert sajátossága (éppen ezért léteznek az ún. összehasonlíthatósági arányszámok), nem a leképezés hibája.
 
 ### A lélekszám adatok előkészítése
 
@@ -1386,16 +1513,22 @@ PopDataHMD <- PopDataHMD[Year %in% unique(RawData$Year)]
 
 unique(PopDataHMD[YearSign != "", .(Year, iso3c)])
 
-plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
-                             value.var = "Total"))
-abline(0, 1)
-plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
-                                       value.var = "Total"))
-abline(0, 1)
-dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
-  , .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)]
-dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
-  , .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)]
+# Ez a +/- évjelölés-összevetés pusztán diagnosztikai célú; ha valamiért nem áll
+# elő mindkét (`+` és `-`) oszlop, az ne akassza meg a teljes render-t.
+tryCatch({
+  plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
+                               value.var = "Total"))
+  abline(0, 1)
+  plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
+                                         value.var = "Total"))
+  abline(0, 1)
+  print(dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
+    , .(iso3c, Age, Year, `+`, `-`, `+`/`-`)][order(V6)])
+  print(dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
+    , .(iso3c, Age, Year, `+`, `-`, `+` - `-`)][order(V6)])
+}, error = function(e) message(
+  "A HMD +/- diagnosztikai ábrák kihagyva (a dcast nem adott vissza mindkét oszlopot): ",
+  conditionMessage(e)))
 # marginális különbség, a mínuszt használjuk
 PopDataHMD <- PopDataHMD[(YearSign == "")|(YearSign == "-")]
 
