@@ -309,27 +309,27 @@ Emiatt előállhat az a helyzet, hogy az oltás bevezetése után kevesebb lett 
 
 ## A halálokok (betegségek) kódolásáról
 
-Beszéljünk még egy látszólag technikai, de valójában fontos, és önmagában is izgalmas kérdéskörről. Abból indultunk ki ebben az írásban, hogy a kérdéseink vizsgálatához halálozásra vonatkozó adatokat használunk, meg is tárgyaltuk, hogy miért, milyen módon, illetve, hogy ennek milyen előnyei és limitációi vannak. Természetesen fontos lesz a halálozás oka is, tehát, hogy milyen betegségbe halt bele az elhunyt, hiszen így még finomabb elemzéseket tudunk készíteni. A haláloki besorolás kérdését [érintettem már](#mi%C3%A9rt-j%C3%B3k-a-hal%C3%A1loz%C3%A1si-adatok) ebben az írásban is, hangsúlyozva, hogy ez a besorolás nem egyszerű (sőt, sokszor nem is egyértelműen megoldható) feladat. Van azonban itt egy másik, e problémától teljesen független kérdéskör: még ha félre is tesszük ezt, és azt mondjuk, hogy egyértelműen meghatároztuk a halálokot, azt hogyan adjuk meg?
+Beszéljünk még egy látszólag technikai, de valójában fontos, és önmagában is izgalmas kérdéskörről. Abból indultunk ki ebben az írásban, hogy a kérdéseink vizsgálatához halálozásra vonatkozó adatokat használunk, meg is tárgyaltuk, hogy miért, milyen módon, illetve, hogy ennek milyen előnyei és limitációi vannak. Természetesen fontos lesz a halálozás oka is, tehát, hogy milyen betegségbe halt bele az elhunyt, sőt, voltaképp ez lesz az egyik központi kérdésünk. A haláloki besorolás kérdését [érintettem már](#mi%C3%A9rt-j%C3%B3k-a-hal%C3%A1loz%C3%A1si-adatok) ebben az írásban is, hangsúlyozva, hogy ez a besorolás nem egyszerű (sőt, sokszor nem is egyértelműen megoldható) feladat. Van azonban itt egy másik, e problémától teljesen független kérdéskör: még ha félre is tesszük ezt, és azt mondjuk, hogy egyértelműen meghatároztuk a halálokot, azt hogyan adjuk meg?
 
 Első ránézésre talán nem is érhető a probléma: hát leírjuk, hogy "tüdőgyulladás", aztán ennyi, nem? Valójában azonban van itt két nem elhanyagolható apróság: az, hogy pontosnak és egységesnek kell lenni. Mert mi az, hogy "tüdőgyulladás"? Ez nem egyetlen betegség, jó lenne megkülönböztetni, hogy mi okozta: vírus, baktérium, gomba? Hiszen a nagyobb felbontású, finomabb adat mélyebb elemzést tesz lehetővé. Esetleg nem kellene még mélyebbre ásni, és megkülönböztetni azt is, hogy pontosan milyen baktérium, pseudomonas vagy épp staphylococcus? Nem kellene valahogy megadni, hogy milyen kiterjedt volt a tüdőgyulladás? Vagy ennyire ne aprózzuk el, az egybevonható? Na és mi a helyzet a veleszületett tüdőgyulladással, az is idetartozik egyáltalán? Egyszóval nagyon gyorsan ezernyi kérdés merül fel, már egyetlen betegségnél is. Ráadásul itt nemzetközi adatgyűjtésről van szó, tehát azt is el kell érni, hogy a rendszert a világ összes országa elfogadja, és egységesen használja (mellesleg tehát nyilvánvalóan valamilyen kódokra is szükség lesz, nem lehet azt írni, hogy "tüdőgyulladás").
 
 A fentiekből összességében az látszik, hogy szükség volna az összes létező betegség kellő részletezettségű, strukturált, *és* az egész világon egységesen használt osztályozási rendszerére. Gigantikus vállalkozásnak tűnik egy ilyen adatbázis összeállítása! És valóban az is, de az Egészségügyi Világszervezet égisze alatt már több mint egy évszázada folyik az ezt célzó -- és véglegesen természetesen soha véget nem érő -- munka. Ennek az eredménye a Betegségek Nemzetközi Osztályozása, röviden BNO (angolul International Classification of Diseases, ICD).
 
-A BNO lehetővé teszi, hogy az összes ismert, relevánsan elkülöníthető betegséget leírjuk egyetlen kóddal, egy nemzetközileg egységes, hierarchikus osztályozási rendszerben. A BNO-t folyamatosan karbantartják, ám időnként teljes revíziót is tartanak, ami gyakran fundamentálisan megváltoztatja a kódrendszert. Egyrészt mindig -- és általában igen nagy mértékben -- bővül a rendszer: az 1-es revízióban [191 betegség](https://www.meb.ki.se/svesan/ICD/icd1h.htm) szerepelt, a 11-esben nagyjából [17 ezer van](https://www.who.int/news/item/14-02-2025-who-releases-2025-update-to-the-international-classification-of-diseases-(icd-11)). De nem csak erről van szó: maga a felépítés, a struktrúra is gyakran változik, ahogy igyekszik leírni az orvosi tudásunk egyre nagyobb komplexitását. Ami azonban változatlan, hogy minden betegség egy egyértelmű kóddal rendelkezik minden BNO verzióban (noha a kódnak a struktúrája is változott az évtizedek alatt).
+A BNO lehetővé teszi, hogy az összes ismert, relevánsan elkülöníthető betegséget leírjuk egyetlen kóddal, egy nemzetközileg egységes, hierarchikus osztályozási rendszerben. A BNO-t folyamatosan karbantartják, ám időnként teljes revíziót is tartanak, ami gyakran fundamentálisan megváltoztatja a kódrendszert. Egyrészt mindig -- és általában igen nagy mértékben -- bővül a rendszer: az 1-es revízióban [191 betegség](https://www.meb.ki.se/svesan/ICD/icd1h.htm) szerepelt, az aktuális 11-esben nagyjából [17 ezer van](https://www.who.int/news/item/14-02-2025-who-releases-2025-update-to-the-international-classification-of-diseases-(icd-11)). De nem csak erről van szó: maga a felépítés, a struktrúra is gyakran változik, ahogy igyekszik leírni az orvosi tudásunk egyre nagyobb komplexitását. Ami azonban változatlan, hogy minden betegség egy egyértelmű kóddal rendelkezik minden BNO verzióban (noha a kódnak a struktúrája is változott az évtizedek alatt).
 
-A BNO aktuális változata elvileg a 11-es, de az átállás még csak most kezdődött meg, a mortalitási adatbázisban egyelőre még nincs 11-es szerint jelentő ország. A 10-es verziót 1995 körül vezették be (azért fogalmazok ilyen homályosan, mert több évnyi eltérések is vannak abban, hogy melyik ország mikor állt át). A BNO-10-ben a kód formátuma -- és ebből fakadóan a hierarchia -- a következő. A kód első karaktere egy betű, ami a főcsoportot adja meg (pl. C: "rosszindulatú daganatok"). A második és harmadik karakter szám, ami ezen belül adja meg a betegséget (pl. C92: "myeloid leukémia"); ezek általában valamilyen logikus -- jellemzően anatómiai vagy klinikai -- sorrendben vannak megadva (példának okáért, C00-tól C14-ig az az ajak, a szájüreg és garat rosszindulatú daganatai vannak, C15 a nyelőcső rosszindulatú daganata, C16 a gyomoré és így tovább a tápcsatorna mentén). A negyedik karakter a betegség további lebontása, jellemzően típus vagy anatómiai lokalizáció szerint (pl. C925: "akut myelomonocytás leukémia"). A WHO ezt az első 4 karaktert kontrollálja központilag, az 5. karaktert az egyes országok szabadon használhatják fel saját -- finanszírozási, tudományos-statisztikai vagy egyéb célt szolgáló -- osztályozásukra (pl. Magyarországon C9251: "akut myelomonocytás leukémia, alacsony-közepes malignitás").
+A BNO aktuális változata elvileg a 11-es, de az átállás még csak most kezdődött meg, a mortalitási adatbázisban egyelőre még nincs is 11-es szerint jelentő ország. A 10-es verziót 1995 körül vezették be (azért fogalmazok ilyen homályosan, mert több évnyi eltérések is vannak abban, hogy melyik ország mikor állt át). A BNO-10-ben a kód formátuma -- és ebből fakadóan a hierarchia -- a következő. A kód első karaktere egy betű, ami a főcsoportot adja meg (pl. C: "rosszindulatú daganatok"). A második és harmadik karakter szám, ami ezen belül adja meg a betegséget (pl. C92: "myeloid leukémia"); ezek általában valamilyen logikus -- jellemzően anatómiai vagy klinikai -- sorrendben vannak megadva (példának okáért, C00-tól C14-ig az az ajak, a szájüreg és garat rosszindulatú daganatai vannak, C15 a nyelőcső rosszindulatú daganata, C16 a gyomoré és így tovább a tápcsatorna mentén). A negyedik karakter a betegség további lebontása, jellemzően típus vagy anatómiai lokalizáció szerint (pl. C925: "akut myelomonocytás leukémia"). A WHO ezt az első 4 karaktert kontrollálja központilag, az 5. karaktert az egyes országok szabadon használhatják fel saját -- finanszírozási, tudományos-statisztikai vagy egyéb célt szolgáló -- osztályozásukra (pl. Magyarországon C9251: "akut myelomonocytás leukémia, alacsony-közepes malignitás").
 
 A 9-es revízióban ennél sokkal szimplább volt a struktúra: egész egyszerűen 1-től kezdődően meg voltak számozva a betegségek, azzal, hogy az összetartozóak egymás után jöttek (tehát például 1-től 139-ig a fertőző és parazitás betegségek szerepeltek, 140-től 239-ig a különböző ráktípusok; tehát ezt a strukturáltságot maga a kód nem jelölte, 139 egy fertőző betegséges kód, a 140 meg egyszercsak a nyelvrák). Ezen kívül voltak kiegészítő kódok: E betűvel kezdődtek a mortalitás külső okai, V betűvel lehetett egyéb eseményeket (pl. laborvizsgálat, szülés) kódolni. Ezek mind háromjegyű kódok voltak, de elvileg a BNO-9-ben is lehetett részletesebb kódokat használni (pl. 041 a máshová nem osztályozott bakteriális fertőzés, 041.0 a streptococcus okozta fertőzés, 041.02 a B csoportú streptococcus okozta fertőzés); ezt azonban ritkán használták.
 
-Én most adottságnak vettem a BNO-t, de azért egy mondattal érdemes megjegyezni, hogy [szó nincs róla](https://www.sciencedirect.com/science/article/abs/pii/S1386505698001713?via%3Dihub), hogy maga az osztályozási rendszer teljesen problémamentes volna. (És akkor arról nem is beszéltünk, hogy ha nem haláloki, hanem megbetegedési besorolásról beszélünk, akkor a kódolást a kórházak anyagi érdekei is [befolyásolhatják](https://www.sciencedirect.com/science/article/abs/pii/S0168851006001369), a finanszírozási rendszertől függő módon, még egy tökéletes osztályozási rendszer esetén is; szerencsére ez halálozási adatoknál nem releváns.)
+Én most adottságnak vettem a BNO-t, de azért egy mondattal érdemes megjegyezni, hogy [szó nincs róla](https://www.sciencedirect.com/science/article/abs/pii/S1386505698001713), hogy maga az osztályozási rendszer teljesen problémamentes volna. (És akkor arról nem is beszéltünk, hogy ha nem haláloki, hanem megbetegedési besorolásról beszélünk, akkor a kódolást a kórházak anyagi érdekei is [befolyásolhatják](https://www.sciencedirect.com/science/article/abs/pii/S0168851006001369), a finanszírozási rendszertől függő módon, még egy tökéletes osztályozási rendszer esetén is; szerencsére ez halálozási adatoknál nem releváns.)
 
 Egy dologról kell még szót ejteni: a felbontásról. Nem minden ország és minden évben használta ugyanis még az aktuális revízión belül sem az elérhető legrészletesebb kódot, néha csak nagyobb, összevontabb kategóriákat jelentettek. (Például nem azt adták meg, hogy hány akut myelomonocytás leukaemia, C925, volt -- és külön azt, hogy mennyi akut myeloid leukémia, C920, mennyi krónikus myeloid leukémia, C921, stb. -- hanem csak azt, hogy mennyi myeloid leukaemia, C92.) Ilyen szemmel nézve azonnal feltűnik a BNO-10 egy nagy előnye (avagy, fordítva nézve, a 9-es revízió nagy hátránya). Jelesül, hogy a 10-es verzióban ezeket az összevonásokat automatikusan el lehet végezni, egyszerűen csak le kell vágni a kód végét: C9251 az "akut myelomonocytás leukémia, alacsony-közepes malignitás", de ha levágom az utolsó karaktert, akkor az "akut myelomonocytás leukémia" kódját kapom, ha még egyet levágok, akkor a "myeloid leukémia"-ét, ha pedig csak a legeleső betűt tartom meg, akkor azt kapom, hogy "rák". Ez egy nagyon kellemes tulajdonsága a BNO-10-nek, de sajnos a 9-ben, a korábban már látott egyszerű felsorolásból adódóan, értelemszerűen nincs meg. (Kivéve a háromjegyűeken túli kiterjesztéseket, azok így működnek, de a háromjegyű kódok maguk nem.) Azért, hogy ezen segítsenek, és a 9-es revízióban is lehessen nagyobb csoportokról beszélni, jobb híján erre létrehoztak egy külön listát, amelynek a kódjai ezeket a nagyobb csoportokat tartalmazzák; például a 22-es kód azt jelenti, hogy "idegrendszer betegségei" és tartalmazza az összes kódot 320-tól 359-ig. Mint látható, ezt sem a legszerencsésebben sikerült megoldani, mert a összevont lista olyan kódokat használ, amik lehetnének az összevonás nélküli, teljes lista kódjai is (a 22 a lépfene kódja), ezért a WHO megkülönböztetésül egy B betűt ír az összevont listás kódok, elé, így ha B22-t látunk, akkor lehet tudni, hogy az az összevont lista 22-es kódja, nem a sima lista 22-ese. Ráadásul, ha szeretnénk többféle szintű, kisebb és nagyobb összevonást, akkor azt is kézzel kell megoldani, de itt már legalább igyekeztek hierarchiát tartani: B220 jelenti a különböző meningitiseket (a kódok 320-tól 329-ig). Ez azonban csak a BNO-9-re igaz: a 8-nál szintén csak összevont lista van, de ilyen hierarchizált csoportosítások nélkül. Egyébként az előbbi megjegyzésem, hogy magából a kódból sajnos nem látszik, hogy milyen osztályozásról beszélünk, a különböző BNO revíziók között is igaz a WHO adatbázisában: a "B032" a tüdőgyulladás a BNO-8 egyik összevont listájában, de lepra a BNO-9 egyikében.
 
 Azt, hogy ki melyik BNO verziót, és azon belül milyen felbontást használt adott évben, a `List` nevű, három karakterből álló mező adja meg. E mező jellemző formátuma az, hogy az első két karakter a BNO revíziószáma (09 a 9-es verzió, 10 a 10-es stb.), a harmadik karakter a jelentés formátuma. Például a 104-es kód azt jelenti, hogy BNO-10 revízió szerint, az első 4 karaktert megadva. 103-as kód: BNO-10 revízió szerint, az első 3 karaktert megadva. (Mint láttuk, ez automatikusan jelent különféle mélységű hierarchikát, úgyhogy itt elég megadni, hogy hány karaktert közlünk.) A 9-es revíziónál zűrösebb a helyzet. Itt négy különböző változat is van (09A, 09B, 09C és 09N) ezek abban térnek el, hogy pontosan milyen összevonási listát használnak: a 09A és 09B az, amit én az imént leírtam (azzal az egészen minimális eltéréssel, hogy az B-ben hiányzik egy speciális, egyetlen ország egyetlen évében használt kód, de cserében szerepel benne két kód a HIV-re), a 09C és 09N pedig még jobban összevont, nem-standard listák, előbbit Kína, az utóbbiakat a szovjet utódállamok használták egy ideig. A 8-as revízióban két lista van, a kevésbé összevont 08A, és a jóval összevontabb 09B.
 
-Ha valakit csak az utóbbi nagyjából 30 év adatai érdekelnek, akkor nincsen probléma, mert ez egységesen a BNO-10 érája, tehát minden adat ugyanabban a kódrendszerben van (legfeljebb a felbontás lehet a kérdés). Szerencsére nagyon sok problémánál ez elég is, hiszen érthető módon sok kérdés megválaszolásához elég a utóbbi pár évtized adata. De mi a helyzet akkor, ha szeretnénk régebbre visszamenni? Adja magát a probléma: valahogy össze kellene kötni a különböző kódrendszereket...! Ezt azonban könnyebb mondani, mint megcsinálni. A probléma egy része ránézésre, már a fenti leírás alapján látszik: ha régen kevesebb kód volt, most meg több van, akkor szükségszerűen adódik, hogy lesznek olyan esetek, ahol több különböző mai kódnak ugyanaz a régi kód felel meg. (Ez nem probléma akkor, ha a mai adatokat a régi rendszerben akarjuk kifejezni -- egyszerűen össze kell adni a ma különböző kódon jelentett számokat -- de probléma akkor, ha a régi adatokat a mai rendszerben akarjuk kifejezni, hiszen nem tudjuk megmondani, hogy a régi kódon jelentett számot milyen arányban osszuk szét a több új kód között.) Ha csak ennyi lenne a gond, ezen még valamennyire lehetne segíteni. Az egyik megoldás az ún. bridge-coding, ami azt jelenti, hogy ugyazon év adatait elkódolják így is, meg úgy is, a régi rendszerben és az új rendszerben is, ami szó szerint felesleges munka, de pont az a célja, hogy az ilyen összekapcsolásokat támogassa (például: ki lehet belőle olvasni a szétosztási arányokat; kérdés persze, hogy ez időben állandó-e). Ezt meg is szokták csinálni ténylegesen, és fontos, hasznos eszköz is, de sajnos a problémák nem érnek itt véget. Valóbaján ugyanis olyan esetek is vannak, amikor több régi kódnak felel meg egy új, olyanok is, amikor nem egyértelmű, hogy melyik kód melyiknek felel meg, egyszóval a kód-szintű leképezés különböző BNO-revíziók között messze nem triviális feladat. Vannak tanulmányok melyek -- sokszor igen fáradságos munkával -- igyekeztek [megvalósítani](https://www.tandfonline.com/doi/abs/10.1080/01615440.1996.10112731) teljeskörűen ezt az összekapcsolást, igyekezvén [rekonstruálni](https://link.springer.com/article/10.1007/s10680-017-9453-1) a hosszú távú halálozási idősorokat, esetleg csak [egy irányban](https://link.springer.com/article/10.1007/s10654-023-01027-y), léteznek különféle [táblázatok és adatbázisok](https://www.cms.gov/medicare/coding-billing/icd-10-codes/icd-10-cm-icd-10-pcs-gem-archive) az összekapcsolásra, amelyek persze, az előbbiekből adódóan, soha nem lehetnek tökéletesek, [vizsgálják is](https://www.ahajournals.org/doi/10.1161/CIRCOUTCOMES.118.004782) ezek jóságát; egy szó mint száz, ez egy nehéz, zűrös terület.
+Ha valakit csak az utóbbi nagyjából 30 év adatai érdekelnek, akkor nincsen probléma, mert ez egységesen a BNO-10 érája, tehát minden adat ugyanabban a kódrendszerben van (legfeljebb a felbontás lehet a kérdés). Szerencsére nagyon sok problémánál ez elég is, hiszen érthető módon sok kérdés megválaszolásához elég a utóbbi pár évtized adata. De mi a helyzet akkor, ha szeretnénk régebbre visszamenni? Adja magát a probléma: valahogy össze kellene kötni a különböző kódrendszereket...! Ezt azonban könnyebb mondani, mint megcsinálni. A probléma egy része ránézésre, már a fenti leírás alapján látszik: ha régen kevesebb kód volt, most meg több van, akkor szükségszerűen adódik, hogy lesznek olyan esetek, ahol több különböző mai kódnak ugyanaz a régi kód felel meg. (Ez nem probléma akkor, ha a mai adatokat a régi rendszerben akarjuk kifejezni -- egyszerűen össze kell adni a ma különböző kódon jelentett számokat -- de probléma akkor, ha a régi adatokat a mai rendszerben akarjuk kifejezni, hiszen nem tudjuk megmondani, hogy a régi kódon jelentett számot milyen arányban osszuk szét a több új kód között.) Ha csak ennyi lenne a gond, ezen még valamennyire lehetne segíteni. Az egyik megoldás az ún. bridge-coding, ami azt jelenti, hogy ugyazon év adatait elkódolják így is, meg úgy is, a régi rendszerben és az új rendszerben is, ami szó szerint felesleges munka, de pont az a célja, hogy az ilyen összekapcsolásokat támogassa (például: ki lehet belőle olvasni a szétosztási arányokat; kérdés persze, hogy ez időben állandó-e). Ezt meg is szokták csinálni ténylegesen, és fontos, hasznos eszköz is, de sajnos a problémák nem érnek itt véget. Valójában ugyanis olyan esetek is vannak, amikor több régi kódnak felel meg egy új, olyanok is, amikor nem egyértelmű, hogy melyik kód melyiknek felel meg, egyszóval a kód-szintű leképezés különböző BNO-revíziók között messze nem triviális feladat. Vannak tanulmányok melyek -- sokszor igen fáradságos munkával -- igyekeztek [megvalósítani](https://www.tandfonline.com/doi/abs/10.1080/01615440.1996.10112731) teljeskörűen ezt az összekapcsolást, igyekezvén [rekonstruálni](https://link.springer.com/article/10.1007/s10680-017-9453-1) a hosszú távú halálozási idősorokat, esetleg csak [egy irányban](https://link.springer.com/article/10.1007/s10654-023-01027-y); léteznek különféle [táblázatok és adatbázisok](https://www.cms.gov/medicare/coding-billing/icd-10-codes/icd-10-cm-icd-10-pcs-gem-archive) az összekapcsolásra, amelyek persze, az előbbiekből adódóan, soha nem lehetnek tökéletesek, [vizsgálják is](https://www.ahajournals.org/doi/10.1161/CIRCOUTCOMES.118.004782) ezek jóságát; egy szó mint száz, ez egy nehéz, zűrös terület.
 
-Azért, hogy ezeket a zűröket elkerüljem, én egy szerényebb célt tűztem ki magam elé: nem kód-, hanem csoportszinten igyekeztem összekapcsolni a különböző verziókat. Tehát nem arra törekedtem, hogy az "akut myelomonocytás leukémia" megfelelőjét megtaláljam, megelégedtem azzal, hogy a "rosszindulatú daganat" -- vagy legfeljebb a "leukémia" -- megfelelőjét megtaláljam. Ez azért nagy könnyítés, mert a zűrök abszolút túlnyomó többsége csoporton *belül* jelentkezik: régi rák-kód szinte biztos, hogy új rák-kódnak felel meg, és viszont (még ha nem is egyértelmű vagy egyszerű, hogy melyiknek). Ezért a csoportszintű megfeleltetés sokkal egyszerűbb, reálisabb -- és sokkal aggálytalanabbul elvégezhető -- feladat. (Azt csak halkan teszem hozzá, hogy a BNO-9 esetében a WHO adatbázisában kizárólag összevont listás kódok vannak, tehát ott, ha akarnánk sem tudnánk legfinomabb kód-szinten összekapcsolni, ez a kérdés fel sem merül.) Az általam használt összekapcsolást a lenti kód `ICDGroups` változója mutatja. A kialakításához ki lehet indulni publikációkból (például egy kanadai [közleményből](https://www150.statcan.gc.ca/n1/pub/84-548-x/84-548-x2005001-eng.htm), különösen a [2. táblázata](https://www150.statcan.gc.ca/n1/pub/84-548-x/2005001/t/4078901-eng.htm) és a [4. táblázata](https://www150.statcan.gc.ca/n1/pub/84-548-x/2005001/t/4158977-eng.htm) érdekes, egy kanadai tartomány [tanulmányából](https://open.alberta.ca/dataset/0778534944) és egy holland [publikációból](https://link.springer.com/article/10.1007/s10680-013-9307-4), különösen a [2. táblázata](https://link.springer.com/article/10.1007/s10680-013-9307-4/tables/2) érdekes); de ebben az esetben valójában legtöbbször józan ésszel is egyértelmű a helyzet az elnevezések alapján. Valójában azonban még csak ezekre sincs szükség: a később bemutatandó Eurostat összevonási táblázat ugyanis van olyan kedves, és a kategóriák tartalmát nem csak BNO-10, de BNO-9 -- sőt, még BNO-8 -- alapján is megadja!
+Azért, hogy ezeket a zűröket elkerüljem, én egy szerényebb célt tűztem ki magam elé: nem kód-, hanem csoportszinten igyekeztem összekapcsolni a különböző verziókat. Tehát nem arra törekedtem, hogy az "akut myelomonocytás leukémia" megfelelőjét megtaláljam, megelégedtem azzal, hogy a "rosszindulatú daganat", vagy legfeljebb a "leukémia" megfelelőjét megtaláljam. Ez azért nagy könnyítés, mert a zűrök abszolút túlnyomó többsége csoporton *belül* jelentkezik: régi rák-kód szinte biztos, hogy új rák-kódnak felel meg, és viszont (még ha nem is egyértelmű vagy egyszerű, hogy melyiknek). Ezért a csoportszintű megfeleltetés sokkal egyszerűbb, reálisabb -- és sokkal aggálytalanabbul elvégezhető -- feladat. (Azt csak halkan teszem hozzá, hogy a BNO-9 esetében a WHO adatbázisában kizárólag összevont listás kódok vannak, tehát ott, ha akarnánk sem tudnánk legfinomabb kód-szinten összekapcsolni.) Az általam használt összekapcsolást a lenti kód `ICDGroups` változója mutatja. A kialakításához ki lehet indulni publikációkból (például egy kanadai [közleményből](https://www150.statcan.gc.ca/n1/pub/84-548-x/84-548-x2005001-eng.htm), különösen a [2. táblázata](https://www150.statcan.gc.ca/n1/pub/84-548-x/2005001/t/4078901-eng.htm) és a [4. táblázata](https://www150.statcan.gc.ca/n1/pub/84-548-x/2005001/t/4158977-eng.htm) érdekes, egy kanadai tartomány [tanulmányából](https://open.alberta.ca/dataset/0778534944) és egy holland [publikációból](https://link.springer.com/article/10.1007/s10680-013-9307-4), különösen a [2. táblázata](https://link.springer.com/article/10.1007/s10680-013-9307-4/tables/2) érdekes); de ebben az esetben valójában legtöbbször józan ésszel is egyértelmű a helyzet az elnevezések alapján. Valójában azonban még csak ezekre sincs szükség: a később bemutatandó Eurostat összevonási táblázat ugyanis van olyan kedves, és a kategóriák tartalmát nem csak BNO-10, de BNO-9 -- sőt, még BNO-8 -- alapján is megadja.
 
 Jelen állás szerint a 104-es kódú adatokat használtam teljeskörűen, az összes többiből pedig azokat, amiknél elkészült a megfeleltetési tábla. (Technikailag ez úgy néz ki, hogy minden adatot beolvasok, de amikhez az `ICDGroups` táblában nincs bejegyzés, azok nem fognak látszódni a felületen.)
 
@@ -436,14 +436,17 @@ RawData <- RawData[Sex != 9]
 
 A következő feladat a három különböző életkori felbontás kezelése.
 
-Először is, a `Deaths23` tartalma problémás, ugyanis függ a formátumtól: 0-s formátumban azt jelenti, hogy "85-89", viszont 1-es és 2-es formátumban azt, hogy "85 vagy afölött". Azért, hogy ettől megszabaduljunk, bevezetünk egy új változót, mely nevében is utal arra, hogy összevont életkori kategória, ebbe belementjük az 1-est és a 2-est, és az eredeti `Deaths23`-at ezeknél `NA`-ra állítjuk, így a `Deaths23` jelentése tiszta lesz. Az újonnan bevezett változót meg természetesen a 0-snál állítjuk `NA`-ra:
+Egy zűrt ehhez helyre kell tenni: a WHO -- elég szerencsétlen módon -- olyan kódolást használ, ahol *ugyanazon* életkori kód jelentése más lehet attól függően, hogy mi a formátum: a `Deaths23` például 0-s formátumban azt jelenti, hogy "85-89", viszont 1-es és 2-es formátumban azt, hogy "85 vagy afölött". Azért, hogy ettől megszabaduljunk, új változókat vezetünk be, hogy mindegyik életkori kód tartalma tiszta legyen, tehát, hogy egy kód egyértelműen jelezzen valamilyen életkortartományt, formátumtól függetlenül. Az előző példa esetében a `Deaths23`-at fenntartjuk arra, hogy "85-89", ott pedig, ahol ez "85 vagy afölött", bevezetünk egy új életkori kódot `Deaths232425` néven. Kérdés, hogy ez utóbbit milyen értékre állítsuk ott, ahol finomabb felbontás is van. Hagyhatnánk üresen, mondván, hogy ilyen esetben szükségtelen, hiszen van részletesebb információ is, de vegyük figyelembe, hogy vannak esetek, ahol egy ország jelentésének felbontása menet közben változott meg, például Magyarország 1995-ig 1-es formátumban jelentett (85 felett van összevonás), 1995 után viszont már 0-s kóddal (95 felett van összevonás). Ilyenkor érdemes lehet mégis megtartani a durvább felbontást (is) a finomabb felbontás érájában is -- egész egyszerűen az összehasonlíthatóság érdekében! A fenti példában, érdemes lehet a "85 vagy afölött" kategóriát továbbvezetni 1995 utánra is, mert így abból a kategóriából lesz egy hosszú idősorunk (márpedig ezt csak így lehet elérni, hiszen a 80-85, 85-90 stb. kategóriákat *vissza*vezetni nem tudjuk). Ezt a számítást elméletileg nem kellene adatbázisban letárolni, hiszen a részletes életkori kategóriákból bármikor kiszámítható az összevont, de ennyi redundáns tárolást talán megér a dolog, mert cserében később könnyebb lesz a feldolgozás:
 
 ```{r}
-RawData$Deaths232425 <- ifelse(RawData$Frmat == 0, NA, RawData$Deaths23)
+RawData$Deaths232425 <- ifelse(
+  RawData$Frmat == 0,
+  RawData$Deaths23 + RawData$Deaths24 + RawData$Deaths25,
+  RawData$Deaths23)
 RawData$Deaths23 <- ifelse(RawData$Frmat == 0, RawData$Deaths23, NA)
 ```
 
-Ugyanez a helyzet a `Deaths3`-mal, ami a 2-es formátumnál jelent mást. Itt viszont az összevont kategóriát az összesnél elmentjük, de ennek teljesen más oka van (a referencia-populáció is csak az összevont életkori kategóriát fogja tartalmazni):
+Hasonló a helyzet a `Deaths3`-mal (ott ráadásul már csak azért is muszáj az összevontat is elmenteni, mert a referencia-populáció is csak az összevont életkori kategóriát tartalmazza):
 
 ```{r}
 RawData$Deaths3456 <- ifelse(
@@ -452,7 +455,14 @@ RawData$Deaths3456 <- ifelse(
 RawData$Deaths3 <- ifelse(RawData$Frmat == 2, NA, RawData$Deaths3)
 ```
 
-Ezután átalakítjuk az adatokat a későbbi feldolgozást lényegesen megkönnyítő long formátumra, a WHO által megadott wide formátumról. Itt hagyjuk el a korábban már említett `Deaths26`-ot (egyszerűen azáltal, hogy nem választjuk ki), illetve hasonlóan a `Deaths1`-et, ami az összes halálozás, de erre nincs szükség, mert redundáns, ezt úgyis elő tudjuk állítani később:
+Végezetül ki kell térnünk az országok tárolására az adatbázisban. Erre alapvetően a `Country` szolgál (amit fent kikódoltunk az érthetőbb `iso3c` szokásos betűkódra), csakhogy mellette van még két kapcsolódó rovat: az `Admin1` és a `SubDiv`. Az előbbi "észak-dél", és hasonló felosztások tárolására szolgál, de nincsen nagy jelentősége, mert minden esetben csak több, át nem fedő, és az egészet kiadó részre osztja adott ország adatait, így nekünk most nem okoz semmilyen problémát, mert nemsokára úgyis összegezni fogunk a `Country` felett (is). Az utóbbi azonban zűrösebb: a legtöbb esetben a `SubDiv` egyszerűen egy adatminőségre utaló jelzés (pl. hogy csak az állampolgárok halálozási adatait tartalmazza), ahol az ország adata ugyanúgy egy soron van, tehát ez lényegében csak olyan, mintha egy lábjegyzet lenne, így nincs vele teendőnk, de egy kivétel van: Kína. Ott 1987 és 2000 között a jelentés három `SubDiv` kódon történt, "városi" (A51), "vidéki" (A41) valamint "vidéki és városi" (A35), ahol ez utóbbi az előbbi kettő összege. Vagyis itt nem lehet egyszerűen a későbbi összegzésre hagyni a dolgot, hiszen azzal megdupláznánk a számokat! Az előbbi kettőt el kell hagyni:
+
+```{r}
+RawData <- RawData[!(iso3c == "CHN" & Year >= 1987 & Year <= 2000 &
+                       SubDiv %in% c("A41", "A51"))]
+```
+
+Mindezek után átalakítjuk az adatokat a későbbi feldolgozást lényegesen megkönnyítő long formátumra, a WHO által megadott wide formátumról. Itt hagyjuk el a korábban már említett `Deaths26`-ot (egyszerűen azáltal, hogy nem választjuk ki), illetve hasonlóan a `Deaths1`-et, ami az összes halálozás, de erre nincs szükség, mert redundáns, ezt úgyis elő tudjuk állítani később:
 
 ```{r}
 RawData <- melt(RawData[
@@ -462,7 +472,7 @@ RawData <- melt(RawData[
   variable.name = "Age")
 ```
 
-Ahol `NA` van az életkornál, az a fenti manőverjeink miatt van: ez jelzi azt, hogy az adott életkori bontásnál a kérdéses kategória nem jelentett. Long formátumban viszont egyszerűen elhagyhatjuk ezeket:
+Ahol `NA` van az életkornál, az a fenti manőverjeink miatt van: ez jelzi azt, hogy az adott életkori bontásnál a kérdéses kategória nem jelentett. Long formátumban viszont elhagyhatjuk ezeket:
 
 ```{r}
 RawData <- RawData[!is.na(value)]
@@ -482,7 +492,7 @@ RawData[List == "104" & substring(Cause, 1, 3) %in%
 
 (Mint látható, a kilenc kivételből hétnél mégis összevontam az adatokat, csak kettőnél -- Y06 és Y07 -- nem. Ennek az az oka, hogy nagyon úgy tűnik, hogy a maradék hétnél, hiába is van hivatalos alábontás, nem azt használták, hanem az előfordulás helye kódot, ugyanis megjelennek ezeknél olyan negyedik számjegyek, amik a hivatalos alábontás szerint nem is létezhetnének -- viszont az előfordulás helye szerint igen. Akárhogy is, ez nem volt egyértelműen beazonosítható, úgyhogy a háromkarakteres főcsoportra redukáltam őket, ami viszont már az.)
 
-Természetesen nem elég pusztán a kódokat összevonni, hiszen így duplikátumok keletkeznek a sorokban, amiket szintén össze kell vonni, szummázással:
+Természetesen nem elég pusztán a kódokat összevonni, hiszen így duplikátumok keletkeznek a sorokban, amiket szintén össze kell vonni, szummázással, ez egyúttal az `Admin1` miatt is szükséges:
 
 ```{r}
 RawData <- RawData[, .(value = sum(value)),
@@ -492,13 +502,11 @@ RawData <- RawData[, .(value = sum(value)),
 A WHO adatbázisában a BNO-kódok még a 104-es formátumban sem mind 4 jegyűek. Ennek az az oka, hogy amelyik kódnál nincs alábontás, tehát nem is szerepel 4 jegyű kategória alatta, ott a kód három karakterrel szerepel. (Sajnos ez nem konzisztens, de erről majd később, a BNO-kódoknál.) A magyar szokás azonban az, hogy a kódok mindenképp 5 jegyűek legyenek, ezért a 4 jegyűek végére "0"-t, a 3 jegyűek végére "H0"-t kell fűzni a hazai konvenció szerint; tegyük ezt most meg, hogy később össze tudjuk kapcsolni a WHO-s mortalitási táblákat a magyar BNO táblával:
 
 ```{r}
-RawData[List == "104" & nchar(Cause) == 3,
-        Cause := paste0(Cause, "H0")]
-RawData[List == "104" & nchar(Cause) == 4,
-        Cause := paste0(Cause, "0")]
+RawData[List == "104" & nchar(Cause) == 3, Cause := paste0(Cause, "H0")]
+RawData[List == "104" & nchar(Cause) == 4, Cause := paste0(Cause, "0")]
 ```
 
-Ezután már csak technikai apróság van hátra: a kategoriális változókat alakítsuk tényleg faktorrá (ez a nem esetén fontosabb, mert ott így címkét is adhatunk, de a többinél is érdemes, mert jelentősen csökkenti a tárigényt, mivel nem szövegeket kell tárolni). Ugyanez okból állítsunk be egy kulcsot is:
+Ezután már csak technikai apróság van hátra: a kategoriális változókat alakítsuk tényleg faktorrá (ez a nem esetén fontosabb, mert ott így címkét is adhatunk, de a többinél is érdemes, mert jelentősen csökkenti a tárigényt, mivel nem szövegeket kell tárolni):
 
 ```{r}
 RawData$iso3c <- as.factor(RawData$iso3c)
@@ -525,7 +533,7 @@ Visszatérve a fő-fájlra, érdemes kulcsot beállítani a későbbi gyorsabb l
 setkey(RawData, iso3c, Year, Sex, Age)
 ```
 
-Ezután már kimenthetjük a végleges adatbázist. Fontos észrevétel: nyugodtan megtehetjük, hogy csak azokat mentjük ki, ahol nem 0 az érték! (Gondoljunk bele: ha valahol nem volt az adott BNO vagy nem, az amúgy is 0 lenne! A kulcs itt az, hogy a `RawDataAll`-nak köszönhetően tudjuk rekonstruálni a vázat, 0-któl függetlenül is, így sokkal takarékosabb, ha azt nem is mentjük ki). Azaz:
+Ezután már kimenthetjük a végleges adatbázist. Fontos észrevétel: nyugodtan megtehetjük, hogy csak azokat mentjük ki, ahol nem 0 az érték! (Gondoljunk bele: ha valahol nem volt az adott BNO vagy nem, az amúgy is 0 lenne! A kulcs itt az, hogy a `RawDataAll`-nak köszönhetően tudjuk rekonstruálni a vázat, 0-któl függetlenül is, így sokkal takarékosabb is, ha azt nem is mentjük ki). Azaz:
 
 ```{r}
 saveRDS(RawData[value > 0], "./procdata/WHO-MDB.rds")
@@ -633,7 +641,7 @@ Végignézve ezeket a kódokat, a következő problémák azonosíthatóak:
 
 Jó lenne kideríteni, hogy a fentieknek mi az oka!
 
-Jobb híján ezeket úgy javítottam, hogy hozzáadtam a magyar táblához a hiányzó kódokat, névként megadva a kódot (hiszen nevem nincsen, pont ez a probléma, de így nem fogunk adatot veszíteni -- az ilyen kódoknál névként is a kód fog megjelenni):
+Jobb híján ezeket úgy javítottam, hogy hozzáadtam a magyar táblához a hiányzó kódokat, névként megadva a kódot (hiszen nevem nincsen, pont ez a probléma, de így legalább nem fogunk adatot veszíteni -- az ilyen kódoknál névként is a kód fog megjelenni):
 
 ```{r}
 ICDData <- rbind(ICDData, data.table(
@@ -660,7 +668,7 @@ ICDData$Kod1 <- substring(ICDData$KOD10, 1, 1)
 ICDData$Kod23 <- as.numeric(substring(ICDData$KOD10, 2, 3))
 ```
 
-Így már definiálhatóak a nagyobb csoportok; én most az [Eurostat listáját](https://ec.europa.eu/eurostat/cache/metadata/Annexes/hlth_cdeath_sims_an_2.pdf) használtam:
+Így már definiálhatóak a nagyobb csoportok; én most az [Eurostat listáját](https://ec.europa.eu/eurostat/cache/metadata/Annexes/hlth_cdeath_sims_an_2.pdf) használtam, együtt a különböző verziók (BNO-10, BNO-9 és BNO-8) között olyan összekapcsolással, aminek a módját a fentiekben bemutattam:
 
 ```{r}
 ICDGroups <- list(
@@ -1356,9 +1364,9 @@ Még egyetlen megjegyzés a végére. A HMD és az Eurostat adatbázisa az ún. 
 
 Jöjjenek most az egyes adatbázisok! Egyetlen megjegyzés mielőtt belevágunk: mivel a halálozási adatok úgy vannak megadva, hogy legfeljebb 95 évig van lebontva az életkor a mortalitási adatbázisban (a fölötte lévők mindenképp egyetlen életkori kategóriába összesítve szerepelnek), így a lélekszám-adatoknál is e szerint végzem az előfeldolgozást, a 95 és afölötti kategóriákat eleve egybevonom.
 
-#### Human Mortality Database
+#### Human Mortality Database (HMD)
 
-A HMD letöltése és előfeldolgozása:
+A Human Mortality Database (HMD) adatbázis letöltése és előfeldolgozása:
 
 ```{r}
 unzip("./inputdata/population.zip", exdir = td)
@@ -1420,7 +1428,7 @@ Az Eurostat adatbázis letöltése és előfeldolgozása:
 ```{r}
 PopDataES <- data.table(eurostat::get_eurostat("demo_pjan", use.data.table = TRUE, cache = FALSE))
 PopDataES$Year <- lubridate::year(PopDataES$TIME_PERIOD)
-PopDataES <- PopDataES[!geo%in%c("EA19", "EA20", "EEA30_2007", "EEA31", "EFTA", "EU27_2007",
+PopDataES <- PopDataES[!geo%in%c("EA19", "EA20", "EA21", "EEA30_2007", "EEA31", "EFTA", "EU27_2007",
                                  "EU27_2020", "EU28", "FX", "XK", "DE_TOT")]
 PopDataES$iso3c <- countrycode::countrycode(PopDataES$geo, "eurostat", "iso3c")
 PopDataES[iso3c == "DEU" & Year <= 1990]$iso3c <- "XX7" # NSZK
@@ -1458,9 +1466,9 @@ PopDataES <- PopDataES[, .(iso3c, Year, Sex = sex, Age = age, PopES = values)]
 PopDataES <- PopDataES[order(iso3c, Year, Sex, Age)]
 ```
 
-#### World Population Prospects
+#### World Population Prospects (WPP)
 
-A World Population Prospects letöltése és előfeldolgozása:
+A World Population Prospects (WPP) adatbázis letöltése és előfeldolgozása:
 
 ```{r}
 PopDataUN <- fread(paste0(
@@ -1555,21 +1563,20 @@ PopData$Age <- cut(PopData$Age, c(0:5, seq(10, 95, 5), Inf), right = FALSE,
                    labels = paste0("Deaths", 2:25))
 PopData <- PopData[, .(Pop = sum(Pop)), .(iso3c, Year, Age, Sex)]
 
-PopData <- rbind(PopData, PopData[Age %in% paste0("Deaths", 3:6),
-                                  .(Pop = sum(Pop), Age = "Deaths3456") , .(iso3c, Year, Sex)])
-
 PopData <- rbind(
-  cbind(PopData, Frmat = 0),
-  cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25)],
-              PopData[Age %in% paste0("Deaths", 23:25),
-                      .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 1),
-  cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25) & !Age %in% paste0("Deaths", 3:6)],
-              PopData[Age %in% paste0("Deaths", 23:25),
-                      .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 2)
+  PopData,
+  PopData[Age %in% paste0("Deaths", 3:6), .(Pop = sum(Pop), Age = "Deaths3456"), .(iso3c, Year, Sex)],
+  PopData[Age %in% paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]
 )
 
-PopData$Aggregated <- ifelse(PopData$Frmat == 2, FALSE, PopData$Age == "Deaths3456")
+PopData <- rbind(cbind(PopData, Frmat = 0), cbind(PopData, Frmat = 1), cbind(PopData, Frmat = 2))
+
+PopData$Aggregated <- ifelse(PopData$Frmat == 2, FALSE,
+                             ifelse(PopData$Frmat == 1, PopData$Age == "Deaths3456",
+                                    PopData$Age %in% c("Deaths232425", "Deaths3456")))
 ```
+
+A `PopData$Aggregated` szolgál arra, hogy megjelöljük -- ennek később, a feldolgozásnál jelentősége lesz -- hogy melyik az az életkori csoport, ami *mesterségesen* aggregált (tehát nem egyszerűen azt jelzi, hogy aggregált, hanem azt, hogy aggregált *annak ellenére*, hogy egyébként az adott formátum mellett elérhető lenne a részletesebb életkori bontás is).
 
 Végül a szokásos módon kimentjük:
 
@@ -1611,7 +1618,7 @@ saveRDS(res, "./procdata/dimredvizData.rds")
 
 ## Az adatok és a számítás validációja
 
-Az adatok és a számításokat nagyrészt tudjuk validálni az Eurostat adatszolgáltatásának köszönhetően. (A "nagyrészt" azt jelenti, hogy az egyedi kódokat nem lehet az Eurostat-tól lekérdezni, így az nem validálható, csak a fő kategóriák, de mivel a fő kategóriákat most manuálisan számoljuk az egyedi kódokból, így ha az előbbiek stimmelnek, akkor igen valószínű, hogy az utóbbiak is. A másik hátrány, hogy csak egyes éveket kérhetünk le, több év aggregált adatát nem.) Külön Eurostat táblából kérdezhetjük le a mortalitást (ezen belül is külön lesz az abszolút szám, a nyers ráta és a standardizált ráta), az elvesztett életéveket és a megelőzhető halálozást.
+Az adatok és a számításokat nagyrészt tudjuk validálni az Eurostat adatszolgáltatásának köszönhetően. (A "nagyrészt" azt jelenti, hogy az egyedi kódokat nem lehet az Eurostat-tól lekérdezni, így az nem validálható, csak a fő kategóriák, de mivel a fő kategóriákat most manuálisan számoljuk az egyedi kódokból, így ha az előbbiek stimmelnek, akkor igen valószínű, hogy az utóbbiak is. A másik hátrány, hogy csak egyes éveket kérhetünk le, több év aggregált adatát nem.) Külön Eurostat táblából kérdezhetjük le a mortalitást, ezen belül is külön lesz az abszolút szám, a nyers ráta és a standardizált ráta, az elvesztett életéveket és a megelőzhető halálozást.
 
 Elsőként betöltjük a weboldal mögött lévő kód számításokat végző részét:
 
@@ -1621,7 +1628,7 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
                            indicator, yllMethod, yllPyllTarget,
                            strat, metric, ordVar, byvarAdd,
                            yearFilter, sexFilter, ageFilter, comp, valid) {
-
+    
     icd <- if(multipleICD == "Single") ICDSingle else ICDMultiple
     if(is.null(icd)) return(NULL)
     icdtable <- rbindlist(ICDGroups[[category]][icd])
@@ -1634,7 +1641,7 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
     
     yearSel <- if(!any(is.na(yearFilter))) seq(yearFilter[1], yearFilter[2], 1) else min(RawData$Year):max(RawData$Year)
     if(sexFilter == "Összesen") sexFilter <- c("Férfi", "Nő")
-
+    
     if(ageFilter == "Összesen" || metric == "adjrate") {
       rd <- RawData[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
       skeleton <- RawDataAll[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
@@ -1644,13 +1651,13 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
     }
     
     if(multipleICD == "MultiSum") icdtable[, c("CauseGroup", "EurostatCode") := list("Összeg", NA)]
-
+    
     skeleton <- unique(icdtable[, .(List, EurostatCode, CauseGroup)])[skeleton, on = .(List), nomatch = NULL, allow.cartesian = TRUE]
     
     rd <- icdtable[rd, on = .(List, Cause), nomatch = NULL, allow.cartesian = TRUE][
       skeleton, on = .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode),
       .(value = round(sum(value * Weight, na.rm = TRUE))), by = .EACHI]
-
+    
     rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
     
     if(category == "Avoidable") rd <- rd[AgeNum < yllPyllTarget]
@@ -1669,9 +1676,10 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
     if(nrow(rd) != 0) {
       rd <- switch(
         metric,
-        "count" = rd[Aggregated == FALSE, .(value = sum(value)), byvars],
-        "cruderate" = rd[Aggregated == FALSE,
-                         .(value = sum(value)/sum(Pop)*1e5), byvars],
+        "count" = if("AgeLabel" %in% byvars) rd[, .(value = sum(value)), byvars] else
+          rd[Aggregated == FALSE, .(value = sum(value)), byvars],
+        "cruderate" = if("AgeLabel" %in% byvars) rd[, .(value = sum(value)/sum(Pop)*1e5), byvars] else
+          rd[Aggregated == FALSE, .(value = sum(value)/sum(Pop)*1e5), byvars],
         "adjrate" = merge(
           rd[, .(value = sum(value), Pop = sum(Pop)),
              c(byvars, "Frmat", "Age")],

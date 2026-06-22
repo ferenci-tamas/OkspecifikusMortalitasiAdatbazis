@@ -866,8 +866,8 @@ hogy a kérdéseink vizsgálatához halálozásra vonatkozó adatokat
 használunk, meg is tárgyaltuk, hogy miért, milyen módon, illetve, hogy
 ennek milyen előnyei és limitációi vannak. Természetesen fontos lesz a
 halálozás oka is, tehát, hogy milyen betegségbe halt bele az elhunyt,
-hiszen így még finomabb elemzéseket tudunk készíteni. A haláloki
-besorolás kérdését [érintettem
+sőt, voltaképp ez lesz az egyik központi kérdésünk. A haláloki besorolás
+kérdését [érintettem
 már](#mi%C3%A9rt-j%C3%B3k-a-hal%C3%A1loz%C3%A1si-adatok) ebben az
 írásban is, hangsúlyozva, hogy ez a besorolás nem egyszerű (sőt, sokszor
 nem is egyértelműen megoldható) feladat. Van azonban itt egy másik, e
@@ -908,8 +908,8 @@ hierarchikus osztályozási rendszerben. A BNO-t folyamatosan
 karbantartják, ám időnként teljes revíziót is tartanak, ami gyakran
 fundamentálisan megváltoztatja a kódrendszert. Egyrészt mindig – és
 általában igen nagy mértékben – bővül a rendszer: az 1-es revízióban
-[191 betegség](https://www.meb.ki.se/svesan/ICD/icd1h.htm) szerepelt, a
-11-esben nagyjából [17 ezer
+[191 betegség](https://www.meb.ki.se/svesan/ICD/icd1h.htm) szerepelt, az
+aktuális 11-esben nagyjából [17 ezer
 van](https://www.who.int/news/item/14-02-2025-who-releases-2025-update-to-the-international-classification-of-diseases-(icd-11)).
 De nem csak erről van szó: maga a felépítés, a struktrúra is gyakran
 változik, ahogy igyekszik leírni az orvosi tudásunk egyre nagyobb
@@ -918,7 +918,7 @@ egyértelmű kóddal rendelkezik minden BNO verzióban (noha a kódnak a
 struktúrája is változott az évtizedek alatt).
 
 A BNO aktuális változata elvileg a 11-es, de az átállás még csak most
-kezdődött meg, a mortalitási adatbázisban egyelőre még nincs 11-es
+kezdődött meg, a mortalitási adatbázisban egyelőre még nincs is 11-es
 szerint jelentő ország. A 10-es verziót 1995 körül vezették be (azért
 fogalmazok ilyen homályosan, mert több évnyi eltérések is vannak abban,
 hogy melyik ország mikor állt át). A BNO-10-ben a kód formátuma – és
@@ -953,7 +953,7 @@ csoportú streptococcus okozta fertőzés); ezt azonban ritkán használták.
 
 Én most adottságnak vettem a BNO-t, de azért egy mondattal érdemes
 megjegyezni, hogy [szó nincs
-róla](https://www.sciencedirect.com/science/article/abs/pii/S1386505698001713?via%3Dihub),
+róla](https://www.sciencedirect.com/science/article/abs/pii/S1386505698001713),
 hogy maga az osztályozási rendszer teljesen problémamentes volna. (És
 akkor arról nem is beszéltünk, hogy ha nem haláloki, hanem megbetegedési
 besorolásról beszélünk, akkor a kódolást a kórházak anyagi érdekei is
@@ -1040,7 +1040,7 @@ rendszerben is, ami szó szerint felesleges munka, de pont az a célja,
 hogy az ilyen összekapcsolásokat támogassa (például: ki lehet belőle
 olvasni a szétosztási arányokat; kérdés persze, hogy ez időben
 állandó-e). Ezt meg is szokták csinálni ténylegesen, és fontos, hasznos
-eszköz is, de sajnos a problémák nem érnek itt véget. Valóbaján ugyanis
+eszköz is, de sajnos a problémák nem érnek itt véget. Valójában ugyanis
 olyan esetek is vannak, amikor több régi kódnak felel meg egy új,
 olyanok is, amikor nem egyértelmű, hogy melyik kód melyiknek felel meg,
 egyszóval a kód-szintű leképezés különböző BNO-revíziók között messze
@@ -1050,7 +1050,7 @@ fáradságos munkával – igyekeztek
 teljeskörűen ezt az összekapcsolást, igyekezvén
 [rekonstruálni](https://link.springer.com/article/10.1007/s10680-017-9453-1)
 a hosszú távú halálozási idősorokat, esetleg csak [egy
-irányban](https://link.springer.com/article/10.1007/s10654-023-01027-y),
+irányban](https://link.springer.com/article/10.1007/s10654-023-01027-y);
 léteznek különféle [táblázatok és
 adatbázisok](https://www.cms.gov/medicare/coding-billing/icd-10-codes/icd-10-cm-icd-10-pcs-gem-archive)
 az összekapcsolásra, amelyek persze, az előbbiekből adódóan, soha nem
@@ -1062,7 +1062,7 @@ Azért, hogy ezeket a zűröket elkerüljem, én egy szerényebb célt tűztem
 ki magam elé: nem kód-, hanem csoportszinten igyekeztem összekapcsolni a
 különböző verziókat. Tehát nem arra törekedtem, hogy az „akut
 myelomonocytás leukémia” megfelelőjét megtaláljam, megelégedtem azzal,
-hogy a „rosszindulatú daganat” – vagy legfeljebb a „leukémia” –
+hogy a „rosszindulatú daganat”, vagy legfeljebb a „leukémia”
 megfelelőjét megtaláljam. Ez azért nagy könnyítés, mert a zűrök abszolút
 túlnyomó többsége csoporton *belül* jelentkezik: régi rák-kód szinte
 biztos, hogy új rák-kódnak felel meg, és viszont (még ha nem is
@@ -1071,9 +1071,9 @@ megfeleltetés sokkal egyszerűbb, reálisabb – és sokkal aggálytalanabbul
 elvégezhető – feladat. (Azt csak halkan teszem hozzá, hogy a BNO-9
 esetében a WHO adatbázisában kizárólag összevont listás kódok vannak,
 tehát ott, ha akarnánk sem tudnánk legfinomabb kód-szinten
-összekapcsolni, ez a kérdés fel sem merül.) Az általam használt
-összekapcsolást a lenti kód `ICDGroups` változója mutatja. A
-kialakításához ki lehet indulni publikációkból (például egy kanadai
+összekapcsolni.) Az általam használt összekapcsolást a lenti kód
+`ICDGroups` változója mutatja. A kialakításához ki lehet indulni
+publikációkból (például egy kanadai
 [közleményből](https://www150.statcan.gc.ca/n1/pub/84-548-x/84-548-x2005001-eng.htm),
 különösen a [2.
 táblázata](https://www150.statcan.gc.ca/n1/pub/84-548-x/2005001/t/4078901-eng.htm)
@@ -1089,7 +1089,7 @@ táblázata](https://link.springer.com/article/10.1007/s10680-013-9307-4/tables/
 egyértelmű a helyzet az elnevezések alapján. Valójában azonban még csak
 ezekre sincs szükség: a később bemutatandó Eurostat összevonási táblázat
 ugyanis van olyan kedves, és a kategóriák tartalmát nem csak BNO-10, de
-BNO-9 – sőt, még BNO-8 – alapján is megadja!
+BNO-9 – sőt, még BNO-8 – alapján is megadja.
 
 Jelen állás szerint a 104-es kódú adatokat használtam teljeskörűen, az
 összes többiből pedig azokat, amiknél elkészült a megfeleltetési tábla.
@@ -1124,6 +1124,13 @@ a `data.table` csomagot használva:
 ``` r
 library(data.table)
 ```
+
+    ## 
+    ## Kapcsolódás csomaghoz: 'data.table'
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     %notin%
 
 ### A mortalitási adatbázis előkészítése
 
@@ -1261,24 +1268,44 @@ RawData <- RawData[Sex != 9]
 
 A következő feladat a három különböző életkori felbontás kezelése.
 
-Először is, a `Deaths23` tartalma problémás, ugyanis függ a formátumtól:
-0-s formátumban azt jelenti, hogy „85-89”, viszont 1-es és 2-es
-formátumban azt, hogy „85 vagy afölött”. Azért, hogy ettől
-megszabaduljunk, bevezetünk egy új változót, mely nevében is utal arra,
-hogy összevont életkori kategória, ebbe belementjük az 1-est és a 2-est,
-és az eredeti `Deaths23`-at ezeknél `NA`-ra állítjuk, így a `Deaths23`
-jelentése tiszta lesz. Az újonnan bevezett változót meg természetesen a
-0-snál állítjuk `NA`-ra:
+Egy zűrt ehhez helyre kell tenni: a WHO – elég szerencsétlen módon –
+olyan kódolást használ, ahol *ugyanazon* életkori kód jelentése más
+lehet attól függően, hogy mi a formátum: a `Deaths23` például 0-s
+formátumban azt jelenti, hogy „85-89”, viszont 1-es és 2-es formátumban
+azt, hogy „85 vagy afölött”. Azért, hogy ettől megszabaduljunk, új
+változókat vezetünk be, hogy mindegyik életkori kód tartalma tiszta
+legyen, tehát, hogy egy kód egyértelműen jelezzen valamilyen
+életkortartományt, formátumtól függetlenül. Az előző példa esetében a
+`Deaths23`-at fenntartjuk arra, hogy „85-89”, ott pedig, ahol ez „85
+vagy afölött”, bevezetünk egy új életkori kódot `Deaths232425` néven.
+Kérdés, hogy ez utóbbit milyen értékre állítsuk ott, ahol finomabb
+felbontás is van. Hagyhatnánk üresen, mondván, hogy ilyen esetben
+szükségtelen, hiszen van részletesebb információ is, de vegyük
+figyelembe, hogy vannak esetek, ahol egy ország jelentésének felbontása
+menet közben változott meg, például Magyarország 1995-ig 1-es
+formátumban jelentett (85 felett van összevonás), 1995 után viszont már
+0-s kóddal (95 felett van összevonás). Ilyenkor érdemes lehet mégis
+megtartani a durvább felbontást (is) a finomabb felbontás érájában is –
+egész egyszerűen az összehasonlíthatóság érdekében! A fenti példában,
+érdemes lehet a „85 vagy afölött” kategóriát továbbvezetni 1995 utánra
+is, mert így abból a kategóriából lesz egy hosszú idősorunk (márpedig
+ezt csak így lehet elérni, hiszen a 80-85, 85-90 stb. kategóriákat
+*vissza*vezetni nem tudjuk). Ezt a számítást elméletileg nem kellene
+adatbázisban letárolni, hiszen a részletes életkori kategóriákból
+bármikor kiszámítható az összevont, de ennyi redundáns tárolást talán
+megér a dolog, mert cserében később könnyebb lesz a feldolgozás:
 
 ``` r
-RawData$Deaths232425 <- ifelse(RawData$Frmat == 0, NA, RawData$Deaths23)
+RawData$Deaths232425 <- ifelse(
+  RawData$Frmat == 0,
+  RawData$Deaths23 + RawData$Deaths24 + RawData$Deaths25,
+  RawData$Deaths23)
 RawData$Deaths23 <- ifelse(RawData$Frmat == 0, RawData$Deaths23, NA)
 ```
 
-Ugyanez a helyzet a `Deaths3`-mal, ami a 2-es formátumnál jelent mást.
-Itt viszont az összevont kategóriát az összesnél elmentjük, de ennek
-teljesen más oka van (a referencia-populáció is csak az összevont
-életkori kategóriát fogja tartalmazni):
+Hasonló a helyzet a `Deaths3`-mal (ott ráadásul már csak azért is muszáj
+az összevontat is elmenteni, mert a referencia-populáció is csak az
+összevont életkori kategóriát tartalmazza):
 
 ``` r
 RawData$Deaths3456 <- ifelse(
@@ -1287,7 +1314,30 @@ RawData$Deaths3456 <- ifelse(
 RawData$Deaths3 <- ifelse(RawData$Frmat == 2, NA, RawData$Deaths3)
 ```
 
-Ezután átalakítjuk az adatokat a későbbi feldolgozást lényegesen
+Végezetül ki kell térnünk az országok tárolására az adatbázisban. Erre
+alapvetően a `Country` szolgál (amit fent kikódoltunk az érthetőbb
+`iso3c` szokásos betűkódra), csakhogy mellette van még két kapcsolódó
+rovat: az `Admin1` és a `SubDiv`. Az előbbi „észak-dél”, és hasonló
+felosztások tárolására szolgál, de nincsen nagy jelentősége, mert minden
+esetben csak több, át nem fedő, és az egészet kiadó részre osztja adott
+ország adatait, így nekünk most nem okoz semmilyen problémát, mert
+nemsokára úgyis összegezni fogunk a `Country` felett (is). Az utóbbi
+azonban zűrösebb: a legtöbb esetben a `SubDiv` egyszerűen egy
+adatminőségre utaló jelzés (pl. hogy csak az állampolgárok halálozási
+adatait tartalmazza), ahol az ország adata ugyanúgy egy soron van, tehát
+ez lényegében csak olyan, mintha egy lábjegyzet lenne, így nincs vele
+teendőnk, de egy kivétel van: Kína. Ott 1987 és 2000 között a jelentés
+három `SubDiv` kódon történt, „városi” (A51), „vidéki” (A41) valamint
+„vidéki és városi” (A35), ahol ez utóbbi az előbbi kettő összege. Vagyis
+itt nem lehet egyszerűen a későbbi összegzésre hagyni a dolgot, hiszen
+azzal megdupláznánk a számokat! Az előbbi kettőt el kell hagyni:
+
+``` r
+RawData <- RawData[!(iso3c == "CHN" & Year >= 1987 & Year <= 2000 &
+                       SubDiv %in% c("A41", "A51"))]
+```
+
+Mindezek után átalakítjuk az adatokat a későbbi feldolgozást lényegesen
 megkönnyítő long formátumra, a WHO által megadott wide formátumról. Itt
 hagyjuk el a korábban már említett `Deaths26`-ot (egyszerűen azáltal,
 hogy nem választjuk ki), illetve hasonlóan a `Deaths1`-et, ami az összes
@@ -1304,7 +1354,7 @@ RawData <- melt(RawData[
 
 Ahol `NA` van az életkornál, az a fenti manőverjeink miatt van: ez jelzi
 azt, hogy az adott életkori bontásnál a kérdéses kategória nem
-jelentett. Long formátumban viszont egyszerűen elhagyhatjuk ezeket:
+jelentett. Long formátumban viszont elhagyhatjuk ezeket:
 
 ``` r
 RawData <- RawData[!is.na(value)]
@@ -1347,7 +1397,7 @@ háromkarakteres főcsoportra redukáltam őket, ami viszont már az.)
 
 Természetesen nem elég pusztán a kódokat összevonni, hiszen így
 duplikátumok keletkeznek a sorokban, amiket szintén össze kell vonni,
-szummázással:
+szummázással, ez egyúttal az `Admin1` miatt is szükséges:
 
 ``` r
 RawData <- RawData[, .(value = sum(value)),
@@ -1365,17 +1415,14 @@ később össze tudjuk kapcsolni a WHO-s mortalitási táblákat a magyar BNO
 táblával:
 
 ``` r
-RawData[List == "104" & nchar(Cause) == 3,
-        Cause := paste0(Cause, "H0")]
-RawData[List == "104" & nchar(Cause) == 4,
-        Cause := paste0(Cause, "0")]
+RawData[List == "104" & nchar(Cause) == 3, Cause := paste0(Cause, "H0")]
+RawData[List == "104" & nchar(Cause) == 4, Cause := paste0(Cause, "0")]
 ```
 
 Ezután már csak technikai apróság van hátra: a kategoriális változókat
 alakítsuk tényleg faktorrá (ez a nem esetén fontosabb, mert ott így
 címkét is adhatunk, de a többinél is érdemes, mert jelentősen csökkenti
-a tárigényt, mivel nem szövegeket kell tárolni). Ugyanez okból állítsunk
-be egy kulcsot is:
+a tárigényt, mivel nem szövegeket kell tárolni):
 
 ``` r
 RawData$iso3c <- as.factor(RawData$iso3c)
@@ -1433,8 +1480,8 @@ Ezután már kimenthetjük a végleges adatbázist. Fontos észrevétel:
 nyugodtan megtehetjük, hogy csak azokat mentjük ki, ahol nem 0 az érték!
 (Gondoljunk bele: ha valahol nem volt az adott BNO vagy nem, az amúgy is
 0 lenne! A kulcs itt az, hogy a `RawDataAll`-nak köszönhetően tudjuk
-rekonstruálni a vázat, 0-któl függetlenül is, így sokkal takarékosabb,
-ha azt nem is mentjük ki). Azaz:
+rekonstruálni a vázat, 0-któl függetlenül is, így sokkal takarékosabb
+is, ha azt nem is mentjük ki). Azaz:
 
 ``` r
 saveRDS(RawData[value > 0], "./procdata/WHO-MDB.rds")
@@ -1504,6 +1551,13 @@ mapcountrylist <- c("world", "europe", "north-america", "south-america",
                     "central-america", "asia", "africa", "middle-east")
 maplist <- lapply(mapcountrylist, function(x)
   highcharter::download_map_data(paste0("custom/", x), quiet = TRUE))
+```
+
+    ## Registered S3 method overwritten by 'quantmod':
+    ##   method            from
+    ##   as.zoo.data.frame zoo
+
+``` r
 maplist <- setNames(maplist, mapcountrylist)
 
 saveRDS(maplist, "./procdata/maplist.rds")
@@ -1722,8 +1776,8 @@ Jó lenne kideríteni, hogy a fentieknek mi az oka!
 
 Jobb híján ezeket úgy javítottam, hogy hozzáadtam a magyar táblához a
 hiányzó kódokat, névként megadva a kódot (hiszen nevem nincsen, pont ez
-a probléma, de így nem fogunk adatot veszíteni – az ilyen kódoknál
-névként is a kód fog megjelenni):
+a probléma, de így legalább nem fogunk adatot veszíteni – az ilyen
+kódoknál névként is a kód fog megjelenni):
 
 ``` r
 ICDData <- rbind(ICDData, data.table(
@@ -1754,7 +1808,8 @@ ICDData$Kod23 <- as.numeric(substring(ICDData$KOD10, 2, 3))
 
 Így már definiálhatóak a nagyobb csoportok; én most az [Eurostat
 listáját](https://ec.europa.eu/eurostat/cache/metadata/Annexes/hlth_cdeath_sims_an_2.pdf)
-használtam:
+használtam, együtt a különböző verziók (BNO-10, BNO-9 és BNO-8) között
+olyan összekapcsolással, aminek a módját a fentiekben bemutattam:
 
 ``` r
 ICDGroups <- list(
@@ -2601,9 +2656,9 @@ fölötte lévők mindenképp egyetlen életkori kategóriába összesítve
 szerepelnek), így a lélekszám-adatoknál is e szerint végzem az
 előfeldolgozást, a 95 és afölötti kategóriákat eleve egybevonom.
 
-#### Human Mortality Database
+#### Human Mortality Database (HMD)
 
-A HMD letöltése és előfeldolgozása:
+A Human Mortality Database (HMD) adatbázis letöltése és előfeldolgozása:
 
 ``` r
 unzip("./inputdata/population.zip", exdir = td)
@@ -2653,7 +2708,7 @@ plot(`+` ~ `-`, data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ Year
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-41-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-42-1.png)<!-- -->
 
 ``` r
 plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign,
@@ -2661,7 +2716,7 @@ plot(log(`+`) ~ log(`-`), data = dcast(PopDataHMD[YearSign!=""], iso3c + Age + Y
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-41-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-42-2.png)<!-- -->
 
 ``` r
 dcast(PopDataHMD[YearSign!=""], iso3c + Age + Year ~ YearSign, value.var = "Total")[
@@ -2746,7 +2801,7 @@ Az Eurostat adatbázis letöltése és előfeldolgozása:
 ``` r
 PopDataES <- data.table(eurostat::get_eurostat("demo_pjan", use.data.table = TRUE, cache = FALSE))
 PopDataES$Year <- lubridate::year(PopDataES$TIME_PERIOD)
-PopDataES <- PopDataES[!geo%in%c("EA19", "EA20", "EEA30_2007", "EEA31", "EFTA", "EU27_2007",
+PopDataES <- PopDataES[!geo%in%c("EA19", "EA20", "EA21", "EEA30_2007", "EEA31", "EFTA", "EU27_2007",
                                  "EU27_2020", "EU28", "FX", "XK", "DE_TOT")]
 PopDataES$iso3c <- countrycode::countrycode(PopDataES$geo, "eurostat", "iso3c")
 PopDataES[iso3c == "DEU" & Year <= 1990]$iso3c <- "XX7" # NSZK
@@ -2825,36 +2880,36 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
 
     ##     
     ##      [0,1) [1,2) [2,3) [3,4) [4,5) [5,10) [10,15) [15,20) [20,25) [25,30)
-    ##   0   2939     0     0     0     0      0       0       0       0       0
-    ##   1      0  2939     0     0     0      0       0       0       0       0
-    ##   2      0     0  2939     0     0      0       0       0       0       0
-    ##   3      0     0     0  2939     0      0       0       0       0       0
-    ##   4      0     0     0     0  2939      0       0       0       0       0
-    ##   5      0     0     0     0     0   2939       0       0       0       0
-    ##   6      0     0     0     0     0   2939       0       0       0       0
-    ##   7      0     0     0     0     0   2939       0       0       0       0
-    ##   8      0     0     0     0     0   2939       0       0       0       0
-    ##   9      0     0     0     0     0   2939       0       0       0       0
-    ##   10     0     0     0     0     0      0    2939       0       0       0
-    ##   11     0     0     0     0     0      0    2939       0       0       0
-    ##   12     0     0     0     0     0      0    2939       0       0       0
-    ##   13     0     0     0     0     0      0    2939       0       0       0
-    ##   14     0     0     0     0     0      0    2939       0       0       0
-    ##   15     0     0     0     0     0      0       0    2939       0       0
-    ##   16     0     0     0     0     0      0       0    2939       0       0
-    ##   17     0     0     0     0     0      0       0    2939       0       0
-    ##   18     0     0     0     0     0      0       0    2939       0       0
-    ##   19     0     0     0     0     0      0       0    2939       0       0
-    ##   20     0     0     0     0     0      0       0       0    2939       0
-    ##   21     0     0     0     0     0      0       0       0    2939       0
-    ##   22     0     0     0     0     0      0       0       0    2939       0
-    ##   23     0     0     0     0     0      0       0       0    2939       0
-    ##   24     0     0     0     0     0      0       0       0    2939       0
-    ##   25     0     0     0     0     0      0       0       0       0    2939
-    ##   26     0     0     0     0     0      0       0       0       0    2939
-    ##   27     0     0     0     0     0      0       0       0       0    2939
-    ##   28     0     0     0     0     0      0       0       0       0    2939
-    ##   29     0     0     0     0     0      0       0       0       0    2939
+    ##   0   2937     0     0     0     0      0       0       0       0       0
+    ##   1      0  2937     0     0     0      0       0       0       0       0
+    ##   2      0     0  2937     0     0      0       0       0       0       0
+    ##   3      0     0     0  2937     0      0       0       0       0       0
+    ##   4      0     0     0     0  2937      0       0       0       0       0
+    ##   5      0     0     0     0     0   2937       0       0       0       0
+    ##   6      0     0     0     0     0   2937       0       0       0       0
+    ##   7      0     0     0     0     0   2937       0       0       0       0
+    ##   8      0     0     0     0     0   2937       0       0       0       0
+    ##   9      0     0     0     0     0   2937       0       0       0       0
+    ##   10     0     0     0     0     0      0    2937       0       0       0
+    ##   11     0     0     0     0     0      0    2937       0       0       0
+    ##   12     0     0     0     0     0      0    2937       0       0       0
+    ##   13     0     0     0     0     0      0    2937       0       0       0
+    ##   14     0     0     0     0     0      0    2937       0       0       0
+    ##   15     0     0     0     0     0      0       0    2937       0       0
+    ##   16     0     0     0     0     0      0       0    2937       0       0
+    ##   17     0     0     0     0     0      0       0    2937       0       0
+    ##   18     0     0     0     0     0      0       0    2937       0       0
+    ##   19     0     0     0     0     0      0       0    2937       0       0
+    ##   20     0     0     0     0     0      0       0       0    2937       0
+    ##   21     0     0     0     0     0      0       0       0    2937       0
+    ##   22     0     0     0     0     0      0       0       0    2937       0
+    ##   23     0     0     0     0     0      0       0       0    2937       0
+    ##   24     0     0     0     0     0      0       0       0    2937       0
+    ##   25     0     0     0     0     0      0       0       0       0    2937
+    ##   26     0     0     0     0     0      0       0       0       0    2937
+    ##   27     0     0     0     0     0      0       0       0       0    2937
+    ##   28     0     0     0     0     0      0       0       0       0    2937
+    ##   29     0     0     0     0     0      0       0       0       0    2937
     ##   30     0     0     0     0     0      0       0       0       0       0
     ##   31     0     0     0     0     0      0       0       0       0       0
     ##   32     0     0     0     0     0      0       0       0       0       0
@@ -2953,51 +3008,51 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
     ##   27       0       0       0       0       0       0       0       0       0
     ##   28       0       0       0       0       0       0       0       0       0
     ##   29       0       0       0       0       0       0       0       0       0
-    ##   30    2939       0       0       0       0       0       0       0       0
-    ##   31    2939       0       0       0       0       0       0       0       0
-    ##   32    2939       0       0       0       0       0       0       0       0
-    ##   33    2939       0       0       0       0       0       0       0       0
-    ##   34    2939       0       0       0       0       0       0       0       0
-    ##   35       0    2939       0       0       0       0       0       0       0
-    ##   36       0    2939       0       0       0       0       0       0       0
-    ##   37       0    2939       0       0       0       0       0       0       0
-    ##   38       0    2939       0       0       0       0       0       0       0
-    ##   39       0    2939       0       0       0       0       0       0       0
-    ##   40       0       0    2939       0       0       0       0       0       0
-    ##   41       0       0    2939       0       0       0       0       0       0
-    ##   42       0       0    2939       0       0       0       0       0       0
-    ##   43       0       0    2939       0       0       0       0       0       0
-    ##   44       0       0    2939       0       0       0       0       0       0
-    ##   45       0       0       0    2939       0       0       0       0       0
-    ##   46       0       0       0    2939       0       0       0       0       0
-    ##   47       0       0       0    2939       0       0       0       0       0
-    ##   48       0       0       0    2939       0       0       0       0       0
-    ##   49       0       0       0    2939       0       0       0       0       0
-    ##   50       0       0       0       0    2939       0       0       0       0
-    ##   51       0       0       0       0    2939       0       0       0       0
-    ##   52       0       0       0       0    2939       0       0       0       0
-    ##   53       0       0       0       0    2939       0       0       0       0
-    ##   54       0       0       0       0    2939       0       0       0       0
-    ##   55       0       0       0       0       0    2939       0       0       0
-    ##   56       0       0       0       0       0    2939       0       0       0
-    ##   57       0       0       0       0       0    2939       0       0       0
-    ##   58       0       0       0       0       0    2939       0       0       0
-    ##   59       0       0       0       0       0    2939       0       0       0
-    ##   60       0       0       0       0       0       0    2939       0       0
-    ##   61       0       0       0       0       0       0    2939       0       0
-    ##   62       0       0       0       0       0       0    2939       0       0
-    ##   63       0       0       0       0       0       0    2939       0       0
-    ##   64       0       0       0       0       0       0    2939       0       0
-    ##   65       0       0       0       0       0       0       0    2939       0
-    ##   66       0       0       0       0       0       0       0    2939       0
-    ##   67       0       0       0       0       0       0       0    2939       0
-    ##   68       0       0       0       0       0       0       0    2939       0
-    ##   69       0       0       0       0       0       0       0    2939       0
-    ##   70       0       0       0       0       0       0       0       0    2939
-    ##   71       0       0       0       0       0       0       0       0    2939
-    ##   72       0       0       0       0       0       0       0       0    2939
-    ##   73       0       0       0       0       0       0       0       0    2939
-    ##   74       0       0       0       0       0       0       0       0    2939
+    ##   30    2937       0       0       0       0       0       0       0       0
+    ##   31    2937       0       0       0       0       0       0       0       0
+    ##   32    2937       0       0       0       0       0       0       0       0
+    ##   33    2937       0       0       0       0       0       0       0       0
+    ##   34    2937       0       0       0       0       0       0       0       0
+    ##   35       0    2937       0       0       0       0       0       0       0
+    ##   36       0    2937       0       0       0       0       0       0       0
+    ##   37       0    2937       0       0       0       0       0       0       0
+    ##   38       0    2937       0       0       0       0       0       0       0
+    ##   39       0    2937       0       0       0       0       0       0       0
+    ##   40       0       0    2937       0       0       0       0       0       0
+    ##   41       0       0    2937       0       0       0       0       0       0
+    ##   42       0       0    2937       0       0       0       0       0       0
+    ##   43       0       0    2937       0       0       0       0       0       0
+    ##   44       0       0    2937       0       0       0       0       0       0
+    ##   45       0       0       0    2937       0       0       0       0       0
+    ##   46       0       0       0    2937       0       0       0       0       0
+    ##   47       0       0       0    2937       0       0       0       0       0
+    ##   48       0       0       0    2937       0       0       0       0       0
+    ##   49       0       0       0    2937       0       0       0       0       0
+    ##   50       0       0       0       0    2937       0       0       0       0
+    ##   51       0       0       0       0    2937       0       0       0       0
+    ##   52       0       0       0       0    2937       0       0       0       0
+    ##   53       0       0       0       0    2937       0       0       0       0
+    ##   54       0       0       0       0    2937       0       0       0       0
+    ##   55       0       0       0       0       0    2937       0       0       0
+    ##   56       0       0       0       0       0    2937       0       0       0
+    ##   57       0       0       0       0       0    2937       0       0       0
+    ##   58       0       0       0       0       0    2937       0       0       0
+    ##   59       0       0       0       0       0    2937       0       0       0
+    ##   60       0       0       0       0       0       0    2937       0       0
+    ##   61       0       0       0       0       0       0    2937       0       0
+    ##   62       0       0       0       0       0       0    2937       0       0
+    ##   63       0       0       0       0       0       0    2937       0       0
+    ##   64       0       0       0       0       0       0    2937       0       0
+    ##   65       0       0       0       0       0       0       0    2937       0
+    ##   66       0       0       0       0       0       0       0    2937       0
+    ##   67       0       0       0       0       0       0       0    2937       0
+    ##   68       0       0       0       0       0       0       0    2937       0
+    ##   69       0       0       0       0       0       0       0    2937       0
+    ##   70       0       0       0       0       0       0       0       0    2937
+    ##   71       0       0       0       0       0       0       0       0    2937
+    ##   72       0       0       0       0       0       0       0       0    2937
+    ##   73       0       0       0       0       0       0       0       0    2937
+    ##   74       0       0       0       0       0       0       0       0    2937
     ##   75       0       0       0       0       0       0       0       0       0
     ##   76       0       0       0       0       0       0       0       0       0
     ##   77       0       0       0       0       0       0       0       0       0
@@ -3096,36 +3151,37 @@ table(PopDataES$age, cut(PopDataES$age, c(0:5, seq(10, 95, 5), Inf), right = FAL
     ##   72       0       0       0       0        0
     ##   73       0       0       0       0        0
     ##   74       0       0       0       0        0
-    ##   75    2939       0       0       0        0
-    ##   76    2939       0       0       0        0
-    ##   77    2939       0       0       0        0
-    ##   78    2939       0       0       0        0
-    ##   79    2939       0       0       0        0
-    ##   80       0    2939       0       0        0
-    ##   81       0    2939       0       0        0
-    ##   82       0    2939       0       0        0
-    ##   83       0    2939       0       0        0
-    ##   84       0    2939       0       0        0
-    ##   85       0       0    2939       0        0
-    ##   86       0       0    2939       0        0
-    ##   87       0       0    2939       0        0
-    ##   88       0       0    2939       0        0
-    ##   89       0       0    2939       0        0
-    ##   90       0       0       0    2939        0
-    ##   91       0       0       0    2939        0
-    ##   92       0       0       0    2939        0
-    ##   93       0       0       0    2939        0
-    ##   94       0       0       0    2939        0
-    ##   95       0       0       0       0     2939
+    ##   75    2937       0       0       0        0
+    ##   76    2937       0       0       0        0
+    ##   77    2937       0       0       0        0
+    ##   78    2937       0       0       0        0
+    ##   79    2937       0       0       0        0
+    ##   80       0    2937       0       0        0
+    ##   81       0    2937       0       0        0
+    ##   82       0    2937       0       0        0
+    ##   83       0    2937       0       0        0
+    ##   84       0    2937       0       0        0
+    ##   85       0       0    2937       0        0
+    ##   86       0       0    2937       0        0
+    ##   87       0       0    2937       0        0
+    ##   88       0       0    2937       0        0
+    ##   89       0       0    2937       0        0
+    ##   90       0       0       0    2937        0
+    ##   91       0       0       0    2937        0
+    ##   92       0       0       0    2937        0
+    ##   93       0       0       0    2937        0
+    ##   94       0       0       0    2937        0
+    ##   95       0       0       0       0     2937
 
 ``` r
 PopDataES <- PopDataES[, .(iso3c, Year, Sex = sex, Age = age, PopES = values)]
 PopDataES <- PopDataES[order(iso3c, Year, Sex, Age)]
 ```
 
-#### World Population Prospects
+#### World Population Prospects (WPP)
 
-A World Population Prospects letöltése és előfeldolgozása:
+A World Population Prospects (WPP) adatbázis letöltése és
+előfeldolgozása:
 
 ``` r
 PopDataUN <- fread(paste0(
@@ -3193,19 +3249,19 @@ temp <- Reduce(function(...) merge(..., by = c("iso3c", "Year", "Age", "Sex"), a
 plot(PopHMD ~ PopES, data = temp[!is.na(PopHMD) & !is.na(PopES)])
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-44-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
 
 ``` r
 plot(PopHMD ~ PopUN, data = temp[!is.na(PopHMD) & !is.na(PopUN)])
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-44-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-45-2.png)<!-- -->
 
 ``` r
 plot(PopUN ~ PopES, data = temp[!is.na(PopUN) & !is.na(PopES)])
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-44-3.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-45-3.png)<!-- -->
 
 Megnézhetünk konkrét kategóriákat is, mondjuk a magyar 0-1 évesek
 alakulása:
@@ -3220,7 +3276,7 @@ ggplot2::ggplot(temp[iso3c == "HUN" & Age == 0 & !is.na(value)],
   ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-45-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
 
 Érdekes módon az Eurostat adat eltér a másik kettőtől, de a még
 érdekesebb, hogy ez az eltérés az 1-2 éves kategóriában eltűnik:
@@ -3232,7 +3288,7 @@ ggplot2::ggplot(temp[iso3c == "HUN" & Age == 1 & !is.na(value)],
   ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-46-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
 
 Megnézhetünk több életkort is egyben, ennek inkább csak az ábra
 zsúfoltsága szab határt:
@@ -3244,7 +3300,7 @@ ggplot2::ggplot(temp[iso3c == "HUN" & Age <= 5 & !is.na(value)],
   ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-47-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
 
 Egy másik összevetési lehetőség az, ha az ország teljes lélekszámának a
 változását nézzük a különböző adatbázisok szerint:
@@ -3257,7 +3313,7 @@ ggplot2::ggplot(temp[iso3c == "HUN", .(sum(value)),
   ggplot2::geom_line() + ggplot2::geom_point()
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-48-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
 
 #### Végleges adatbázis konvertálása, kimentése
 
@@ -3274,21 +3330,25 @@ PopData$Age <- cut(PopData$Age, c(0:5, seq(10, 95, 5), Inf), right = FALSE,
                    labels = paste0("Deaths", 2:25))
 PopData <- PopData[, .(Pop = sum(Pop)), .(iso3c, Year, Age, Sex)]
 
-PopData <- rbind(PopData, PopData[Age %in% paste0("Deaths", 3:6),
-                                  .(Pop = sum(Pop), Age = "Deaths3456") , .(iso3c, Year, Sex)])
-
 PopData <- rbind(
-  cbind(PopData, Frmat = 0),
-  cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25)],
-              PopData[Age %in% paste0("Deaths", 23:25),
-                      .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 1),
-  cbind(rbind(PopData[!Age %in% paste0("Deaths", 23:25) & !Age %in% paste0("Deaths", 3:6)],
-              PopData[Age %in% paste0("Deaths", 23:25),
-                      .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]), Frmat = 2)
+  PopData,
+  PopData[Age %in% paste0("Deaths", 3:6), .(Pop = sum(Pop), Age = "Deaths3456"), .(iso3c, Year, Sex)],
+  PopData[Age %in% paste0("Deaths", 23:25), .(Pop = sum(Pop), Age = "Deaths232425"), .(iso3c, Year, Sex)]
 )
 
-PopData$Aggregated <- ifelse(PopData$Frmat == 2, FALSE, PopData$Age == "Deaths3456")
+PopData <- rbind(cbind(PopData, Frmat = 0), cbind(PopData, Frmat = 1), cbind(PopData, Frmat = 2))
+
+PopData$Aggregated <- ifelse(PopData$Frmat == 2, FALSE,
+                             ifelse(PopData$Frmat == 1, PopData$Age == "Deaths3456",
+                                    PopData$Age %in% c("Deaths232425", "Deaths3456")))
 ```
+
+A `PopData$Aggregated` szolgál arra, hogy megjelöljük – ennek később, a
+feldolgozásnál jelentősége lesz – hogy melyik az az életkori csoport,
+ami *mesterségesen* aggregált (tehát nem egyszerűen azt jelzi, hogy
+aggregált, hanem azt, hogy aggregált *annak ellenére*, hogy egyébként az
+adott formátum mellett elérhető lenne a részletesebb életkori bontás
+is).
 
 Végül a szokásos módon kimentjük:
 
@@ -3341,8 +3401,8 @@ validálható, csak a fő kategóriák, de mivel a fő kategóriákat most
 manuálisan számoljuk az egyedi kódokból, így ha az előbbiek stimmelnek,
 akkor igen valószínű, hogy az utóbbiak is. A másik hátrány, hogy csak
 egyes éveket kérhetünk le, több év aggregált adatát nem.) Külön Eurostat
-táblából kérdezhetjük le a mortalitást (ezen belül is külön lesz az
-abszolút szám, a nyers ráta és a standardizált ráta), az elvesztett
+táblából kérdezhetjük le a mortalitást, ezen belül is külön lesz az
+abszolút szám, a nyers ráta és a standardizált ráta, az elvesztett
 életéveket és a megelőzhető halálozást.
 
 Elsőként betöltjük a weboldal mögött lévő kód számításokat végző részét:
@@ -3353,7 +3413,7 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
                            indicator, yllMethod, yllPyllTarget,
                            strat, metric, ordVar, byvarAdd,
                            yearFilter, sexFilter, ageFilter, comp, valid) {
-
+    
     icd <- if(multipleICD == "Single") ICDSingle else ICDMultiple
     if(is.null(icd)) return(NULL)
     icdtable <- rbindlist(ICDGroups[[category]][icd])
@@ -3366,7 +3426,7 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
     
     yearSel <- if(!any(is.na(yearFilter))) seq(yearFilter[1], yearFilter[2], 1) else min(RawData$Year):max(RawData$Year)
     if(sexFilter == "Összesen") sexFilter <- c("Férfi", "Nő")
-
+    
     if(ageFilter == "Összesen" || metric == "adjrate") {
       rd <- RawData[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
       skeleton <- RawDataAll[CJ(iso3cSel, yearSel, sexFilter), nomatch = NULL]
@@ -3376,13 +3436,13 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
     }
     
     if(multipleICD == "MultiSum") icdtable[, c("CauseGroup", "EurostatCode") := list("Összeg", NA)]
-
+    
     skeleton <- unique(icdtable[, .(List, EurostatCode, CauseGroup)])[skeleton, on = .(List), nomatch = NULL, allow.cartesian = TRUE]
     
     rd <- icdtable[rd, on = .(List, Cause), nomatch = NULL, allow.cartesian = TRUE][
       skeleton, on = .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode),
       .(value = round(sum(value * Weight, na.rm = TRUE))), by = .EACHI]
-
+    
     rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
     
     if(category == "Avoidable") rd <- rd[AgeNum < yllPyllTarget]
@@ -3401,9 +3461,10 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
     if(nrow(rd) != 0) {
       rd <- switch(
         metric,
-        "count" = rd[Aggregated == FALSE, .(value = sum(value)), byvars],
-        "cruderate" = rd[Aggregated == FALSE,
-                         .(value = sum(value)/sum(Pop)*1e5), byvars],
+        "count" = if("AgeLabel" %in% byvars) rd[, .(value = sum(value)), byvars] else
+          rd[Aggregated == FALSE, .(value = sum(value)), byvars],
+        "cruderate" = if("AgeLabel" %in% byvars) rd[, .(value = sum(value)/sum(Pop)*1e5), byvars] else
+          rd[Aggregated == FALSE, .(value = sum(value)/sum(Pop)*1e5), byvars],
         "adjrate" = merge(
           rd[, .(value = sum(value), Pop = sum(Pop)),
              c(byvars, "Frmat", "Age")],
@@ -3429,9 +3490,9 @@ oszlopokat, hogy a saját adatformátumunkkal összekapcsolható legyen:
 ESres <- as.data.table(eurostat::get_eurostat("hlth_cd_aro"))
 ```
 
-    ## indexed 0B in  0s, 0B/sindexed 28.18MB in  0s, 140.73MB/sindexed 28.31MB in  0s, 140.80MB/sindexed 28.44MB in  0s, 140.57MB/sindexed 28.57MB in  0s, 140.62MB/sindexed 28.70MB in  0s, 140.49MB/sindexed 28.84MB in  0s, 140.49MB/sindexed 28.97MB in  0s, 140.54MB/sindexed 29.10MB in  0s, 140.67MB/sindexed 29.23MB in  0s, 140.65MB/sindexed 29.36MB in  0s, 140.60MB/sindexed 29.49MB in  0s, 140.72MB/sindexed 29.62MB in  0s, 140.67MB/sindexed 29.75MB in  0s, 140.61MB/sindexed 29.88MB in  0s, 140.61MB/sindexed 30.02MB in  0s, 140.59MB/sindexed 30.15MB in  0s, 140.58MB/sindexed 30.28MB in  0s, 140.56MB/sindexed 30.41MB in  0s, 140.51MB/sindexed 30.54MB in  0s, 140.61MB/sindexed 30.67MB in  0s, 140.50MB/sindexed 30.80MB in  0s, 140.57MB/sindexed 30.93MB in  0s, 140.56MB/sindexed 31.06MB in  0s, 140.39MB/sindexed 31.19MB in  0s, 140.41MB/sindexed 31.33MB in  0s, 140.45MB/sindexed 31.46MB in  0s, 140.53MB/sindexed 31.59MB in  0s, 140.49MB/sindexed 31.72MB in  0s, 140.50MB/sindexed 31.85MB in  0s, 140.52MB/sindexed 31.98MB in  0s, 140.53MB/sindexed 32.11MB in  0s, 140.51MB/sindexed 32.24MB in  0s, 140.52MB/sindexed 32.37MB in  0s, 140.55MB/sindexed 32.51MB in  0s, 140.53MB/sindexed 32.64MB in  0s, 140.55MB/sindexed 32.77MB in  0s, 140.53MB/sindexed 32.90MB in  0s, 140.66MB/sindexed 33.03MB in  0s, 140.71MB/sindexed 33.16MB in  0s, 140.82MB/sindexed 33.29MB in  0s, 140.83MB/sindexed 33.42MB in  0s, 140.69MB/sindexed 33.55MB in  0s, 140.61MB/sindexed 33.69MB in  0s, 140.62MB/sindexed 33.82MB in  0s, 140.64MB/sindexed 33.95MB in  0s, 140.77MB/sindexed 34.08MB in  0s, 140.76MB/sindexed 34.21MB in  0s, 140.80MB/sindexed 34.34MB in  0s, 140.82MB/sindexed 34.47MB in  0s, 140.82MB/sindexed 34.60MB in  0s, 140.96MB/sindexed 34.73MB in  0s, 140.95MB/sindexed 34.86MB in  0s, 141.09MB/sindexed 35.00MB in  0s, 141.10MB/sindexed 35.13MB in  0s, 141.12MB/sindexed 35.26MB in  0s, 141.10MB/sindexed 35.39MB in  0s, 141.12MB/sindexed 35.52MB in  0s, 141.15MB/sindexed 35.65MB in  0s, 141.21MB/sindexed 35.78MB in  0s, 141.21MB/sindexed 35.91MB in  0s, 141.13MB/sindexed 36.04MB in  0s, 141.13MB/sindexed 36.18MB in  0s, 141.23MB/sindexed 36.31MB in  0s, 141.24MB/sindexed 36.44MB in  0s, 141.26MB/sindexed 36.57MB in  0s, 141.26MB/sindexed 36.70MB in  0s, 141.27MB/sindexed 36.83MB in  0s, 141.43MB/sindexed 36.96MB in  0s, 141.49MB/sindexed 37.09MB in  0s, 141.54MB/sindexed 37.22MB in  0s, 141.54MB/sindexed 37.36MB in  0s, 141.53MB/sindexed 37.49MB in  0s, 141.57MB/sindexed 37.62MB in  0s, 141.61MB/sindexed 37.75MB in  0s, 141.61MB/sindexed 37.88MB in  0s, 141.72MB/sindexed 38.01MB in  0s, 141.73MB/sindexed 38.14MB in  0s, 141.72MB/sindexed 38.27MB in  0s, 141.39MB/sindexed 38.40MB in  0s, 141.31MB/sindexed 38.53MB in  0s, 141.27MB/sindexed 38.67MB in  0s, 141.27MB/sindexed 38.80MB in  0s, 141.30MB/sindexed 38.93MB in  0s, 141.31MB/sindexed 39.06MB in  0s, 141.33MB/sindexed 39.19MB in  0s, 141.36MB/sindexed 39.32MB in  0s, 141.32MB/sindexed 39.45MB in  0s, 141.34MB/sindexed 39.58MB in  0s, 141.31MB/sindexed 39.71MB in  0s, 141.43MB/sindexed 39.85MB in  0s, 141.43MB/sindexed 39.98MB in  0s, 141.49MB/sindexed 40.11MB in  0s, 141.51MB/sindexed 40.24MB in  0s, 141.61MB/sindexed 40.37MB in  0s, 141.53MB/sindexed 40.50MB in  0s, 141.64MB/sindexed 40.63MB in  0s, 141.47MB/sindexed 40.76MB in  0s, 141.49MB/sindexed 40.89MB in  0s, 141.44MB/sindexed 41.03MB in  0s, 141.42MB/sindexed 41.16MB in  0s, 141.25MB/sindexed 41.29MB in  0s, 141.28MB/sindexed 41.42MB in  0s, 141.27MB/sindexed 41.55MB in  0s, 141.31MB/sindexed 41.68MB in  0s, 141.35MB/sindexed 41.81MB in  0s, 141.37MB/sindexed 41.94MB in  0s, 141.36MB/sindexed 42.07MB in  0s, 141.40MB/sindexed 42.20MB in  0s, 141.42MB/sindexed 42.34MB in  0s, 141.41MB/sindexed 42.47MB in  0s, 141.46MB/sindexed 42.60MB in  0s, 141.46MB/sindexed 42.73MB in  0s, 141.46MB/sindexed 42.86MB in  0s, 141.47MB/sindexed 42.99MB in  0s, 141.42MB/sindexed 43.12MB in  0s, 135.35MB/sindexed 43.25MB in  0s, 135.31MB/sindexed 43.38MB in  0s, 135.34MB/sindexed 43.52MB in  0s, 135.31MB/sindexed 43.65MB in  0s, 135.42MB/sindexed 43.78MB in  0s, 135.43MB/sindexed 43.91MB in  0s, 135.46MB/sindexed 44.04MB in  0s, 135.47MB/sindexed 44.17MB in  0s, 135.52MB/sindexed 44.30MB in  0s, 135.55MB/sindexed 44.43MB in  0s, 135.57MB/sindexed 44.56MB in  0s, 135.60MB/sindexed 44.70MB in  0s, 135.63MB/sindexed 44.83MB in  0s, 135.73MB/sindexed 44.96MB in  0s, 135.75MB/sindexed 45.09MB in  0s, 135.78MB/sindexed 45.22MB in  0s, 135.86MB/sindexed 45.35MB in  0s, 135.89MB/sindexed 45.48MB in  0s, 135.91MB/sindexed 45.61MB in  0s, 135.91MB/sindexed 45.74MB in  0s, 135.97MB/sindexed 45.87MB in  0s, 136.01MB/sindexed 46.01MB in  0s, 135.96MB/sindexed 46.14MB in  0s, 136.04MB/sindexed 46.27MB in  0s, 136.07MB/sindexed 46.40MB in  0s, 136.09MB/sindexed 46.53MB in  0s, 136.11MB/sindexed 46.66MB in  0s, 136.13MB/sindexed 46.79MB in  0s, 136.15MB/sindexed 46.92MB in  0s, 136.17MB/sindexed 47.05MB in  0s, 136.19MB/sindexed 47.19MB in  0s, 136.21MB/sindexed 47.32MB in  0s, 136.23MB/sindexed 47.45MB in  0s, 136.27MB/sindexed 47.58MB in  0s, 136.29MB/sindexed 47.71MB in  0s, 136.29MB/sindexed 47.84MB in  0s, 136.31MB/sindexed 47.97MB in  0s, 136.32MB/sindexed 48.10MB in  0s, 136.34MB/sindexed 48.23MB in  0s, 136.35MB/sindexed 48.37MB in  0s, 136.21MB/sindexed 48.50MB in  0s, 136.16MB/sindexed 48.63MB in  0s, 136.17MB/sindexed 48.76MB in  0s, 136.17MB/sindexed 48.89MB in  0s, 136.18MB/sindexed 49.02MB in  0s, 136.21MB/sindexed 49.15MB in  0s, 136.23MB/sindexed 49.28MB in  0s, 136.26MB/sindexed 49.41MB in  0s, 136.28MB/sindexed 49.54MB in  0s, 136.30MB/sindexed 49.68MB in  0s, 136.33MB/sindexed 49.81MB in  0s, 136.34MB/sindexed 49.94MB in  0s, 136.39MB/sindexed 50.07MB in  0s, 136.40MB/sindexed 50.20MB in  0s, 136.42MB/sindexed 50.33MB in  0s, 136.45MB/sindexed 50.46MB in  0s, 136.48MB/sindexed 50.59MB in  0s, 136.41MB/sindexed 50.72MB in  0s, 136.46MB/sindexed 50.86MB in  0s, 136.35MB/sindexed 50.99MB in  0s, 136.39MB/sindexed 51.12MB in  0s, 136.42MB/sindexed 51.25MB in  0s, 136.43MB/sindexed 51.38MB in  0s, 136.46MB/sindexed 51.51MB in  0s, 136.57MB/sindexed 51.64MB in  0s, 136.58MB/sindexed 51.77MB in  0s, 136.60MB/sindexed 51.90MB in  0s, 136.64MB/sindexed 52.04MB in  0s, 136.65MB/sindexed 52.17MB in  0s, 136.68MB/sindexed 52.30MB in  0s, 136.69MB/sindexed 52.43MB in  0s, 136.70MB/sindexed 52.56MB in  0s, 136.73MB/sindexed 52.69MB in  0s, 136.75MB/sindexed 52.82MB in  0s, 136.78MB/sindexed 52.95MB in  0s, 136.74MB/sindexed 53.08MB in  0s, 136.75MB/sindexed 53.21MB in  0s, 136.78MB/sindexed 53.35MB in  0s, 136.84MB/sindexed 53.48MB in  0s, 136.86MB/sindexed 53.61MB in  0s, 136.88MB/sindexed 53.74MB in  0s, 136.91MB/sindexed 53.87MB in  0s, 136.95MB/sindexed 54.00MB in  0s, 136.96MB/sindexed 54.13MB in  0s, 137.03MB/sindexed 54.26MB in  0s, 137.06MB/sindexed 54.39MB in  0s, 137.05MB/sindexed 54.53MB in  0s, 137.08MB/sindexed 54.66MB in  0s, 137.17MB/sindexed 54.79MB in  0s, 137.19MB/sindexed 54.92MB in  0s, 137.21MB/sindexed 55.05MB in  0s, 137.23MB/sindexed 55.18MB in  0s, 137.25MB/sindexed 55.31MB in  0s, 137.30MB/sindexed 55.44MB in  0s, 137.25MB/sindexed 55.57MB in  0s, 137.28MB/sindexed 55.71MB in  0s, 137.29MB/sindexed 55.84MB in  0s, 137.33MB/sindexed 55.97MB in  0s, 137.37MB/sindexed 56.10MB in  0s, 137.39MB/sindexed 56.23MB in  0s, 137.42MB/sindexed 56.36MB in  0s, 137.44MB/sindexed 56.49MB in  0s, 137.55MB/sindexed 56.62MB in  0s, 137.58MB/sindexed 56.75MB in  0s, 137.62MB/sindexed 56.88MB in  0s, 137.64MB/sindexed 57.02MB in  0s, 137.66MB/sindexed 57.15MB in  0s, 137.70MB/sindexed 57.28MB in  0s, 137.75MB/sindexed 57.41MB in  0s, 137.79MB/sindexed 57.54MB in  0s, 137.80MB/sindexed 57.67MB in  0s, 137.81MB/sindexed 57.80MB in  0s, 137.82MB/sindexed 57.93MB in  0s, 137.82MB/sindexed 58.06MB in  0s, 137.85MB/sindexed 58.20MB in  0s, 137.87MB/sindexed 58.33MB in  0s, 137.89MB/sindexed 58.46MB in  0s, 137.90MB/sindexed 58.59MB in  0s, 137.95MB/sindexed 58.72MB in  0s, 137.98MB/sindexed 58.85MB in  0s, 138.02MB/sindexed 58.98MB in  0s, 138.04MB/sindexed 59.11MB in  0s, 138.05MB/sindexed 59.24MB in  0s, 138.09MB/sindexed 59.38MB in  0s, 138.12MB/sindexed 59.51MB in  0s, 138.13MB/sindexed 59.64MB in  0s, 138.14MB/sindexed 59.77MB in  0s, 138.16MB/sindexed 59.90MB in  0s, 138.18MB/sindexed 60.03MB in  0s, 138.24MB/sindexed 60.16MB in  0s, 138.14MB/sindexed 60.29MB in  0s, 138.06MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
+    ## indexed 0B in  0s, 0B/sindexed 29.10MB in  0s, 145.21MB/sindexed 29.23MB in  0s, 145.31MB/sindexed 29.36MB in  0s, 145.42MB/sindexed 29.49MB in  0s, 145.54MB/sindexed 29.62MB in  0s, 145.67MB/sindexed 29.75MB in  0s, 145.63MB/sindexed 29.88MB in  0s, 145.72MB/sindexed 30.02MB in  0s, 145.82MB/sindexed 30.15MB in  0s, 145.97MB/sindexed 30.28MB in  0s, 146.11MB/sindexed 30.41MB in  0s, 146.24MB/sindexed 30.54MB in  0s, 146.40MB/sindexed 30.67MB in  0s, 146.51MB/sindexed 30.80MB in  0s, 146.64MB/sindexed 30.93MB in  0s, 146.77MB/sindexed 31.06MB in  0s, 146.92MB/sindexed 31.19MB in  0s, 147.08MB/sindexed 31.33MB in  0s, 147.06MB/sindexed 31.46MB in  0s, 147.19MB/sindexed 31.59MB in  0s, 147.22MB/sindexed 31.72MB in  0s, 147.11MB/sindexed 31.85MB in  0s, 147.12MB/sindexed 31.98MB in  0s, 146.95MB/sindexed 32.11MB in  0s, 147.03MB/sindexed 32.24MB in  0s, 147.15MB/sindexed 32.37MB in  0s, 147.29MB/sindexed 32.51MB in  0s, 147.35MB/sindexed 32.64MB in  0s, 147.38MB/sindexed 32.77MB in  0s, 147.49MB/sindexed 32.90MB in  0s, 147.06MB/sindexed 33.03MB in  0s, 147.32MB/sindexed 33.16MB in  0s, 147.43MB/sindexed 33.29MB in  0s, 147.56MB/sindexed 33.42MB in  0s, 147.68MB/sindexed 33.55MB in  0s, 147.80MB/sindexed 33.69MB in  0s, 147.95MB/sindexed 33.82MB in  0s, 148.00MB/sindexed 33.95MB in  0s, 148.05MB/sindexed 34.08MB in  0s, 148.13MB/sindexed 34.21MB in  0s, 148.15MB/sindexed 34.34MB in  0s, 148.16MB/sindexed 34.47MB in  0s, 148.23MB/sindexed 34.60MB in  0s, 148.23MB/sindexed 34.73MB in  0s, 148.30MB/sindexed 34.86MB in  0s, 148.41MB/sindexed 35.00MB in  0s, 148.52MB/sindexed 35.13MB in  0s, 148.62MB/sindexed 35.26MB in  0s, 148.51MB/sindexed 35.39MB in  0s, 148.58MB/sindexed 35.52MB in  0s, 148.73MB/sindexed 35.65MB in  0s, 148.84MB/sindexed 35.78MB in  0s, 148.94MB/sindexed 35.91MB in  0s, 149.06MB/sindexed 36.04MB in  0s, 149.16MB/sindexed 36.18MB in  0s, 149.28MB/sindexed 36.31MB in  0s, 149.40MB/sindexed 36.44MB in  0s, 149.50MB/sindexed 36.57MB in  0s, 149.55MB/sindexed 36.70MB in  0s, 149.63MB/sindexed 36.83MB in  0s, 149.73MB/sindexed 36.96MB in  0s, 149.82MB/sindexed 37.09MB in  0s, 149.84MB/sindexed 37.22MB in  0s, 149.85MB/sindexed 37.36MB in  0s, 149.84MB/sindexed 37.49MB in  0s, 149.80MB/sindexed 37.62MB in  0s, 149.86MB/sindexed 37.75MB in  0s, 149.92MB/sindexed 37.88MB in  0s, 149.99MB/sindexed 38.01MB in  0s, 150.06MB/sindexed 38.14MB in  0s, 150.10MB/sindexed 38.27MB in  0s, 150.13MB/sindexed 38.40MB in  0s, 150.19MB/sindexed 38.53MB in  0s, 150.27MB/sindexed 38.67MB in  0s, 150.34MB/sindexed 38.80MB in  0s, 150.45MB/sindexed 38.93MB in  0s, 150.55MB/sindexed 39.06MB in  0s, 150.66MB/sindexed 39.19MB in  0s, 150.76MB/sindexed 39.32MB in  0s, 150.84MB/sindexed 39.45MB in  0s, 150.96MB/sindexed 39.58MB in  0s, 151.09MB/sindexed 39.71MB in  0s, 151.16MB/sindexed 39.85MB in  0s, 151.28MB/sindexed 39.98MB in  0s, 151.40MB/sindexed 40.11MB in  0s, 151.49MB/sindexed 40.24MB in  0s, 151.52MB/sindexed 40.37MB in  0s, 151.58MB/sindexed 40.50MB in  0s, 151.64MB/sindexed 40.63MB in  0s, 151.70MB/sindexed 40.76MB in  0s, 151.76MB/sindexed 40.89MB in  0s, 151.82MB/sindexed 41.03MB in  0s, 151.81MB/sindexed 41.16MB in  0s, 151.76MB/sindexed 41.29MB in  0s, 151.66MB/sindexed 41.42MB in  0s, 151.67MB/sindexed 41.55MB in  0s, 151.61MB/sindexed 41.68MB in  0s, 151.61MB/sindexed 41.81MB in  0s, 151.65MB/sindexed 41.94MB in  0s, 151.70MB/sindexed 42.07MB in  0s, 151.76MB/sindexed 42.20MB in  0s, 151.83MB/sindexed 42.34MB in  0s, 151.90MB/sindexed 42.47MB in  0s, 151.94MB/sindexed 42.60MB in  0s, 152.02MB/sindexed 42.73MB in  0s, 152.07MB/sindexed 42.86MB in  0s, 152.06MB/sindexed 42.99MB in  0s, 152.11MB/sindexed 43.12MB in  0s, 152.16MB/sindexed 43.25MB in  0s, 152.22MB/sindexed 43.38MB in  0s, 152.28MB/sindexed 43.52MB in  0s, 152.35MB/sindexed 43.65MB in  0s, 152.40MB/sindexed 43.78MB in  0s, 152.43MB/sindexed 43.91MB in  0s, 152.44MB/sindexed 44.04MB in  0s, 152.51MB/sindexed 44.17MB in  0s, 144.64MB/sindexed 44.30MB in  0s, 144.34MB/sindexed 44.43MB in  0s, 144.36MB/sindexed 44.56MB in  0s, 144.39MB/sindexed 44.70MB in  0s, 144.35MB/sindexed 44.83MB in  0s, 144.35MB/sindexed 44.96MB in  0s, 144.39MB/sindexed 45.09MB in  0s, 144.46MB/sindexed 45.22MB in  0s, 144.54MB/sindexed 45.35MB in  0s, 144.60MB/sindexed 45.48MB in  0s, 144.67MB/sindexed 45.61MB in  0s, 144.69MB/sindexed 45.74MB in  0s, 144.67MB/sindexed 45.87MB in  0s, 144.63MB/sindexed 46.01MB in  0s, 144.67MB/sindexed 46.14MB in  0s, 144.73MB/sindexed 46.27MB in  0s, 144.78MB/sindexed 46.40MB in  0s, 144.73MB/sindexed 46.53MB in  0s, 144.69MB/sindexed 46.66MB in  0s, 143.93MB/sindexed 46.79MB in  0s, 144.05MB/sindexed 46.92MB in  0s, 144.10MB/sindexed 47.05MB in  0s, 144.14MB/sindexed 47.19MB in  0s, 144.19MB/sindexed 47.32MB in  0s, 144.27MB/sindexed 47.45MB in  0s, 144.32MB/sindexed 47.58MB in  0s, 144.37MB/sindexed 47.71MB in  0s, 144.43MB/sindexed 47.84MB in  0s, 144.46MB/sindexed 47.97MB in  0s, 144.49MB/sindexed 48.10MB in  0s, 144.55MB/sindexed 48.23MB in  0s, 144.61MB/sindexed 48.37MB in  0s, 144.70MB/sindexed 48.50MB in  0s, 144.79MB/sindexed 48.63MB in  0s, 144.86MB/sindexed 48.76MB in  0s, 144.94MB/sindexed 48.89MB in  0s, 145.01MB/sindexed 49.02MB in  0s, 145.07MB/sindexed 49.15MB in  0s, 145.15MB/sindexed 49.28MB in  0s, 145.22MB/sindexed 49.41MB in  0s, 145.31MB/sindexed 49.54MB in  0s, 145.40MB/sindexed 49.68MB in  0s, 145.48MB/sindexed 49.81MB in  0s, 145.56MB/sindexed 49.94MB in  0s, 145.65MB/sindexed 50.07MB in  0s, 145.74MB/sindexed 50.20MB in  0s, 145.83MB/sindexed 50.33MB in  0s, 145.92MB/sindexed 50.46MB in  0s, 145.99MB/sindexed 50.59MB in  0s, 146.08MB/sindexed 50.72MB in  0s, 146.18MB/sindexed 50.86MB in  0s, 146.19MB/sindexed 50.99MB in  0s, 146.27MB/sindexed 51.12MB in  0s, 146.27MB/sindexed 51.25MB in  0s, 146.23MB/sindexed 51.38MB in  0s, 146.25MB/sindexed 51.51MB in  0s, 146.33MB/sindexed 51.64MB in  0s, 146.42MB/sindexed 51.77MB in  0s, 146.45MB/sindexed 51.90MB in  0s, 146.44MB/sindexed 52.04MB in  0s, 146.49MB/sindexed 52.17MB in  0s, 146.58MB/sindexed 52.30MB in  0s, 146.66MB/sindexed 52.43MB in  0s, 146.71MB/sindexed 52.56MB in  0s, 146.79MB/sindexed 52.69MB in  0s, 146.87MB/sindexed 52.82MB in  0s, 146.95MB/sindexed 52.95MB in  0s, 147.05MB/sindexed 53.08MB in  0s, 147.14MB/sindexed 53.21MB in  0s, 147.22MB/sindexed 53.35MB in  0s, 147.30MB/sindexed 53.48MB in  0s, 147.37MB/sindexed 53.61MB in  0s, 147.48MB/sindexed 53.74MB in  0s, 147.55MB/sindexed 53.87MB in  0s, 147.63MB/sindexed 54.00MB in  0s, 147.50MB/sindexed 54.13MB in  0s, 147.54MB/sindexed 54.26MB in  0s, 147.54MB/sindexed 54.39MB in  0s, 147.54MB/sindexed 54.53MB in  0s, 147.56MB/sindexed 54.66MB in  0s, 147.60MB/sindexed 54.79MB in  0s, 147.66MB/sindexed 54.92MB in  0s, 147.70MB/sindexed 55.05MB in  0s, 147.64MB/sindexed 55.18MB in  0s, 147.71MB/sindexed 55.31MB in  0s, 147.80MB/sindexed 55.44MB in  0s, 147.89MB/sindexed 55.57MB in  0s, 148.00MB/sindexed 55.71MB in  0s, 148.08MB/sindexed 55.84MB in  0s, 148.13MB/sindexed 55.97MB in  0s, 148.20MB/sindexed 56.10MB in  0s, 148.26MB/sindexed 56.23MB in  0s, 148.33MB/sindexed 56.36MB in  0s, 148.35MB/sindexed 56.49MB in  0s, 148.36MB/sindexed 56.62MB in  0s, 148.34MB/sindexed 56.75MB in  0s, 148.37MB/sindexed 56.88MB in  0s, 148.38MB/sindexed 57.02MB in  0s, 148.31MB/sindexed 57.15MB in  0s, 148.35MB/sindexed 57.28MB in  0s, 148.29MB/sindexed 57.41MB in  0s, 148.33MB/sindexed 57.54MB in  0s, 148.35MB/sindexed 57.67MB in  0s, 148.40MB/sindexed 57.80MB in  0s, 148.09MB/sindexed 57.93MB in  0s, 148.28MB/sindexed 58.06MB in  0s, 148.32MB/sindexed 58.20MB in  0s, 148.36MB/sindexed 58.33MB in  0s, 148.42MB/sindexed 58.46MB in  0s, 148.45MB/sindexed 58.59MB in  0s, 148.50MB/sindexed 58.72MB in  0s, 148.56MB/sindexed 58.85MB in  0s, 148.63MB/sindexed 58.98MB in  0s, 148.71MB/sindexed 59.11MB in  0s, 148.74MB/sindexed 59.24MB in  0s, 148.80MB/sindexed 59.34MB in  0s, 148.74MB/s                                                                              indexed 2.15GB in  0s, 2.15GB/s                                                                              
 
-    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpUZjQtj/eurostat/6092241d51594477512dfc081a0333fd.rds
+    ## Table hlth_cd_aro cached at C:\Users\FERENC~1\AppData\Local\Temp\RtmpeWUmGp/eurostat/78ee181cd021e330f4d8b444c8b88362.rds
 
 ``` r
 ESres <- ESres[!geo %in% c("EU27_2020", "EU28", "FX")]
@@ -3516,7 +3577,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-57-1.png)<!-- -->
 
 Szinte tökéletes az egyezés, minden kategóriánál jól egyezik a saját
 számunk az Eurostat-éval! (Teljesen egzakt egyezés valószínűleg nem
@@ -3590,7 +3651,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-58-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-59-1.png)<!-- -->
 
 Továbbra is jó az egyezés! A kevés eltérést olyan adatok adják, ahol
 egyértelmű, hogy az Eurostat adatbázisban van hiba (a K72_75 és a
@@ -3638,7 +3699,7 @@ plot(values ~ value, data = res)
 abline(0, 1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-59-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-60-1.png)<!-- -->
 
 Az eltérést úgy tűnik itt is csak ugyanazok a tényezők okozzák.
 

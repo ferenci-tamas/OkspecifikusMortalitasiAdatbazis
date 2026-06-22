@@ -45,9 +45,10 @@ RawDataAll <- readRDS("./procdata/RawDataAll.rds")
 PopData <- readRDS("./procdata/WHO-MDB-Population.rds")
 
 AgeTable <- data.table(Age = c(NA, paste0("Deaths", 2:25), "Deaths3456", "Deaths232425"),
-                       AgeNum = c(NA, (0:4) + 0.5, seq(5, 90, 5) + 2.5, 100, 3, 95),
+                       AgeNum = c(NA, (0:4), seq(5, 90, 5), 100, 3, 95),
                        AgeLabel = c(NA, c(0:4, paste0(seq(5, 95, 5), "-",
-                                                      c(seq(9, 94, 5), "")), "1-4", "85-")))
+                                                      c(seq(9, 94, 5), "")), "1-4", "85-")),
+                       AgeOrder = c(NA, (0:4) + 0.5, seq(5, 90, 5) + 2.5, 95, 0.9, 84.9))
 
 PopData <- merge(PopData, AgeTable, by = "Age")
 
@@ -279,7 +280,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.47"),
+                  .noWS = "outside"), ", v0.48"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -519,6 +520,34 @@ ui <- navbarPage(
                    shinycssloaders::withSpinner(highchartOutput("dimredvizPlot", height = "600px"))
                  )
                )
+             ),
+             
+             tabPanel(
+               title = "APC-elemzés",
+               sidebarLayout(
+                 sidebarPanel(
+                   shinyWidgets::pickerInput("apcCategory", "Kategória",
+                                             c("Főbb haláloki csoportok" = "Groups",
+                                               "Egyedi betegségek" = "Individual",
+                                               "Elkerülhető halálozás" = "Avoidable"),
+                                             multiple = FALSE, options = pickeroptsWOSearch),
+                   lapply(seq_along(ICDGroups), function(i)
+                     conditionalPanel(
+                       paste0("input.apcCategory == '", names(ICDGroups)[i], "'"),
+                       shinyWidgets::pickerInput(
+                         paste0("apc", names(ICDGroups)[i], "ICDSingle"),
+                         "Kiválasztott halálok",
+                         names(ICDGroups[[i]]),
+                         multiple = FALSE,
+                         options = pickeropts))),
+                   shinyWidgets::pickerInput("apcCountry", "Ország",
+                                             CountryCodes, "HUN", FALSE,
+                                             options = pickeropts)
+                 ),
+                 mainPanel(
+                   shinycssloaders::withSpinner(highchartOutput("apcPlot", height = "600px"))
+                 )
+               )
              )
   )
 )
@@ -660,9 +689,10 @@ server <- function(input, output) {
     if(nrow(rd) != 0) {
       rd <- switch(
         metric,
-        "count" = rd[Aggregated == FALSE, .(value = sum(value)), byvars],
-        "cruderate" = rd[Aggregated == FALSE,
-                         .(value = sum(value)/sum(Pop)*1e5), byvars],
+        "count" = if("AgeLabel" %in% byvars) rd[, .(value = sum(value)), byvars] else
+          rd[Aggregated == FALSE, .(value = sum(value)), byvars],
+        "cruderate" = if("AgeLabel" %in% byvars) rd[, .(value = sum(value)/sum(Pop)*1e5), byvars] else
+          rd[Aggregated == FALSE, .(value = sum(value)/sum(Pop)*1e5), byvars],
         "adjrate" = merge(
           rd[, .(value = sum(value), Pop = sum(Pop)),
              c(byvars, "Frmat", "Age")],
@@ -689,6 +719,9 @@ server <- function(input, output) {
   hconvICDSingle <- reactive(switch(input$hconvCategory, "Groups" = input$hconvGroupsICDSingle,
                                     "Individual" = input$hconvIndividualICDSingle,
                                     "Avoidable" = input$hconvAvoidableICDSingle))
+  apcICDSingle <- reactive(switch(input$apcCategory, "Groups" = input$apcGroupsICDSingle,
+                                  "Individual" = input$apcIndividualICDSingle,
+                                  "Avoidable" = input$apcAvoidableICDSingle))
   
   dataInputTime <- reactive(dataInputFun(
     category = input$timeCategory,
@@ -826,6 +859,27 @@ server <- function(input, output) {
     comp = input$hconvdecompCountryInvestigated,
     valid = FALSE))
   
+  dataInputAPC <- reactive(dataInputFun(
+    category = input$apcCategory,
+    multipleICD = "Single",
+    ICDSingle = apcICDSingle(),
+    ICDMultiple = NA,
+    multipleCountry = "Single",
+    countrySingle = input$apcCountry,
+    countryMultiple = NA,
+    indicator = "death",
+    yllMethod = NA,
+    yllPyllTarget = NA,
+    strat = NA,
+    metric = "cruderate",
+    ordVar = "AgeNum",
+    byvarAdd = c("Year", "Age", "AgeNum", "AgeLabel"),
+    yearFilter = NA,
+    sexFilter = "Összesen",
+    ageFilter = "Összesen",
+    comp = NA,
+    valid = FALSE))
+  
   output$timePlot <- renderHighchart({
     p <- highchart()
     
@@ -840,7 +894,7 @@ server <- function(input, output) {
     if(input$timeMultipleICD %in% c("Single", "MultiSum") && input$timeMultipleCountry == "Single" && input$timeStratification == "Sex")
       p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = Sex), showInNavigator = TRUE)
     if(input$timeMultipleICD %in% c("Single", "MultiSum") && input$timeMultipleCountry == "Single" && input$timeStratification == "AgeLabel")
-      p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = AgeLabel), showInNavigator = TRUE)
+      p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = factor(AgeLabel, levels = !!AgeTable[!is.na(Age)][order(AgeOrder)]$AgeLabel)), showInNavigator = TRUE)
     if(input$timeMultipleICD %in% c("Single", "MultiSum") && input$timeMultipleCountry == "Multiple")
       p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = CountryName), showInNavigator = TRUE)
     if(input$timeMultipleICD == "MultiIndiv") p <- p |> hc_add_series(mortdat, type = "line", hcaes(x = Year, y = value, group = CauseGroup), showInNavigator = TRUE)
@@ -1217,6 +1271,13 @@ server <- function(input, output) {
       hc_tooltip(pointFormat = "",
                  headerFormat =
                    "{point.point.iso3c}, {point.point.Sex}, {point.point.Year}<br>")
+  })
+  
+  output$apcPlot <- renderHighchart({
+    di <- dataInputAPC()
+    
+    hchart(di$rd, "heatmap",
+           hcaes(x = Year, y = factor(AgeLabel, levels = !!AgeTable[!is.na(Age)][order(AgeOrder)]$AgeLabel), value = value))
   })
 }
 
