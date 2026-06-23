@@ -280,7 +280,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.49"),
+                  .noWS = "outside"), ", v0.50"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -542,7 +542,8 @@ ui <- navbarPage(
                          options = pickeropts))),
                    shinyWidgets::pickerInput("apcCountry", "Ország",
                                              CountryCodes, "HUN", FALSE,
-                                             options = pickeropts)
+                                             options = pickeropts),
+                   checkboxInput("apcLog", "Logaritmikus színezés", TRUE)
                  ),
                  mainPanel(
                    shinycssloaders::withSpinner(highchartOutput("apcPlot", height = "600px"))
@@ -1276,8 +1277,28 @@ server <- function(input, output) {
   output$apcPlot <- renderHighchart({
     di <- dataInputAPC()
     
-    hchart(di$rd, "heatmap",
-           hcaes(x = Year, y = factor(AgeLabel, levels = !!AgeTable[!is.na(Age)][order(AgeOrder)]$AgeLabel), value = value))
+    di$rd <- di$rd[Age %in% names(table(di$rd$Age))[table(di$rd$Age) == (diff(range(di$rd$Year)) + 1)]]
+    if(all(c("Deaths23", "Deaths24", "Deaths25") %in% di$rd$Age)) di$rd <- di$rd[Age != "Deaths232425"]
+    if(all(c("Deaths3", "Deaths4", "Deaths5", "Deaths6") %in% di$rd$Age)) di$rd <- di$rd[Age != "Deaths3456"]
+    
+    hchart(if(input$apcLog) di$rd[value != 0] else di$rd, "heatmap",
+           hcaes(x = Year, y = factor(AgeLabel, levels = !!AgeTable[Age %in% unique(di$rd$Age)][order(AgeOrder)]$AgeLabel),
+                 value = value)) |>
+      hc_colorAxis(type = if(input$apcLog) "logarithmic" else "linear") |>
+      hc_xAxis(title = list(text = "Év")) |>
+      hc_yAxis(title = list(text = "Korcsoport")) |>
+      hc_tooltip(headerFormat = "<b>{point.point.Year}</b>, korcsoport: <b>{point.point.AgeLabel} év</b><br>",
+                 pointFormat = "Nyers halálozási ráta: {point.value} /100 ezer fő /év",
+                 valueDecimals = 1) |>
+      # hc_plotOptions(heatmap = list(borderWidth = 0, borderColor = "transparent",
+      #                               colsize = 1.1, rowsize = 1.1)) |>
+      hc_title(text = paste0(names(CountryCodes)[CountryCodes == di$country], ", ", di$icd)) |>
+      hc_subtitle(
+        text = "Okspecifikus Mortalitási Adatbázis<br>Ferenci Tamás, medstat.hu",
+        align = "left", verticalAlign = "bottom") |>
+      hc_add_theme(hc_theme(chart = list(backgroundColor = "white"))) |>
+      hc_credits(enabled = TRUE) |>
+      hc_exporting(enabled = TRUE, sourceWidth = 1600, sourceHeight = 900)
   })
 }
 
