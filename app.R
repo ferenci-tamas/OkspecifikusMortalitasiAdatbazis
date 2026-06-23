@@ -211,6 +211,44 @@ ownpanel <- function(idPrefix, singleICD = FALSE, map = FALSE, indicators = TRUE
       list(
         conditionalPanel(paste0("input.", idPrefix, "MultipleICD != 'MultiIndiv' & input.", idPrefix, "MultipleCountry == 'Single'"),
                          radioButtons(paste0(idPrefix, "Stratification"), "Lebontás", strat)),
+        conditionalPanel(
+          condition = paste0("input.", idPrefix, "MultipleICD != 'MultiIndiv' & input.", idPrefix, "MultipleCountry == 'Single' & input.", idPrefix, "Stratification === 'Year'"),
+          tags$button(
+            "Összes év kijelölésének törlése",
+            class = "btn btn-default",
+            onclick = paste0("Highcharts.charts.forEach(function(c){",
+                             " if(c && c.renderTo && c.renderTo.id==='", idPrefix, "Plot'){",
+                             " c.series.forEach(function(s){ s.setVisible(false, false); });",
+                             " c.redraw(); } });")
+          ),
+          tags$button(
+            "Összes év kijelölése",
+            class = "btn btn-default",
+            onclick = paste0("Highcharts.charts.forEach(function(c){",
+                             " if(c && c.renderTo && c.renderTo.id==='", idPrefix, "Plot'){",
+                             " c.series.forEach(function(s){ s.setVisible(true, false); });",
+                             " c.redraw(); } });")
+          )
+        ),
+        conditionalPanel(
+          condition = paste0("input.", idPrefix, "MultipleICD != 'MultiIndiv' & input.", idPrefix, "MultipleCountry == 'Single' & input.", idPrefix, "Stratification === 'AgeLabel'"),
+          tags$button(
+            "Összes életkor kijelölésének törlése",
+            class = "btn btn-default",
+            onclick = paste0("Highcharts.charts.forEach(function(c){",
+                             " if(c && c.renderTo && c.renderTo.id==='", idPrefix, "Plot'){",
+                             " c.series.forEach(function(s){ s.setVisible(false, false); });",
+                             " c.redraw(); } });")
+          ),
+          tags$button(
+            "Összes életkor kijelölése",
+            class = "btn btn-default",
+            onclick = paste0("Highcharts.charts.forEach(function(c){",
+                             " if(c && c.renderTo && c.renderTo.id==='", idPrefix, "Plot'){",
+                             " c.series.forEach(function(s){ s.setVisible(true, false); });",
+                             " c.redraw(); } });")
+          )
+        ),
         checkboxInput(paste0(idPrefix, "LogY"), "A függőleges tengely logaritmikus",
                       value = defaultLogY),
         checkboxInput(paste0(idPrefix, "YFromZero"), "A függőleges tengely nullától indul")
@@ -280,7 +318,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.50"),
+                  .noWS = "outside"), ", v0.51"),
     
     tags$script(HTML("
       var sc_project=11601191; 
