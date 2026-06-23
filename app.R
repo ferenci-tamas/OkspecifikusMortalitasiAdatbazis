@@ -45,10 +45,10 @@ RawDataAll <- readRDS("./procdata/RawDataAll.rds")
 PopData <- readRDS("./procdata/WHO-MDB-Population.rds")
 
 AgeTable <- data.table(Age = c(NA, paste0("Deaths", 2:25), "Deaths3456", "Deaths232425"),
-                       AgeNum = c(NA, (0:4), seq(5, 90, 5), 100, 3, 95),
+                       AgeNum = c(NA, (0:4) + 0.5, seq(5, 90, 5) + 2.5, 100, 3, 95),
                        AgeLabel = c(NA, c(0:4, paste0(seq(5, 95, 5), "-",
                                                       c(seq(9, 94, 5), "")), "1-4", "85-")),
-                       AgeOrder = c(NA, (0:4) + 0.5, seq(5, 90, 5) + 2.5, 95, 0.9, 84.9))
+                       AgeOrder = c(NA, (0:4), seq(5, 90, 5), 95, 0.9, 84.9))
 
 PopData <- merge(PopData, AgeTable, by = "Age")
 
@@ -280,7 +280,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.48"),
+                  .noWS = "outside"), ", v0.49"),
     
     tags$script(HTML("
       var sc_project=11601191; 
