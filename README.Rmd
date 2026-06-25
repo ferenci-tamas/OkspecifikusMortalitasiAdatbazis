@@ -368,8 +368,10 @@ unzip("./inputdata/morticd09.zip", exdir = td)
 
 unzip("./inputdata/morticd08.zip", exdir = td)
 
-RawData <- rbindlist(lapply(list.files(td, pattern = "Morticd*",
-                                       full.names = TRUE), fread))
+unzip("./inputdata/morticd07.zip", exdir = td)
+
+RawData <- rbindlist(lapply(list.files(
+  td, pattern = "Morticd*", full.names = TRUE, ignore.case = TRUE), fread))
 ```
 
 Problémát jelenthetnek az ország-kódok, amelyek egy elég szokatlan, szerintem egyedül a WHO által használt kódrendszerrel vannak kódolva (pl. Magyarország kódja 4150). Szerencsére a WHO honlapjáról letölthető egy olyan [táblázat](https://apps.who.int/gho/data/node.metadata.COUNTRY?lang=en), melyben a szokásosabb kódok is megtalálhatóak e mellett, így ez lecserélhető valamilyen bevettebb kódra; én most a [háromjegyű ISO kódot](https://www.iso.org/iso-3166-country-codes.html) fogom a későbbiekben használni az egyértelmű azonosításhoz:
@@ -676,6 +678,8 @@ ICDGroups <- list(
     list(
       ###### Összes ######
       data.table(rbind(data.table(Cause = ICDData[Kod1!="Z"&(Kod1!="Y"|Kod23<=89)]$KOD10, List = "104"),
+                       data.table(Cause = "A000", List = "07A"),
+                       data.table(Cause = "B000", List = "07B"),
                        data.table(Cause = "A000", List = "08A"),
                        data.table(Cause = "B000", List = "08B"),
                        data.table(Cause = "B00", List = "09A"),
@@ -685,6 +689,8 @@ ICDGroups <- list(
                  EurostatCode = "A-R_V-Y", CauseGroup = "Összes halálok (A00-Y89)"),
       ###### A, B ######
       data.table(rbind(data.table(Cause = ICDData[Kod1%in%c("A", "B")]$KOD10, List = "104"),
+                       data.table(Cause = paste0("A", sprintf("%03d", 1:43)), List = "07A"),
+                       data.table(Cause = paste0("B", sprintf("%03d", 1:17)), List = "07B"),
                        data.table(Cause = paste0("A", sprintf("%03d", 1:44)), List = "08A"),
                        data.table(Cause = paste0("B", sprintf("%03d", 1:18)), List = "08B"),
                        data.table(Cause = c("B01", "B02", "B03", "B04", "B05", "B06", "B07"), List = "09A"),
@@ -694,6 +700,8 @@ ICDGroups <- list(
                  EurostatCode = "A_B", CauseGroup = "Fertőző és parazitás betegségek (A00-B99)"),
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="A"&Kod23>=15&Kod23<=19)|(Kod1=="B"&Kod23==90)]$KOD10,
                                   List = "104"),
+                       data.table(Cause = c("A001", "A002", "A003", "A004", "A005"), List = "07A"),
+                       data.table(Cause = c("B001", "B002"), List = "07B"),
                        data.table(Cause = c("A006", "A007", "A008", "A009", "A010"), List = "08A"),
                        data.table(Cause = c("B005", "B006"), List = "08B"),
                        data.table(Cause = c("B02", "B077"), List = "09A"),
@@ -707,6 +715,7 @@ ICDGroups <- list(
                  EurostatCode = "B20-B24",
                  CauseGroup = "Humán immunodeficiencia vírus (HIV) betegség (B20-B24)"),
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="B"&Kod23>=15&Kod23<=19)|KOD10=="B9420"]$KOD10, List = "104"),
+                       data.table(Cause = "A034", List = "07A"),
                        data.table(Cause = "A028", List = "08A"),
                        data.table(Cause = "B046", List = "09A"),
                        data.table(Cause = "B046", List = "09B"),
@@ -725,6 +734,8 @@ ICDGroups <- list(
                                      "B91-B94.1, B94.8-B99)")),
       ###### C, D ######
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"|(Kod1=="D"&Kod23<=48)]$KOD10, List = "104"),
+                       data.table(Cause = paste0("A", sprintf("%03d", 44:60)), List = "07A"),
+                       data.table(Cause = c("B018", "B019"), List = "07B"),
                        data.table(Cause = paste0("A", sprintf("%03d", 45:61)), List = "08A"),
                        data.table(Cause = c("B019", "B020"), List = "08B"),
                        data.table(Cause = c("B08", "B09", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17"),
@@ -735,6 +746,8 @@ ICDGroups <- list(
                        data.table(Cause = "CH02", List = "09N")),
                  EurostatCode = "C00-D48", CauseGroup = "Daganatok (C00-D48)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"]$KOD10, List = "104"),
+                       data.table(Cause = paste0("A", sprintf("%03d", 44:59)), List = "07A"),
+                       data.table(Cause = "B018", List = "07B"),
                        data.table(Cause = paste0("A", sprintf("%03d", 45:60)), List = "08A"),
                        data.table(Cause = "B019", List = "08B"),
                        data.table(Cause = c("B08", "B09", "B10", "B11", "B12", "B13", "B14"), List = "09A"),
@@ -742,6 +755,8 @@ ICDGroups <- list(
                        data.table(Cause = "S08", List = "09N")),
                  EurostatCode = "C", CauseGroup = "Rosszindulatú daganatok (C00-C97)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&(Kod23>=0&Kod23<=14)]$KOD10, List = "104"),
+                       data.table(Cause = "A044", List = "07A"),
+                       data.table(Cause = 140:148, List = "07B"),
                        data.table(Cause = "A045", List = "08A"),
                        data.table(Cause = "B08", List = "09A"),
                        data.table(Cause = "B08", List = "09B"),
@@ -749,18 +764,21 @@ ICDGroups <- list(
                  EurostatCode = "C00-C14",
                  CauseGroup = "Az ajak, a szájüreg és garat rosszindulatú daganatai (C00-C14)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==15]$KOD10, List = "104"),
+                       data.table(Cause = "A045", List = "07A"),
                        data.table(Cause = "A046", List = "08A"),
                        data.table(Cause = "B090", List = "09A"),
                        data.table(Cause = "B090", List = "09B"),
                        data.table(Cause = "B090", List = "09N")),
                  EurostatCode = "C15", CauseGroup = "A nyelőcső rosszindulatú daganata (C15)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==16]$KOD10, List = "104"),
+                       data.table(Cause = "A046", List = "07A"),
                        data.table(Cause = "A047", List = "08A"),
                        data.table(Cause = "B091", List = "09A"),
                        data.table(Cause = "B091", List = "09B"),
                        data.table(Cause = "B091", List = "09N")),
                  EurostatCode = "C16", CauseGroup = "A gyomor rosszindulatú daganata (C16)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=18&Kod23<=21]$KOD10, List = "104"),
+                       data.table(Cause = c("153", "A048"), List = "07A"),
                        data.table(Cause = c("153", "A049"), List = "08A"),
                        data.table(Cause = c("B093", "B094"), List = "09A"),
                        data.table(Cause = c("B093", "B094"), List = "09B"),
@@ -768,23 +786,30 @@ ICDGroups <- list(
                  EurostatCode = "C18-C21",
                  CauseGroup = "A vastagbél, végbél és a végbélnyílás rosszindulatú daganatai (C18-C21)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==22]$KOD10, List = "104"),
+                       data.table(Cause = "155", List = "07A"),
+                       data.table(Cause = "155", List = "07B"),
                        data.table(Cause = c("155", "1978"), List = "08A"),
                        data.table(Cause = c("B095", "1551", "1552"), List = "09A"),
                        data.table(Cause = c("B095", "1551", "1552"), List = "09B")),
                  EurostatCode = "C22",
                  CauseGroup = "A máj és intrahepaticus epeutak rosszindulatú daganata (C22)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==25]$KOD10, List = "104"),
+                       data.table(Cause = "157", List = "07A"),
+                       data.table(Cause = "157", List = "07B"),
                        data.table(Cause = "157", List = "08A"),
                        data.table(Cause = "B096", List = "09A"),
                        data.table(Cause = "B096", List = "09B")),
                  EurostatCode = "C25", CauseGroup = "A hasnyálmirigy rosszindulatú daganata (C25)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==32]$KOD10, List = "104"),
+                       data.table(Cause = "A049", List = "07A"),
                        data.table(Cause = "A050", List = "08A"),
                        data.table(Cause = "B100", List = "09A"),
                        data.table(Cause = "B100", List = "09B"),
                        data.table(Cause = "B100", List = "09N")),
                  EurostatCode = "C32", CauseGroup = "A gége rosszindulatú daganata (C32)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=33&Kod23<=34]$KOD10, List = "104"),
+                       data.table(Cause = "A050", List = "07A"),
+                       data.table(Cause = 162:163, List = "07B"),
                        data.table(Cause = "A051", List = "08A"),
                        data.table(Cause = "B101", List = "09A"),
                        data.table(Cause = "B101", List = "09B"),
@@ -792,22 +817,28 @@ ICDGroups <- list(
                  EurostatCode = "C33_C34",
                  CauseGroup = "A légcső, a hörgő és a tüdő rosszindulatú daganatai (C33-C34)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==43]$KOD10, List = "104"),
+                       data.table(Cause = "190", List = "07A"),
+                       data.table(Cause = "190", List = "07B"),
                        data.table(Cause = "172", List = "08A"),
                        data.table(Cause = "B111", List = "09A"),
                        data.table(Cause = "B111", List = "09B")),
                  EurostatCode = "C43", CauseGroup = "A bőr rosszindulatú melanomája (C43)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==50]$KOD10, List = "104"),
+                       data.table(Cause = "A051", List = "07A"),
                        data.table(Cause = "A054", List = "08A"),
                        data.table(Cause = c("B113", "175"), List = "09A"),
                        data.table(Cause = c("B113", "175"), List = "09B")),
                  EurostatCode = "C50", CauseGroup = "Az emlő rosszindulatú daganata (C50)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==53]$KOD10, List = "104"),
+                       data.table(Cause = "A052", List = "07A"),
                        data.table(Cause = "A055", List = "08A"),
                        data.table(Cause = "B120", List = "09A"),
                        data.table(Cause = "B120", List = "09B"),
                        data.table(Cause = "B120", List = "09N")),
                  EurostatCode = "C53", CauseGroup = "A méhnyak rosszindulatú daganata (C53)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=54&Kod23<=55]$KOD10, List = "104"),
+                       data.table(Cause = "A053", List = "07A"),
+                       data.table(Cause = 172:174, List = "07B"),
                        data.table(Cause = "182", List = "08A"),
                        data.table(Cause = "B122", List = "09A"),
                        data.table(Cause = "B122", List = "09B"),
@@ -820,6 +851,7 @@ ICDGroups <- list(
                        data.table(Cause = "1830", List = "09B")),
                  EurostatCode = "C56", CauseGroup = "A petefészek rosszindulatú daganata (C56)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==61]$KOD10, List = "104"),
+                       data.table(Cause = "A054", List = "07A"),
                        data.table(Cause = "A057", List = "08A"),
                        data.table(Cause = "B124", List = "09A"),
                        data.table(Cause = "B124", List = "09B"),
@@ -832,11 +864,14 @@ ICDGroups <- list(
                  EurostatCode = "C64",
                  CauseGroup = "A vese rosszindulatú daganata, kivéve a vesemedencét (C64)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==67]$KOD10, List = "104"),
+                       data.table(Cause = "1810", List = "07A"),
                        data.table(Cause = "188", List = "08A"),
                        data.table(Cause = "B126", List = "09A"),
                        data.table(Cause = "B126", List = "09B")),
                  EurostatCode = "C67", CauseGroup = "A húgyhólyag rosszindulatú daganata (C67)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=70&Kod23<=72]$KOD10, List = "104"),
+                       data.table(Cause = "193", List = "07A"),
+                       data.table(Cause = "193", List = "07B"),
                        data.table(Cause = c("191", "192"), List = "08A"),
                        data.table(Cause = c("B130", "192"), List = "09A"),
                        data.table(Cause = c("B130", "192"), List = "09B")),
@@ -844,16 +879,21 @@ ICDGroups <- list(
                  CauseGroup = paste0("Az agyburkok, az agy, a gerincvelő, az agyidegek és a központi ",
                                      "idegrendszer egyéb részeinek rosszindulatú daganatai (C70-C72)")),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23==73]$KOD10, List = "104"),
+                       data.table(Cause = "194", List = "07A"),
+                       data.table(Cause = "194", List = "07B"),
                        data.table(Cause = "193", List = "08A"),
                        data.table(Cause = "193", List = "09A"),
                        data.table(Cause = "193", List = "09B")),
                  EurostatCode = "C73", CauseGroup = "A pajzsmirigy rosszindulatú daganata (C73)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=81&Kod23<=86]$KOD10, List = "104"),
+                       data.table(Cause = c("200", "201"), List = "07A"),
+                       data.table(Cause = c("200", "201"), List = "07B"),
                        data.table(Cause = c("200", "201"), List = "08A"),
                        data.table(Cause = c("200", "B140"), List = "09A"),
                        data.table(Cause = c("200", "B140"), List = "09B")),
                  EurostatCode = "C81-C86", CauseGroup = "Hodgkin kór és lymphomák (C81-C86)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&Kod23>=91&Kod23<=95]$KOD10, List = "104"),
+                       data.table(Cause = "A058", List = "07A"),
                        data.table(Cause = c("A059", "208"), List = "08A"),
                        data.table(Cause = "B141", List = "09A"),
                        data.table(Cause = "B141", List = "09B"),
@@ -861,6 +901,8 @@ ICDGroups <- list(
                        data.table(Cause = "C032", List = "09C")),
                  EurostatCode = "C91-C95", CauseGroup = "Leukémia (C91-C95)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="C"&(Kod23==88|Kod23==90|Kod23==96)]$KOD10, List = "104"),
+                       data.table(Cause = c("202", "203"), List = "07A"),
+                       data.table(Cause = c("202", "203"), List = "07B"),
                        data.table(Cause = c("202", "203"), List = "08A"),
                        data.table(Cause = c("202", "203"), List = "09A"),
                        data.table(Cause = c("202", "203"), List = "09B")),
@@ -879,6 +921,8 @@ ICDGroups <- list(
                                      "C44-C49, C51-C52, C57-C60, C62-C63, C65-C66, C68-C69, C74-C80, ",
                                      "C97)")),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="D"&Kod23>=0&Kod23<=48]$KOD10, List = "104"),
+                       data.table(Cause = "A060", List = "07A"),
+                       data.table(Cause = "B019", List = "07B"),
                        data.table(Cause = "A061", List = "08A"),
                        data.table(Cause = "B020", List = "08B"),
                        data.table(Cause = c("B15", "B16", "B17"), List = "09A"),
@@ -905,6 +949,8 @@ ICDGroups <- list(
                  EurostatCode = "E",
                  CauseGroup = "Endokrin, táplálkozási és anyagcsere betegségek (E00-E89)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="E"&Kod23>=10&Kod23<=14]$KOD10, List = "104"),
+                       data.table(Cause = "A063", List = "07A"),
+                       data.table(Cause = "B020", List = "07B"),
                        data.table(Cause = "A064", List = "08A"),
                        data.table(Cause = "B021", List = "08B"),
                        data.table(Cause = "B181", List = "09A"),
@@ -918,6 +964,7 @@ ICDGroups <- list(
                  CauseGroup = "Egyéb endokrin, táplálkozási és anyagcsere betegségek (E00-E07, E15-E89)"),
       ##### F #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="F"&Kod23>=1&Kod23<=99]$KOD10, List = "104"),
+                       data.table(Cause = c("A068", "A069", "A070"), List = "07A"),
                        data.table(Cause = c("A069", "A070", "A071"), List = "08A"),
                        data.table(Cause = "B21", List = "09A"),
                        data.table(Cause = "B21", List = "09B"),
@@ -941,6 +988,7 @@ ICDGroups <- list(
                  CauseGroup = "Egyéb mentális- és viselkedészavarok (F04-F09, F17, F20-F99)"),
       ##### G, H #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="G"|Kod1=="H"]$KOD10, List = "104"),
+                       data.table(Cause = c("A070", "A071", "A072", "A073", "A074", "A075", "A076", "A077", "A078"), List = "07A"),
                        data.table(Cause = c("A072", "A073", "A074", "A075", "A076", "A077", "A078", "A079"), List = "08A"),
                        data.table(Cause = c("B22", "B23", "B24"), List = "09A"),
                        data.table(Cause = c("B22", "B23", "B24"), List = "09B"),
@@ -958,6 +1006,7 @@ ICDGroups <- list(
                                      "G21-G25, G31-H95)")),
       ##### I #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="I"]$KOD10, List = "104"),
+                       data.table(Cause = c("A079", "A080", "A081", "A082", "A083", "A084", "A085", "A086"), List = "07A"),
                        data.table(Cause = c("A080", "A081", "A082", "A083", "A084", "A085", "A086", "A087", "A088"), List = "08A"),
                        data.table(Cause = c("B25", "B26", "B27", "B28", "B29", "B30"), List = "09A"),
                        data.table(Cause = c("B25", "B26", "B27", "B28", "B29", "B30"), List = "09B"),
@@ -1000,6 +1049,7 @@ ICDGroups <- list(
                  CauseGroup = "A keringési rendszer egyéb betegségei (I00-I15, I26-I28, I70-I99)"),
       ##### J #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=0&Kod23<=99]$KOD10, List = "104"),
+                       data.table(Cause = c("A087", "A088", "A089", "A090", "A091", "A092", "A093", "A094", "A095", "A096", "A097"), List = "07A"),
                        data.table(Cause = c("A089", "A090", "A091", "A092", "A093", "A094", "A095", "A096"), List = "08A"),
                        data.table(Cause = c("B31", "B32"), List = "09A"),
                        data.table(Cause = c("B31", "B32"), List = "09B"),
@@ -1007,6 +1057,8 @@ ICDGroups <- list(
                        data.table(Cause = "C052", List = "09C")),
                  EurostatCode = "J", CauseGroup = "A légzőrendszer betegségei (J00-J99)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=9&Kod23<=11]$KOD10, List = "104"),
+                       data.table(Cause = "A088", List = "07A"),
+                       data.table(Cause = "B030", List = "07B"),
                        data.table(Cause = "A090", List = "08A"),
                        data.table(Cause = "B031", List = "08B"),
                        data.table(Cause = "B322", List = "09A"),
@@ -1014,6 +1066,8 @@ ICDGroups <- list(
                        data.table(Cause = "B322", List = "09N")),
                  EurostatCode = "J09-J11", CauseGroup = "Influenza (J09-J11)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="J"&Kod23>=12&Kod23<=18]$KOD10, List = "104"),
+                       data.table(Cause = c("A089", "A090", "A091"), List = "07A"),
+                       data.table(Cause = "B031", List = "07B"),
                        data.table(Cause = c("A091", "A092"), List = "08A"),
                        data.table(Cause = "B032", List = "08B"),
                        data.table(Cause = "B321", List = "09A"),
@@ -1034,6 +1088,7 @@ ICDGroups <- list(
                  CauseGroup = "A légzőrendszer egyéb betegségei (J00-J06, J20-J39, J60-J99)"),
       ##### K #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&Kod23>=0&Kod23<=92]$KOD10, List = "104"),
+                       data.table(Cause = c("A098", "A099", "A100", "A101", "A102", "A103", "A104", "A105", "A106", "A107"), List = "07A"),
                        data.table(Cause = c("A097", "A098", "A099", "A100", "A101", "A102", "A103", "A104"), List = "08A"),
                        data.table(Cause = c("B33", "B34"), List = "09A"),
                        data.table(Cause = c("B33", "B34"), List = "09B"),
@@ -1044,6 +1099,8 @@ ICDGroups <- list(
                  EurostatCode = "K25-K28",
                  CauseGroup = "Gyomor-, nyombél-, pepticus- és gastrojejunalis fekély (K25-K28)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="K"&((Kod23==70)|(Kod23>=73&Kod23<=74))]$KOD10, List = "104"),
+                       data.table(Cause = "A105", List = "07A"),
+                       data.table(Cause = "B037", List = "07B"),
                        data.table(Cause = "A102", List = "08A"),
                        data.table(Cause = "B037", List = "08B"),
                        data.table(Cause = "B347", List = "09A"),
@@ -1088,6 +1145,7 @@ ICDGroups <- list(
                                      "M08-M13, M20-M99)")),
       ##### N #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="N"]$KOD10, List = "104"),
+                       data.table(Cause = c("A108", "A109", "A110", "A111", "A112", "A113", "A114"), List = "07A"),
                        data.table(Cause = c("A105", "A106", "A107", "A108", "A109", "A110", "A111"), List = "08A"),
                        data.table(Cause = c("B35", "B36", "B37"), List = "09A"),
                        data.table(Cause = c("B35", "B36", "B37"), List = "09B"),
@@ -1101,6 +1159,8 @@ ICDGroups <- list(
                  CauseGroup = "Az urogenitális rendszer egyéb betegségei (N30-N99)"),
       ##### O #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="O"]$KOD10, List = "104"),
+                       data.table(Cause = c("A115", "A116", "A117", "A118", "A119", "A120"), List = "07A"),
+                       data.table(Cause = "B040", List = "07B"),
                        data.table(Cause = c("A112", "A113", "A114", "A115", "A116", "A117"), List = "08A"),
                        data.table(Cause = c("B040", "B041"), List = "08B"),
                        data.table(Cause = c("B38", "B39", "B40", "B41"), List = "09A"),
@@ -1121,6 +1181,8 @@ ICDGroups <- list(
                  CauseGroup = "A perinatális szakban keletkező bizonyos állapotok (P00-P96)"),
       ##### Q #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="Q"&Kod23>=0&Kod23<=99]$KOD10, List = "104"),
+                       data.table(Cause = c("A127", "A128", "A129"), List = "07A"),
+                       data.table(Cause = "B041", List = "07B"),
                        data.table(Cause = c("A126", "A127", "A128", "A129", "A130"), List = "08A"),
                        data.table(Cause = "B042", List = "08B"),
                        data.table(Cause = "B44", List = "09A"),
@@ -1132,6 +1194,8 @@ ICDGroups <- list(
                                      "kromoszómaabnormitások (Q00-Q99)")),
       ##### R #####
       data.table(rbind(data.table(Cause = ICDData[Kod1=="R"]$KOD10, List = "104"),
+                       data.table(Cause = c("A136", "A137"), List = "07A"),
+                       data.table(Cause = "B045", List = "07B"),
                        data.table(Cause = c("A136", "A137"), List = "08A"),
                        data.table(Cause = "B045", List = "08B"),
                        data.table(Cause = "B46", List = "09A"),
@@ -1165,6 +1229,8 @@ ICDGroups <- list(
       ##### V, W, X, Y #####
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="V")|(Kod1=="W")|(Kod1=="X")|(Kod1=="Y"&Kod23>=0&Kod23<=89)]$KOD10,
                                   List = "104"),
+                       data.table(Cause = c(paste0("A", sprintf("%03d", 138:150)), "CH17"), List = "07A"),
+                       data.table(Cause = c("B047", "B048", "B049", "B050"), List = "07B"),
                        data.table(Cause = c(paste0("A", sprintf("%03d", 138:150)), "CH17"), List = "08A"),
                        data.table(Cause = c("B047", "B048", "B049", "B050"), List = "08B"),
                        data.table(Cause = c("B47", "B48", "B49", "B50", "B51", "B52", "B53", "B54", "B55", "B56", "CH17"), List = "09A"),
@@ -1180,6 +1246,7 @@ ICDGroups <- list(
       data.table(rbind(data.table(Cause = ICDData[Kod1=="V"|(Kod1=="Y"&Kod23==85)]$KOD10, List = "104")),
                  EurostatCode = "V_Y85", CauseGroup = "Közlekedési balesetek (V01-V99, Y85)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="W"&Kod23>=0&Kod23<=19]$KOD10, List = "104"),
+                       data.table(Cause = "A141", List = "07A"),
                        data.table(Cause = "A141", List = "08A"),
                        data.table(Cause = "B50", List = "09A"),
                        data.table(Cause = "B50", List = "09B"),
@@ -1187,6 +1254,7 @@ ICDGroups <- list(
                        data.table(Cause = "C093", List = "09C")),
                  EurostatCode = "W00-W19", CauseGroup = "Esések (W00-W19)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="W"&Kod23>=65&Kod23<=74]$KOD10, List = "104"),
+                       data.table(Cause = "A146", List = "07A"),
                        data.table(Cause = "A143", List = "08A"),
                        data.table(Cause = "B521", List = "09A"),
                        data.table(Cause = "B521", List = "09B"),
@@ -1195,6 +1263,7 @@ ICDGroups <- list(
                  EurostatCode = "W65-W74",
                  CauseGroup = "Balesetszerű vízbefulladás vagy elmerülés (W65-W74)"),
       data.table(rbind(data.table(Cause = ICDData[Kod1=="X"&Kod23>=40&Kod23<=49]$KOD10, List = "104"),
+                       data.table(Cause = "A140", List = "07A"),
                        data.table(Cause = "A140", List = "08A"),
                        data.table(Cause = "B48", List = "09A"),
                        data.table(Cause = "B48", List = "09B"),
@@ -1208,8 +1277,10 @@ ICDGroups <- list(
                  EurostatCode = "ACC_OTH",
                  CauseGroup = "Egyéb balesetek (W20-W64, W75-X39, X50-X59, Y86)"),
       data.table(rbind(data.table(Cause = ICDData[(Kod1=="X"&Kod23>=60&Kod23<=84)|(KOD10=="Y8700")]$KOD10, List = "104"),
+                       data.table(Cause = "A148", List = "07A"),
+                       data.table(Cause = "B049", List = "07B"),
                        data.table(Cause = "A147", List = "08A"),
-                       data.table(Cause = "B049", List = "08A"),
+                       data.table(Cause = "B049", List = "08B"),
                        data.table(Cause = "B54", List = "09A"),
                        data.table(Cause = "B54", List = "09B"),
                        data.table(Cause = "B54", List = "09N"),
@@ -1657,6 +1728,22 @@ dataInputFun <- function(category, multipleICD, ICDSingle, ICDMultiple,
     rd <- icdtable[rd, on = .(List, Cause), nomatch = NULL, allow.cartesian = TRUE][
       skeleton, on = .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode),
       .(value = round(sum(value * Weight, na.rm = TRUE))), by = .EACHI]
+    
+    # Erre azért van szükség, mert előfordul, hogy még ugyanazon országban
+    # és ugyanazon évben is különböző Frmat kóddal vannak jelentve
+    # különböző halálokok (pl. Ausztria 1969 előtt)
+    if(any(rd[, uniqueN(Frmat), .(iso3c, Year)]$V1 > 1)) {
+      target_frmat <- rd[, .(target = max(as.integer(as.character(Frmat)))), .(iso3c, Year)]
+      rd <- merge(rd, target_frmat, by = c("iso3c", "Year"))
+      rd <- rd[!(as.integer(as.character(Frmat)) < target &
+                   Age %in% c("Deaths3", "Deaths4", "Deaths5", "Deaths6"))]
+      rd <- rd[!(as.integer(as.character(Frmat)) < target &
+                   Age %in% c("Deaths23", "Deaths24", "Deaths25"))]
+      rd[, Frmat := factor(target, levels = levels(Frmat))]
+      rd[, target := NULL]
+      rd <- rd[, .(value = sum(value)),
+               .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode)]
+    }
     
     rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
     

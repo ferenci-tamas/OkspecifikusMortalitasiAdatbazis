@@ -318,7 +318,7 @@ ui <- navbarPage(
   footer = list(
     hr(),
     p("Írta: ", a("Ferenci Tamás", href = "http://www.medstat.hu/", target = "_blank",
-                  .noWS = "outside"), ", v0.51"),
+                  .noWS = "outside"), ", v0.52"),
     
     tags$script(HTML("
       var sc_project=11601191; 
@@ -709,6 +709,22 @@ server <- function(input, output) {
     rd <- icdtable[rd, on = .(List, Cause), nomatch = NULL, allow.cartesian = TRUE][
       skeleton, on = .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode),
       .(value = round(sum(value * Weight, na.rm = TRUE))), by = .EACHI]
+    
+    # Erre azért van szükség, mert előfordul, hogy még ugyanazon országban
+    # és ugyanazon évben is különböző Frmat kóddal vannak jelentve
+    # különböző halálokok (pl. Ausztria 1969 előtt)
+    if(any(rd[, uniqueN(Frmat), .(iso3c, Year)]$V1 > 1)) {
+      target_frmat <- rd[, .(target = max(as.integer(as.character(Frmat)))), .(iso3c, Year)]
+      rd <- merge(rd, target_frmat, by = c("iso3c", "Year"))
+      rd <- rd[!(as.integer(as.character(Frmat)) < target &
+                   Age %in% c("Deaths3", "Deaths4", "Deaths5", "Deaths6"))]
+      rd <- rd[!(as.integer(as.character(Frmat)) < target &
+                   Age %in% c("Deaths23", "Deaths24", "Deaths25"))]
+      rd[, Frmat := factor(target, levels = levels(Frmat))]
+      rd[, target := NULL]
+      rd <- rd[, .(value = sum(value)),
+               .(iso3c, Year, List, Frmat, Age, Sex, CauseGroup, EurostatCode)]
+    }
     
     rd <- merge(rd, PopData, by = c("iso3c", "Year", "Sex", "Age", "Frmat"))
     
